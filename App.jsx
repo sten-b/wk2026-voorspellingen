@@ -481,6 +481,58 @@ const MODEL_DATA={
   "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:31.9,coach:15.2,xg:0.637,xgc:1.533,formN:7.7,formScore:-0.262}
 };
 
+// Raw per-country source inputs (for the in-app source center; same numbers the model uses)
+const SOURCE_INPUTS={
+  "Spain":{elo:2155,sv:861,xg:2.909,xgc:0.879,exp:42.2,coach:49.0,f12:72.2,fq:88.9},
+  "Argentina":{elo:2114,sv:820,xg:2.141,xgc:0.346,exp:100.0,coach:77.4,f12:86.1,fq:70.4},
+  "France":{elo:2062,sv:1240,xg:2.485,xgc:0.965,exp:65.3,coach:65.5,f12:77.8,fq:88.9},
+  "England":{elo:2021,sv:1345,xg:2.394,xgc:0.24,exp:52.0,coach:45.5,f12:77.8,fq:100.0},
+  "Brazil":{elo:1991,sv:1135,xg:1.898,xgc:0.784,exp:40.9,coach:100.0,f12:63.9,fq:51.9},
+  "Portugal":{elo:1986,sv:1000,xg:2.909,xgc:1.137,exp:0.0,coach:13.6,f12:75.0,fq:72.2},
+  "Colombia":{elo:1977,sv:430,xg:2.201,xgc:1.08,exp:33.4,coach:0.0,f12:61.1,fq:51.9},
+  "Netherlands":{elo:1944,sv:700,xg:2.886,xgc:0.733,exp:14.7,coach:32.6,f12:69.4,fq:83.3},
+  "Ecuador":{elo:1938,sv:236,xg:0.635,xgc:0.324,exp:0.0,coach:0.0,f12:50.0,fq:59.3},
+  "Germany":{elo:1932,sv:850,xg:2.44,xgc:0.834,exp:0.0,coach:13.6,f12:75.0,fq:83.3},
+  "Norway":{elo:1914,sv:580,xg:3.654,xgc:0.738,exp:0.0,coach:41.8,f12:80.6,fq:100.0},
+  "Croatia":{elo:1911,sv:326,xg:2.541,xgc:0.862,exp:35.8,coach:20.4,f12:69.4,fq:91.7},
+  "Turkey":{elo:1911,sv:520,xg:2.283,xgc:1.144,exp:0.0,coach:13.6,f12:77.8,fq:79.2},
+  "Japan":{elo:1906,sv:285,xg:1.648,xgc:0.478,exp:10.1,coach:25.4,f12:66.7,fq:84.4},
+  "Belgium":{elo:1893,sv:549,xg:3.565,xgc:0.807,exp:13.6,coach:13.6,f12:77.8,fq:75.0},
+  "Uruguay":{elo:1892,sv:424,xg:0.843,xgc:0.697,exp:14.7,coach:21.5,f12:47.2,fq:51.9},
+  "Switzerland":{elo:1891,sv:282,xg:2.268,xgc:0.667,exp:0.0,coach:22.5,f12:69.4,fq:77.8},
+  "Mexico":{elo:1915,sv:165,xg:1.528,xgc:0.61,exp:49.8,coach:22.5,f12:61.1,fq:75.0},
+  "Senegal":{elo:1867,sv:470,xg:1.983,xgc:0.847,exp:26.0,coach:28.8,f12:69.4,fq:80.0},
+  "Paraguay":{elo:1833,sv:95,xg:1.213,xgc:0.811,exp:0.0,coach:20.4,f12:50.0,fq:51.9},
+  "Austria":{elo:1830,sv:340,xg:2.46,xgc:0.59,exp:0.0,coach:15.2,f12:77.8,fq:79.2},
+  "Morocco":{elo:1827,sv:460,xg:2.11,xgc:0.345,exp:35.9,coach:22.5,f12:83.3,fq:100.0},
+  "Canada":{elo:1838,sv:185,xg:1.187,xgc:0.444,exp:21.1,coach:15.2,f12:58.3,fq:75.0},
+  "Scotland":{elo:1782,sv:210,xg:2.255,xgc:1.13,exp:0.0,coach:0.0,f12:61.1,fq:72.2},
+  "Australia":{elo:1777,sv:41,xg:1.614,xgc:0.778,exp:0.0,coach:20.4,f12:61.1,fq:77.1},
+  "Iran":{elo:1772,sv:51,xg:1.588,xgc:0.582,exp:16.0,coach:22.5,f12:58.3,fq:77.1},
+  "Algeria":{elo:1760,sv:260,xg:1.883,xgc:0.49,exp:14.4,coach:20.4,f12:75.0,fq:83.3},
+  "South Korea":{elo:1758,sv:184,xg:1.837,xgc:0.819,exp:8.8,coach:21.5,f12:69.4,fq:79.2},
+  "Czechia":{elo:1740,sv:0,xg:2.178,xgc:1.21,exp:0.0,coach:20.4,f12:61.1,fq:60.0},
+  "Panama":{elo:1730,sv:40,xg:1.751,xgc:1.285,exp:9.8,coach:20.4,f12:55.6,fq:80.0},
+  "United States":{elo:1876,sv:270,xg:1.624,xgc:1.572,exp:38.6,coach:13.6,f12:52.8,fq:75.0},
+  "Uzbekistan":{elo:1718,sv:70,xg:1.314,xgc:0.593,exp:0.0,coach:15.2,f12:55.6,fq:72.9},
+  "Sweden":{elo:1712,sv:430,xg:1.47,xgc:1.851,exp:0.0,coach:20.4,f12:41.7,fq:33.3},
+  "Egypt":{elo:1696,sv:120,xg:1.186,xgc:0.811,exp:20.8,coach:22.5,f12:58.3,fq:86.7},
+  "Ivory Coast":{elo:1695,sv:410,xg:2.454,xgc:0.773,exp:17.6,coach:28.8,f12:77.8,fq:86.7},
+  "Jordan":{elo:1685,sv:35,xg:1.874,xgc:1.507,exp:12.3,coach:20.4,f12:47.2,fq:60.4},
+  "DR Congo":{elo:1661,sv:150,xg:1.153,xgc:0.462,exp:8.8,coach:0.0,f12:66.7,fq:74.4},
+  "Tunisia":{elo:1628,sv:54,xg:1.322,xgc:1.327,exp:7.2,coach:13.6,f12:38.9,fq:93.3},
+  "Iraq":{elo:1618,sv:35,xg:1.109,xgc:0.732,exp:0.0,coach:0.0,f12:66.7,fq:69.8},
+  "Bosnia-Herzegovina":{elo:1595,sv:180,xg:1.816,xgc:0.986,exp:0.0,coach:0.0,f12:50.0,fq:63.3},
+  "Cape Verde":{elo:1578,sv:90,xg:1.623,xgc:1.184,exp:0.0,coach:0.0,f12:55.6,fq:76.7},
+  "Saudi Arabia":{elo:1569,sv:15,xg:1.147,xgc:1.131,exp:0.0,coach:15.2,f12:44.4,fq:55.6},
+  "New Zealand":{elo:1562,sv:35,xg:0.906,xgc:1.601,exp:0.0,coach:0.0,f12:19.4,fq:100.0},
+  "Haiti":{elo:1548,sv:40,xg:1.436,xgc:1.071,exp:5.8,coach:0.0,f12:44.4,fq:66.7},
+  "South Africa":{elo:1528,sv:60,xg:1.355,xgc:0.973,exp:8.8,coach:32.6,f12:52.8,fq:60.0},
+  "Ghana":{elo:1510,sv:242,xg:1.423,xgc:1.074,exp:0.0,coach:0.0,f12:38.9,fq:83.3},
+  "Curacao":{elo:1434,sv:45,xg:1.719,xgc:1.394,exp:0.0,coach:0.0,f12:44.4,fq:80.0},
+  "Qatar":{elo:1421,sv:14,xg:0.637,xgc:1.533,exp:31.9,coach:15.2,f12:22.2,fq:61.1}
+};
+
 // Squad market value (Transfermarkt, total per nation), for display on Nations tab
 const SQUAD_VAL={"England":{m:1345,s:"€1.34bn"},"France":{m:1240,s:"€1.24bn"},"Brazil":{m:1135,s:"€1.14bn"},"Portugal":{m:1000,s:"€1bn"},"Spain":{m:861,s:"€861m"},"Argentina":{m:820,s:"€820m"},"Germany":{m:850,s:"€850m"},"Netherlands":{m:700,s:"€700m"},"Belgium":{m:549,s:"€549m"},"Uruguay":{m:424,s:"€424m"},"Norway":{m:580,s:"€580m"},"Croatia":{m:326,s:"€326m"},"Morocco":{m:460,s:"€460m"},"Japan":{m:285,s:"€285m"},"Switzerland":{m:282,s:"€282m"},"United States":{m:270,s:"€270m"},"Ghana":{m:242,s:"€242m"},"Ecuador":{m:236,s:"€236m"},"Senegal":{m:470,s:"€470m"},"Canada":{m:185,s:"€185m"},"South Korea":{m:184,s:"€184m"},"Turkey":{m:520,s:"€520m"},"Mexico":{m:165,s:"€165m"},"Colombia":{m:430,s:"€430m"},"Austria":{m:340,s:"€340m"},"Ivory Coast":{m:410,s:"€410m"},"Sweden":{m:430,s:"€430m"},"Egypt":{m:120,s:"€120m"},"Scotland":{m:210,s:"€210m"},"Australia":{m:41,s:"€41m"},"Iran":{m:51,s:"€51m"},"Tunisia":{m:54,s:"€54m"},"Algeria":{m:260,s:"€260m"},"Paraguay":{m:95,s:"€95m"},"Panama":{m:40,s:"€40m"},"Uzbekistan":{m:70,s:"€70m"},"Jordan":{m:35,s:"€35m"},"DR Congo":{m:150,s:"€150m"},"Iraq":{m:35,s:"€35m"},"Bosnia-Herzegovina":{m:180,s:"€180m"},"Cape Verde":{m:90,s:"€90m"},"Saudi Arabia":{m:15,s:"€15m"},"Qatar":{m:14,s:"€14m"},"South Africa":{m:60,s:"€60m"},"Haiti":{m:40,s:"€40m"},"New Zealand":{m:35,s:"€35m"},"Curacao":{m:45,s:"€45m"},"Czechia":{m:280,s:"€280m"}};
 
@@ -3490,6 +3542,7 @@ export default function App(){
   const [tab,setTab]=useState("bracket");
   const [newsOpen,setNewsOpen]=useState(false);
   const [injuriesOpen,setInjuriesOpen]=useState(false);
+  const [srcOpen,setSrcOpen]=useState(false);
   const [openGroup,setOpenGroup]=useState(null);
   const [nationsOpen,setNationsOpen]=useState(null);
   const [openMatches,setOpenMatches]=useState({});
@@ -3702,8 +3755,8 @@ export default function App(){
                 padding:"12px",marginBottom:20}}>
                 {[
                   {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026. Gastlanden (VS, Mexico, Canada) krijgen een correctie voor de gemiste kwalificatiecyclus.",en:"Official Elo ratings, verified June 2026. Hosts (USA, Mexico, Canada) receive a correction for the missed qualifying cycle."}},
-                  {label:lang==="nl"?"Selectiekwaliteit":"Squad quality",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
-                  {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
+                  {label:lang==="nl"?"Selectiekwaliteit":"Squad quality",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie (€ mln), mei 2026",en:"Total squad market value (€ mln), May 2026"}},
+                  {label:"xG / xGc",src:lang==="nl"?"Per selectie":"Per squad",desc:{nl:"Verwachte goals voor/tegen per land, gebaseerd op recente interlandprestaties. Vult de hoogte van de uitslag in.",en:"Expected goals for/against per country, based on recent international performance. Fills the height of the scoreline."}},
                   {label:lang==="nl"?"Ervaring":"Experience",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
                   {label:"Coach",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
                   {label:lang==="nl"?"Recente vorm":"Recent form",src:"results.csv",desc:{nl:"½ punten laatste 12 interlands + ½ punten WK-kwalificatie; gastlanden gecompenseerd",en:"½ points last 12 internationals + ½ points WC qualifying; hosts compensated"}},
@@ -3719,13 +3772,94 @@ export default function App(){
                     <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5}}>{row.desc[lang]}</div>
                   </div>
                 ))}
+                <div style={{marginTop:11,paddingTop:11,borderTop:`1px solid ${T.border}`}}>
+                  <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:7}}>
+                    {lang==="nl"
+                      ?"De ruwe brondata is volledig in te zien en te downloaden:"
+                      :"The raw source data is fully viewable and downloadable:"}
+                  </div>
+                  {[
+                    {t:lang==="nl"?"Alle interlanduitslagen (49.365 wedstrijden, CSV)":"All international results (49,365 matches, CSV)",u:"https://github.com/sten-b/wk2026-voorspellingen/blob/main/data/results.csv"},
+                    {t:lang==="nl"?"Ruwe modelinvoer per land (JSON)":"Raw per-country model inputs (JSON)",u:"https://github.com/sten-b/wk2026-voorspellingen/blob/main/data/source_inputs.json"},
+                    {t:lang==="nl"?"Alle databestanden":"All data files",u:"https://github.com/sten-b/wk2026-voorspellingen/tree/main/data"},
+                  ].map((l,i)=>(
+                    <a key={i} href={l.u} target="_blank" rel="noopener noreferrer"
+                      style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:600,
+                        color:T.id==="dark"?T.orange:"#1A5296",textDecoration:"none",padding:"3px 0"}}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                      </svg>
+                      {l.t}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Per-country raw source inputs — full transparency */}
+              <div style={{marginBottom:20}}>
+                <div onClick={()=>setSrcOpen(o=>!o)}
+                  style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
+                    background:T.id==="dark"?"#1a1408":(srcOpen?"#fff5ea":"#fafbfd"),
+                    border:`1px solid ${T.id==="dark"?"#3a2e18":(srcOpen?"#ffd9b8":T.border)}`,
+                    borderRadius:6,padding:"10px 12px"}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
+                    strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                    <path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/>
+                  </svg>
+                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
+                    textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
+                    {lang==="nl"?"Brondata per land":"Source data per country"}
+                  </span>
+                  <Chevron open={srcOpen} color={T.textSub}/>
+                </div>
+                {srcOpen&&(
+                  <div style={{marginTop:10,background:T.card,border:`1px solid ${T.border}`,
+                    borderRadius:6,overflow:"hidden"}}>
+                    <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,padding:"10px 12px",
+                      borderBottom:`1px solid ${T.border}`,background:T.bg}}>
+                      {lang==="nl"
+                        ?"De ruwe invoerwaarden waarmee elke sterktescore is berekend. Vorm = % punten (laatste 12 / WK-kwalificatie)."
+                        :"The raw input values behind every strength score. Form = % points (last 12 / WC qualifying)."}
+                    </div>
+                    <div style={{overflowX:"auto"}}>
+                      <div style={{minWidth:340}}>
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 44px 40px 36px 38px 38px 52px",
+                          gap:4,padding:"6px 10px",borderBottom:`2px solid ${T.border}`,background:T.bg,
+                          fontSize:FS.micro,fontWeight:700,letterSpacing:0,textTransform:"uppercase",color:T.textFaint}}>
+                          <span>{lang==="nl"?"Land":"Country"}</span>
+                          <span style={{textAlign:"right"}}>Elo</span>
+                          <span style={{textAlign:"right"}}>€mln</span>
+                          <span style={{textAlign:"right"}}>xG</span>
+                          <span style={{textAlign:"right"}}>xGc</span>
+                          <span style={{textAlign:"right"}}>{lang==="nl"?"Erv.":"Exp."}</span>
+                          <span style={{textAlign:"right"}}>{lang==="nl"?"Vorm":"Form"}</span>
+                        </div>
+                        {MODEL_ORDER.map((t,i)=>{
+                          const s=SOURCE_INPUTS[t]; if(!s) return null;
+                          return(
+                            <div key={t} style={{display:"grid",gridTemplateColumns:"1fr 44px 40px 36px 38px 38px 52px",
+                              gap:4,padding:"6px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",
+                              fontSize:FS.caption,alignItems:"center"}}>
+                              <span style={{fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t,lang)}</span>
+                              <span style={{textAlign:"right",color:T.textSub}}>{s.elo}</span>
+                              <span style={{textAlign:"right",color:T.textSub}}>{s.sv}</span>
+                              <span style={{textAlign:"right",color:T.textSub}}>{s.xg}</span>
+                              <span style={{textAlign:"right",color:T.textSub}}>{s.xgc}</span>
+                              <span style={{textAlign:"right",color:T.textSub}}>{s.exp}</span>
+                              <span style={{textAlign:"right",color:T.textSub}}>{s.f12}/{s.fq}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
             </React.Fragment>
           )}
-
-          {/* NATIONS */}
-          {tab==="nations"&&<NationsTab preOpen={nationsOpen}/>}
 
           {/* PLAYERS */}
           {tab==="players"&&<PlayersTab/>}
