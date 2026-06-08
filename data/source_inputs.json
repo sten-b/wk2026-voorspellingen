@@ -1,0 +1,482 @@
+{
+  "Spain": {
+    "elo": 2155,
+    "squad_value_mln": 861,
+    "xg": 2.909,
+    "xgc": 0.879,
+    "experience": 42.2,
+    "coach": 49.0,
+    "form_last12": 72.2,
+    "form_qual": 88.9
+  },
+  "Argentina": {
+    "elo": 2114,
+    "squad_value_mln": 820,
+    "xg": 2.141,
+    "xgc": 0.346,
+    "experience": 100.0,
+    "coach": 77.4,
+    "form_last12": 86.1,
+    "form_qual": 70.4
+  },
+  "France": {
+    "elo": 2062,
+    "squad_value_mln": 1240,
+    "xg": 2.485,
+    "xgc": 0.965,
+    "experience": 65.3,
+    "coach": 65.5,
+    "form_last12": 77.8,
+    "form_qual": 88.9
+  },
+  "England": {
+    "elo": 2021,
+    "squad_value_mln": 1345,
+    "xg": 2.394,
+    "xgc": 0.24,
+    "experience": 52.0,
+    "coach": 45.5,
+    "form_last12": 77.8,
+    "form_qual": 100.0
+  },
+  "Brazil": {
+    "elo": 1991,
+    "squad_value_mln": 1135,
+    "xg": 1.898,
+    "xgc": 0.784,
+    "experience": 40.9,
+    "coach": 100.0,
+    "form_last12": 63.9,
+    "form_qual": 51.9
+  },
+  "Portugal": {
+    "elo": 1986,
+    "squad_value_mln": 1000,
+    "xg": 2.909,
+    "xgc": 1.137,
+    "experience": 0.0,
+    "coach": 13.6,
+    "form_last12": 75.0,
+    "form_qual": 72.2
+  },
+  "Colombia": {
+    "elo": 1977,
+    "squad_value_mln": 430,
+    "xg": 2.201,
+    "xgc": 1.08,
+    "experience": 33.4,
+    "coach": 0.0,
+    "form_last12": 61.1,
+    "form_qual": 51.9
+  },
+  "Netherlands": {
+    "elo": 1944,
+    "squad_value_mln": 700,
+    "xg": 2.886,
+    "xgc": 0.733,
+    "experience": 14.7,
+    "coach": 32.6,
+    "form_last12": 69.4,
+    "form_qual": 83.3
+  },
+  "Ecuador": {
+    "elo": 1938,
+    "squad_value_mln": 236,
+    "xg": 0.635,
+    "xgc": 0.324,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 50.0,
+    "form_qual": 59.3
+  },
+  "Germany": {
+    "elo": 1932,
+    "squad_value_mln": 850,
+    "xg": 2.44,
+    "xgc": 0.834,
+    "experience": 0.0,
+    "coach": 13.6,
+    "form_last12": 75.0,
+    "form_qual": 83.3
+  },
+  "Norway": {
+    "elo": 1914,
+    "squad_value_mln": 580,
+    "xg": 3.654,
+    "xgc": 0.738,
+    "experience": 0.0,
+    "coach": 41.8,
+    "form_last12": 80.6,
+    "form_qual": 100.0
+  },
+  "Croatia": {
+    "elo": 1911,
+    "squad_value_mln": 326,
+    "xg": 2.541,
+    "xgc": 0.862,
+    "experience": 35.8,
+    "coach": 20.4,
+    "form_last12": 69.4,
+    "form_qual": 91.7
+  },
+  "Turkey": {
+    "elo": 1911,
+    "squad_value_mln": 520,
+    "xg": 2.283,
+    "xgc": 1.144,
+    "experience": 0.0,
+    "coach": 13.6,
+    "form_last12": 77.8,
+    "form_qual": 79.2
+  },
+  "Japan": {
+    "elo": 1906,
+    "squad_value_mln": 285,
+    "xg": 1.648,
+    "xgc": 0.478,
+    "experience": 10.1,
+    "coach": 25.4,
+    "form_last12": 66.7,
+    "form_qual": 84.4
+  },
+  "Belgium": {
+    "elo": 1893,
+    "squad_value_mln": 549,
+    "xg": 3.565,
+    "xgc": 0.807,
+    "experience": 13.6,
+    "coach": 13.6,
+    "form_last12": 77.8,
+    "form_qual": 75.0
+  },
+  "Uruguay": {
+    "elo": 1892,
+    "squad_value_mln": 424,
+    "xg": 0.843,
+    "xgc": 0.697,
+    "experience": 14.7,
+    "coach": 21.5,
+    "form_last12": 47.2,
+    "form_qual": 51.9
+  },
+  "Switzerland": {
+    "elo": 1891,
+    "squad_value_mln": 282,
+    "xg": 2.268,
+    "xgc": 0.667,
+    "experience": 0.0,
+    "coach": 22.5,
+    "form_last12": 69.4,
+    "form_qual": 77.8
+  },
+  "Mexico": {
+    "elo": 1915,
+    "squad_value_mln": 165,
+    "xg": 1.528,
+    "xgc": 0.61,
+    "experience": 49.8,
+    "coach": 22.5,
+    "form_last12": 61.1,
+    "form_qual": 75.0
+  },
+  "Senegal": {
+    "elo": 1867,
+    "squad_value_mln": 470,
+    "xg": 1.983,
+    "xgc": 0.847,
+    "experience": 26.0,
+    "coach": 28.8,
+    "form_last12": 69.4,
+    "form_qual": 80.0
+  },
+  "Paraguay": {
+    "elo": 1833,
+    "squad_value_mln": 95,
+    "xg": 1.213,
+    "xgc": 0.811,
+    "experience": 0.0,
+    "coach": 20.4,
+    "form_last12": 50.0,
+    "form_qual": 51.9
+  },
+  "Austria": {
+    "elo": 1830,
+    "squad_value_mln": 340,
+    "xg": 2.46,
+    "xgc": 0.59,
+    "experience": 0.0,
+    "coach": 15.2,
+    "form_last12": 77.8,
+    "form_qual": 79.2
+  },
+  "Morocco": {
+    "elo": 1827,
+    "squad_value_mln": 460,
+    "xg": 2.11,
+    "xgc": 0.345,
+    "experience": 35.9,
+    "coach": 22.5,
+    "form_last12": 83.3,
+    "form_qual": 100.0
+  },
+  "Canada": {
+    "elo": 1838,
+    "squad_value_mln": 185,
+    "xg": 1.187,
+    "xgc": 0.444,
+    "experience": 21.1,
+    "coach": 15.2,
+    "form_last12": 58.3,
+    "form_qual": 75.0
+  },
+  "Scotland": {
+    "elo": 1782,
+    "squad_value_mln": 210,
+    "xg": 2.255,
+    "xgc": 1.13,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 61.1,
+    "form_qual": 72.2
+  },
+  "Australia": {
+    "elo": 1777,
+    "squad_value_mln": 41,
+    "xg": 1.614,
+    "xgc": 0.778,
+    "experience": 0.0,
+    "coach": 20.4,
+    "form_last12": 61.1,
+    "form_qual": 77.1
+  },
+  "Iran": {
+    "elo": 1772,
+    "squad_value_mln": 51,
+    "xg": 1.588,
+    "xgc": 0.582,
+    "experience": 16.0,
+    "coach": 22.5,
+    "form_last12": 58.3,
+    "form_qual": 77.1
+  },
+  "Algeria": {
+    "elo": 1760,
+    "squad_value_mln": 260,
+    "xg": 1.883,
+    "xgc": 0.49,
+    "experience": 14.4,
+    "coach": 20.4,
+    "form_last12": 75.0,
+    "form_qual": 83.3
+  },
+  "South Korea": {
+    "elo": 1758,
+    "squad_value_mln": 184,
+    "xg": 1.837,
+    "xgc": 0.819,
+    "experience": 8.8,
+    "coach": 21.5,
+    "form_last12": 69.4,
+    "form_qual": 79.2
+  },
+  "Czechia": {
+    "elo": 1740,
+    "squad_value_mln": 0,
+    "xg": 2.178,
+    "xgc": 1.21,
+    "experience": 0.0,
+    "coach": 20.4,
+    "form_last12": 61.1,
+    "form_qual": 60.0
+  },
+  "Panama": {
+    "elo": 1730,
+    "squad_value_mln": 40,
+    "xg": 1.751,
+    "xgc": 1.285,
+    "experience": 9.8,
+    "coach": 20.4,
+    "form_last12": 55.6,
+    "form_qual": 80.0
+  },
+  "United States": {
+    "elo": 1876,
+    "squad_value_mln": 270,
+    "xg": 1.624,
+    "xgc": 1.572,
+    "experience": 38.6,
+    "coach": 13.6,
+    "form_last12": 52.8,
+    "form_qual": 75.0
+  },
+  "Uzbekistan": {
+    "elo": 1718,
+    "squad_value_mln": 70,
+    "xg": 1.314,
+    "xgc": 0.593,
+    "experience": 0.0,
+    "coach": 15.2,
+    "form_last12": 55.6,
+    "form_qual": 72.9
+  },
+  "Sweden": {
+    "elo": 1712,
+    "squad_value_mln": 430,
+    "xg": 1.47,
+    "xgc": 1.851,
+    "experience": 0.0,
+    "coach": 20.4,
+    "form_last12": 41.7,
+    "form_qual": 33.3
+  },
+  "Egypt": {
+    "elo": 1696,
+    "squad_value_mln": 120,
+    "xg": 1.186,
+    "xgc": 0.811,
+    "experience": 20.8,
+    "coach": 22.5,
+    "form_last12": 58.3,
+    "form_qual": 86.7
+  },
+  "Ivory Coast": {
+    "elo": 1695,
+    "squad_value_mln": 410,
+    "xg": 2.454,
+    "xgc": 0.773,
+    "experience": 17.6,
+    "coach": 28.8,
+    "form_last12": 77.8,
+    "form_qual": 86.7
+  },
+  "Jordan": {
+    "elo": 1685,
+    "squad_value_mln": 35,
+    "xg": 1.874,
+    "xgc": 1.507,
+    "experience": 12.3,
+    "coach": 20.4,
+    "form_last12": 47.2,
+    "form_qual": 60.4
+  },
+  "DR Congo": {
+    "elo": 1661,
+    "squad_value_mln": 150,
+    "xg": 1.153,
+    "xgc": 0.462,
+    "experience": 8.8,
+    "coach": 0.0,
+    "form_last12": 66.7,
+    "form_qual": 74.4
+  },
+  "Tunisia": {
+    "elo": 1628,
+    "squad_value_mln": 54,
+    "xg": 1.322,
+    "xgc": 1.327,
+    "experience": 7.2,
+    "coach": 13.6,
+    "form_last12": 38.9,
+    "form_qual": 93.3
+  },
+  "Iraq": {
+    "elo": 1618,
+    "squad_value_mln": 35,
+    "xg": 1.109,
+    "xgc": 0.732,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 66.7,
+    "form_qual": 69.8
+  },
+  "Bosnia-Herzegovina": {
+    "elo": 1595,
+    "squad_value_mln": 180,
+    "xg": 1.816,
+    "xgc": 0.986,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 50.0,
+    "form_qual": 63.3
+  },
+  "Cape Verde": {
+    "elo": 1578,
+    "squad_value_mln": 90,
+    "xg": 1.623,
+    "xgc": 1.184,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 55.6,
+    "form_qual": 76.7
+  },
+  "Saudi Arabia": {
+    "elo": 1569,
+    "squad_value_mln": 15,
+    "xg": 1.147,
+    "xgc": 1.131,
+    "experience": 0.0,
+    "coach": 15.2,
+    "form_last12": 44.4,
+    "form_qual": 55.6
+  },
+  "New Zealand": {
+    "elo": 1562,
+    "squad_value_mln": 35,
+    "xg": 0.906,
+    "xgc": 1.601,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 19.4,
+    "form_qual": 100.0
+  },
+  "Haiti": {
+    "elo": 1548,
+    "squad_value_mln": 40,
+    "xg": 1.436,
+    "xgc": 1.071,
+    "experience": 5.8,
+    "coach": 0.0,
+    "form_last12": 44.4,
+    "form_qual": 66.7
+  },
+  "South Africa": {
+    "elo": 1528,
+    "squad_value_mln": 60,
+    "xg": 1.355,
+    "xgc": 0.973,
+    "experience": 8.8,
+    "coach": 32.6,
+    "form_last12": 52.8,
+    "form_qual": 60.0
+  },
+  "Ghana": {
+    "elo": 1510,
+    "squad_value_mln": 242,
+    "xg": 1.423,
+    "xgc": 1.074,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 38.9,
+    "form_qual": 83.3
+  },
+  "Curacao": {
+    "elo": 1434,
+    "squad_value_mln": 45,
+    "xg": 1.719,
+    "xgc": 1.394,
+    "experience": 0.0,
+    "coach": 0.0,
+    "form_last12": 44.4,
+    "form_qual": 80.0
+  },
+  "Qatar": {
+    "elo": 1421,
+    "squad_value_mln": 14,
+    "xg": 0.637,
+    "xgc": 1.533,
+    "experience": 31.9,
+    "coach": 15.2,
+    "form_last12": 22.2,
+    "form_qual": 61.1
+  }
+}
