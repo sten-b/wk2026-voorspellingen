@@ -1168,18 +1168,13 @@ function NavLion({themeId}){
   );
 }
 
-// Twemoji lion face SVG (Apache 2.0 licensed) — used as footer icon
-// Simplified to single-color fill for icon use
-function LionEmoji({color="#FF5500", size=14}){
-  // Lion SVG from logo-icons.com, CC licensed, paths verbatim
+// Lion face SVG — used as theme-toggle / nav icon
+function LionEmoji({color="#E07000", size=14}){
+  // Main outline only — internal detail lines removed for a clean icon
   return(
     <svg width={size} height={size} viewBox="157 124 717 798" fill={color} xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(0,1024) scale(0.1,-0.1)">
         <path d="M5111 8804 c-110 -125 -189 -296 -192 -414 0 -37 -17 -90 -18 -59 -2 29 -87 135 -153 188 -178 146 -439 191 -702 120 l-40 -11 76 -39 c84 -44 194 -133 249 -200 38 -47 66 -94 52 -87 -103 48 -141 63 -209 83 -337 98 -788 26 -1139 -183 -157 -93 -353 -278 -445 -418 -119 -182 -170 -344 -170 -539 0 -161 42 -320 117 -440 18 -27 29 -53 27 -57 -9 -14 -146 -104 -201 -131 -117 -60 -257 -101 -411 -121 l-87 -12 77 -42 c110 -60 234 -99 360 -112 59 -7 112 -9 118 -5 5 3 10 2 10 -3 0 -4 -42 -39 -92 -78 -193 -145 -362 -343 -464 -547 -49 -96 -109 -283 -130 -402 -18 -104 -25 -402 -11 -459 8 -27 10 -24 50 56 81 161 172 284 311 423 158 157 237 214 597 430 152 91 327 203 388 250 61 46 111 82 111 79 0 -19 -133 -266 -186 -346 -78 -118 -171 -217 -410 -439 -100 -92 -208 -195 -239 -229 -186 -194 -324 -447 -391 -713 -49 -196 -44 -529 12 -743 24 -95 86 -259 129 -345 29 -57 115 -192 120 -187 2 2 -1 28 -7 58 -16 84 -3 376 21 491 43 203 142 439 256 615 144 222 424 505 671 679 38 27 88 65 112 83 23 19 44 33 47 31 2 -3 -57 -92 -131 -199 -330 -479 -377 -554 -476 -758 -71 -148 -128 -316 -160 -472 -19 -98 -23 -146 -23 -320 0 -133 5 -226 13 -265 84 -381 291 -710 616 -983 84 -70 224 -167 231 -160 2 2 -23 56 -55 120 -62 127 -138 324 -163 428 -68 275 -74 574 -16 833 68 305 216 623 404 865 94 121 129 158 97 101 -61 -106 -131 -349 -163 -569 -29 -198 -23 -465 15 -645 68 -323 229 -657 449 -930 85 -105 233 -255 325 -329 77 -62 274 -197 280 -191 2 1 -19 52 -46 111 -107 234 -163 473 -161 687 1 128 12 232 21 207 3 -8 22 -64 41 -125 145 -458 405 -919 688 -1218 l54 -57 96 112 c165 196 257 326 367 523 107 192 215 455 279 679 17 61 30 93 36 87 16 -16 21 -280 8 -387 -22 -182 -69 -335 -162 -532 -21 -46 -39 -86 -39 -88 0 -7 180 117 255 176 486 386 784 927 837 1518 26 294 -28 616 -152 905 -21 48 -37 87 -35 87 2 0 29 -32 60 -71 242 -299 416 -680 471 -1029 20 -128 23 -403 5 -510 -18 -107 -55 -254 -91 -356 -35 -102 -134 -326 -163 -367 -10 -16 -17 -30 -14 -33 6 -6 114 65 212 141 107 83 284 269 367 386 128 179 220 388 265 599 36 169 36 403 0 582 -64 316 -211 624 -478 1003 -228 323 -299 428 -295 432 2 2 55 -34 118 -80 561 -415 847 -799 965 -1297 28 -121 42 -400 25 -505 -5 -33 -9 -61 -7 -63 1 -1 25 32 53 75 100 153 180 351 224 558 28 132 31 414 6 551 -40 214 -138 443 -267 624 -107 149 -153 197 -506 525 -138 128 -224 226 -301 343 -65 98 -159 266 -169 301 -7 23 -5 22 36 -11 80 -64 311 -213 524 -337 116 -68 246 -148 289 -179 236 -169 444 -405 556 -631 19 -38 38 -70 41 -71 3 0 9 53 12 119 19 353 -77 694 -270 964 -81 111 -207 243 -316 328 -51 40 -98 78 -105 85 -11 9 1 12 56 12 126 1 262 35 396 97 123 57 123 60 18 74 -231 29 -443 114 -601 239 l-24 19 26 35 c59 76 120 257 132 388 19 207 -60 453 -207 652 -175 236 -423 411 -733 516 -327 111 -702 104 -960 -19 -32 -15 -61 -27 -62 -25 -9 8 97 133 148 176 61 51 176 122 218 135 35 11 13 20 -94 40 -132 25 -322 17 -431 -19 -138 -44 -262 -144 -337 -268 l-34 -57 -5 62 c-7 81 -49 206 -98 287 -42 71 -128 181 -146 187 -6 2 -30 -17 -53 -43z m-1364 -938 c229 -49 395 -146 524 -306 63 -80 74 -89 112 -95 76 -13 270 -85 367 -137 129 -68 239 -148 331 -240 l78 -78 58 61 c171 180 415 318 684 385 103 25 105 26 133 70 159 252 510 392 888 355 383 -37 646 -259 689 -582 30 -217 -79 -447 -268 -567 -24 -15 -43 -32 -43 -38 0 -25 141 -408 168 -459 17 -30 27 -55 24 -55 -3 0 -38 19 -76 42 -95 56 -178 142 -256 266 -146 232 -202 311 -272 386 -92 100 -204 184 -330 247 -175 88 -316 125 -513 136 -120 6 -132 -5 -30 -27 64 -13 171 -63 245 -113 306 -209 505 -680 503 -1192 -1 -325 -55 -540 -192 -765 -47 -77 -51 -81 -44 -45 15 73 6 209 -18 290 -12 42 -25 78 -29 80 -4 2 -10 -39 -13 -93 -9 -149 -74 -351 -164 -506 l-46 -78 -13 51 c-27 103 -73 201 -138 296 -38 53 -70 95 -72 92 -2 -2 8 -32 22 -67 64 -159 151 -529 161 -685 9 -159 -42 -303 -139 -390 -151 -135 -386 -121 -645 41 -144 90 -201 188 -190 324 9 113 52 202 119 247 18 12 78 34 133 49 123 33 181 61 227 112 38 42 55 84 60 146 l3 40 -85 18 c-47 10 -130 18 -185 19 -85 2 -113 -2 -190 -27 -118 -38 -204 -38 -330 1 -112 34 -209 36 -358 10 l-109 -19 7 -35 c10 -53 42 -122 73 -155 55 -58 105 -80 287 -127 64 -17 125 -73 156 -142 27 -63 37 -196 20 -260 -26 -90 -132 -191 -282 -267 -262 -134 -534 -62 -643 170 -27 58 -31 77 -34 180 -6 173 47 438 147 733 16 48 28 87 26 87 -8 0 -122 -176 -142 -220 -12 -25 -31 -77 -44 -115 -12 -39 -25 -78 -28 -88 -9 -27 -112 175 -155 303 -32 95 -61 239 -68 330 -3 34 -3 34 -21 -20 -26 -81 -40 -195 -33 -280 l7 -75 -46 70 c-221 343 -259 902 -94 1382 135 390 344 609 674 706 l50 15 -40 1 c-152 3 -403 -50 -541 -114 -113 -52 -258 -152 -344 -237 -71 -70 -135 -159 -300 -418 -76 -120 -185 -229 -278 -278 l-63 -34 30 54 c17 30 58 133 92 229 34 95 67 186 75 201 8 15 14 29 14 32 0 2 -29 25 -63 50 -127 90 -213 212 -246 350 -21 86 -15 222 13 312 82 260 314 434 628 474 96 12 296 4 385 -14z m1578 -3910 c28 -8 117 -54 200 -101 161 -91 238 -122 328 -132 65 -7 64 -3 41 -106 -26 -117 -93 -247 -166 -323 -54 -56 -185 -150 -195 -140 -2 2 6 20 17 39 25 42 62 157 51 157 -5 0 -16 -10 -27 -22 -44 -49 -196 -132 -358 -196 l-49 -19 -89 34 c-148 56 -237 106 -321 182 l-40 36 8 -35 c11 -54 35 -123 51 -147 22 -35 17 -36 -38 -6 -29 15 -87 62 -129 104 -90 89 -146 192 -179 329 -26 112 -27 110 18 110 91 0 212 47 392 154 139 83 221 107 340 102 52 -2 118 -11 145 -20z"/>
-        <path d="M3332 7578 c-134 -15 -257 -100 -315 -217 -29 -60 -32 -74 -32 -161 0 -88 3 -101 32 -160 31 -62 97 -150 105 -140 2 3 29 43 59 90 81 123 150 203 236 271 79 63 209 134 301 164 50 16 52 18 37 35 -19 21 -117 74 -177 96 -58 21 -169 31 -246 22z"/>
-        <path d="M6850 7579 c-36 -4 -90 -17 -121 -28 -57 -22 -160 -87 -166 -106 -2 -6 26 -21 62 -33 127 -46 301 -166 408 -282 47 -50 145 -187 161 -224 9 -20 78 67 114 143 31 65 36 83 36 151 0 64 -5 86 -32 143 -80 172 -253 260 -462 236z"/>
-        <path d="M4215 6290 c-97 -18 -195 -41 -199 -49 -8 -12 181 -178 230 -202 26 -12 74 -24 111 -27 59 -4 67 -8 83 -35 31 -50 59 -175 71 -311 6 -71 9 -142 7 -158 -8 -55 8 -27 34 60 45 147 60 253 56 382 -3 92 -8 125 -26 164 -32 70 -85 131 -136 156 -51 24 -155 34 -231 20z"/>
-        <path d="M5919 6284 c-68 -20 -140 -89 -174 -166 -53 -118 -44 -346 23 -555 l28 -88 12 152 c14 163 29 238 67 320 24 54 27 56 109 67 66 9 137 51 233 138 50 46 92 85 92 88 2 10 -253 60 -299 60 -25 -1 -66 -8 -91 -16z"/>
       </g>
     </svg>
   );
@@ -1230,7 +1225,7 @@ function ThemeToggle({theme,setTheme}){
       return T.id==="dark"?"#ffffff":T.textSub;
     }
     // lion: always orange on its black background
-    return "#FF5500";
+    return "#E07000";
   };
   return(
     <div style={{display:"flex",border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
@@ -1241,7 +1236,7 @@ function ThemeToggle({theme,setTheme}){
           <button key={id} onClick={()=>setTheme(id)} style={{
             width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",
             background:getBg(id,active),cursor:"pointer",flexShrink:0,
-            border:isLion?"1.5px solid #FF5500":"none",
+            border:isLion?"1.5px solid #E07000":"none",
             borderLeft:i>0&&!isLion?`1px solid ${T.border}`:undefined,
             boxSizing:"border-box",
           }}>
@@ -1414,6 +1409,15 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       </div>
       {/* Standings — always visible */}
       <div style={{borderBottom:`1px solid ${T.border}`}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"4px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
+          <span style={{width:14,flexShrink:0}}/>
+          <span style={{width:14,flexShrink:0}}/>
+          <span style={{flex:1,fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Land":"Country"}</span>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0,minWidth:20,textAlign:"right"}}>{lang==="nl"?"Vorm":"Form"}</span>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0}}>{lang==="nl"?"Rang":"Rank"}</span>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0,minWidth:16,textAlign:"right"}}>{lang==="nl"?"Ptn":"Pts"}</span>
+          <span style={{width:18,flexShrink:0}}/>
+        </div>
         {sorted.map((team,i)=>{
           const pass=i<2;
           return(
@@ -1421,6 +1425,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
               <span style={{width:14,fontSize:11,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center",flexShrink:0}}>{i+1}</span>
               <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
               <span style={{flex:1,fontSize:12,fontWeight:pass?600:400,color:pass?T.text:T.textSub}}>{tName(team,lang)}</span>
+              {(()=>{const dev=FORM_DEV[team];if(dev===undefined)return null;const fc=dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint;return <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:9,fontWeight:700,color:fc,flexShrink:0,minWidth:20,textAlign:"right"}}>{dev>0?"+":""}{dev}</span>;})()}
               {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
               <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textFaint,flexShrink:0,minWidth:16,textAlign:"right"}}>{pts[team]}</span>
               <span style={{fontSize:9,color:T.textFaint,flexShrink:0}}>pts</span>
@@ -2577,37 +2582,42 @@ function ModelViz(){
           <span style={{fontSize:15,lineHeight:1}}>🇦🇷</span>
           <span style={{fontSize:11,fontWeight:700,color:T.text}}>{lang==="nl"?"Voorbeeld: Argentinië":"Example: Argentina"}</span>
         </div>
-        {/* column legend — aligned to the data rows below */}
-        <div style={{display:"flex",alignItems:"center",gap:6,paddingBottom:6,
-          fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
-          color:T.textFaint}}>
-          <span style={{flex:1}}>{lang==="nl"?"factor":"factor"}</span>
-          <span style={{minWidth:26,textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
-          <span style={{width:7}}/>
-          <span style={{minWidth:26,textAlign:"right"}}>{lang==="nl"?"gewicht":"weight"}</span>
-          <span style={{width:7}}/>
-          <span style={{minWidth:32,textAlign:"right"}}>{lang==="nl"?"bijdrage":"share"}</span>
-        </div>
-        {[
-          {lab:"Elo",val:89,w:80,contrib:71.4},
-          {lab:lang==="nl"?"Selectie":"Squad",val:90,w:10,contrib:9.0},
-          {lab:lang==="nl"?"Ervaring":"Experience",val:100,w:5,contrib:5.0},
-          {lab:"Coach",val:77,w:5,contrib:3.9},
-        ].map((r,i)=>(
-          <div key={i} style={{display:"flex",alignItems:"center",gap:6,
-            padding:"7px 0",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:11}}>
-            <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
-            <span style={{color:T.textSub,minWidth:26,textAlign:"right"}}>{r.val}</span>
-            <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
-            <span style={{color:T.textSub,minWidth:26,textAlign:"right"}}>{r.w}%</span>
-            <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
-            <span style={{fontWeight:800,color:blue,minWidth:32,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+        {/* calculation table — properly outlined */}
+        <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
+          {/* column legend */}
+          <div style={{display:"flex",alignItems:"center",gap:6,padding:"7px 10px",
+            background:T.bg,borderBottom:`1px solid ${T.border}`,
+            fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
+            color:T.textFaint}}>
+            <span style={{flex:1}}>{lang==="nl"?"factor":"factor"}</span>
+            <span style={{minWidth:26,textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
+            <span style={{width:7}}/>
+            <span style={{minWidth:26,textAlign:"right"}}>{lang==="nl"?"gewicht":"weight"}</span>
+            <span style={{width:7}}/>
+            <span style={{minWidth:32,textAlign:"right"}}>{lang==="nl"?"bijdrage":"share"}</span>
           </div>
-        ))}
-        <div style={{display:"flex",alignItems:"center",marginTop:7,paddingTop:8,
-          borderTop:`2px solid ${T.border}`}}>
-          <span style={{flex:1,fontSize:12,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
-          <span style={{fontSize:16,fontWeight:900,color:orange}}>89,2</span>
+          {[
+            {lab:"Elo",val:89,w:80,contrib:71.4},
+            {lab:lang==="nl"?"Selectie":"Squad",val:90,w:10,contrib:9.0},
+            {lab:lang==="nl"?"Ervaring":"Experience",val:100,w:5,contrib:5.0},
+            {lab:"Coach",val:77,w:5,contrib:3.9},
+          ].map((r,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:6,
+              padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:11}}>
+              <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
+              <span style={{color:T.textSub,minWidth:26,textAlign:"right"}}>{r.val}</span>
+              <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
+              <span style={{color:T.textSub,minWidth:26,textAlign:"right"}}>{r.w}%</span>
+              <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
+              <span style={{fontWeight:800,color:blue,minWidth:32,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+            </div>
+          ))}
+          {/* total */}
+          <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
+            borderTop:`2px solid ${T.border}`,background:T.bg}}>
+            <span style={{flex:1,fontSize:12,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
+            <span style={{fontSize:16,fontWeight:900,color:orange}}>89,2</span>
+          </div>
         </div>
       </div>
 
@@ -2830,7 +2840,7 @@ function NationsTab({preOpen=null}){
       <div style={{fontSize:15,fontWeight:700,color:T.text,marginBottom:14}}>
         {lang==="nl"?"Landenprofielen":"Nation Profiles"}
       </div>
-      {NATIONS_DATA.map(n=>(
+      {[...NATIONS_DATA].sort((a,b)=>adjRank(a.team)-adjRank(b.team)).map(n=>(
         <div key={n.team} ref={el=>cardRefs.current[n.team]=el}>
           <NationCard n={n} open={open===n.team} onToggle={()=>toggle(n.team)}/>
         </div>
@@ -3160,11 +3170,6 @@ function FBrefStatsSection(){
         <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
           {lang==="nl"?"Doelpunten + Assists per 90":"Goals + Assists per 90"}
         </div>
-        <div style={{fontSize:9,color:T.textFaint,marginBottom:10,lineHeight:1.5}}>
-          {lang==="nl"
-            ?"FBref · Big 5 Europa 2025-26 · min 4×90 min · Goals+Assists per 90 min"
-            :"FBref · Big 5 Europe 2025-26 · min 4×90 min · Goals+Assists per 90 min"}
-        </div>
         {/* Nation filter */}
         <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap"}}>
           <span style={{fontSize:10,color:T.textSub}}>{lang==="nl"?"Land:":"Nation:"}</span>
@@ -3215,11 +3220,6 @@ function FBrefStatsSection(){
       <div style={{marginTop:8}}>
         <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
           {lang==="nl"?"Sterren die het toernooi missen":"Stars missing the tournament"}
-        </div>
-        <div style={{fontSize:9,color:T.textFaint,marginBottom:8}}>
-          {lang==="nl"
-            ?"Topspelers die ontbreken door niet-kwalificatie of blessure"
-            :"Top players absent through non-qualification or injury"}
         </div>
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
           {FBREF_NONWC.map((p,i,arr)=>(
