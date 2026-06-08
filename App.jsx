@@ -280,6 +280,7 @@ const MATCH_EXPL = {
 const KO_EXPL = {
   nl: {
     "Argentina-Netherlands":"Argentinië tegen een georganiseerd maar minder explosief Nederland. Van Dijk leidt een gedisciplineerde verdediging en De Jong probeert het middenveld te beheersen, maar Argentiniës aanvallende drilling via Álvarez en Mac Allister vindt net iets vaker de opening. Oranje houdt lang stand en komt nog terug tot 2-1, maar Argentiniës klasse in de beslissende momenten geeft de doorslag.",
+    "Argentina-Norway":"Argentinië treft een Noorwegen dat op vorm de kwartfinale haalde, met Haaland als constante dreiging. Maar Argentiniës complete elftal en toernooiroutine zijn een maatje te groot: Mac Allister en Álvarez controleren het tempo. Haaland prikt er nog 1 binnen voor de 2-1, maar Argentinië staat defensief te sterk en gaat door.",
     "England-Brazil":"Twee zwaargewichten met contrasterende stijlen: Engelands structuur tegen Braziliaanse individuele klasse. Bellingham trekt het middenveld naar zich toe en Saka's directheid langs rechts is het wapen dat Brazilië niet neutraliseert. Vinícius blijft gevaarlijk en maakt er 2-1 van, maar Engeland controleert de cruciale fases en houdt stand.",
     "Brazil-England":"Twee zwaargewichten, gescheiden door het kleinste verschil. Braziliës recente vorm en aanvallende klasse geven net de doorslag: Vinícius en Rodrygo vinden ruimte achter de Engelse defensie, terwijl Engeland via Bellingham en Saka blijft dreigen. Engeland komt terug tot 2-1, maar Brazilië is in de beslissende momenten net iets gevaarlijker en trekt het over de streep.",
     "France-Portugal":"Frankrijks balans tussen controle en omschakeling tegen een Portugal dat op leeftijd begint te raken. Mbappé exploiteert de ruimte achter de Portugese defensie en Tchouaméni wint het fysieke duel op het middenveld. Portugal vecht terug tot 2-1 via een moment van Ronaldo, maar Frankrijk is klinischer en beslist het.",
@@ -297,6 +298,7 @@ const KO_EXPL = {
   },
   en: {
     "Argentina-Netherlands":"Argentina against an organised but less explosive Netherlands. Van Dijk marshals a disciplined defence and De Jong tries to control midfield, but Argentina's attacking drill through Álvarez and Mac Allister finds the opening just a little more often. The Dutch hold firm and pull one back to 2-1, but Argentina's class in the decisive moments proves decisive.",
+    "Argentina-Norway":"Argentina face a Norway side that reached the quarters on form, with Haaland a constant threat. But Argentina's complete team and tournament savvy are a level above: Mac Allister and Álvarez control the tempo. Haaland pulls one back for 2-1, but Argentina are too solid defensively and go through.",
     "England-Brazil":"Two heavyweights with contrasting styles: England's structure against Brazilian individual brilliance. Bellingham draws the midfield to him and Saka's directness down the right is the weapon Brazil cannot neutralise. Vinícius stays dangerous and makes it 2-1, but England control the crucial phases and hold on.",
     "Brazil-England":"Two heavyweights separated by the smallest of margins. Brazil's recent form and attacking class just tip it: Vinícius and Rodrygo find space behind the English defence, while England keep threatening through Bellingham and Saka. England pull back to 2-1, but Brazil are a fraction more dangerous in the decisive moments and see it through.",
     "France-Portugal":"France's balance of control and transition against a Portugal side starting to age. Mbappé exploits the space behind the Portuguese defence and Tchouaméni wins the physical midfield battle. Portugal fight back to 2-1 through a Ronaldo moment, but France are more clinical and see it out.",
@@ -425,7 +427,7 @@ const FORM_ADJ = {
 //           weighted by tournament strength x round depth
 //   coach = head-coach honours weighted by trophy prestige
 // Weights (sum to 1): elo .80, form .10, experience .05, coach .05
-const WEIGHTS = { elo:0.75, form:0.10, experience:0.05, coach:0.05, recentForm:0.05 };
+const WEIGHTS = { elo:0.70, form:0.10, experience:0.05, coach:0.05, recentForm:0.10 };
 
 // eloN = Elo normalised to 0-100 via (elo - 1400) / 800 * 100, clamped.
 const MODEL_DATA={
@@ -554,17 +556,17 @@ const GROUPS = [
 
 const MATCHES = {
   A:[{t1:"Mexico",t2:"Czechia",s1:1,s2:1},{t1:"South Korea",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:3,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:2}],
-  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:2,s2:1}],
+  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
   C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:1,s2:0},{t1:"Brazil",t2:"Morocco",s1:2,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
   D:[{t1:"Turkey",t2:"Paraguay",s1:1,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:2,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:1,s2:1}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:3,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:4,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
+  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:2,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
   F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:2}],
-  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:1,s2:1},{t1:"Egypt",t2:"New Zealand",s1:1,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
+  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
   H:[{t1:"Spain",t2:"Cape Verde",s1:4,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:4,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:2,s2:1}],
   I:[{t1:"France",t2:"Senegal",s1:3,s2:2},{t1:"Norway",t2:"Iraq",s1:3,s2:1},{t1:"France",t2:"Norway",s1:2,s2:2},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:4,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:2}],
-  J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Austria",s1:3,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
+  J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Austria",s1:2,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
   K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:2,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
-  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:3,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:3,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
+  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:2,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
 };
 
 const OUTLOOK = {
@@ -742,7 +744,7 @@ const OUTLOOK = {
   ],
 };
 
-const QF=[["Argentina","Netherlands"],["Brazil","England"],["France","Portugal"],["Spain","Colombia"]];
+const QF=[["Argentina","Norway"],["Brazil","England"],["France","Portugal"],["Spain","Colombia"]];
 const SF=[["Argentina","Brazil"],["France","Spain"]];
 // Final teams = winners of the two semifinals; assigned after the goals engine is defined (below) so there's no contradiction.
 let FINAL_TEAMS=["Argentina","Spain"];
@@ -2482,7 +2484,7 @@ function ModelViz(){
 
   // Factors — all share the secondary (blue) accent. The % is the differentiator, not colour.
   const FACTORS=[
-    {key:"clock",pct:75,
+    {key:"clock",pct:70,
      label:lang==="nl"?"Elo-rating":"Elo rating",
      formula:lang==="nl"?"(Elo − 1400) / 800 × 100":"(Elo − 1400) / 800 × 100",
      intro:lang==="nl"?"De betrouwbaarste maatstaf voor teamsterkte.":"The most reliable measure of team strength.",
@@ -2490,7 +2492,7 @@ function ModelViz(){
        ?"Puntensysteem dat na elke interland bijwerkt: winst tegen een sterke ploeg telt het zwaarst. Officiële waarden van eloratings.net."
        :"A points system updated after every match: beating a strong side counts most. Official values from eloratings.net."},
     {key:"trend",pct:10,
-     label:lang==="nl"?"Selectiewaarde":"Squad value",
+     label:lang==="nl"?"Selectiekwaliteit":"Squad quality",
      formula:lang==="nl"?"log(marktwaarde selectie), geschaald 0–100":"log(squad market value), scaled 0–100",
      intro:lang==="nl"?"Individueel talent, los van resultaten.":"Individual talent, independent of results.",
      detail:lang==="nl"
@@ -2510,7 +2512,7 @@ function ModelViz(){
      detail:lang==="nl"
        ?"Op basis van de erelijst van de huidige bondscoach. Ancelotti (Brazilië) scoort maximaal; Scaloni en Deschamps volgen op hun WK-titels."
        :"Based on the current head coach's honours. Ancelotti (Brazil) scores maximum; Scaloni and Deschamps follow on their World Cup titles."},
-    {key:"bars",pct:5,
+    {key:"bars",pct:10,
      label:lang==="nl"?"Recente vorm":"Recent form",
      formula:lang==="nl"?"gem.(werkelijk − verwacht doelsaldo), laatste 12":"avg(actual − expected goal diff), last 12",
      intro:lang==="nl"?"Presteert een land boven of onder zijn niveau?":"Is a country over- or under-performing its level?",
@@ -2520,7 +2522,7 @@ function ModelViz(){
   ];
 
   // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
-  const TITLE_PCT={"Argentina":43.8,"Spain":33.5,"France":13.0,"Brazil":4.6,"England":3.5,"Portugal":0.7,"Colombia":0.4,"Netherlands":0.2};
+  const TITLE_PCT={"Argentina":42.9,"Spain":31.0,"France":13.6,"Brazil":6.6,"England":3.1,"Portugal":1.0,"Colombia":0.6,"Norway":0.4};
   const FLAG_BY_TEAM={"Argentina":"AR","Spain":"ES","France":"FR","Brazil":"BR","England":"GB-ENG","Portugal":"PT","Colombia":"CO","Netherlands":"NL"};
   const TOP8=MODEL_ORDER.slice(0,8).map(team=>({
     t:team,
@@ -2575,7 +2577,7 @@ function ModelViz(){
               <Icon d={IC[f.key]} size={15} color={T.textSub}/>
               <span style={{flex:1,fontSize:FS.small,fontWeight:600,color:T.text}}>{f.label}</span>
               <div style={{width:42,height:5,background:T.bg,borderRadius:3,overflow:"hidden"}}>
-                <div style={{width:`${f.pct/75*100}%`,height:"100%",background:orange,borderRadius:3}}/>
+                <div style={{width:`${f.pct/70*100}%`,height:"100%",background:orange,borderRadius:3}}/>
               </div>
               <span style={{fontSize:FS.small,fontWeight:800,color:orange,minWidth:26,textAlign:"right"}}>{f.pct}%</span>
               <Chevron open={openFactor===i} color={T.textSub}/>
@@ -2622,11 +2624,11 @@ function ModelViz(){
             <span style={{textAlign:"right"}}>{lang==="nl"?"bijdr.":"share"}</span>
           </div>
           {[
-            {lab:"Elo",val:89,w:75,contrib:66.9},
+            {lab:"Elo",val:89,w:70,contrib:62.5},
             {lab:lang==="nl"?"Selectie":"Squad",val:89,w:10,contrib:8.9},
+            {lab:lang==="nl"?"Vorm":"Form",val:39,w:10,contrib:3.9},
             {lab:lang==="nl"?"Ervaring":"Experience",val:100,w:5,contrib:5.0},
             {lab:"Coach",val:77,w:5,contrib:3.9},
-            {lab:lang==="nl"?"Vorm":"Form",val:39,w:5,contrib:2.0},
           ].map((r,i)=>(
             <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,
               padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
@@ -2642,7 +2644,7 @@ function ModelViz(){
           <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
             borderTop:`2px solid ${T.border}`,background:T.bg}}>
             <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
-            <span style={{fontSize:FS.display,fontWeight:900,color:orange}}>86,7</span>
+            <span style={{fontSize:FS.display,fontWeight:900,color:orange}}>84,1</span>
           </div>
         </div>
       </div>
@@ -2660,11 +2662,11 @@ function ModelViz(){
           const fd=MODEL_DATA[t.t];
           const isOpen=openRank===i;
           const rows=fd?[
-            {lab:"Elo",val:Math.round(fd.eloN),w:75,contrib:fd.eloN*WEIGHTS.elo},
+            {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
             {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.form},
+            {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
-            {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:5,contrib:(fd.formN||0)*WEIGHTS.recentForm},
           ]:[];
           return(
             <div key={t.t} style={{marginBottom:i<7?8:0}}>
@@ -3568,7 +3570,7 @@ export default function App(){
                 padding:"12px",marginBottom:20}}>
                 {[
                   {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026. Gastlanden (VS, Mexico, Canada) krijgen een correctie voor de gemiste kwalificatiecyclus.",en:"Official Elo ratings, verified June 2026. Hosts (USA, Mexico, Canada) receive a correction for the missed qualifying cycle."}},
-                  {label:lang==="nl"?"Selectiewaarde":"Squad value",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
+                  {label:lang==="nl"?"Selectiekwaliteit":"Squad quality",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
                   {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
                   {label:lang==="nl"?"Ervaring":"Experience",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
                   {label:"Coach",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
