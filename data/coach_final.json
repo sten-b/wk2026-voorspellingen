@@ -1,0 +1,434 @@
+{
+ "Algeria": {
+  "score": 73.5,
+  "trackN": 86.7,
+  "prizeN": 0.0,
+  "ppg_recency": 2.32,
+  "prize_raw": 0,
+  "coach": "Vladimir Petković",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Argentina": {
+  "score": 100.0,
+  "trackN": 95.2,
+  "prizeN": 40.7,
+  "ppg_recency": 2.46,
+  "prize_raw": 72,
+  "coach": "Lionel Scaloni",
+  "honours_basis": "WK 2022 + Copa América 2021 & 2024 + Finalissima 2022"
+ },
+ "Australia": {
+  "score": 51.4,
+  "trackN": 61.4,
+  "prizeN": 0.0,
+  "ppg_recency": 1.9,
+  "prize_raw": 0,
+  "coach": "Tony Popovic",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Austria": {
+  "score": 62.0,
+  "trackN": 73.5,
+  "prizeN": 0.0,
+  "ppg_recency": 2.1,
+  "prize_raw": 0,
+  "coach": "Ralf Rangnick",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Belgium": {
+  "score": 74.1,
+  "trackN": 83.7,
+  "prizeN": 6.8,
+  "ppg_recency": 2.27,
+  "prize_raw": 12,
+  "coach": "Rudi Garcia",
+  "honours_basis": "Ligue 1 2011 (Lille) + Coupe de France 2011; later Roma/OM/Napoli zonder titel — te bevestigen"
+ },
+ "Bosnia-Herzegovina": {
+  "score": 17.3,
+  "trackN": 22.3,
+  "prizeN": 0.0,
+  "ppg_recency": 1.25,
+  "prize_raw": 0,
+  "coach": "Sergej Barbarez",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Brazil": {
+  "score": 98.9,
+  "trackN": 62.0,
+  "prizeN": 100.0,
+  "ppg_recency": 1.91,
+  "prize_raw": 177,
+  "coach": "Carlo Ancelotti",
+  "honours_basis": "5x CL (Milan 03,07; Real 14,22,24); titels in alle top-5 competities; 3x Club WK"
+ },
+ "Canada": {
+  "score": 43.1,
+  "trackN": 51.8,
+  "prizeN": 0.0,
+  "ppg_recency": 1.74,
+  "prize_raw": 0,
+  "coach": "Jesse Marsch",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Cape Verde": {
+  "score": 34.7,
+  "trackN": 42.2,
+  "prizeN": 0.0,
+  "ppg_recency": 1.58,
+  "prize_raw": 0,
+  "coach": "Bubista",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Colombia": {
+  "score": 51.9,
+  "trackN": 62.0,
+  "prizeN": 0.0,
+  "ppg_recency": 1.91,
+  "prize_raw": 0,
+  "coach": "Néstor Lorenzo",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Croatia": {
+  "score": 48.8,
+  "trackN": 58.4,
+  "prizeN": 0.0,
+  "ppg_recency": 1.85,
+  "prize_raw": 0,
+  "coach": "Zlatko Dalić",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Curacao": {
+  "score": 37.3,
+  "trackN": 45.2,
+  "prizeN": 0.0,
+  "ppg_recency": 1.63,
+  "prize_raw": 0,
+  "coach": "Dick Advocaat",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Czechia": {
+  "score": 53.6,
+  "trackN": 63.9,
+  "prizeN": 0.0,
+  "ppg_recency": 1.94,
+  "prize_raw": 0,
+  "coach": "Miroslav Koubek",
+  "honours_basis": "geen grote prijzen"
+ },
+ "DR Congo": {
+  "score": 51.9,
+  "trackN": 62.0,
+  "prizeN": 0.0,
+  "ppg_recency": 1.91,
+  "prize_raw": 0,
+  "coach": "Sébastien Desabre",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Ecuador": {
+  "score": 38.3,
+  "trackN": 46.4,
+  "prizeN": 0.0,
+  "ppg_recency": 1.65,
+  "prize_raw": 0,
+  "coach": "Sebastián Beccacece",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Egypt": {
+  "score": 46.7,
+  "trackN": 56.0,
+  "prizeN": 0.0,
+  "ppg_recency": 1.81,
+  "prize_raw": 0,
+  "coach": "Hossam Hassan",
+  "honours_basis": "geen grote prijzen"
+ },
+ "England": {
+  "score": 88.6,
+  "trackN": 87.3,
+  "prizeN": 31.1,
+  "ppg_recency": 2.33,
+  "prize_raw": 55,
+  "coach": "Thomas Tuchel",
+  "honours_basis": "CL 2021 (Chelsea)+Club WK+Super Cup; Ligue 1 2019,2020 (PSG); Bundesliga 2023 (Bayern); DFB-Pokal 2017 (Dortmund)"
+ },
+ "France": {
+  "score": 82.4,
+  "trackN": 72.9,
+  "prizeN": 44.6,
+  "ppg_recency": 2.09,
+  "prize_raw": 79,
+  "coach": "Didier Deschamps",
+  "honours_basis": "WK 2018, WK-finale 2022, Nations League 2021, Ligue 1 (Marseille 2010); CL 2004-finale (verloren)"
+ },
+ "Germany": {
+  "score": 62.5,
+  "trackN": 74.1,
+  "prizeN": 0.0,
+  "ppg_recency": 2.11,
+  "prize_raw": 0,
+  "coach": "Julian Nagelsmann",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Ghana": {
+  "score": 12.1,
+  "trackN": 16.3,
+  "prizeN": 0.0,
+  "ppg_recency": 1.15,
+  "prize_raw": 0,
+  "coach": "Otto Addo",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Haiti": {
+  "score": 43.1,
+  "trackN": 51.8,
+  "prizeN": 0.0,
+  "ppg_recency": 1.74,
+  "prize_raw": 0,
+  "coach": "Sébastien Migné",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Iran": {
+  "score": 65.1,
+  "trackN": 77.1,
+  "prizeN": 0.0,
+  "ppg_recency": 2.16,
+  "prize_raw": 0,
+  "coach": "Amir Ghalenoei",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Iraq": {
+  "score": 49.9,
+  "trackN": 59.6,
+  "prizeN": 0.0,
+  "ppg_recency": 1.87,
+  "prize_raw": 0,
+  "coach": "Graham Arnold",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Ivory Coast": {
+  "score": 67.8,
+  "trackN": 75.3,
+  "prizeN": 9.0,
+  "ppg_recency": 2.13,
+  "prize_raw": 16,
+  "coach": "Emerse Faé",
+  "honours_basis": "AFCON 2023 (interim, Ivoorkust)"
+ },
+ "Japan": {
+  "score": 70.3,
+  "trackN": 83.1,
+  "prizeN": 0.0,
+  "ppg_recency": 2.26,
+  "prize_raw": 0,
+  "coach": "Hajime Moriyasu",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Jordan": {
+  "score": 33.1,
+  "trackN": 40.4,
+  "prizeN": 0.0,
+  "ppg_recency": 1.55,
+  "prize_raw": 0,
+  "coach": "Jamal Sellami",
+  "honours_basis": "geen grote prijzen"
+ },
+ "South Korea": {
+  "score": 57.8,
+  "trackN": 68.7,
+  "prizeN": 0.0,
+  "ppg_recency": 2.02,
+  "prize_raw": 0,
+  "coach": "Hong Myung-bo",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Mexico": {
+  "score": 53.1,
+  "trackN": 63.3,
+  "prizeN": 0.0,
+  "ppg_recency": 1.93,
+  "prize_raw": 0,
+  "coach": "Javier Aguirre",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Morocco": {
+  "score": 88.3,
+  "trackN": 100.0,
+  "prizeN": 6.8,
+  "ppg_recency": 2.54,
+  "prize_raw": 12,
+  "coach": "Walid Regragui",
+  "honours_basis": "CAF Champions League 2022 (Wydad) + Botola-titel"
+ },
+ "Netherlands": {
+  "score": 55.4,
+  "trackN": 59.6,
+  "prizeN": 11.9,
+  "ppg_recency": 1.87,
+  "prize_raw": 21,
+  "coach": "Ronald Koeman",
+  "honours_basis": "Copa del Rey 2021 (Barcelona); Eredivisie 2x Ajax + 1x PSV; jeugd/overige"
+ },
+ "New Zealand": {
+  "score": 16.3,
+  "trackN": 21.1,
+  "prizeN": 0.0,
+  "ppg_recency": 1.23,
+  "prize_raw": 0,
+  "coach": "Darren Bazeley",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Norway": {
+  "score": 59.9,
+  "trackN": 71.1,
+  "prizeN": 0.0,
+  "ppg_recency": 2.06,
+  "prize_raw": 0,
+  "coach": "Ståle Solbakken",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Panama": {
+  "score": 41.0,
+  "trackN": 49.4,
+  "prizeN": 0.0,
+  "ppg_recency": 1.7,
+  "prize_raw": 0,
+  "coach": "Thomas Christiansen",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Paraguay": {
+  "score": 32.6,
+  "trackN": 39.8,
+  "prizeN": 0.0,
+  "ppg_recency": 1.54,
+  "prize_raw": 0,
+  "coach": "Gustavo Alfaro",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Portugal": {
+  "score": 67.8,
+  "trackN": 78.3,
+  "prizeN": 3.4,
+  "ppg_recency": 2.18,
+  "prize_raw": 6,
+  "coach": "Roberto Martínez",
+  "honours_basis": "FA Cup 2013 (Wigan); League One 2008 (Swansea); geen grote titel met België/Portugal"
+ },
+ "Qatar": {
+  "score": 0.0,
+  "trackN": 0.0,
+  "prizeN": 4.5,
+  "ppg_recency": 0.88,
+  "prize_raw": 8,
+  "coach": "Julen Lopetegui",
+  "honours_basis": "Europa League 2020 (Sevilla); jeugd-EK met Spanje niet meegeteld; geen top-5 titel"
+ },
+ "Saudi Arabia": {
+  "score": 30.4,
+  "trackN": 37.3,
+  "prizeN": 0.0,
+  "ppg_recency": 1.5,
+  "prize_raw": 0,
+  "coach": "Giorgos Donis",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Scotland": {
+  "score": 33.1,
+  "trackN": 40.4,
+  "prizeN": 0.0,
+  "ppg_recency": 1.55,
+  "prize_raw": 0,
+  "coach": "Steve Clarke",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Senegal": {
+  "score": 74.6,
+  "trackN": 88.0,
+  "prizeN": 0.0,
+  "ppg_recency": 2.34,
+  "prize_raw": 0,
+  "coach": "Pape Thiaw",
+  "honours_basis": "geen grote prijzen"
+ },
+ "South Africa": {
+  "score": 50.5,
+  "trackN": 52.4,
+  "prizeN": 14.7,
+  "ppg_recency": 1.75,
+  "prize_raw": 26,
+  "coach": "Hugo Broos",
+  "honours_basis": "AFCON 2017 (Kameroen); 2x Belgisch kampioen (Club Brugge)"
+ },
+ "Spain": {
+  "score": 78.5,
+  "trackN": 85.5,
+  "prizeN": 13.0,
+  "ppg_recency": 2.3,
+  "prize_raw": 23,
+  "coach": "Luis de la Fuente",
+  "honours_basis": "EK 2024 + Nations League 2023 (senior); jeugd-EK U21 2019/U19 2015 niet meegeteld"
+ },
+ "Sweden": {
+  "score": 17.9,
+  "trackN": 22.9,
+  "prizeN": 0.0,
+  "ppg_recency": 1.26,
+  "prize_raw": 0,
+  "coach": "Graham Potter",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Switzerland": {
+  "score": 39.9,
+  "trackN": 48.2,
+  "prizeN": 0.0,
+  "ppg_recency": 1.68,
+  "prize_raw": 0,
+  "coach": "Murat Yakin",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Tunisia": {
+  "score": 39.9,
+  "trackN": 48.2,
+  "prizeN": 0.0,
+  "ppg_recency": 1.68,
+  "prize_raw": 0,
+  "coach": "Sami Trabelsi",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Turkey": {
+  "score": 60.9,
+  "trackN": 72.3,
+  "prizeN": 0.0,
+  "ppg_recency": 2.08,
+  "prize_raw": 0,
+  "coach": "Vincenzo Montella",
+  "honours_basis": "geen grote prijzen"
+ },
+ "Uruguay": {
+  "score": 37.1,
+  "trackN": 40.4,
+  "prizeN": 8.5,
+  "ppg_recency": 1.55,
+  "prize_raw": 15,
+  "coach": "Marcelo Bielsa",
+  "honours_basis": "Olympisch goud 2004 + 3x Argentijnse Primera + Championship-promotie 2020; geen top-5/continentale titel"
+ },
+ "United States": {
+  "score": 36.9,
+  "trackN": 39.2,
+  "prizeN": 10.2,
+  "ppg_recency": 1.53,
+  "prize_raw": 18,
+  "coach": "Mauricio Pochettino",
+  "honours_basis": "Ligue 1 2021/22 (PSG) + Coupe de France + Trophée des Champions"
+ },
+ "Uzbekistan": {
+  "score": 35.5,
+  "trackN": 41.6,
+  "prizeN": 2.8,
+  "ppg_recency": 1.57,
+  "prize_raw": 5,
+  "coach": "Fabio Cannavaro",
+  "honours_basis": "Chinese Super League 2019 (Guangzhou); WK2006 was als speler — telt niet"
+ }
+}
