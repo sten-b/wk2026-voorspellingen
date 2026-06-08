@@ -1,6 +1,19 @@
 "use client";
 import React, { useState, createContext, useContext, useEffect } from "react";
 
+// ── TYPE SCALE ───────────────────────────────────────────────────────────────
+// Single source of truth for text sizes. Collapses the previous 15 ad-hoc sizes
+// into 7 deliberate roles. Emoji/flag glyphs are sized separately (not type).
+const FS = {
+  display: 22,   // hero numbers (champion score, big stats)
+  h1: 17,        // page / major section titles
+  h2: 15,        // card titles
+  body: 13,      // primary body copy, key labels
+  small: 12,     // secondary body, table values
+  caption: 10,   // captions, sub-labels, helper text
+  micro: 8,      // column headers, tiny uppercase tags
+};
+
 const THEMES = {
   // Default: clean modern — orange accent, deep blue secondary, white cards
   default: {
@@ -1011,19 +1024,19 @@ function NewsSection(){
       borderRadius:4,padding:"6px 10px",display:"flex",alignItems:"center",gap:8}}>
       <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{item.flag}</span>
       <div style={{flex:1,minWidth:0}}>
-        <span style={{fontSize:10,fontWeight:600,color:T.text}}>{item.player}</span>
-        <span style={{fontSize:9,color:T.textFaint,marginLeft:5}}>{item.team}</span>
-        <div style={{fontSize:9,color:T.textSub,marginTop:1}}>{item.kw[lang]||item.kw.en}</div>
+        <span style={{fontSize:FS.caption,fontWeight:600,color:T.text}}>{item.player}</span>
+        <span style={{fontSize:FS.caption,color:T.textFaint,marginLeft:5}}>{item.team}</span>
+        <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{item.kw[lang]||item.kw.en}</div>
       </div>
       <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:2,flexShrink:0}}>
-        <span style={{fontSize:7,fontWeight:700,color:statusColor[item.status]||"#888",
+        <span style={{fontSize:FS.micro,fontWeight:700,color:statusColor[item.status]||"#888",
           border:`1px solid ${statusColor[item.status]||"#888"}`,
           borderRadius:3,padding:"1px 4px",whiteSpace:"nowrap"}}>
           {(statusLabel[lang]||statusLabel.en)[item.status]||item.status}
         </span>
         {item.url&&<a href={item.url} target="_blank" rel="noopener noreferrer"
           onClick={e=>e.stopPropagation()}
-          style={{fontSize:8,color:T.orange,textDecoration:"none"}}>↗</a>}
+          style={{fontSize:FS.micro,color:T.orange,textDecoration:"none"}}>↗</a>}
       </div>
     </div>
   );
@@ -1035,7 +1048,7 @@ function NewsSection(){
       borderRadius:4,padding:"8px 10px",position:"relative"}}>
       {item.isToday&&(
         <div style={{position:"absolute",top:6,right:8,background:T.orange,borderRadius:3,
-          padding:"1px 5px",fontSize:7,fontWeight:700,color:"#fff",letterSpacing:0.5,
+          padding:"1px 5px",fontSize:FS.micro,fontWeight:700,color:"#fff",letterSpacing:0.5,
           textTransform:"uppercase"}}>
           {lang==="nl"?"Vandaag":"Today"}
         </div>
@@ -1043,30 +1056,30 @@ function NewsSection(){
       <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3,paddingRight:item.isToday?42:0}}>
         <span style={{fontSize:14,lineHeight:1}}>{item.flag}</span>
         <div style={{flex:1,minWidth:0}}>
-          <span style={{fontSize:11,fontWeight:700,color:T.text}}>{item.isLive?item.team:item.player}</span>
-          {!item.isLive&&<span style={{fontSize:9,color:T.textSub,marginLeft:5}}>{item.team}</span>}
+          <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{item.isLive?item.team:item.player}</span>
+          {!item.isLive&&<span style={{fontSize:FS.caption,color:T.textSub,marginLeft:5}}>{item.team}</span>}
         </div>
-        {item.status&&<span style={{fontSize:8,fontWeight:700,
+        {item.status&&<span style={{fontSize:FS.micro,fontWeight:700,
           color:statusColor[item.status]||"#888",
           border:`1px solid ${statusColor[item.status]||"#888"}`,
           borderRadius:3,padding:"1px 5px",flexShrink:0,whiteSpace:"nowrap"}}>
           {(statusLabel[lang]||statusLabel.en)[item.status]||item.status}
         </span>}
       </div>
-      <div style={{fontSize:11,fontWeight:600,color:T.text,marginBottom:3,lineHeight:1.4}}>
+      <div style={{fontSize:FS.small,fontWeight:600,color:T.text,marginBottom:3,lineHeight:1.4}}>
         {item.headline[lang]||item.headline.en||item.headline}
       </div>
-      <div style={{fontSize:10,color:T.textSub,lineHeight:1.5,marginBottom:4}}>
+      <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:4}}>
         {item.detail[lang]||item.detail.en||item.detail}
       </div>
       <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-        <span style={{fontSize:9,color:T.orange,fontWeight:500,textTransform:"capitalize"}}>
+        <span style={{fontSize:FS.caption,color:T.orange,fontWeight:500,textTransform:"capitalize"}}>
           {relativeDate(item.date)}
         </span>
-        {item.source&&<span style={{fontSize:9,color:T.textFaint}}>· {item.source}</span>}
+        {item.source&&<span style={{fontSize:FS.caption,color:T.textFaint}}>· {item.source}</span>}
         {item.url&&<a href={item.url} target="_blank" rel="noopener noreferrer"
           onClick={e=>e.stopPropagation()}
-          style={{fontSize:9,color:T.orange,textDecoration:"none",
+          style={{fontSize:FS.caption,color:T.orange,textDecoration:"none",
             borderBottom:`1px solid ${T.orange}`,marginLeft:"auto"}}>
           {lang==="nl"?"Lees artikel":"Read article"} ↗
         </a>}
@@ -1082,23 +1095,23 @@ function NewsSection(){
       {/* Live status indicator (title is provided by the fold-out header) */}
       {(loadingLive||liveItems)&&(
         <div style={{display:"flex",justifyContent:"flex-end",marginBottom:8}}>
-          {loadingLive&&<span style={{fontSize:8,fontWeight:400,color:T.textFaint}}>
+          {loadingLive&&<span style={{fontSize:FS.micro,fontWeight:400,color:T.textFaint}}>
             {lang==="nl"?"live laden...":"loading live..."}
           </span>}
-          {!loadingLive&&liveItems&&<span style={{fontSize:8,fontWeight:400,color:T.green}}>
+          {!loadingLive&&liveItems&&<span style={{fontSize:FS.micro,fontWeight:400,color:T.green}}>
             {lang==="nl"?"live":"live"} ●
           </span>}
         </div>
       )}
 
       {/* SECTION 1: RECENT — last 7 days */}
-      <div style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
+      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
         color:T.textSub,marginBottom:6}}>
         {lang==="nl"?"Afgelopen 7 dagen":"Last 7 days"}
       </div>
       {recentItems.length===0?(
         <div style={{padding:"10px 12px",background:T.card,border:`1px solid ${T.border}`,
-          borderRadius:4,fontSize:11,color:T.textFaint,marginBottom:10,textAlign:"center"}}>
+          borderRadius:4,fontSize:FS.small,color:T.textFaint,marginBottom:10,textAlign:"center"}}>
           {lang==="nl"?"Live nieuws laden...":"Loading live news..."}
           {loadingLive&&<span style={{marginLeft:6,color:T.orange}}>●</span>}
         </div>
@@ -1109,7 +1122,7 @@ function NewsSection(){
       )}
       {recentItems.length>5&&(
         <div onClick={()=>setExpandedRecent(!expandedRecent)}
-          style={{marginBottom:10,textAlign:"center",fontSize:10,color:T.orange,
+          style={{marginBottom:10,textAlign:"center",fontSize:FS.caption,color:T.orange,
             cursor:"pointer",padding:"3px 0"}}>
           {expandedRecent
             ?(lang==="nl"?"Minder ↑":"Less ↑")
@@ -1118,7 +1131,7 @@ function NewsSection(){
       )}
 
       {/* SECTION 2: IMPORTANT — key news, may be older */}
-      <div style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
+      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
         color:T.textSub,marginBottom:6}}>
         {lang==="nl"?"Belangrijk":"Important"}
       </div>
@@ -1127,7 +1140,7 @@ function NewsSection(){
       </div>
       {importantItems.length>5&&(
         <div onClick={()=>setExpandedImportant(!expandedImportant)}
-          style={{marginTop:4,textAlign:"center",fontSize:10,color:T.orange,
+          style={{marginTop:4,textAlign:"center",fontSize:FS.caption,color:T.orange,
             cursor:"pointer",padding:"3px 0"}}>
           {expandedImportant
             ?(lang==="nl"?"Minder ↑":"Less ↑")
@@ -1290,7 +1303,7 @@ function Nav({tab,setTab}){
           {T.id==="dark"
             ? <NavLion themeId="dark"/>
             : <div style={{width:26,height:26,borderRadius:"50%",background:"#E07000",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{color:"#fff",fontSize:10,fontWeight:700}}>SB</span>
+                <span style={{color:"#fff",fontSize:FS.caption,fontWeight:700}}>SB</span>
               </div>
           }
         </div>
@@ -1299,7 +1312,7 @@ function Nav({tab,setTab}){
           const active=tab===t.id;
           return(
           <button key={t.id} onClick={()=>setTab(t.id)} style={{
-            padding:"11px 10px",fontSize:12,
+            padding:"11px 10px",fontSize:FS.small,
             background:"none",
             border:"none",
             borderBottom:active?`2px solid ${T.orange}`:"2px solid transparent",
@@ -1319,7 +1332,7 @@ function Nav({tab,setTab}){
 function Tag({children,color}){
   const T=useTheme();
   const c=color||T.textSub;
-  return <span style={{display:"inline-block",fontSize:10,fontWeight:600,color:c,background:`${c}22`,padding:"2px 5px",borderRadius:3,whiteSpace:"nowrap"}}>{children}</span>;
+  return <span style={{display:"inline-block",fontSize:FS.caption,fontWeight:600,color:c,background:`${c}22`,padding:"2px 5px",borderRadius:3,whiteSpace:"nowrap"}}>{children}</span>;
 }
 
 // ── MATCH ROW (expandable, used in all tabs) ──────────────────────────────────
@@ -1334,18 +1347,18 @@ function MatchRow({t1,s1,t2,s2,matchKey,open,onToggle}){
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 10px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
         <TeamLink team={t1}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t1]||"🏳"}</span></TeamLink>
-        <span style={{flex:1,fontSize:12,fontWeight:winner===t1?600:400,color:winner===t1||draw?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t1,lang)}</span>
+        <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t1?600:400,color:winner===t1||draw?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t1,lang)}</span>
         <div style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
-          <span style={{fontSize:13,fontWeight:700,color:winner===t1?T.orange:draw?T.blue:T.textSub,minWidth:14,textAlign:"right"}}>{s1}</span>
-          <span style={{fontSize:10,color:T.textFaint}}>-</span>
-          <span style={{fontSize:13,fontWeight:700,color:winner===t2?T.orange:draw?T.blue:T.textSub,minWidth:14,textAlign:"left"}}>{s2}</span>
+          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t1?T.orange:draw?T.blue:T.textSub,minWidth:14,textAlign:"right"}}>{s1}</span>
+          <span style={{fontSize:FS.caption,color:T.textFaint}}>-</span>
+          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t2?T.orange:draw?T.blue:T.textSub,minWidth:14,textAlign:"left"}}>{s2}</span>
         </div>
-        <span style={{flex:1,fontSize:12,fontWeight:winner===t2?600:400,color:winner===t2||draw?T.text:T.textSub,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t2,lang)}</span>
+        <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t2?600:400,color:winner===t2||draw?T.text:T.textSub,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t2,lang)}</span>
         <TeamLink team={t2}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t2]||"🏳"}</span></TeamLink>
         <Chevron open={open} color={T.orange}/>
       </div>
       {open&&expl&&(
-        <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:11,color:T.textSub,lineHeight:1.6}}>
+        <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           <span style={{fontWeight:600,color:T.text}}>
             {tName(t1,lang)} {s1}–{s2} {tName(t2,lang)}.{" "}
           </span>
@@ -1377,11 +1390,11 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:T.card,borderBottom:`1px solid ${T.border}`}}>
         {/* Group letter — rounded square */}
         <div style={{width:26,height:26,borderRadius:4,background:"#1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-          <span style={{color:"#fff",fontSize:11,fontWeight:700,letterSpacing:0}}>{g.id}</span>
+          <span style={{color:"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
         </div>
         {/* Group label + two-column indicator row */}
         <div style={{flex:1,display:"flex",flexDirection:"column",gap:4,minWidth:0}}>
-          <div style={{fontSize:12,fontWeight:700,color:T.text,lineHeight:1,whiteSpace:"nowrap"}}>
+          <div style={{fontSize:FS.small,fontWeight:700,color:T.text,lineHeight:1,whiteSpace:"nowrap"}}>
             {lang==="nl"?"Groep":"Group"} {g.id}
           </div>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -1392,9 +1405,9 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
                 if(!bestForm) return null;
                 const dev=FORM_DEV[bestForm];
                 return <React.Fragment>
-                  <span style={{fontSize:9,color:T.textFaint,flexShrink:0,whiteSpace:"nowrap"}}>{lang==="nl"?"In vorm:":"In form:"}</span>
+                  <span style={{fontSize:FS.caption,color:T.textFaint,flexShrink:0,whiteSpace:"nowrap"}}>{lang==="nl"?"In vorm:":"In form:"}</span>
                   <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{FLAGS[bestForm]}</span>
-                  <span style={{fontSize:9,fontWeight:700,lineHeight:1,flexShrink:0,color:dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint}}>{dev>0?"+":""}{dev}</span>
+                  <span style={{fontSize:FS.caption,fontWeight:700,lineHeight:1,flexShrink:0,color:dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint}}>{dev>0?"+":""}{dev}</span>
                 </React.Fragment>;
               })()}
             </div>
@@ -1413,10 +1426,10 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         <div style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"5px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
           <span/>
           <span/>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Land":"Country"}</span>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Vorm":"Form"}</span>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Rang":"Rank"}</span>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Ptn":"Pts"}</span>
+          <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Land":"Country"}</span>
+          <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Vorm":"Form"}</span>
+          <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Rang":"Rank"}</span>
+          <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Ptn":"Pts"}</span>
         </div>
         {sorted.map((team,i)=>{
           const pass=i<2;
@@ -1426,12 +1439,12 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";
           return(
             <div key={team} style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?"rgba(224,112,0,0.05)":"transparent"}}>
-              <span style={{fontSize:11,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center"}}>{i+1}</span>
+              <span style={{fontSize:FS.small,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center"}}>{i+1}</span>
               <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-              <span style={{fontSize:12,fontWeight:pass?600:400,color:pass?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-              <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:9,fontWeight:700,color:fc,textAlign:"right"}}>{dev===undefined?"":(dev>0?"+":"")+dev}</span>
-              <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2,textAlign:"right"}}>#{mr}</span>
-              <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textFaint,textAlign:"right"}}>{pts[team]}</span>
+              <span style={{fontSize:FS.small,fontWeight:pass?600:400,color:pass?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+              <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:FS.caption,fontWeight:700,color:fc,textAlign:"right"}}>{dev===undefined?"":(dev>0?"+":"")+dev}</span>
+              <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:700,color:rc,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2,textAlign:"right"}}>#{mr}</span>
+              <span style={{fontSize:FS.small,fontWeight:700,color:pass?T.text:T.textFaint,textAlign:"right"}}>{pts[team]}</span>
             </div>
           );
         })}
@@ -1440,7 +1453,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       <div onClick={()=>setOpenGroup(showMatches?null:g.id)}
         style={{display:"flex",alignItems:"center",justifyContent:"space-between",
           padding:"8px 12px",cursor:"pointer",background:showMatches?T.orangeFaint:T.card}}>
-        <span style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</span>
+        <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</span>
         <Chevron open={showMatches} color={T.textSub}/>
       </div>
       {showMatches&&(
@@ -1470,7 +1483,7 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
   return(
     <div style={{background:T.card,border:`1px solid ${open?"#E07000":T.border}`,borderTop:`2px solid ${open?"#E07000":"#1A5296"}`,borderRadius:4,overflow:"hidden",cursor:"pointer"}} onClick={onToggle}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 10px",background:open?"rgba(224,112,0,0.08)":T.bg,borderBottom:`1px solid ${T.border}`}}>
-        <span style={{fontSize:12,fontWeight:700,color:T.text}}>{tr.group} {g.id}</span>
+        <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{tr.group} {g.id}</span>
         <Chevron open={open} color={T.textSub}/>
       </div>
       {g.table.map((team,i)=>{
@@ -1478,17 +1491,17 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
         const pass=i<2;
         return(
           <div key={team} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 10px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:i===0?"rgba(224,112,0,0.08)":i===1?"rgba(26,82,150,0.05)":"transparent"}}>
-            <span style={{width:14,fontSize:11,fontWeight:700,color:i===0?"#E07000":i===1?"#1A5296":T.border,flexShrink:0,textAlign:"center"}}>{i+1}</span>
+            <span style={{width:14,fontSize:FS.small,fontWeight:700,color:i===0?"#E07000":i===1?"#1A5296":T.border,flexShrink:0,textAlign:"center"}}>{i+1}</span>
             <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]||"🏳"}</span></TeamLink>
-            <span style={{flex:1,fontSize:13,color:pass?T.text:T.textSub,fontWeight:pass?500:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
-            <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textSub,flexShrink:0}}>{pts[team]}</span>
+            <span style={{flex:1,fontSize:FS.body,color:pass?T.text:T.textSub,fontWeight:pass?500:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+            {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
+            <span style={{fontSize:FS.small,fontWeight:700,color:pass?T.text:T.textSub,flexShrink:0}}>{pts[team]}</span>
           </div>
         );
       })}
       {open&&(
         <div style={{borderTop:`1px solid ${T.border}`,background:T.bg}} onClick={e=>e.stopPropagation()}>
-          <div style={{padding:"5px 10px 1px",fontSize:9,fontWeight:700,color:T.id==="dark"?"#909090":"#1A5296",letterSpacing:0.8,textTransform:"uppercase"}}>{tr.matchPredictions}</div>
+          <div style={{padding:"5px 10px 1px",fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?"#909090":"#1A5296",letterSpacing:0.8,textTransform:"uppercase"}}>{tr.matchPredictions}</div>
           {g.matches.map(({t1,t2,s1,s2})=>{
             const k=`${t1}-${t2}`;
             return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} open={openMatches[k]} onToggle={()=>toggleMatch(k)}/>;
@@ -1512,10 +1525,10 @@ function FinalExplainer({openMatches,toggleMatch}){
   return(
     <React.Fragment>
       <div onClick={()=>toggleMatch(fk)} style={{borderTop:`1px solid ${T.border}`,padding:"5px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",background:fo?T.orangeFaint:T.bg}}>
-        <span style={{fontSize:11,color:T.orange,fontWeight:600}}>{tr.whyScore}</span>
+        <span style={{fontSize:FS.small,color:T.orange,fontWeight:600}}>{tr.whyScore}</span>
         <Chevron open={fo} color={T.orange}/>
       </div>
-      {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:11,color:T.textSub,lineHeight:1.6}}>
+      {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
         <span style={{fontWeight:600,color:T.text}}>{tName(FINAL_TEAMS[0],lang)} {fsA}–{fsB} {tName(FINAL_TEAMS[1],lang)}.{" "}</span>
         {fe}
       </div>}
@@ -1540,19 +1553,19 @@ function KOCard({a,b,openMatches,toggleMatch}){
           {i===1&&<div style={{height:1,background:T.border}}/>}
           <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:win?T.orangeFaint:"transparent"}}>
             <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-            <span style={{flex:1,fontSize:13,fontWeight:win?600:400,color:win?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            <span style={{fontSize:15,fontWeight:700,color:win?T.orange:T.textSub,flexShrink:0}}>{score}</span>
+            <span style={{flex:1,fontSize:FS.body,fontWeight:win?600:400,color:win?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+            <span style={{fontSize:FS.h2,fontWeight:700,color:win?T.orange:T.textSub,flexShrink:0}}>{score}</span>
           </div>
         </div>
       ))}
       {expl&&(
         <div onClick={()=>toggleMatch?.(key)} style={{borderTop:`1px solid ${T.border}`,padding:"5px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",background:isOpen?T.orangeFaint:T.bg}}>
-          <span style={{fontSize:11,color:T.orange,fontWeight:600}}>{tr.whyScore}</span>
+          <span style={{fontSize:FS.small,color:T.orange,fontWeight:600}}>{tr.whyScore}</span>
           <Chevron open={isOpen} color={T.orange}/>
         </div>
       )}
       {isOpen&&expl&&(
-        <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:11,color:T.textSub,lineHeight:1.6}}>
+        <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           <span style={{fontWeight:600,color:T.text}}>{tName(a,lang)} {sA}–{sB} {tName(b,lang)}.{" "}</span>
 
           {expl}
@@ -1574,8 +1587,8 @@ function BracketMatch({teamA,scoreA,teamB,scoreB,onClick}){
           {i===1&&<div style={{height:1,background:T.border,margin:"3px 0"}}/>}
           <div style={{display:"flex",alignItems:"center",gap:5,height:26}}>
             <span style={{fontSize:12,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
-            <span style={{flex:1,fontSize:11,fontWeight:win?600:400,color:win?T.orange:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            <span style={{fontSize:11,fontWeight:700,color:win?T.orange:T.textSub,flexShrink:0}}>{score}</span>
+            <span style={{flex:1,fontSize:FS.small,fontWeight:win?600:400,color:win?T.orange:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+            <span style={{fontSize:FS.small,fontWeight:700,color:win?T.orange:T.textSub,flexShrink:0}}>{score}</span>
           </div>
         </div>
       ))}
@@ -1606,12 +1619,12 @@ function KnockoutBracket({scrollToMatch}){
             marginTop:i?3:0,paddingTop:i?3:0,
             borderTop:i?`1px solid ${T.border}`:"none"}}>
             <span style={{fontSize:12,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
-            <span style={{flex:1,fontSize:10,fontWeight:w?700:400,
+            <span style={{flex:1,fontSize:FS.caption,fontWeight:w?700:400,
               color:w?T.orange:T.textSub,
               overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
               {tName(team,lang)}
             </span>
-            <span style={{fontSize:10,fontWeight:700,
+            <span style={{fontSize:FS.caption,fontWeight:700,
               color:w?T.orange:T.textSub,flexShrink:0,minWidth:12,textAlign:"right"}}>
               {s}
             </span>
@@ -1653,7 +1666,7 @@ function KnockoutBracket({scrollToMatch}){
 
   // Section label
   const RoundLabel=({children,center=true})=>(
-    <div style={{fontSize:8,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
+    <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
       color:T.id==="dark"?"#777":"#1A5296",
       textAlign:center?"center":"left",marginBottom:4}}>
       {children}
@@ -1665,11 +1678,11 @@ function KnockoutBracket({scrollToMatch}){
       borderRadius:6,padding:"10px 10px 8px"}}>
       {/* Header */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-        <div style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
+        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
           color:T.id==="dark"?T.orange:"#1A5296"}}>
           {lang==="nl"?"Voorspeld schema":"Predicted bracket"}
         </div>
-        <div style={{fontSize:8,color:T.textFaint}}>
+        <div style={{fontSize:FS.micro,color:T.textFaint}}>
           {lang==="nl"?"Tik voor details":"Tap for details"}
         </div>
       </div>
@@ -1717,12 +1730,12 @@ function KnockoutBracket({scrollToMatch}){
               marginTop:i?4:0,paddingTop:i?4:0,
               borderTop:i?`1px solid ${T.border}`:"none"}}>
               <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[team]}</span>
-              <span style={{flex:1,fontSize:11,fontWeight:w?700:400,
+              <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:400,
                 color:w?T.orange:T.textSub,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                 {tName(team,lang)}
               </span>
-              <span style={{fontSize:12,fontWeight:700,color:w?T.orange:T.textSub,flexShrink:0}}>
+              <span style={{fontSize:FS.small,fontWeight:700,color:w?T.orange:T.textSub,flexShrink:0}}>
                 {s}
               </span>
             </div>
@@ -1730,7 +1743,7 @@ function KnockoutBracket({scrollToMatch}){
           <div style={{marginTop:6,paddingTop:5,borderTop:`1px solid ${T.border}`,
             display:"flex",alignItems:"center",gap:5}}>
             <span style={{fontSize:12}}>🏆</span>
-            <span style={{fontSize:10,fontWeight:700,color:T.orange}}>
+            <span style={{fontSize:FS.caption,fontWeight:700,color:T.orange}}>
               {tName(fWin,lang)}
             </span>
           </div>
@@ -1755,24 +1768,24 @@ function OutlookRow({d,type,open,onToggle}){
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={ac} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d={over?arrowUp:arrowDn}/></svg>
         <TeamLink team={d.team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[d.team]}</span></TeamLink>
-        <span style={{flex:1,fontSize:13,fontWeight:500,color:T.text}}>{tName(d.team,lang)}</span>
+        <span style={{flex:1,fontSize:FS.body,fontWeight:500,color:T.text}}>{tName(d.team,lang)}</span>
         <Tag color={T.textSub}>FIFA #{d.rank}</Tag>
         <Tag color={ac}>{lang==="nl"?"Model":"Model"} #{Math.max(1,d.rank+d.adj)}</Tag>
         <Chevron open={open} color={T.textSub}/>
       </div>
       {open&&(
         <div style={{padding:"10px 12px",background:T.orangeFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${ac}`}}>
-          <div style={{fontSize:12,fontWeight:600,color:ac,marginBottom:6}}>{d.headline[lang]}</div>
+          <div style={{fontSize:FS.small,fontWeight:600,color:ac,marginBottom:6}}>{d.headline[lang]}</div>
           {d.reasons[lang].map((r,i)=>(
-            <div key={i} style={{display:"flex",gap:6,marginBottom:4,fontSize:12,color:T.text,lineHeight:1.5}}>
+            <div key={i} style={{display:"flex",gap:6,marginBottom:4,fontSize:FS.small,color:T.text,lineHeight:1.5}}>
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={ac} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,marginTop:3}}><path d={over?arrowUp:arrowDn}/></svg>
               <span>{r}</span>
             </div>
           ))}
-          <div style={{marginTop:8,padding:"6px 8px",background:T.card,border:`1px solid ${T.border}`,borderRadius:3,fontSize:11,color:T.textSub,lineHeight:1.5}}>
+          <div style={{marginTop:8,padding:"6px 8px",background:T.card,border:`1px solid ${T.border}`,borderRadius:3,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
             <span style={{fontWeight:600,color:T.text}}>{tr.risk}: </span>{d.risk[lang]}
           </div>
-          <div style={{marginTop:6,fontSize:11,color:T.textSub}}>{tr.projection}: <span style={{fontWeight:600,color:ac}}>{d.projection[lang]}</span></div>
+          <div style={{marginTop:6,fontSize:FS.small,color:T.textSub}}>{tr.projection}: <span style={{fontWeight:600,color:ac}}>{d.projection[lang]}</span></div>
         </div>
       )}
     </div>
@@ -2308,17 +2321,17 @@ function PlayerCard({p,open,onToggle}){
           {p.flag}
         </div>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:13,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
-          <div style={{fontSize:10,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
+          <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+          <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-            {p.club&&<span style={{fontSize:9,fontWeight:700,color:T.orange,background:T.orangeFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.orange}22`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:9,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
+            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.orange,background:T.orangeFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.orange}22`}}>{p.club}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
           </div>}
         </div>
         <Chevron open={open} color={T.orange}/>
       </div>
       {open&&(
-        <div style={{padding:"10px 12px",background:T.orangeFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.orange}`,fontSize:12,color:T.textSub,lineHeight:1.6}}>
+        <div style={{padding:"10px 12px",background:T.orangeFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.bio[lang]}
         </div>
       )}
@@ -2337,17 +2350,17 @@ function DarkHorseCard({p,open,onToggle}){
           {p.flag}
         </div>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:13,fontWeight:600,color:T.text}}>{p.name}</div>
-          <div style={{fontSize:10,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
+          <div style={{fontSize:FS.body,fontWeight:600,color:T.text}}>{p.name}</div>
+          <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-            {p.club&&<span style={{fontSize:9,fontWeight:700,color:T.id==="dark"?T.orange:"#1A5296",background:T.blueFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:9,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
+            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?T.orange:"#1A5296",background:T.blueFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
           </div>}
         </div>
         <Chevron open={open} color={"#1A5296"}/>
       </div>
       {open&&(
-        <div style={{padding:"10px 12px",background:T.blueFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.id==="dark"?T.orange:"#1A5296"}`,fontSize:12,color:T.textSub,lineHeight:1.6}}>
+        <div style={{padding:"10px 12px",background:T.blueFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.id==="dark"?T.orange:"#1A5296"}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.why[lang]}
         </div>
       )}
@@ -2389,13 +2402,13 @@ function PitchViz(){
                   background:"#E07000",
                   border:"2px solid rgba(255,255,255,0.7)",
                   display:"flex",alignItems:"center",justifyContent:"center",
-                  fontSize:9,fontWeight:700,color:"#fff",
+                  fontSize:FS.caption,fontWeight:700,color:"#fff",
                   boxShadow:"0 2px 6px rgba(0,0,0,0.4)",
                   marginBottom:3,
                 }}>
                   <span>{posLabel(pos)}</span>
                 </div>
-                <div style={{fontSize:9,color:"#fff",textAlign:"center",fontWeight:600,lineHeight:1.2,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{p.name.split(" ").slice(-1)[0]}</div>
+                <div style={{fontSize:FS.caption,color:"#fff",textAlign:"center",fontWeight:600,lineHeight:1.2,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{p.name.split(" ").slice(-1)[0]}</div>
                 <div style={{fontSize:8,color:"rgba(255,255,255,0.6)",textAlign:"center"}}>{p.flag}</div>
               </div>
             );
@@ -2404,7 +2417,7 @@ function PitchViz(){
       ))}
       {/* Bench */}
       <div style={{marginTop:14,paddingTop:10,borderTop:"1px dashed rgba(255,255,255,0.2)"}}>
-        <div style={{fontSize:8,color:"rgba(255,255,255,0.5)",textAlign:"center",marginBottom:8,letterSpacing:1,textTransform:"uppercase"}}>Bank</div>
+        <div style={{fontSize:FS.micro,color:"rgba(255,255,255,0.5)",textAlign:"center",marginBottom:8,letterSpacing:1,textTransform:"uppercase"}}>Bank</div>
         <div style={{display:"flex",justifyContent:"center",gap:8}}>
           {BEST_XI.subs.map(p=>(
             <div key={p.name} style={{display:"flex",flexDirection:"column",alignItems:"center",width:56}}>
@@ -2413,10 +2426,10 @@ function PitchViz(){
                 background:"rgba(255,255,255,0.15)",
                 border:"1px solid rgba(255,255,255,0.35)",
                 display:"flex",alignItems:"center",justifyContent:"center",
-                fontSize:8,fontWeight:700,color:"rgba(255,255,255,0.8)",
+                fontSize:FS.micro,fontWeight:700,color:"rgba(255,255,255,0.8)",
                 marginBottom:3,
               }}>{p.pos}</div>
-              <div style={{fontSize:8,color:"rgba(255,255,255,0.7)",textAlign:"center",fontWeight:600,lineHeight:1.2}}>{p.name.split(" ").slice(-1)[0]}</div>
+              <div style={{fontSize:FS.micro,color:"rgba(255,255,255,0.7)",textAlign:"center",fontWeight:600,lineHeight:1.2}}>{p.name.split(" ").slice(-1)[0]}</div>
               <div style={{fontSize:7,color:"rgba(255,255,255,0.4)",textAlign:"center"}}>{p.flag}</div>
             </div>
           ))}
@@ -2462,7 +2475,7 @@ function ModelViz(){
     <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,
       paddingBottom:5,borderBottom:`2px solid ${T.border}`}}>
       {icon&&<Icon d={IC[icon]} size={12} color={T.textSub}/>}
-      <span style={{fontSize:10,fontWeight:700,letterSpacing:1,
+      <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,
         textTransform:"uppercase",color:T.textSub}}>{text}</span>
     </div>
   );
@@ -2529,7 +2542,7 @@ function ModelViz(){
       {/* OVERVIEW — how the model works, one line each */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,
         borderLeft:`3px solid ${orange}`,borderRadius:6,padding:"12px 13px",marginBottom:16}}>
-        <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:8}}>
+        <div style={{fontSize:FS.body,fontWeight:700,color:T.text,marginBottom:8}}>
           {lang==="nl"?"Zo werkt het model":"How the model works"}
         </div>
         {[
@@ -2539,11 +2552,11 @@ function ModelViz(){
            d:lang==="nl"?"xG en xGc vullen de hoogte van de uitslag in":"xG and xGc fill in the height of the scoreline"},
         ].map((s,i)=>(
           <div key={i} style={{display:"flex",gap:9,alignItems:"center",marginTop:i>0?7:0}}>
-            <div style={{width:20,height:20,borderRadius:"50%",background:s.c,color:"#000",
-              fontSize:11,fontWeight:800,flexShrink:0,display:"flex",alignItems:"center",
+            <div style={{width:20,height:20,borderRadius:"50%",background:s.c,color:T.id==="dark"?"#000":"#fff",
+              fontSize:FS.small,fontWeight:800,flexShrink:0,display:"flex",alignItems:"center",
               justifyContent:"center"}}>{s.n}</div>
-            <span style={{fontSize:12,fontWeight:700,color:T.text}}>{s.t}</span>
-            <span style={{fontSize:11,color:T.textSub}}>· {s.d}</span>
+            <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{s.t}</span>
+            <span style={{fontSize:FS.small,color:T.textSub}}>· {s.d}</span>
           </div>
         ))}
       </div>
@@ -2558,20 +2571,20 @@ function ModelViz(){
               background:openFactor===i?T.orangeFaint:T.card}}>
             <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px"}}>
               <Icon d={IC[f.key]} size={15} color={T.textSub}/>
-              <span style={{flex:1,fontSize:12,fontWeight:600,color:T.text}}>{f.label}</span>
+              <span style={{flex:1,fontSize:FS.small,fontWeight:600,color:T.text}}>{f.label}</span>
               <div style={{width:42,height:5,background:T.bg,borderRadius:3,overflow:"hidden"}}>
                 <div style={{width:`${f.pct/75*100}%`,height:"100%",background:orange,borderRadius:3}}/>
               </div>
-              <span style={{fontSize:11,fontWeight:800,color:orange,minWidth:26,textAlign:"right"}}>{f.pct}%</span>
+              <span style={{fontSize:FS.small,fontWeight:800,color:orange,minWidth:26,textAlign:"right"}}>{f.pct}%</span>
               <Chevron open={openFactor===i} color={T.textSub}/>
             </div>
             {openFactor===i&&(
               <div style={{padding:"0 12px 11px 37px"}}>
-                <div style={{fontSize:10,fontFamily:"ui-monospace,Menlo,monospace",
+                <div style={{fontSize:FS.caption,fontFamily:"ui-monospace,Menlo,monospace",
                   color:T.id==="dark"?T.orange:T.blue,background:T.bg,
                   border:`1px solid ${T.border}`,borderRadius:4,
                   padding:"5px 8px",marginBottom:8,lineHeight:1.5}}>{f.formula}</div>
-                <div style={{fontSize:11,color:T.textSub,lineHeight:1.6}}>{f.detail}</div>
+                <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>{f.detail}</div>
               </div>
             )}
           </div>
@@ -2582,22 +2595,22 @@ function ModelViz(){
       {SL(lang==="nl"?"Stap 2 · Naar één score":"Step 2 · Into one score","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
+        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"?"Elke factor telt mee voor zijn gewicht. We rekenen het hier voor met Argentinië (de nummer 1) als voorbeeld:"
             :"Each factor counts for its weight. Worked through here using Argentina (the number 1) as the example:"}
         </div>
         {/* example team banner */}
         <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:10,
           background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,padding:"6px 9px"}}>
-          <span style={{fontSize:15,lineHeight:1}}>🇦🇷</span>
-          <span style={{fontSize:11,fontWeight:700,color:T.text}}>{lang==="nl"?"Voorbeeld: Argentinië":"Example: Argentina"}</span>
+          <span style={{fontSize:FS.h2,lineHeight:1}}>🇦🇷</span>
+          <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Voorbeeld: Argentinië":"Example: Argentina"}</span>
         </div>
         {/* calculation table — properly outlined */}
         <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
           {/* column legend */}
           <div style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,padding:"7px 10px",
             background:T.bg,borderBottom:`1px solid ${T.border}`,
-            fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
+            fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
             color:T.textFaint}}>
             <span>{lang==="nl"?"factor":"factor"}</span>
             <span style={{textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
@@ -2614,7 +2627,7 @@ function ModelViz(){
             {lab:lang==="nl"?"Vorm":"Form",val:39,w:5,contrib:2.0},
           ].map((r,i)=>(
             <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,
-              padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:11}}>
+              padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
               <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
               <span style={{color:T.textSub,textAlign:"right"}}>{r.val}</span>
               <span style={{color:T.textFaint,textAlign:"center"}}>×</span>
@@ -2626,8 +2639,8 @@ function ModelViz(){
           {/* total */}
           <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
             borderTop:`2px solid ${T.border}`,background:T.bg}}>
-            <span style={{flex:1,fontSize:12,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
-            <span style={{fontSize:16,fontWeight:900,color:orange}}>86,7</span>
+            <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
+            <span style={{fontSize:FS.display,fontWeight:900,color:orange}}>86,7</span>
           </div>
         </div>
       </div>
@@ -2636,7 +2649,7 @@ function ModelViz(){
       {SL(lang==="nl"?"Stap 3 · De ranglijst":"Step 3 · The ranking","bars")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:10,color:T.textFaint,lineHeight:1.5,marginBottom:10}}>
+        <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginBottom:10}}>
           {lang==="nl"?"Tik een land voor de berekening van zijn score."
             :"Tap a country to see how its score is calculated."}
         </div>
@@ -2656,22 +2669,22 @@ function ModelViz(){
               <div onClick={()=>setOpenRank(isOpen?null:i)}
                 style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
                   padding:"3px 4px",borderRadius:4,background:isOpen?T.orangeFaint:"transparent"}}>
-                <span style={{fontSize:11,fontWeight:800,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
+                <span style={{fontSize:FS.small,fontWeight:800,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
                 <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAG_BY_CODE[t.f]}</span>
-                <span style={{fontSize:11,fontWeight:600,color:T.text,width:66,flexShrink:0,
+                <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
                   overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(t.t)}</span>
                 <div style={{flex:1,height:8,background:T.bg,borderRadius:4,overflow:"hidden"}}>
                   <div style={{width:`${t.sc/maxSc*100}%`,height:"100%",borderRadius:4,
                     background:i===0?orange:blue}}/>
                 </div>
-                <span style={{fontSize:11,fontWeight:800,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
+                <span style={{fontSize:FS.small,fontWeight:800,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
                 <Chevron open={isOpen} color={T.textFaint}/>
               </div>
               {isOpen&&fd&&(
                 <div style={{padding:"8px 4px 4px 44px"}}>
                   {rows.map((r,j)=>(
                     <div key={j} style={{display:"flex",alignItems:"center",gap:6,
-                      padding:"4px 0",borderTop:j>0?`1px solid ${T.border}`:"none",fontSize:10.5}}>
+                      padding:"4px 0",borderTop:j>0?`1px solid ${T.border}`:"none",fontSize:FS.caption}}>
                       <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
                       <span style={{color:T.textSub,minWidth:24,textAlign:"right"}}>{r.val}</span>
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
@@ -2682,8 +2695,8 @@ function ModelViz(){
                   ))}
                   <div style={{display:"flex",alignItems:"center",marginTop:5,paddingTop:6,
                     borderTop:`2px solid ${T.border}`}}>
-                    <span style={{flex:1,fontSize:11,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore":"Strength score"}</span>
-                    <span style={{fontSize:13,fontWeight:900,color:orange}}>{t.sc.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
+                    <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore":"Strength score"}</span>
+                    <span style={{fontSize:FS.body,fontWeight:900,color:orange}}>{t.sc.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                   </div>
                 </div>
               )}
@@ -2696,19 +2709,19 @@ function ModelViz(){
       {SL(lang==="nl"?"Stap 4 · De uitslag":"Step 4 · The result","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
+        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
             ?"De sterktescore bepaalt wie wint én met welke marge; xG en xGc vullen de hoogte van de uitslag in."
             :"The strength score decides who wins and by what margin; xG and xGc fill in the height of the scoreline."}
         </div>
         <div style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
-          padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.9}}>
+          padding:"9px 11px",marginBottom:11,fontSize:FS.small,color:T.text,lineHeight:1.9}}>
           <div><span style={{color:blue,fontWeight:700}}>{lang==="nl"?"verschil":"gap"} &lt; 20</span> → {lang==="nl"?"gelijkspel":"draw"}</div>
           <div><span style={{color:blue,fontWeight:700}}>20–35</span> → {lang==="nl"?"wint met 1":"win by 1"}</div>
           <div><span style={{color:blue,fontWeight:700}}>35–50</span> → {lang==="nl"?"wint met 2":"win by 2"}</div>
           <div><span style={{color:blue,fontWeight:700}}>&gt; 50</span> → {lang==="nl"?"wint met 3":"win by 3"}</div>
         </div>
-        <div style={{fontSize:11,color:T.textSub,lineHeight:1.6}}>
+        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {lang==="nl"
             ?"De marge volgt uit het verschil in sterktescore. De xG/xGc bepalen het exacte aantal doelpunten binnen die marge: een aanvallend duel wordt 3-1, een defensief duel 1-0."
             :"The margin follows from the strength-score gap. xG/xGc set the exact number of goals within that margin: an attacking match becomes 3-1, a defensive one 1-0."}
@@ -2719,7 +2732,7 @@ function ModelViz(){
       {SL(lang==="nl"?"Stap 5 · De titelkansen":"Step 5 · The title odds","dice")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
+        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
             ?"Het toernooi is 50.000 keer gesimuleerd. Elke wedstrijd beslist op het sterkteverschil; het percentage is hoe vaak elk land kampioen werd."
             :"The tournament was simulated 50,000 times. Each match is decided on the strength gap; the percentage is how often each country won the title."}
@@ -2728,19 +2741,19 @@ function ModelViz(){
           const max=46;
           return(
             <div key={r.t} style={{display:"flex",alignItems:"center",gap:8,marginBottom:i<arr.length-1?9:0}}>
-              <span style={{fontSize:11,fontWeight:800,color:T.textFaint,width:14,flexShrink:0,textAlign:"right"}}>{i+1}</span>
+              <span style={{fontSize:FS.small,fontWeight:800,color:T.textFaint,width:14,flexShrink:0,textAlign:"right"}}>{i+1}</span>
               <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{FLAG_BY_CODE[r.f]}</span>
-              <span style={{fontSize:11,fontWeight:600,color:T.text,width:66,flexShrink:0,
+              <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(r.t)}</span>
               <div style={{flex:1,height:12,background:T.bg,borderRadius:4,overflow:"hidden"}}>
                 <div style={{width:`${r.pct/max*100}%`,height:"100%",borderRadius:4,background:i===0?orange:blue}}/>
               </div>
-              <span style={{fontSize:12,fontWeight:800,color:i===0?orange:T.text,flexShrink:0,minWidth:36,textAlign:"right"}}>{r.pct}%</span>
+              <span style={{fontSize:FS.small,fontWeight:800,color:i===0?orange:T.text,flexShrink:0,minWidth:36,textAlign:"right"}}>{r.pct}%</span>
             </div>
           );
         })}
         <div style={{marginTop:11,paddingTop:8,borderTop:`1px solid ${T.border}`,
-          fontSize:10,color:T.textFaint,lineHeight:1.5}}>
+          fontSize:FS.caption,color:T.textFaint,lineHeight:1.5}}>
           {lang==="nl"?"De resterende kans verdeelt zich over de overige 40 landen, die elk minder dan 0,5% scoorden."
             :"The remaining probability is split across the other 40 nations, each scoring under 0.5%."}
         </div>
@@ -2761,8 +2774,8 @@ function NationCard({n,open,onToggle}){
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
         <span style={{fontSize:20,lineHeight:1,flexShrink:0}}>{n.flag}</span>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:13,fontWeight:700,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?TEAM_NL[n.team]||n.team:n.team}</div>
-          <div style={{fontSize:9,color:T.textSub,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?"Groep":"Group"} {n.group} · <span style={{color:T.textFaint}}>{n.coach}</span></div>
+          <div style={{fontSize:FS.body,fontWeight:700,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?TEAM_NL[n.team]||n.team:n.team}</div>
+          <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?"Groep":"Group"} {n.group} · <span style={{color:T.textFaint}}>{n.coach}</span></div>
         </div>
         {MODEL_RANK[n.team]&&(()=>{
           const dev=FORM_DEV[n.team];
@@ -2780,9 +2793,9 @@ function NationCard({n,open,onToggle}){
                   background:T.id==="dark"?"#161616":T.bg,
                   border:`1px solid ${T.border}`,
                   borderRadius:4,padding:"3px 0",width:40}}>
-                  <span style={{fontSize:6,fontWeight:700,letterSpacing:0.4,
+                  <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.4,
                     color:T.textFaint,textTransform:"uppercase",lineHeight:1}}>{b.lab}</span>
-                  <span style={{fontSize:10,fontWeight:800,color:b.col,lineHeight:1}}>{b.val}</span>
+                  <span style={{fontSize:FS.caption,fontWeight:800,color:b.col,lineHeight:1}}>{b.val}</span>
                 </div>
               ))}
             </div>
@@ -2794,25 +2807,25 @@ function NationCard({n,open,onToggle}){
         <div style={{borderTop:`1px solid ${T.border}`}}>
           {/* Form */}
           <div style={{padding:"10px 13px",borderBottom:`1px solid ${T.border}`}}>
-            <div style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint,marginBottom:4}}>{lang==="nl"?"Huidige Vorm":"Current Form"}</div>
-            <div style={{fontSize:12,color:T.text,lineHeight:1.6}}>{n.form[lang]}</div>
+            <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint,marginBottom:4}}>{lang==="nl"?"Huidige Vorm":"Current Form"}</div>
+            <div style={{fontSize:FS.small,color:T.text,lineHeight:1.6}}>{n.form[lang]}</div>
           </div>
           {/* News */}
           <div style={{padding:"10px 13px",borderBottom:`1px solid ${T.border}`,background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`}}>
-            <div style={{fontSize:9,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.orange,marginBottom:6}}>{lang==="nl"?"Laatste Nieuws":"Latest News"}</div>
-            <div style={{fontSize:12,color:T.text,lineHeight:1.6}}>{n.news[lang]}</div>
+            <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.orange,marginBottom:6}}>{lang==="nl"?"Laatste Nieuws":"Latest News"}</div>
+            <div style={{fontSize:FS.small,color:T.text,lineHeight:1.6}}>{n.news[lang]}</div>
           </div>
           {/* Key players */}
           <div style={{padding:"8px 13px",borderBottom:`1px solid ${T.border}`}}>
-            <div style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint,marginBottom:6}}>{lang==="nl"?"Sleutelspelers":"Key Players"}</div>
+            <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint,marginBottom:6}}>{lang==="nl"?"Sleutelspelers":"Key Players"}</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-              {n.stars.map(s=>(<span key={s} style={{fontSize:10,fontWeight:600,color:T.text,background:T.bg,border:`1px solid ${T.border}`,borderRadius:3,padding:"2px 7px"}}>{s}</span>))}
+              {n.stars.map(s=>(<span key={s} style={{fontSize:FS.caption,fontWeight:600,color:T.text,background:T.bg,border:`1px solid ${T.border}`,borderRadius:3,padding:"2px 7px"}}>{s}</span>))}
             </div>
           </div>
           {/* Outlook */}
           <div style={{padding:"10px 13px"}}>
-            <div style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint,marginBottom:4}}>{lang==="nl"?"Vooruitzichten":"Outlook"}</div>
-            <div style={{fontSize:12,color:T.text,lineHeight:1.6}}>{n.outlook[lang]}</div>
+            <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint,marginBottom:4}}>{lang==="nl"?"Vooruitzichten":"Outlook"}</div>
+            <div style={{fontSize:FS.small,color:T.text,lineHeight:1.6}}>{n.outlook[lang]}</div>
           </div>
         </div>
       )}
@@ -2849,7 +2862,7 @@ function NationsTab({preOpen=null}){
   },[]);
   return(
     <div>
-      <div style={{fontSize:15,fontWeight:700,color:T.text,marginBottom:14}}>
+      <div style={{fontSize:FS.h2,fontWeight:700,color:T.text,marginBottom:14}}>
         {lang==="nl"?"Landenprofielen":"Nation Profiles"}
       </div>
       {[...NATIONS_DATA].sort((a,b)=>adjRank(a.team)-adjRank(b.team)).map(n=>(
@@ -3160,38 +3173,38 @@ function FBrefStatsSection(){
   const Row=({p,rank,accentColor})=>(
     <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"6px 10px",
       borderBottom:`1px solid ${T.border}`}}>
-      <div style={{fontSize:10,color:accentColor||T.textFaint,textAlign:"center",alignSelf:"center",fontWeight:700}}>{rank}</div>
+      <div style={{fontSize:FS.caption,color:accentColor||T.textFaint,textAlign:"center",alignSelf:"center",fontWeight:700}}>{rank}</div>
       <div style={{minWidth:0,alignSelf:"center"}}>
-        <div style={{fontSize:11,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+        <div style={{fontSize:FS.small,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
         <div style={{fontSize:9,color:T.textFaint}}>{p.flag} {p.country}</div>
       </div>
-      <div style={{fontSize:9,color:T.textSub,alignSelf:"center"}}>{p.nat}</div>
+      <div style={{fontSize:FS.caption,color:T.textSub,alignSelf:"center"}}>{p.nat}</div>
       <div style={{alignSelf:"center"}}>
-        <span style={{fontSize:8,fontWeight:700,color:posColor(p.pos),background:`${posColor(p.pos)}18`,borderRadius:3,padding:"1px 4px"}}>{p.pos}</span>
+        <span style={{fontSize:FS.micro,fontWeight:700,color:posColor(p.pos),background:`${posColor(p.pos)}18`,borderRadius:3,padding:"1px 4px"}}>{p.pos}</span>
       </div>
-      <div style={{fontSize:9,color:T.textSub,alignSelf:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.squad}</div>
-      <div style={{fontSize:10,fontWeight:600,color:orange,textAlign:"right",alignSelf:"center"}}>{p.g90.toFixed(2)}</div>
-      <div style={{fontSize:10,fontWeight:600,color:blue,textAlign:"right",alignSelf:"center"}}>{p.a90.toFixed(2)}</div>
-      <div style={{fontSize:11,fontWeight:800,color:accentColor||T.text,textAlign:"right",alignSelf:"center"}}>{p.ga90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,color:T.textSub,alignSelf:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.squad}</div>
+      <div style={{fontSize:FS.caption,fontWeight:600,color:orange,textAlign:"right",alignSelf:"center"}}>{p.g90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,fontWeight:600,color:blue,textAlign:"right",alignSelf:"center"}}>{p.a90.toFixed(2)}</div>
+      <div style={{fontSize:FS.small,fontWeight:800,color:accentColor||T.text,textAlign:"right",alignSelf:"center"}}>{p.ga90.toFixed(2)}</div>
     </div>
   );
   return(
     <React.Fragment>
       {/* WC Players table */}
       <div style={{marginTop:20}}>
-        <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
+        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
           {lang==="nl"?"Doelpunten + Assists per 90":"Goals + Assists per 90"}
         </div>
         {/* Nation filter */}
         <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap"}}>
-          <span style={{fontSize:10,color:T.textSub}}>{lang==="nl"?"Land:":"Nation:"}</span>
+          <span style={{fontSize:FS.caption,color:T.textSub}}>{lang==="nl"?"Land:":"Nation:"}</span>
           <select value={natFilter} onChange={e=>{setNatFilter(e.target.value);setLimit(10);}}
-            style={{fontSize:10,padding:"3px 8px",borderRadius:4,border:`1px solid ${T.border}`,
+            style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:4,border:`1px solid ${T.border}`,
               background:T.card,color:T.text}}>
             <option value="">{lang==="nl"?"Alle landen":"All nations"} ({FBREF_WC.length})</option>
             {nations.map(n=>(<option key={n} value={n}>{n}</option>))}
           </select>
-          {natFilter&&(<span style={{fontSize:9,color:T.textFaint}}>
+          {natFilter&&(<span style={{fontSize:FS.caption,color:T.textFaint}}>
             {filtered.length} {lang==="nl"?"spelers":"players"}
           </span>)}
         </div>
@@ -3205,7 +3218,7 @@ function FBrefStatsSection(){
               const active=sortable&&sortKey===keyFor;
               return(
               <div key={h} onClick={sortable?()=>{setSortKey(keyFor);setLimit(l=>l);}:undefined}
-                style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
+                style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
                   color:active?orange:T.textFaint,textAlign:i>=5?"right":"left",
                   cursor:sortable?"pointer":"default",userSelect:"none"}}>
                 {h}{active?" ↓":""}
@@ -3219,7 +3232,7 @@ function FBrefStatsSection(){
         <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap"}}>
           {[10,100,250].map(n=>(
             <button key={n} onClick={()=>setLimit(n)}
-              style={{fontSize:10,padding:"4px 10px",borderRadius:4,cursor:"pointer",
+              style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:4,cursor:"pointer",
                 border:`1px solid ${limit===n?orange:T.border}`,
                 background:limit===n?orange:"transparent",
                 color:limit===n?"#fff":T.textSub}}>
@@ -3230,7 +3243,7 @@ function FBrefStatsSection(){
       </div>
       {/* Missed out */}
       <div style={{marginTop:8}}>
-        <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
+        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
           {lang==="nl"?"Sterren die het toernooi missen":"Stars missing the tournament"}
         </div>
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
@@ -3240,11 +3253,11 @@ function FBrefStatsSection(){
               borderBottom:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
               <span style={{fontSize:18,lineHeight:1,flexShrink:0}}>{p.flag}</span>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:12,fontWeight:600,color:T.text,
+                <div style={{fontSize:FS.small,fontWeight:600,color:T.text,
                   overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
-                <div style={{fontSize:9,color:T.textFaint,marginTop:1}}>{p.pos} · {p.squad}</div>
+                <div style={{fontSize:FS.caption,color:T.textFaint,marginTop:1}}>{p.pos} · {p.squad}</div>
               </div>
-              <span style={{fontSize:9,fontWeight:600,flexShrink:0,textAlign:"right",
+              <span style={{fontSize:FS.caption,fontWeight:600,flexShrink:0,textAlign:"right",
                 color:p.reason[lang].toLowerCase().includes(lang==="nl"?"blessure":"injury")?(T.id==="dark"?"#FF5544":"#C0392B"):T.textSub}}>
                 {p.reason[lang]}
               </span>
@@ -3266,7 +3279,7 @@ function PlayersTab(){
   return(
     <div>
       {/* Spotlight */}
-      <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
         {lang==="nl"?"In de Schijnwerpers":"In the Spotlight"}
       </div>
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:24}}>
@@ -3274,7 +3287,7 @@ function PlayersTab(){
       </div>
 
       {/* Dark horses */}
-      <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
         {lang==="nl"?"Verrassende Uitblinkers":"Unexpected Stars"}
       </div>
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:24}}>
@@ -3282,38 +3295,38 @@ function PlayersTab(){
       </div>
 
       {/* Best XI */}
-      <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:6}}>
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:6}}>
         {lang==="nl"?"Beste Elftal van het Toernooi":"Tournament Best XI"}
       </div>
       <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
-        <span style={{fontSize:9,fontWeight:700,color:"#1E7A40"}}>{lang==="nl"?"xG = verwachte doelpunten":"xG = expected goals"}</span>
-        <span style={{fontSize:9,fontWeight:700,color:"#1A5296"}}>{lang==="nl"?"xA = verwachte assists":"xA = expected assists"}</span>
+        <span style={{fontSize:FS.caption,fontWeight:700,color:"#1E7A40"}}>{lang==="nl"?"xG = verwachte doelpunten":"xG = expected goals"}</span>
+        <span style={{fontSize:FS.caption,fontWeight:700,color:"#1A5296"}}>{lang==="nl"?"xA = verwachte assists":"xA = expected assists"}</span>
       </div>
       <PitchViz/>
       {/* Player list */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:10}}>
-        <div style={{padding:"6px 12px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.orange}}>
+        <div style={{padding:"6px 12px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.orange}}>
           {lang==="nl"?"Basiselftal":"Starting XI"} · {BEST_XI.formation}
         </div>
         {BEST_XI.players.map(p=>(
           <div key={p.name} style={{borderBottom:`1px solid ${T.border}`}}>
             <div onClick={()=>toggle(setOpenXI,p.name)} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",cursor:"pointer",background:openXI[p.name]?T.orangeFaint:T.card}}>
               <div style={{width:28,height:28,borderRadius:"50%",background:"#E07000",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,flexShrink:0}}>
-                <span style={{color:"#fff",fontSize:8,fontWeight:700}}>{p.pos==="CB1"||p.pos==="CB2"?"CB":p.pos}</span>
+                <span style={{color:"#fff",fontSize:FS.micro,fontWeight:700}}>{p.pos==="CB1"||p.pos==="CB2"?"CB":p.pos}</span>
               </div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:13,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+                <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2,flexWrap:"wrap"}}>
-                  {p.value&&<span style={{fontSize:8,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
-                  {p.xG>0&&<span style={{fontSize:8,fontWeight:700,color:"#1E7A40",background:"rgba(30,122,64,0.1)",border:"1px solid rgba(30,122,64,0.3)",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xG} xG</span>}
-                  {p.xA>0&&<span style={{fontSize:8,fontWeight:700,color:"#1A5296",background:"rgba(26,82,150,0.1)",border:"1px solid rgba(26,82,150,0.3)",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xA} xA</span>}
+                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
+                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1E7A40",background:"rgba(30,122,64,0.1)",border:"1px solid rgba(30,122,64,0.3)",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xG} xG</span>}
+                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1A5296",background:"rgba(26,82,150,0.1)",border:"1px solid rgba(26,82,150,0.3)",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xA} xA</span>}
                 </div>
               </div>
               <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
               <Chevron open={openXI[p.name]} color={T.orange}/>
             </div>
             {openXI[p.name]&&(
-              <div style={{padding:"6px 12px 8px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:11,color:T.textSub,lineHeight:1.5}}>
+              <div style={{padding:"6px 12px 8px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
                 {p.note[lang]}
               </div>
             )}
@@ -3322,28 +3335,28 @@ function PlayersTab(){
       </div>
       {/* Subs */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden"}}>
-        <div style={{padding:"6px 12px",background:T.blueFaint,borderBottom:`1px solid ${T.border}`,fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.id==="dark"?"#909090":"#1A5296"}}>
+        <div style={{padding:"6px 12px",background:T.blueFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.id==="dark"?"#909090":"#1A5296"}}>
           {lang==="nl"?"Wissels":"Substitutes"}
         </div>
         {BEST_XI.subs.map(p=>(
           <div key={p.name} style={{borderBottom:`1px solid ${T.border}`}}>
             <div onClick={()=>toggle(setOpenXI,"sub_"+p.name)} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",cursor:"pointer",background:openXI["sub_"+p.name]?T.blueFaint:T.card}}>
               <div style={{width:28,height:28,borderRadius:"50%",background:T.blueFaint,border:"1px solid #1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{color:T.id==="dark"?"#909090":"#1A5296",fontSize:8,fontWeight:700}}>{p.pos}</span>
+                <span style={{color:T.id==="dark"?"#909090":"#1A5296",fontSize:FS.micro,fontWeight:700}}>{p.pos}</span>
               </div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:13,fontWeight:500,color:T.text}}>{p.name}</div>
+                <div style={{fontSize:FS.body,fontWeight:500,color:T.text}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2}}>
-                  {p.value&&<span style={{fontSize:8,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
-                  {p.xG>0&&<span style={{fontSize:8,fontWeight:700,color:"#1E7A40",background:"rgba(30,122,64,0.1)",border:"1px solid rgba(30,122,64,0.3)",borderRadius:4,padding:"1px 5px"}}>~{p.xG} xG</span>}
-                  {p.xA>0&&<span style={{fontSize:8,fontWeight:700,color:"#1A5296",background:"rgba(26,82,150,0.1)",border:"1px solid rgba(26,82,150,0.3)",borderRadius:4,padding:"1px 5px"}}>~{p.xA} xA</span>}
+                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
+                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1E7A40",background:"rgba(30,122,64,0.1)",border:"1px solid rgba(30,122,64,0.3)",borderRadius:4,padding:"1px 5px"}}>~{p.xG} xG</span>}
+                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1A5296",background:"rgba(26,82,150,0.1)",border:"1px solid rgba(26,82,150,0.3)",borderRadius:4,padding:"1px 5px"}}>~{p.xA} xA</span>}
                 </div>
               </div>
               <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
               <Chevron open={openXI["sub_"+p.name]} color={T.id==="dark"?T.orange:"#1A5296"}/>
             </div>
             {openXI["sub_"+p.name]&&p.note&&(
-              <div style={{padding:"6px 12px 8px",background:T.blueFaint,borderLeft:`3px solid ${T.id==="dark"?T.orange:"#1A5296"}`,fontSize:11,color:T.textSub,lineHeight:1.5}}>
+              <div style={{padding:"6px 12px 8px",background:T.blueFaint,borderLeft:`3px solid ${T.id==="dark"?T.orange:"#1A5296"}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
                 {p.note[lang]}
               </div>
             )}
@@ -3381,7 +3394,7 @@ export default function App(){
     <ThemeCtx.Provider value={T}>
     <LangCtx.Provider value={lang}>
     <NavCtx.Provider value={{setTab,setNationsOpen}}>
-      <div style={{minHeight:"100vh",background:T.bg,fontSize:13,color:T.text,overflowX:"hidden"}}>
+      <div style={{minHeight:"100vh",background:T.bg,fontSize:FS.body,color:T.text,overflowX:"hidden"}}>
         <style>{`*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}button{font-family:inherit;cursor:pointer;}`}</style>
         <Nav tab={tab} setTab={setTab}/>
 
@@ -3394,28 +3407,28 @@ export default function App(){
                 ? <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",borderRadius:6,padding:"14px",marginBottom:12,borderLeft:`4px solid #E8192C`,position:"relative",overflow:"hidden"}}>
                     {/* WK2026 decorative stripes */}
                     <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(232,25,44,0.08))",pointerEvents:"none"}}/>
-                    <div style={{fontSize:9,fontWeight:700,letterSpacing:2,color:"#E8192C",textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
-                    <div style={{fontSize:7,fontWeight:600,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
-                    <div style={{fontSize:17,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
+                    <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:2,color:"#E8192C",textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
+                    <div style={{fontSize:FS.micro,fontWeight:600,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
+                    <div style={{fontSize:FS.h1,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
                     <div onClick={()=>setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(232,25,44,0.5)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
                       <span style={{fontSize:20}}>🏆</span>
                       <div>
-                        <div style={{fontSize:9,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
+                        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
                         <div style={{fontSize:14,fontWeight:700,color:"#fff"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
                       </div>
-                      <span style={{marginLeft:4,color:"#fff",fontSize:11,fontWeight:600}}>{tr.knockoutLink} →</span>
+                      <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:600}}>{tr.knockoutLink} →</span>
                     </div>
                   </div>
                 : <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
-                    <div style={{fontSize:9,fontWeight:700,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
-                    <div style={{fontSize:17,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
+                    <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
+                    <div style={{fontSize:FS.h1,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
                     <div onClick={()=>setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"8px 12px",cursor:"pointer"}}>
                       <span style={{fontSize:20}}>🏆</span>
                       <div>
-                        <div style={{fontSize:9,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
+                        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
                         <div style={{fontSize:14,fontWeight:700,color:"#FF5500"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
                       </div>
-                      <span style={{marginLeft:4,color:"#fff",fontSize:11,fontWeight:600}}>{tr.knockoutLink} →</span>
+                      <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:600}}>{tr.knockoutLink} →</span>
                     </div>
                   </div>
               }
@@ -3431,7 +3444,7 @@ export default function App(){
                     strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                     <path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z"/>
                   </svg>
-                  <span style={{flex:1,fontSize:11,fontWeight:700,letterSpacing:1.2,
+                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
                     textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
                     {lang==="nl"?"Nieuws":"News"}
                   </span>
@@ -3439,7 +3452,7 @@ export default function App(){
                 </div>
                 {newsOpen&&<div style={{marginTop:10}}><NewsSection/></div>}
               </div>
-              <div style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
+              <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
                 {lang==="nl"?"Groepsfase":"Group Stage"}
               </div>
               {GROUP_DATA.map(g=>(
@@ -3454,12 +3467,12 @@ export default function App(){
           {tab==="knockout"&&(
             <React.Fragment>
                     <div style={{marginBottom:14}}>
-                      <div style={{fontSize:15,fontWeight:700,color:T.text}}>{tr.knockoutTitle}</div>
+                      <div style={{fontSize:FS.h2,fontWeight:700,color:T.text}}>{tr.knockoutTitle}</div>
                     </div>
                     <KnockoutBracket scrollToMatch={scrollToMatch}/>
                     {[{label:tr.qf,rounds:QF},{label:tr.sf,rounds:SF}].map(({label,rounds})=>(
                       <div key={label} style={{marginBottom:14}}>
-                        <div style={{fontSize:10,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296",marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label}</div>
+                        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296",marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label}</div>
                         <div style={{display:"flex",flexDirection:"column",gap:8}}>
                           {rounds.map(([a,b])=>(
                             <div key={`${a}-${b}`} ref={el=>koCardRefs.current[`${a}-${b}`]=el}>
@@ -3470,7 +3483,7 @@ export default function App(){
                       </div>
                     ))}
                     <div ref={el=>koCardRefs.current[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]=el}>
-                      <div style={{fontSize:10,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296",marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{tr.final}</div>
+                      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296",marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{tr.final}</div>
                 <div style={{background:T.card,border:`1px solid ${T.orange}`,borderTop:`3px solid ${T.orange}`,borderRadius:4,overflow:"hidden"}}>
                   <div style={{padding:14}}>
                     {[{team:FINAL_TEAMS[0],score:fsA,win:fsA>fsB},{team:FINAL_TEAMS[1],score:fsB,win:fsB>fsA}].map(({team,score,win},i)=>(
@@ -3478,15 +3491,15 @@ export default function App(){
                         {i===1&&<div style={{height:1,background:T.border,margin:"8px 0"}}/>}
                         <div style={{display:"flex",alignItems:"center",gap:8}}>
                           <TeamLink team={team}><span style={{fontSize:20,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-                          <span style={{flex:1,fontSize:13,fontWeight:win?700:400,color:win?T.text:T.textSub}}>{tName(team,lang)}</span>
-                          <span style={{fontSize:18,fontWeight:700,color:win?T.orange:T.textSub}}>{score}</span>
+                          <span style={{flex:1,fontSize:FS.body,fontWeight:win?700:400,color:win?T.text:T.textSub}}>{tName(team,lang)}</span>
+                          <span style={{fontSize:FS.h1,fontWeight:700,color:win?T.orange:T.textSub}}>{score}</span>
                         </div>
                       </div>
                     ))}
                     <div style={{marginTop:12,paddingTop:10,borderTop:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:8,background:T.id==="lion"?"rgba(0,0,0,0.15)":T.blueFaint,margin:"12px -14px -14px",padding:"10px 14px"}}>
                       <span style={{fontSize:16}}>🏆</span>
                       <div>
-                        <div style={{fontSize:9,fontWeight:600,letterSpacing:0.8,textTransform:"uppercase",color:T.textSub}}>{tr.predictedChampionLabel}</div>
+                        <div style={{fontSize:FS.caption,fontWeight:600,letterSpacing:0.8,textTransform:"uppercase",color:T.textSub}}>{tr.predictedChampionLabel}</div>
                         <div style={{fontSize:14,fontWeight:700,color:T.id==="dark"?"#909090":"#1A5296"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
                       </div>
                     </div>
@@ -3501,7 +3514,7 @@ export default function App(){
                     {tab==="model"&&(
             <React.Fragment>
               <div style={{marginBottom:14}}>
-                <div style={{fontSize:15,fontWeight:700,color:T.text}}>{tr.modelTitle}</div>
+                <div style={{fontSize:FS.h2,fontWeight:700,color:T.text}}>{tr.modelTitle}</div>
               </div>
 
               {/* ── MODEL EXPLANATION + VISUALISATIONS (sections 1-4) ── */}
@@ -3514,11 +3527,11 @@ export default function App(){
                   strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                   <path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>
                 </svg>
-                <span style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub}}>
+                <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub}}>
                   {lang==="nl"?"Stap 6 · Waar het model afwijkt van FIFA":"Step 6 · Where the model differs from FIFA"}
                 </span>
               </div>
-              <div style={{fontSize:12,color:T.textSub,marginBottom:10,lineHeight:1.6}}>
+              <div style={{fontSize:FS.small,color:T.textSub,marginBottom:10,lineHeight:1.6}}>
                 {lang==="nl"
                   ?"Welke landen schat het model hoger of lager in dan hun FIFA-positie? Tik een land aan voor de onderbouwing."
                   :"Which countries does the model rate higher or lower than their FIFA position? Tap a country for the reasoning."}
@@ -3526,14 +3539,14 @@ export default function App(){
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:12}}>
                 <div style={{display:"flex",alignItems:"center",gap:5,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                  <span style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.green}}>{tr.overTitle}</span>
+                  <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.green}}>{tr.overTitle}</span>
                 </div>
                 {OUTLOOK.over.map(d=><OutlookRow key={d.team} d={d} type="over" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
               </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
                 <div style={{display:"flex",alignItems:"center",gap:5,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.red} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-                  <span style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.red}}>{tr.underTitle}</span>
+                  <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.red}}>{tr.underTitle}</span>
                 </div>
                 {OUTLOOK.under.map(d=><OutlookRow key={d.team} d={d} type="under" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
               </div>
@@ -3545,7 +3558,7 @@ export default function App(){
                   strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                   <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
                 </svg>
-                <span style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub}}>
+                <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub}}>
                   {lang==="nl"?"Databronnen":"Data sources"}
                 </span>
               </div>
@@ -3564,10 +3577,10 @@ export default function App(){
                     paddingBottom:i<arr.length-1?9:0,marginBottom:i<arr.length-1?9:0,
                     borderBottom:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
                     <div style={{minWidth:104,flexShrink:0}}>
-                      <div style={{fontSize:11,fontWeight:700,color:T.text}}>{row.label}</div>
-                      <div style={{fontSize:9,fontWeight:600,color:T.id==="dark"?T.orange:"#E07000",marginTop:1}}>{row.src}</div>
+                      <div style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{row.label}</div>
+                      <div style={{fontSize:FS.caption,fontWeight:600,color:T.id==="dark"?T.orange:"#E07000",marginTop:1}}>{row.src}</div>
                     </div>
-                    <div style={{fontSize:10,color:T.textSub,lineHeight:1.5}}>{row.desc[lang]}</div>
+                    <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5}}>{row.desc[lang]}</div>
                   </div>
                 ))}
               </div>
@@ -3585,8 +3598,8 @@ export default function App(){
         {/* FOOTER */}
         <div style={{position:"fixed",bottom:0,left:0,right:0,borderTop:`1px solid ${T.border}`,background:T.nav,padding:"8px 12px",paddingBottom:"max(8px,env(safe-area-inset-bottom))",display:"flex",alignItems:"center",gap:8,zIndex:10}}>
           <div style={{lineHeight:1.3,flex:1,minWidth:0}}>
-            <div style={{fontSize:11,fontWeight:600,color:T.text}}>Sten Bossong</div>
-            <div style={{fontSize:10,color:T.textSub}}>{tr.footerSub}</div>
+            <div style={{fontSize:FS.small,fontWeight:600,color:T.text}}>Sten Bossong</div>
+            <div style={{fontSize:FS.caption,color:T.textSub}}>{tr.footerSub}</div>
           </div>
 
           {/* Theme toggle */}
@@ -3596,7 +3609,7 @@ export default function App(){
           <div style={{display:"flex",border:`1px solid ${T.id==="default"?"#E07000":T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
             {["nl","en"].map((l,i)=>(
               <button key={l} onClick={()=>setLang(l)} style={{
-                width:34,height:34,fontSize:11,fontWeight:lang===l?700:400,
+                width:34,height:34,fontSize:FS.small,fontWeight:lang===l?700:400,
                 background:lang===l?(T.id==="default"?"#E07000":T.orange):"transparent",
                 color:lang===l?"#fff":(T.id==="default"?"#E07000":T.textSub),
                 border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
