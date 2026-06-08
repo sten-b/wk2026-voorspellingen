@@ -2551,12 +2551,14 @@ function ModelViz(){
           {n:"2",c:orange,t:lang==="nl"?"Uitslag":"Scoreline",
            d:lang==="nl"?"xG en xGc vullen de hoogte van de uitslag in":"xG and xGc fill in the height of the scoreline"},
         ].map((s,i)=>(
-          <div key={i} style={{display:"flex",gap:9,alignItems:"center",marginTop:i>0?7:0}}>
+          <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginTop:i>0?10:0}}>
             <div style={{width:20,height:20,borderRadius:"50%",background:s.c,color:T.id==="dark"?"#000":"#fff",
               fontSize:FS.small,fontWeight:800,flexShrink:0,display:"flex",alignItems:"center",
-              justifyContent:"center"}}>{s.n}</div>
-            <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{s.t}</span>
-            <span style={{fontSize:FS.small,color:T.textSub}}>· {s.d}</span>
+              justifyContent:"center",marginTop:1}}>{s.n}</div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:FS.small,fontWeight:700,color:T.text,lineHeight:1.3}}>{s.t}</div>
+              <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.4,marginTop:1}}>{s.d}</div>
+            </div>
           </div>
         ))}
       </div>
@@ -2608,16 +2610,16 @@ function ModelViz(){
         {/* calculation table — properly outlined */}
         <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
           {/* column legend */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,padding:"7px 10px",
+          <div style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,padding:"7px 10px",
             background:T.bg,borderBottom:`1px solid ${T.border}`,
-            fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
+            fontSize:FS.micro,fontWeight:700,letterSpacing:0,textTransform:"uppercase",
             color:T.textFaint}}>
             <span>{lang==="nl"?"factor":"factor"}</span>
             <span style={{textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
             <span/>
-            <span style={{textAlign:"right"}}>{lang==="nl"?"gewicht":"weight"}</span>
+            <span style={{textAlign:"right"}}>{lang==="nl"?"gew.":"wt."}</span>
             <span/>
-            <span style={{textAlign:"right"}}>{lang==="nl"?"bijdrage":"share"}</span>
+            <span style={{textAlign:"right"}}>{lang==="nl"?"bijdr.":"share"}</span>
           </div>
           {[
             {lab:"Elo",val:89,w:75,contrib:66.9},
@@ -2626,7 +2628,7 @@ function ModelViz(){
             {lab:"Coach",val:77,w:5,contrib:3.9},
             {lab:lang==="nl"?"Vorm":"Form",val:39,w:5,contrib:2.0},
           ].map((r,i)=>(
-            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,
+            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,
               padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
               <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
               <span style={{color:T.textSub,textAlign:"right"}}>{r.val}</span>
@@ -3398,7 +3400,7 @@ export default function App(){
         <style>{`*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}button{font-family:inherit;cursor:pointer;}`}</style>
         <Nav tab={tab} setTab={setTab}/>
 
-        <div style={{padding:"14px 12px 80px",width:"100%",boxSizing:"border-box"}}>
+        <div style={{padding:"14px 16px 80px",width:"100%",boxSizing:"border-box"}}>
 
           {/* TOURNAMENT */}
           {tab==="bracket"&&(
