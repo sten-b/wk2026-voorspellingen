@@ -507,11 +507,13 @@ COMPOSITE_RANK["Congo DR"]=COMPOSITE_RANK["DR Congo"];
 const adjRank = t => COMPOSITE_RANK[t] || 40;
 // Form indicator for the Group/Nations tabs, derived from the SAME source the
 // model uses (formScore = avg actual−expected goal difference over the last 12).
-// Returned as a signed one-decimal value so the display agrees with the model.
+// Scaled to a −5…+5 range (the strongest over/under-performer hits the extreme).
+const FORM_SCALE = 3.597;   // 5 / 1.39 (max abs formScore)
 const formDev = t => {
   const f = MODEL_DATA[t];
   if(!f || f.formScore===undefined) return undefined;
-  return Math.round(f.formScore*10)/10;
+  const v = Math.round(f.formScore*FORM_SCALE*10)/10;
+  return Math.max(-5,Math.min(5,v));
 };
 const SHORT_NL = {"United States":"VS","South Africa":"Z-Afrika","Bosnia-Herzegovina":"Bosnie","Ivory Coast":"Ivoorkust","New Zealand":"Nw.-Zeeland","Saudi Arabia":"Saoedi-Arabië","DR Congo":"Congo DR","Cape Verde":"Kaapverdië","South Korea":"Zuid-Korea"};
 const SHORT_EN = {"United States":"USA","South Africa":"S.Africa","Bosnia-Herzegovina":"Bosnia","Ivory Coast":"Ivory Cst","New Zealand":"NZ","Saudi Arabia":"Saudi Ar.","DR Congo":"DR Congo"};
@@ -2455,6 +2457,7 @@ function ModelViz(){
   const lang=useLang();
   const [openFactor,setOpenFactor]=useState(null);
   const [openRank,setOpenRank]=useState(null);
+  const [exTeam,setExTeam]=useState("Argentina");
   // Theme-compliant palette only: orange (primary), blue (secondary),
   // green/red reserved strictly for semantic up/down vs FIFA, greys for everything else.
   const orange=T.orange;
@@ -2577,7 +2580,7 @@ function ModelViz(){
       {SL(lang==="nl"?"Stap 1 · De vijf bouwstenen":"Step 1 · The five building blocks","clock")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         overflow:"hidden",marginBottom:16}}>
-        {FACTORS.map((f,i)=>(
+        {[...FACTORS].sort((a,b)=>b.pct-a.pct).map((f,i)=>(
           <div key={i} onClick={()=>setOpenFactor(openFactor===i?null:i)}
             style={{borderTop:i>0?`1px solid ${T.border}`:"none",cursor:"pointer",
               background:openFactor===i?T.orangeFaint:T.card}}>
@@ -2608,53 +2611,71 @@ function ModelViz(){
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
-          {lang==="nl"?"Elke factor telt mee voor zijn gewicht. We rekenen het hier voor met Argentinië (de nummer 1) als voorbeeld:"
-            :"Each factor counts for its weight. Worked through here using Argentina (the number 1) as the example:"}
+          {lang==="nl"?"Elke factor telt mee voor zijn gewicht. Kies een land om de berekening te zien:"
+            :"Each factor counts for its weight. Pick a country to see the calculation:"}
         </div>
-        {/* example team banner */}
-        <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:10,
-          background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,padding:"6px 9px"}}>
-          <span style={{fontSize:FS.h2,lineHeight:1}}>🇦🇷</span>
-          <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Voorbeeld: Argentinië":"Example: Argentina"}</span>
+        {/* team selector */}
+        <div style={{position:"relative",marginBottom:10}}>
+          <select value={exTeam} onChange={e=>setExTeam(e.target.value)}
+            style={{width:"100%",appearance:"none",WebkitAppearance:"none",
+              background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
+              padding:"8px 30px 8px 10px",fontSize:FS.small,fontWeight:700,color:T.text,
+              cursor:"pointer",fontFamily:"inherit"}}>
+            {MODEL_ORDER.map(t=>(
+              <option key={t} value={t}>{tName(t,lang)} · #{COMPOSITE_RANK[t]}</option>
+            ))}
+          </select>
+          <span style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",
+            pointerEvents:"none",color:T.textSub,fontSize:FS.caption}}>▾</span>
         </div>
-        {/* calculation table — properly outlined */}
-        <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
-          {/* column legend */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,padding:"7px 10px",
-            background:T.bg,borderBottom:`1px solid ${T.border}`,
-            fontSize:FS.micro,fontWeight:700,letterSpacing:0,textTransform:"uppercase",
-            color:T.textFaint}}>
-            <span>{lang==="nl"?"factor":"factor"}</span>
-            <span style={{textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
-            <span/>
-            <span style={{textAlign:"right"}}>{lang==="nl"?"gew.":"wt."}</span>
-            <span/>
-            <span style={{textAlign:"right"}}>{lang==="nl"?"bijdr.":"share"}</span>
-          </div>
-          {[
-            {lab:"Elo",val:89,w:70,contrib:62.5},
-            {lab:lang==="nl"?"Selectie":"Squad",val:89,w:10,contrib:8.9},
-            {lab:lang==="nl"?"Vorm":"Form",val:39,w:10,contrib:3.9},
-            {lab:lang==="nl"?"Ervaring":"Experience",val:100,w:5,contrib:5.0},
-            {lab:"Coach",val:77,w:5,contrib:3.9},
-          ].map((r,i)=>(
-            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,
-              padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
-              <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
-              <span style={{color:T.textSub,textAlign:"right"}}>{r.val}</span>
-              <span style={{color:T.textFaint,textAlign:"center"}}>×</span>
-              <span style={{color:T.textSub,textAlign:"right"}}>{r.w}%</span>
-              <span style={{color:T.textFaint,textAlign:"center"}}>=</span>
-              <span style={{fontWeight:800,color:blue,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+        {/* calculation table */}
+        {(()=>{
+          const fd=MODEL_DATA[exTeam];
+          if(!fd) return null;
+          const rows=[
+            {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
+            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.form},
+            {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
+            {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
+            {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
+          ];
+          const total=COMPOSITE[exTeam];
+          return(
+            <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
+              {/* column legend */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,padding:"7px 10px",
+                background:T.bg,borderBottom:`1px solid ${T.border}`,
+                fontSize:FS.micro,fontWeight:700,letterSpacing:0,textTransform:"uppercase",
+                color:T.textFaint}}>
+                <span>{lang==="nl"?"factor":"factor"}</span>
+                <span style={{textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
+                <span/>
+                <span style={{textAlign:"right"}}>{lang==="nl"?"gew.":"wt."}</span>
+                <span/>
+                <span style={{textAlign:"right"}}>{lang==="nl"?"bijdr.":"share"}</span>
+              </div>
+              {rows.map((r,i)=>(
+                <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,
+                  padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
+                  <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
+                  <span style={{color:T.textSub,textAlign:"right"}}>{r.val}</span>
+                  <span style={{color:T.textFaint,textAlign:"center"}}>×</span>
+                  <span style={{color:T.textSub,textAlign:"right"}}>{r.w}%</span>
+                  <span style={{color:T.textFaint,textAlign:"center"}}>=</span>
+                  <span style={{fontWeight:700,color:blue,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+                </div>
+              ))}
+              {/* total */}
+              <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
+                borderTop:`2px solid ${T.border}`,background:T.bg}}>
+                <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>
+                  {lang==="nl"?"Sterktescore":"Strength score"} {tName(exTeam,lang)}
+                </span>
+                <span style={{fontSize:FS.display,fontWeight:800,color:orange}}>{total.toFixed(1).replace(".",lang==="nl"?",":".")}</span>
+              </div>
             </div>
-          ))}
-          {/* total */}
-          <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
-            borderTop:`2px solid ${T.border}`,background:T.bg}}>
-            <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
-            <span style={{fontSize:FS.display,fontWeight:900,color:orange}}>84,1</span>
-          </div>
-        </div>
+          );
+        })()}
       </div>
 
       {/* STEP 3 — RANKING (each row expands to show its calculation) */}
@@ -2681,7 +2702,7 @@ function ModelViz(){
               <div onClick={()=>setOpenRank(isOpen?null:i)}
                 style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
                   padding:"3px 4px",borderRadius:4,background:isOpen?T.orangeFaint:"transparent"}}>
-                <span style={{fontSize:FS.small,fontWeight:800,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
+                <span style={{fontSize:FS.small,fontWeight:700,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
                 <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAG_BY_CODE[t.f]}</span>
                 <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
                   overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(t.t)}</span>
@@ -2689,7 +2710,7 @@ function ModelViz(){
                   <div style={{width:`${t.sc/maxSc*100}%`,height:"100%",borderRadius:4,
                     background:i===0?orange:blue}}/>
                 </div>
-                <span style={{fontSize:FS.small,fontWeight:800,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
+                <span style={{fontSize:FS.small,fontWeight:700,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
                 <Chevron open={isOpen} color={T.textFaint}/>
               </div>
               {isOpen&&fd&&(
@@ -2702,13 +2723,13 @@ function ModelViz(){
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
                       <span style={{color:T.textSub,minWidth:24,textAlign:"right"}}>{r.w}%</span>
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
-                      <span style={{fontWeight:800,color:blue,minWidth:30,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+                      <span style={{fontWeight:700,color:blue,minWidth:30,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
                     </div>
                   ))}
                   <div style={{display:"flex",alignItems:"center",marginTop:5,paddingTop:6,
                     borderTop:`2px solid ${T.border}`}}>
-                    <span style={{flex:1,fontSize:FS.small,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore":"Strength score"}</span>
-                    <span style={{fontSize:FS.body,fontWeight:900,color:orange}}>{t.sc.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
+                    <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Sterktescore":"Strength score"}</span>
+                    <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{t.sc.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                   </div>
                 </div>
               )}
@@ -2760,7 +2781,7 @@ function ModelViz(){
               <div style={{flex:1,height:12,background:T.bg,borderRadius:4,overflow:"hidden"}}>
                 <div style={{width:`${r.pct/max*100}%`,height:"100%",borderRadius:4,background:i===0?orange:blue}}/>
               </div>
-              <span style={{fontSize:FS.small,fontWeight:800,color:i===0?orange:T.text,flexShrink:0,minWidth:36,textAlign:"right"}}>{r.pct}%</span>
+              <span style={{fontSize:FS.small,fontWeight:800,color:T.text,flexShrink:0,minWidth:36,textAlign:"right"}}>{r.pct}%</span>
             </div>
           );
         })}
@@ -3157,6 +3178,68 @@ const FBREF_NONWC=[
 {"r": 10, "name": "Gavi", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Barcelona", "reason": {"nl": "Blessure (twijfelachtig)", "en": "Injury (doubtful)"}}
 ];
 
+// Prominent, recent injuries with current status (curated, most relevant first)
+const INJURIES=[
+  {name:"Neymar",flag:"🇧🇷",country:"Brazil",pos:"FW",club:"Santos",
+   status:{nl:"Kuitblessure (sinds 17 mei)",en:"Calf injury (since May 17)"},
+   note:{nl:"Twijfelgeval voor de opener vs Marokko; arts: 'tot drie weken'.",en:"Doubtful for the opener vs Morocco; doctor: 'up to three weeks'."},sev:"doubt"},
+  {name:"Gavi",flag:"🇪🇸",country:"Spain",pos:"MF",club:"Barcelona",
+   status:{nl:"Knie — twijfelachtig",en:"Knee — doubtful"},
+   note:{nl:"Race tegen de klok om de selectie te halen.",en:"Race against time to make the squad."},sev:"doubt"},
+  {name:"Aurélien Tchouaméni",flag:"🇫🇷",country:"France",pos:"MF",club:"Real Madrid",
+   status:{nl:"Blessure — twijfelachtig",en:"Injury — doubtful"},
+   note:{nl:"Sleutelspeler op het middenveld; fitheid onzeker.",en:"Key midfield anchor; fitness uncertain."},sev:"doubt"},
+  {name:"Santiago Giménez",flag:"🇲🇽",country:"Mexico",pos:"FW",club:"AC Milan",
+   status:{nl:"Mist het toernooi",en:"Misses the tournament"},
+   note:{nl:"Significant aanvalsverlies voor het gastland.",en:"Significant attacking loss for the host."},sev:"out"},
+  {name:"Alisson",flag:"🇧🇷",country:"Brazil",pos:"GK",club:"Liverpool",
+   status:{nl:"Fit (na eerdere recidief)",en:"Fit (after earlier relapse)"},
+   note:{nl:"Hersteld en beschikbaar als eerste keeper.",en:"Recovered and available as first-choice keeper."},sev:"fit"},
+  {name:"Tyler Adams",flag:"🇺🇸",country:"United States",pos:"MF",club:"Crystal Palace",
+   status:{nl:"Fit (na enkelblessure)",en:"Fit (after ankle injury)"},
+   note:{nl:"Hersteld, verwacht te starten voor het gastland.",en:"Recovered, expected to start for the host."},sev:"fit"},
+];
+
+
+// ── INJURIES SECTION COMPONENT ───────────────────────────────────────────────
+function InjuriesSection(){
+  const T=useTheme();
+  const lang=useLang();
+  const red=T.id==="dark"?"#FF5544":"#C0392B";
+  const amber=T.id==="dark"?"#E0A030":"#C77700";
+  const green=T.id==="dark"?"#3DBE6E":"#1E7A40";
+  const sevColor={out:red,doubt:amber,fit:green};
+  const sevLabel={
+    out:{nl:"Mist toernooi",en:"Out"},
+    doubt:{nl:"Twijfel",en:"Doubt"},
+    fit:{nl:"Fit",en:"Fit"},
+  };
+  return(
+    <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden"}}>
+      {INJURIES.map((p,i)=>(
+        <div key={p.name} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",
+          borderTop:i>0?`1px solid ${T.border}`:"none"}}>
+          <span style={{fontSize:18,lineHeight:1,flexShrink:0,marginTop:1}}>{p.flag}</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+              <span style={{fontSize:FS.body,fontWeight:700,color:T.text}}>{p.name}</span>
+              <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.3,textTransform:"uppercase",
+                color:sevColor[p.sev],border:`1px solid ${sevColor[p.sev]}`,borderRadius:3,padding:"1px 5px"}}>
+                {sevLabel[p.sev][lang]}
+              </span>
+            </div>
+            <div style={{fontSize:FS.caption,color:T.textSub,marginTop:2}}>
+              {p.pos} · {p.club} · {p.status[lang]}
+            </div>
+            <div style={{fontSize:FS.caption,color:T.textFaint,marginTop:2,lineHeight:1.4}}>
+              {p.note[lang]}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // ── FBREF STATS SECTION COMPONENT ────────────────────────────────────────────
 function FBrefStatsSection(){
@@ -3386,6 +3469,7 @@ export default function App(){
   const [theme,setTheme]=useState("default");
   const [tab,setTab]=useState("bracket");
   const [newsOpen,setNewsOpen]=useState(false);
+  const [injuriesOpen,setInjuriesOpen]=useState(false);
   const [openGroup,setOpenGroup]=useState(null);
   const [nationsOpen,setNationsOpen]=useState(null);
   const [openMatches,setOpenMatches]=useState({});
@@ -3463,6 +3547,26 @@ export default function App(){
                   <Chevron open={newsOpen} color={T.textSub}/>
                 </div>
                 {newsOpen&&<div style={{marginTop:10}}><NewsSection/></div>}
+              </div>
+              <div style={{marginBottom:14}}>
+                <div onClick={()=>setInjuriesOpen(o=>!o)}
+                  style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
+                    background:T.id==="dark"?"#1a1408":(injuriesOpen?"#fff5ea":"#fafbfd"),
+                    border:`1px solid ${T.id==="dark"?"#3a2e18":(injuriesOpen?"#ffd9b8":T.border)}`,
+                    borderRadius:6,
+                    padding:"10px 12px"}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
+                    strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                    <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                  </svg>
+                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
+                    textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
+                    {lang==="nl"?"Blessures":"Injuries"}
+                  </span>
+                  <Chevron open={injuriesOpen} color={T.textSub}/>
+                </div>
+                {injuriesOpen&&<div style={{marginTop:10}}><InjuriesSection/></div>}
               </div>
               <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
                 {lang==="nl"?"Groepsfase":"Group Stage"}
