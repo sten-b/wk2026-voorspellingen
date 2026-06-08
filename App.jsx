@@ -1265,15 +1265,21 @@ function Nav({tab,setTab}){
           }
         </div>
         <div style={{width:1,background:T.border,flexShrink:0,marginRight:2}}/>
-        {tabs.map(t=>(
+        {tabs.map(t=>{
+          const active=tab===t.id;
+          return(
           <button key={t.id} onClick={()=>setTab(t.id)} style={{
             padding:"11px 10px",fontSize:12,
-            ...(tab===t.id ? T.activeTab(T) : T.tabInactive(T)),
-            background:"none",border:"none",
-            whiteSpace:"nowrap",flexShrink:0,
-            fontWeight:tab===t.id?600:400,
+            background:"none",
+            border:"none",
+            borderBottom:active?`2px solid ${T.orange}`:"2px solid transparent",
+            color:active?T.orange:T.textSub,
+            fontWeight:active?700:400,
+            whiteSpace:"nowrap",flexShrink:0,cursor:"pointer",
+            marginBottom:-2,
           }}>{t.label}</button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -2421,40 +2427,32 @@ function ModelViz(){
   const FACTORS=[
     {key:"clock",pct:80,
      label:lang==="nl"?"Elo-rating":"Elo rating",
-     formula:lang==="nl"?"score = (Elo − 1400) / 800 × 100":"score = (Elo − 1400) / 800 × 100",
-     intro:lang==="nl"
-       ?"De officiele Elo-rating is de meest betrouwbare maatstaf voor de sterkte van een land."
-       :"The official Elo rating is the most reliable measure of a country's strength.",
+     formula:lang==="nl"?"(Elo − 1400) / 800 × 100":"(Elo − 1400) / 800 × 100",
+     intro:lang==="nl"?"De betrouwbaarste maatstaf voor teamsterkte.":"The most reliable measure of team strength.",
      detail:lang==="nl"
-       ?"Elo is een puntensysteem dat na elke interland wordt bijgewerkt: winst levert punten op, verlies kost punten, en winnen van een sterke tegenstander telt zwaarder dan van een zwakke. Ook doelsaldo, thuisvoordeel en het belang van de wedstrijd (een WK telt zwaarder dan een oefenduel) zitten erin. We gebruiken de officiele waarden van eloratings.net voor alle 48 landen. Voorbeeld: Spanje heeft met 2155 de hoogste rating van het toernooi."
-       :"Elo is a points system updated after every international: a win earns points, a loss costs them, and beating a strong opponent counts more than beating a weak one. Goal difference, home advantage and match importance (a World Cup counts more than a friendly) are all built in. We use the official eloratings.net values for all 48 teams. Example: Spain has the highest rating in the tournament at 2155."},
+       ?"Puntensysteem dat na elke interland bijwerkt: winst tegen een sterke ploeg telt het zwaarst. Officiële waarden van eloratings.net."
+       :"A points system updated after every match: beating a strong side counts most. Official values from eloratings.net."},
     {key:"trend",pct:10,
      label:lang==="nl"?"Selectiewaarde":"Squad value",
-     formula:lang==="nl"?"score = log(marktwaarde selectie), geschaald 0–100":"score = log(squad market value), scaled 0–100",
-     intro:lang==="nl"
-       ?"Hoeveel individueel talent heeft een land, los van de recente resultaten?"
-       :"How much individual talent does a country have, independent of recent results?",
+     formula:lang==="nl"?"log(marktwaarde selectie), geschaald 0–100":"log(squad market value), scaled 0–100",
+     intro:lang==="nl"?"Individueel talent, los van resultaten.":"Individual talent, independent of results.",
      detail:lang==="nl"
-       ?"Elo meet resultaten, maar niet de kwaliteit van de spelers zelf. Daarom voegen we de totale Transfermarkt-marktwaarde van de selectie toe als onafhankelijke factor: die vangt clubniveau en talent dat de uitslagen nog niet laten zien. We schalen logaritmisch omdat de waardes sterk uiteenlopen (Engeland ~€1,3 mld, Qatar ~€14 mln). Voorbeeld: Ghana scoort hier hoger dan Panama of Oezbekistan dankzij spelers als Kudus en Partey, ook al ligt hun Elo lager. Cijfers via Transfermarkt, juni 2026."
-       :"Elo measures results, but not the quality of the players themselves. So we add the total Transfermarkt squad market value as an independent factor: it captures club level and talent that results don't yet show. We scale logarithmically because values range widely (England ~€1.3bn, Qatar ~€14m). Example: Ghana scores higher here than Panama or Uzbekistan thanks to players like Kudus and Partey, even though their Elo is lower. Figures via Transfermarkt, June 2026."},
+       ?"Totale Transfermarkt-waarde van de selectie, logaritmisch geschaald. Vangt clubniveau dat Elo niet ziet — Ghana scoort hier hoger dan Panama dankzij spelers als Kudus en Partey."
+       :"Total Transfermarkt squad value, log-scaled. Captures club level Elo misses — Ghana scores higher than Panama thanks to players like Kudus and Partey."},
     {key:"trophy",pct:5,
      label:lang==="nl"?"WK-ervaring":"WC experience",
-     formula:lang==="nl"?"score = Σ (toernooizwaarte × rondediepte × recentheid), geschaald 0–100":"score = Σ (tournament weight × round depth × recency), scaled 0–100",
-     intro:lang==="nl"
-       ?"Teams die recent diep in een WK kwamen, presteren beter onder knockoutdruk."
-       :"Teams that recently went deep in a World Cup perform better under knockout pressure.",
+     formula:lang==="nl"?"Σ(toernooizwaarte × rondediepte × recentheid)":"Σ(tournament weight × round depth × recency)",
+     intro:lang==="nl"?"Diepe toernooiruns wijzen op bestendigheid onder druk.":"Deep tournament runs signal composure under pressure.",
      detail:lang==="nl"
-       ?"Berekend uit de grote toernooien van 2018-2026: WK, EK, Copa América, AFCON, Asian Cup en Gold Cup. Hoe ver een land kwam telt mee (kwart-, halve finale, finale, titel), waarbij een sterker toernooi en een recenter resultaat zwaarder wegen. Voorbeeld: Argentinië scoort maximaal (WK-titel 2022 + twee Copa's); Turkije laag omdat het al jaren geen groot toernooi diep haalde."
-       :"Computed from the major tournaments of 2018-2026: World Cup, Euro, Copa América, AFCON, Asian Cup and Gold Cup. How far a country went counts (quarter-final, semi, final, title), with a stronger tournament and a more recent result weighing more. Example: Argentina scores maximum (2022 World Cup title + two Copas); Turkey low, having not gone deep in a major tournament for years."},
+       ?"Uit de grote toernooien 2018-2026, recenter en verder gekomen weegt zwaarder. Argentinië scoort maximaal (WK 2022 + twee Copa's)."
+       :"From the majors of 2018-2026, more recent and deeper runs weigh more. Argentina scores maximum (2022 WC + two Copas)."},
     {key:"coach",pct:5,
      label:lang==="nl"?"Coachkwaliteit":"Coaching quality",
-     formula:lang==="nl"?"score = √(prijspunten × prestige), geschaald 0–100":"score = √(trophy points × prestige), scaled 0–100",
-     intro:lang==="nl"
-       ?"Een bewezen coach met een sterke erelijst verhoogt de kans op slimme keuzes onder druk."
-       :"A proven coach with a strong trophy record raises the chance of sharp decisions under pressure.",
+     formula:lang==="nl"?"√(prijspunten × prestige), geschaald 0–100":"√(trophy points × prestige), scaled 0–100",
+     intro:lang==="nl"?"Een bewezen coach scherpt keuzes onder druk.":"A proven coach sharpens decisions under pressure.",
      detail:lang==="nl"
-       ?"Score op basis van de erelijst van de huidige bondscoach: gewonnen prijzen (landstitels, bekers, continentale en WK-prijzen) wegen mee naar prestige. Voorbeeld: Ancelotti (Brazilie) scoort maximaal als meest gedecoreerde clubtrainer ooit; Scaloni (Argentinie) en Deschamps (Frankrijk) volgen met hun WK-titels."
-       :"Scored from the current head coach's honours: trophies won (league titles, cups, continental and World Cup honours) weighted by prestige. Example: Ancelotti (Brazil) scores maximum as the most decorated club coach ever; Scaloni (Argentina) and Deschamps (France) follow on their World Cup titles."},
+       ?"Op basis van de erelijst van de huidige bondscoach. Ancelotti (Brazilië) scoort maximaal; Scaloni en Deschamps volgen op hun WK-titels."
+       :"Based on the current head coach's honours. Ancelotti (Brazil) scores maximum; Scaloni and Deschamps follow on their World Cup titles."},
   ];
 
   // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
@@ -2686,31 +2684,6 @@ function ModelViz(){
           {lang==="nl"?"De resterende kans verdeelt zich over de overige 40 landen, die elk minder dan 0,5% scoorden."
             :"The remaining probability is split across the other 40 nations, each scoring under 0.5%."}
         </div>
-      </div>
-
-
-      {/* DATA SOURCES */}
-      {SL(lang==="nl"?"Databronnen":"Data sources","info")}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
-        padding:"12px",marginBottom:16}}>
-        {[
-          {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026",en:"Official Elo ratings, verified June 2026"}},
-          {label:"Selectiewaarde",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
-          {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
-          {label:"Ervaring",src:"Handmatig",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
-          {label:"Coach",src:"Handmatig",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
-          {label:"G+A/90 spelers",src:"FBref",desc:{nl:"Big 5 Europa 2025-26, min. 4×90 min.",en:"Big 5 Europe 2025-26, min. 4×90 min."}},
-        ].map((row,i,arr)=>(
-          <div key={row.label} style={{display:"flex",gap:10,alignItems:"flex-start",
-            paddingBottom:i<arr.length-1?9:0,marginBottom:i<arr.length-1?9:0,
-            borderBottom:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
-            <div style={{minWidth:104,flexShrink:0}}>
-              <div style={{fontSize:11,fontWeight:700,color:T.text}}>{row.label}</div>
-              <div style={{fontSize:9,fontWeight:600,color:orange,marginTop:1}}>{row.src}</div>
-            </div>
-            <div style={{fontSize:10,color:T.textSub,lineHeight:1.5}}>{row.desc[lang]}</div>
-          </div>
-        ))}
       </div>
 
     </React.Fragment>
@@ -3487,6 +3460,39 @@ export default function App(){
                   <span style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.red}}>{tr.underTitle}</span>
                 </div>
                 {OUTLOOK.under.map(d=><OutlookRow key={d.team} d={d} type="under" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
+              </div>
+
+              {/* ── DATA SOURCES (bottom of page) ── */}
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,marginTop:16,
+                paddingBottom:5,borderBottom:`2px solid ${T.border}`}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.textSub}
+                  strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                  <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+                </svg>
+                <span style={{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub}}>
+                  {lang==="nl"?"Databronnen":"Data sources"}
+                </span>
+              </div>
+              <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
+                padding:"12px",marginBottom:20}}>
+                {[
+                  {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026",en:"Official Elo ratings, verified June 2026"}},
+                  {label:lang==="nl"?"Selectiewaarde":"Squad value",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
+                  {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
+                  {label:lang==="nl"?"Ervaring":"Experience",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
+                  {label:"Coach",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
+                  {label:lang==="nl"?"G+A/90 spelers":"G+A/90 players",src:"FBref",desc:{nl:"Big 5 Europa 2025-26, min. 4×90 min.",en:"Big 5 Europe 2025-26, min. 4×90 min."}},
+                ].map((row,i,arr)=>(
+                  <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",
+                    paddingBottom:i<arr.length-1?9:0,marginBottom:i<arr.length-1?9:0,
+                    borderBottom:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
+                    <div style={{minWidth:104,flexShrink:0}}>
+                      <div style={{fontSize:11,fontWeight:700,color:T.text}}>{row.label}</div>
+                      <div style={{fontSize:9,fontWeight:600,color:T.id==="dark"?T.orange:"#E07000",marginTop:1}}>{row.src}</div>
+                    </div>
+                    <div style={{fontSize:10,color:T.textSub,lineHeight:1.5}}>{row.desc[lang]}</div>
+                  </div>
+                ))}
               </div>
 
             </React.Fragment>
