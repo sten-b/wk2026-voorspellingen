@@ -3060,11 +3060,16 @@ const FBREF_WC=[
 ];
 
 const FBREF_NONWC=[
-{"r":1,"name":"Orri Steinn Óskarsson","nat":"ISL","flag":"🇮🇸","country":"Iceland","pos":"FW","squad":"Real Sociedad","g90":0.97,"a90":0.0,"ga90":0.97,"goals":9,"assists":0,"mins90":9.3},
-{"r":2,"name":"Artem Dovbyk","nat":"UKR","flag":"🇺🇦","country":"Ukraine","pos":"FW","squad":"Roma","g90":0.69,"a90":0.23,"ga90":0.92,"goals":3,"assists":1,"mins90":4.4},
-{"r":3,"name":"Taiwo Awoniyi","nat":"NGA","flag":"🇳🇬","country":"Nigeria","pos":"FW","squad":"Nottingham Forest","g90":0.73,"a90":0.18,"ga90":0.91,"goals":4,"assists":1,"mins90":5.5},
-{"r":4,"name":"Robert Lewandowski","nat":"POL","flag":"🇵🇱","country":"Poland","pos":"FW","squad":"Barcelona","g90":0.76,"a90":0.11,"ga90":0.87,"goals":14,"assists":2,"mins90":18.5},
-{"r":5,"name":"Nathan Mbala","nat":"","flag":"🏳️","country":"","pos":"MF","squad":"Metz","g90":0.41,"a90":0.41,"ga90":0.82,"goals":2,"assists":2,"mins90":4.9}
+{"r": 1, "name": "Robert Lewandowski", "nat": "POL", "flag": "🇵🇱", "country": "Poland", "pos": "FW", "squad": "Barcelona", "reason": {"nl": "Polen niet gekwalificeerd", "en": "Poland not qualified"}},
+{"r": 2, "name": "Victor Osimhen", "nat": "NGA", "flag": "🇳🇬", "country": "Nigeria", "pos": "FW", "squad": "Galatasaray", "reason": {"nl": "Nigeria niet gekwalificeerd", "en": "Nigeria not qualified"}},
+{"r": 3, "name": "Gianluigi Donnarumma", "nat": "ITA", "flag": "🇮🇹", "country": "Italy", "pos": "GK", "squad": "Man City", "reason": {"nl": "Italië niet gekwalificeerd", "en": "Italy not qualified"}},
+{"r": 4, "name": "Dušan Vlahović", "nat": "SRB", "flag": "🇷🇸", "country": "Serbia", "pos": "FW", "squad": "Juventus", "reason": {"nl": "Servië niet gekwalificeerd", "en": "Serbia not qualified"}},
+{"r": 5, "name": "Federico Chiesa", "nat": "ITA", "flag": "🇮🇹", "country": "Italy", "pos": "FW", "squad": "Liverpool", "reason": {"nl": "Italië niet gekwalificeerd", "en": "Italy not qualified"}},
+{"r": 6, "name": "Mykhailo Mudryk", "nat": "UKR", "flag": "🇺🇦", "country": "Ukraine", "pos": "FW", "squad": "Chelsea", "reason": {"nl": "Oekraïne niet gekwalificeerd", "en": "Ukraine not qualified"}},
+{"r": 7, "name": "Sergej Milinković-Savić", "nat": "SRB", "flag": "🇷🇸", "country": "Serbia", "pos": "MF", "squad": "Al-Hilal", "reason": {"nl": "Servië niet gekwalificeerd", "en": "Serbia not qualified"}},
+{"r": 8, "name": "Dominik Szoboszlai", "nat": "HUN", "flag": "🇭🇺", "country": "Hungary", "pos": "MF", "squad": "Liverpool", "reason": {"nl": "Hongarije niet gekwalificeerd", "en": "Hungary not qualified"}},
+{"r": 9, "name": "Aurélien Tchouaméni", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Real Madrid", "reason": {"nl": "Blessure (twijfelachtig)", "en": "Injury (doubtful)"}},
+{"r": 10, "name": "Gavi", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Barcelona", "reason": {"nl": "Blessure (twijfelachtig)", "en": "Injury (doubtful)"}}
 ];
 
 
@@ -3112,9 +3117,8 @@ function FBrefStatsSection(){
     <React.Fragment>
       {/* WC Players table */}
       <div style={{marginTop:20}}>
-        <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",
-          color:blue,marginBottom:6,paddingBottom:5,borderBottom:`2px solid ${blue}`}}>
-          {lang==="nl"?"G+A per 90 · WK 2026 selecties":"G+A per 90 · WC 2026 squads"}
+        <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
+          {lang==="nl"?"Doelpunten + Assists per 90":"Goals + Assists per 90"}
         </div>
         <div style={{fontSize:9,color:T.textFaint,marginBottom:10,lineHeight:1.5}}>
           {lang==="nl"
@@ -3158,22 +3162,31 @@ function FBrefStatsSection(){
       </div>
       {/* Missed out */}
       <div style={{marginTop:8}}>
-        <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",
-          color:"#C0392B",marginBottom:6,paddingBottom:5,borderBottom:`2px solid #C0392B`}}>
-          {lang==="nl"?"Niet gekwalificeerd · Top 5":"Missed out · Top 5"}
+        <div style={{fontSize:11,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
+          {lang==="nl"?"Sterren die het toernooi missen":"Stars missing the tournament"}
         </div>
         <div style={{fontSize:9,color:T.textFaint,marginBottom:8}}>
           {lang==="nl"
-            ?"Beste spelers wiens land zich niet kwalificeerde (Big 5, zelfde maatstaf)"
-            :"Best players whose nation didn't qualify (Big 5, same metric)"}
+            ?"Topspelers die ontbreken door niet-kwalificatie of blessure"
+            :"Top players absent through non-qualification or injury"}
         </div>
-        <div style={{background:T.card,border:`1px solid #C0392B`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
-          <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"6px 10px",
-            borderBottom:`2px solid #C0392B`,background:T.id==="dark"?"#1a0808":"#fff8f8"}}>
-            {HDR.map((h,i)=>(<div key={h} style={{fontSize:8,fontWeight:700,letterSpacing:0.5,
-              textTransform:"uppercase",color:"#C0392B",textAlign:i>=5?"right":"left"}}>{h}</div>))}
-          </div>
-          {FBREF_NONWC.map((p,i)=>(<Row key={p.name} p={p} rank={i+1} accentColor="#C0392B"/>))}
+        <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
+          {FBREF_NONWC.map((p,i,arr)=>(
+            <div key={p.name} style={{display:"flex",alignItems:"center",gap:9,
+              padding:"9px 12px",
+              borderBottom:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
+              <span style={{fontSize:18,lineHeight:1,flexShrink:0}}>{p.flag}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:12,fontWeight:600,color:T.text,
+                  overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+                <div style={{fontSize:9,color:T.textFaint,marginTop:1}}>{p.pos} · {p.squad}</div>
+              </div>
+              <span style={{fontSize:9,fontWeight:600,flexShrink:0,textAlign:"right",
+                color:p.reason[lang].toLowerCase().includes(lang==="nl"?"blessure":"injury")?(T.id==="dark"?"#FF5544":"#C0392B"):T.textSub}}>
+                {p.reason[lang]}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </React.Fragment>
