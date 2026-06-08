@@ -1,0 +1,482 @@
+{
+ "Algeria": {
+  "coach": "Vladimir Petković",
+  "since": 2024,
+  "M": 38,
+  "W": 26,
+  "D": 8,
+  "L": 4,
+  "ppg_flat": 2.26,
+  "ppg_recency": 2.32
+ },
+ "Argentina": {
+  "coach": "Lionel Scaloni",
+  "since": 2018,
+  "M": 102,
+  "W": 71,
+  "D": 19,
+  "L": 12,
+  "ppg_flat": 2.27,
+  "ppg_recency": 2.46
+ },
+ "Australia": {
+  "coach": "Tony Popovic",
+  "since": 2024,
+  "M": 30,
+  "W": 18,
+  "D": 6,
+  "L": 6,
+  "ppg_flat": 2.0,
+  "ppg_recency": 1.9
+ },
+ "Austria": {
+  "coach": "Ralf Rangnick",
+  "since": 2022,
+  "M": 47,
+  "W": 27,
+  "D": 9,
+  "L": 11,
+  "ppg_flat": 1.91,
+  "ppg_recency": 2.1
+ },
+ "Belgium": {
+  "coach": "Rudi Garcia",
+  "since": 2025,
+  "M": 14,
+  "W": 9,
+  "D": 4,
+  "L": 1,
+  "ppg_flat": 2.21,
+  "ppg_recency": 2.27
+ },
+ "Bosnia-Herzegovina": {
+  "coach": "Sergej Barbarez",
+  "since": 2024,
+  "M": 23,
+  "W": 6,
+  "D": 8,
+  "L": 9,
+  "ppg_flat": 1.13,
+  "ppg_recency": 1.25
+ },
+ "Brazil": {
+  "coach": "Carlo Ancelotti",
+  "since": 2025,
+  "M": 14,
+  "W": 8,
+  "D": 2,
+  "L": 4,
+  "ppg_flat": 1.86,
+  "ppg_recency": 1.91
+ },
+ "Canada": {
+  "coach": "Jesse Marsch",
+  "since": 2024,
+  "M": 32,
+  "W": 14,
+  "D": 13,
+  "L": 5,
+  "ppg_flat": 1.72,
+  "ppg_recency": 1.74
+ },
+ "Cape Verde": {
+  "coach": "Bubista",
+  "since": 2020,
+  "M": 64,
+  "W": 29,
+  "D": 17,
+  "L": 18,
+  "ppg_flat": 1.62,
+  "ppg_recency": 1.58
+ },
+ "Colombia": {
+  "coach": "Néstor Lorenzo",
+  "since": 2022,
+  "M": 50,
+  "W": 30,
+  "D": 11,
+  "L": 9,
+  "ppg_flat": 2.02,
+  "ppg_recency": 1.91
+ },
+ "Croatia": {
+  "coach": "Zlatko Dalić",
+  "since": 2017,
+  "M": 115,
+  "W": 57,
+  "D": 29,
+  "L": 29,
+  "ppg_flat": 1.74,
+  "ppg_recency": 1.85
+ },
+ "Curacao": {
+  "coach": "Dick Advocaat",
+  "since": 2024,
+  "M": 24,
+  "W": 12,
+  "D": 6,
+  "L": 6,
+  "ppg_flat": 1.75,
+  "ppg_recency": 1.63
+ },
+ "Czechia": {
+  "coach": "Miroslav Koubek",
+  "since": 2024,
+  "M": 27,
+  "W": 15,
+  "D": 7,
+  "L": 5,
+  "ppg_flat": 1.93,
+  "ppg_recency": 1.94
+ },
+ "DR Congo": {
+  "coach": "Sébastien Desabre",
+  "since": 2022,
+  "M": 51,
+  "W": 24,
+  "D": 14,
+  "L": 13,
+  "ppg_flat": 1.69,
+  "ppg_recency": 1.91
+ },
+ "Ecuador": {
+  "coach": "Sebastián Beccacece",
+  "since": 2024,
+  "M": 28,
+  "W": 11,
+  "D": 13,
+  "L": 4,
+  "ppg_flat": 1.64,
+  "ppg_recency": 1.65
+ },
+ "Egypt": {
+  "coach": "Hossam Hassan",
+  "since": 2024,
+  "M": 37,
+  "W": 18,
+  "D": 14,
+  "L": 5,
+  "ppg_flat": 1.84,
+  "ppg_recency": 1.81
+ },
+ "England": {
+  "coach": "Thomas Tuchel",
+  "since": 2025,
+  "M": 13,
+  "W": 10,
+  "D": 1,
+  "L": 2,
+  "ppg_flat": 2.38,
+  "ppg_recency": 2.33
+ },
+ "France": {
+  "coach": "Didier Deschamps",
+  "since": 2012,
+  "M": 186,
+  "W": 119,
+  "D": 36,
+  "L": 31,
+  "ppg_flat": 2.11,
+  "ppg_recency": 2.09
+ },
+ "Germany": {
+  "coach": "Julian Nagelsmann",
+  "since": 2023,
+  "M": 40,
+  "W": 23,
+  "D": 7,
+  "L": 10,
+  "ppg_flat": 1.9,
+  "ppg_recency": 2.11
+ },
+ "Ghana": {
+  "coach": "Otto Addo",
+  "since": 2024,
+  "M": 27,
+  "W": 8,
+  "D": 8,
+  "L": 11,
+  "ppg_flat": 1.19,
+  "ppg_recency": 1.15
+ },
+ "Haiti": {
+  "coach": "Sébastien Migné",
+  "since": 2024,
+  "M": 24,
+  "W": 14,
+  "D": 4,
+  "L": 6,
+  "ppg_flat": 1.92,
+  "ppg_recency": 1.74
+ },
+ "Iran": {
+  "coach": "Amir Ghalenoei",
+  "since": 2023,
+  "M": 39,
+  "W": 27,
+  "D": 8,
+  "L": 4,
+  "ppg_flat": 2.28,
+  "ppg_recency": 2.16
+ },
+ "Iraq": {
+  "coach": "Graham Arnold",
+  "since": 2025,
+  "M": 17,
+  "W": 9,
+  "D": 4,
+  "L": 4,
+  "ppg_flat": 1.82,
+  "ppg_recency": 1.87
+ },
+ "Ivory Coast": {
+  "coach": "Emerse Faé",
+  "since": 2024,
+  "M": 36,
+  "W": 23,
+  "D": 6,
+  "L": 7,
+  "ppg_flat": 2.08,
+  "ppg_recency": 2.13
+ },
+ "Japan": {
+  "coach": "Hajime Moriyasu",
+  "since": 2018,
+  "M": 109,
+  "W": 71,
+  "D": 16,
+  "L": 22,
+  "ppg_flat": 2.1,
+  "ppg_recency": 2.26
+ },
+ "Jordan": {
+  "coach": "Jamal Sellami",
+  "since": 2024,
+  "M": 43,
+  "W": 20,
+  "D": 11,
+  "L": 12,
+  "ppg_flat": 1.65,
+  "ppg_recency": 1.55
+ },
+ "South Korea": {
+  "coach": "Hong Myung-bo",
+  "since": 2024,
+  "M": 31,
+  "W": 18,
+  "D": 9,
+  "L": 4,
+  "ppg_flat": 2.03,
+  "ppg_recency": 2.02
+ },
+ "Mexico": {
+  "coach": "Javier Aguirre",
+  "since": 2024,
+  "M": 37,
+  "W": 20,
+  "D": 9,
+  "L": 8,
+  "ppg_flat": 1.86,
+  "ppg_recency": 1.93
+ },
+ "Morocco": {
+  "coach": "Walid Regragui",
+  "since": 2022,
+  "M": 70,
+  "W": 50,
+  "D": 14,
+  "L": 6,
+  "ppg_flat": 2.34,
+  "ppg_recency": 2.54
+ },
+ "Netherlands": {
+  "coach": "Ronald Koeman",
+  "since": 2023,
+  "M": 39,
+  "W": 21,
+  "D": 9,
+  "L": 9,
+  "ppg_flat": 1.85,
+  "ppg_recency": 1.87
+ },
+ "New Zealand": {
+  "coach": "Darren Bazeley",
+  "since": 2023,
+  "M": 33,
+  "W": 13,
+  "D": 6,
+  "L": 14,
+  "ppg_flat": 1.36,
+  "ppg_recency": 1.23
+ },
+ "Norway": {
+  "coach": "Ståle Solbakken",
+  "since": 2020,
+  "M": 62,
+  "W": 35,
+  "D": 12,
+  "L": 15,
+  "ppg_flat": 1.89,
+  "ppg_recency": 2.06
+ },
+ "Panama": {
+  "coach": "Thomas Christiansen",
+  "since": 2020,
+  "M": 94,
+  "W": 45,
+  "D": 23,
+  "L": 26,
+  "ppg_flat": 1.68,
+  "ppg_recency": 1.7
+ },
+ "Paraguay": {
+  "coach": "Gustavo Alfaro",
+  "since": 2024,
+  "M": 25,
+  "W": 10,
+  "D": 7,
+  "L": 8,
+  "ppg_flat": 1.48,
+  "ppg_recency": 1.54
+ },
+ "Portugal": {
+  "coach": "Roberto Martínez",
+  "since": 2023,
+  "M": 39,
+  "W": 27,
+  "D": 7,
+  "L": 5,
+  "ppg_flat": 2.26,
+  "ppg_recency": 2.18
+ },
+ "Qatar": {
+  "coach": "Julen Lopetegui",
+  "since": 2025,
+  "M": 15,
+  "W": 3,
+  "D": 5,
+  "L": 7,
+  "ppg_flat": 0.93,
+  "ppg_recency": 0.88
+ },
+ "Saudi Arabia": {
+  "coach": "Giorgos Donis",
+  "since": 2025,
+  "M": 24,
+  "W": 11,
+  "D": 4,
+  "L": 9,
+  "ppg_flat": 1.54,
+  "ppg_recency": 1.5
+ },
+ "Scotland": {
+  "coach": "Steve Clarke",
+  "since": 2019,
+  "M": 80,
+  "W": 36,
+  "D": 16,
+  "L": 28,
+  "ppg_flat": 1.55,
+  "ppg_recency": 1.55
+ },
+ "Senegal": {
+  "coach": "Pape Thiaw",
+  "since": 2024,
+  "M": 35,
+  "W": 26,
+  "D": 6,
+  "L": 3,
+  "ppg_flat": 2.4,
+  "ppg_recency": 2.34
+ },
+ "South Africa": {
+  "coach": "Hugo Broos",
+  "since": 2021,
+  "M": 74,
+  "W": 35,
+  "D": 28,
+  "L": 11,
+  "ppg_flat": 1.8,
+  "ppg_recency": 1.75
+ },
+ "Spain": {
+  "coach": "Luis de la Fuente",
+  "since": 2022,
+  "M": 53,
+  "W": 36,
+  "D": 13,
+  "L": 4,
+  "ppg_flat": 2.28,
+  "ppg_recency": 2.3
+ },
+ "Sweden": {
+  "coach": "Graham Potter",
+  "since": 2025,
+  "M": 14,
+  "W": 5,
+  "D": 3,
+  "L": 6,
+  "ppg_flat": 1.29,
+  "ppg_recency": 1.26
+ },
+ "Switzerland": {
+  "coach": "Murat Yakin",
+  "since": 2021,
+  "M": 69,
+  "W": 31,
+  "D": 24,
+  "L": 14,
+  "ppg_flat": 1.7,
+  "ppg_recency": 1.68
+ },
+ "Tunisia": {
+  "coach": "Sami Trabelsi",
+  "since": 2025,
+  "M": 22,
+  "W": 11,
+  "D": 6,
+  "L": 5,
+  "ppg_flat": 1.77,
+  "ppg_recency": 1.68
+ },
+ "Turkey": {
+  "coach": "Vincenzo Montella",
+  "since": 2023,
+  "M": 39,
+  "W": 23,
+  "D": 6,
+  "L": 10,
+  "ppg_flat": 1.92,
+  "ppg_recency": 2.08
+ },
+ "Uruguay": {
+  "coach": "Marcelo Bielsa",
+  "since": 2023,
+  "M": 39,
+  "W": 16,
+  "D": 16,
+  "L": 7,
+  "ppg_flat": 1.64,
+  "ppg_recency": 1.55
+ },
+ "United States": {
+  "coach": "Mauricio Pochettino",
+  "since": 2024,
+  "M": 36,
+  "W": 17,
+  "D": 4,
+  "L": 15,
+  "ppg_flat": 1.53,
+  "ppg_recency": 1.53
+ },
+ "Uzbekistan": {
+  "coach": "Fabio Cannavaro",
+  "since": 2025,
+  "M": 13,
+  "W": 5,
+  "D": 6,
+  "L": 2,
+  "ppg_flat": 1.62,
+  "ppg_recency": 1.57
+ }
+}
