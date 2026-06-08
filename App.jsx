@@ -3865,6 +3865,9 @@ export default function App(){
             </React.Fragment>
           )}
 
+          {/* NATIONS */}
+          {tab==="nations"&&<NationsTab preOpen={nationsOpen}/>}
+
           {/* PLAYERS */}
           {tab==="players"&&<PlayersTab/>}
         </div>
