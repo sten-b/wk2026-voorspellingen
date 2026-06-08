@@ -268,6 +268,7 @@ const KO_EXPL = {
   nl: {
     "Argentina-Netherlands":"Argentinië tegen een georganiseerd maar minder explosief Nederland. Van Dijk leidt een gedisciplineerde verdediging en De Jong probeert het middenveld te beheersen, maar Argentiniës aanvallende drilling via Álvarez en Mac Allister vindt net iets vaker de opening. Oranje houdt lang stand en komt nog terug tot 2-1, maar Argentiniës klasse in de beslissende momenten geeft de doorslag.",
     "England-Brazil":"Twee zwaargewichten met contrasterende stijlen: Engelands structuur tegen Braziliaanse individuele klasse. Bellingham trekt het middenveld naar zich toe en Saka's directheid langs rechts is het wapen dat Brazilië niet neutraliseert. Vinícius blijft gevaarlijk en maakt er 2-1 van, maar Engeland controleert de cruciale fases en houdt stand.",
+    "Brazil-England":"Twee zwaargewichten, gescheiden door het kleinste verschil. Braziliës recente vorm en aanvallende klasse geven net de doorslag: Vinícius en Rodrygo vinden ruimte achter de Engelse defensie, terwijl Engeland via Bellingham en Saka blijft dreigen. Engeland komt terug tot 2-1, maar Brazilië is in de beslissende momenten net iets gevaarlijker en trekt het over de streep.",
     "France-Portugal":"Frankrijks balans tussen controle en omschakeling tegen een Portugal dat op leeftijd begint te raken. Mbappé exploiteert de ruimte achter de Portugese defensie en Tchouaméni wint het fysieke duel op het middenveld. Portugal vecht terug tot 2-1 via een moment van Ronaldo, maar Frankrijk is klinischer en beslist het.",
     "Spain-Colombia":"Spanje tegen een fysiek sterke, gretige Colombiaanse ploeg. Luis Díaz is het grootste gevaar en zorgt voor de aansluitingstreffer, maar Spanjes balbezit en de creativiteit van Yamal en Pedri zijn over negentig minuten te veel. Rodri controleert het tempo vanuit de diepte: een verdiende 2-1 die comfortabeler aanvoelt dan de score.",
     "Spain-Belgium":"Spanje versus het enige ploeg dat qua organisatie en ervaring in de buurt komt. De Bruyne probeert het spel te dicteren maar Rodri en Pedri controleren het tempo volledig. Yamal maakt het verschil langs de rechterkant: zijn directheid is het kwaliteitsverschil dat België niet kan compenseren. Een knappe maar verdiende Spaanse overwinning.",
@@ -284,6 +285,7 @@ const KO_EXPL = {
   en: {
     "Argentina-Netherlands":"Argentina against an organised but less explosive Netherlands. Van Dijk marshals a disciplined defence and De Jong tries to control midfield, but Argentina's attacking drill through Álvarez and Mac Allister finds the opening just a little more often. The Dutch hold firm and pull one back to 2-1, but Argentina's class in the decisive moments proves decisive.",
     "England-Brazil":"Two heavyweights with contrasting styles: England's structure against Brazilian individual brilliance. Bellingham draws the midfield to him and Saka's directness down the right is the weapon Brazil cannot neutralise. Vinícius stays dangerous and makes it 2-1, but England control the crucial phases and hold on.",
+    "Brazil-England":"Two heavyweights separated by the smallest of margins. Brazil's recent form and attacking class just tip it: Vinícius and Rodrygo find space behind the English defence, while England keep threatening through Bellingham and Saka. England pull back to 2-1, but Brazil are a fraction more dangerous in the decisive moments and see it through.",
     "France-Portugal":"France's balance of control and transition against a Portugal side starting to age. Mbappé exploits the space behind the Portuguese defence and Tchouaméni wins the physical midfield battle. Portugal fight back to 2-1 through a Ronaldo moment, but France are more clinical and see it out.",
     "Spain-Colombia":"Spain against a physically strong, eager Colombia. Luis Díaz is the biggest threat and grabs a consolation, but Spain's possession and the creativity of Yamal and Pedri are too much over ninety minutes. Rodri controls the tempo from deep: a deserved 2-1 that feels more comfortable than the scoreline.",
     "Spain-Belgium":"Spain versus the only side that comes close in organisation and experience. De Bruyne tries to dictate but Rodri and Pedri control the tempo completely. Yamal makes the difference on the right: his directness is the quality gap Belgium cannot compensate for. A hard-fought but deserved Spanish victory.",
@@ -410,58 +412,58 @@ const FORM_ADJ = {
 //           weighted by tournament strength x round depth
 //   coach = head-coach honours weighted by trophy prestige
 // Weights (sum to 1): elo .80, form .10, experience .05, coach .05
-const WEIGHTS = { elo:0.80, form:0.10, experience:0.05, coach:0.05 };
+const WEIGHTS = { elo:0.75, form:0.10, experience:0.05, coach:0.05, recentForm:0.05 };
 
 // eloN = Elo normalised to 0-100 via (elo - 1400) / 800 * 100, clamped.
 const MODEL_DATA={
-  "Spain":{elo:2155,eloN:94.4,svN:90.2,form:68.7,exp:42.2,coach:49.0,xg:2.909,xgc:0.879},
-  "Argentina":{elo:2114,eloN:89.2,svN:89.2,form:63.8,exp:100.0,coach:77.4,xg:2.141,xgc:0.346},
-  "France":{elo:2062,eloN:82.8,svN:98.2,form:65.7,exp:65.3,coach:65.5,xg:2.485,xgc:0.965},
-  "England":{elo:2021,eloN:77.6,svN:100.0,form:64.5,exp:52.0,coach:45.5,xg:2.394,xgc:0.24},
-  "Brazil":{elo:1991,eloN:73.9,svN:96.3,form:57.1,exp:40.9,coach:100.0,xg:1.898,xgc:0.784},
-  "Portugal":{elo:1986,eloN:73.2,svN:93.5,form:62.2,exp:0.0,coach:13.6,xg:2.909,xgc:1.137},
-  "Colombia":{elo:1977,eloN:72.1,svN:75.0,form:50.7,exp:33.4,coach:0.0,xg:2.201,xgc:1.08},
-  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,form:60.3,exp:14.7,coach:32.6,xg:2.886,xgc:0.733},
-  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,form:56.2,exp:0.0,coach:0.0,xg:0.635,xgc:0.324},
-  "Germany":{elo:1932,eloN:66.5,svN:89.9,form:50.3,exp:0.0,coach:13.6,xg:2.44,xgc:0.834},
-  "Norway":{elo:1914,eloN:64.2,svN:81.6,form:67.0,exp:0.0,coach:41.8,xg:3.654,xgc:0.738},
-  "Croatia":{elo:1911,eloN:63.9,svN:69.0,form:53.9,exp:35.8,coach:20.4,xg:2.541,xgc:0.862},
-  "Turkey":{elo:1911,eloN:63.9,svN:79.2,form:56.0,exp:0.0,coach:13.6,xg:2.283,xgc:1.144},
-  "Japan":{elo:1906,eloN:63.2,svN:66.0,form:54.9,exp:10.1,coach:25.4,xg:1.648,xgc:0.478},
-  "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:13.6,coach:13.6,xg:3.565,xgc:0.807},
-  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:14.7,coach:21.5,xg:0.843,xgc:0.697},
-  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:0.0,coach:22.5,xg:2.268,xgc:0.667},
-  "Mexico":{elo:1915,eloN:64.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61},
-  "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:26.0,coach:28.8,xg:1.983,xgc:0.847},
-  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:0.0,coach:20.4,xg:1.213,xgc:0.811},
-  "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:0.0,coach:15.2,xg:2.46,xgc:0.59},
-  "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:35.9,coach:22.5,xg:2.11,xgc:0.345},
-  "Canada":{elo:1838,eloN:54.8,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444},
-  "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:0.0,coach:0.0,xg:2.255,xgc:1.13},
-  "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:0.0,coach:20.4,xg:1.614,xgc:0.778},
-  "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:16.0,coach:22.5,xg:1.588,xgc:0.582},
-  "Algeria":{elo:1760,eloN:45.0,svN:64.0,form:63.3,exp:14.4,coach:20.4,xg:1.883,xgc:0.49},
-  "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:8.8,coach:21.5,xg:1.837,xgc:0.819},
-  "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:0.0,coach:20.4,xg:2.178,xgc:1.21},
-  "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:9.8,coach:20.4,xg:1.751,xgc:1.285},
-  "United States":{elo:1876,eloN:59.5,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572},
-  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:0.0,coach:15.2,xg:1.314,xgc:0.593},
-  "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:0.0,coach:20.4,xg:1.47,xgc:1.851},
-  "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:20.8,coach:22.5,xg:1.186,xgc:0.811},
-  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,form:60.4,exp:17.6,coach:28.8,xg:2.454,xgc:0.773},
-  "Jordan":{elo:1685,eloN:35.6,svN:20.1,form:49.4,exp:12.3,coach:20.4,xg:1.874,xgc:1.507},
-  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,form:48.8,exp:8.8,coach:0.0,xg:1.153,xgc:0.462},
-  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,form:34.7,exp:7.2,coach:13.6,xg:1.322,xgc:1.327},
-  "Iraq":{elo:1618,eloN:27.3,svN:20.1,form:46.6,exp:0.0,coach:0.0,xg:1.109,xgc:0.732},
-  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,form:43.3,exp:0.0,coach:0.0,xg:1.816,xgc:0.986},
-  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,form:46.2,exp:0.0,coach:0.0,xg:1.623,xgc:1.184},
-  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,form:30.3,exp:0.0,coach:15.2,xg:1.147,xgc:1.131},
-  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,form:15,exp:0.0,coach:0.0,xg:0.906,xgc:1.601},
-  "Haiti":{elo:1548,eloN:18.5,svN:23.0,form:40.7,exp:5.8,coach:0.0,xg:1.436,xgc:1.071},
-  "South Africa":{elo:1528,eloN:16.0,svN:31.9,form:40.6,exp:8.8,coach:32.6,xg:1.355,xgc:0.973},
-  "Ghana":{elo:1510,eloN:13.8,svN:62.4,form:35.4,exp:0.0,coach:0.0,xg:1.423,xgc:1.074},
-  "Curacao":{elo:1434,eloN:4.2,svN:25.6,form:34.8,exp:0.0,coach:0.0,xg:1.719,xgc:1.394},
-  "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:31.9,coach:15.2,xg:0.637,xgc:1.533}
+  "Spain":{elo:2155,eloN:94.4,svN:90.2,form:68.7,exp:42.2,coach:49.0,xg:2.909,xgc:0.879,formN:34.9,formScore:-0.23},
+  "Argentina":{elo:2114,eloN:89.2,svN:89.2,form:63.8,exp:100.0,coach:77.4,xg:2.141,xgc:0.346,formN:39.0,formScore:-0.13},
+  "France":{elo:2062,eloN:82.8,svN:98.2,form:65.7,exp:65.3,coach:65.5,xg:2.485,xgc:0.965,formN:39.8,formScore:-0.11},
+  "England":{elo:2021,eloN:77.6,svN:100.0,form:64.5,exp:52.0,coach:45.5,xg:2.394,xgc:0.24,formN:22.5,formScore:-0.54},
+  "Brazil":{elo:1991,eloN:73.9,svN:96.3,form:57.1,exp:40.9,coach:100.0,xg:1.898,xgc:0.784,formN:63.1,formScore:0.47},
+  "Portugal":{elo:1986,eloN:73.2,svN:93.5,form:62.2,exp:0.0,coach:13.6,xg:2.909,xgc:1.137,formN:57.8,formScore:0.34},
+  "Colombia":{elo:1977,eloN:72.1,svN:75.0,form:50.7,exp:33.4,coach:0.0,xg:2.201,xgc:1.08,formN:57.4,formScore:0.33},
+  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,form:60.3,exp:14.7,coach:32.6,xg:2.886,xgc:0.733,formN:47.4,formScore:0.08},
+  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,form:56.2,exp:0.0,coach:0.0,xg:0.635,xgc:0.324,formN:45.0,formScore:0.02},
+  "Germany":{elo:1932,eloN:66.5,svN:89.9,form:50.3,exp:0.0,coach:13.6,xg:2.44,xgc:0.834,formN:47.8,formScore:0.09},
+  "Norway":{elo:1914,eloN:64.2,svN:81.6,form:67.0,exp:0.0,coach:41.8,xg:3.654,xgc:0.738,formN:89.6,formScore:1.13},
+  "Croatia":{elo:1911,eloN:63.9,svN:69.0,form:53.9,exp:35.8,coach:20.4,xg:2.541,xgc:0.862,formN:33.7,formScore:-0.26},
+  "Turkey":{elo:1911,eloN:63.9,svN:79.2,form:56.0,exp:0.0,coach:13.6,xg:2.283,xgc:1.144,formN:60.6,formScore:0.41},
+  "Japan":{elo:1906,eloN:63.2,svN:66.0,form:54.9,exp:10.1,coach:25.4,xg:1.648,xgc:0.478,formN:49.8,formScore:0.14},
+  "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:13.6,coach:13.6,xg:3.565,xgc:0.807,formN:95.2,formScore:1.27},
+  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:14.7,coach:21.5,xg:0.843,xgc:0.697,formN:22.1,formScore:-0.55},
+  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:0.0,coach:22.5,xg:2.268,xgc:0.667,formN:93.6,formScore:1.23},
+  "Mexico":{elo:1915,eloN:64.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61,formN:47.8,formScore:0.09},
+  "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:26.0,coach:28.8,xg:1.983,xgc:0.847,formN:53.8,formScore:0.24},
+  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:0.0,coach:20.4,xg:1.213,xgc:0.811,formN:63.1,formScore:0.47},
+  "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:0.0,coach:15.2,xg:2.46,xgc:0.59,formN:42.6,formScore:-0.04},
+  "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:35.9,coach:22.5,xg:2.11,xgc:0.345,formN:53.4,formScore:0.23},
+  "Canada":{elo:1838,eloN:54.8,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444,formN:47.0,formScore:0.07},
+  "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:0.0,coach:0.0,xg:2.255,xgc:1.13,formN:57.4,formScore:0.33},
+  "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:0.0,coach:20.4,xg:1.614,xgc:0.778,formN:50.2,formScore:0.15},
+  "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:16.0,coach:22.5,xg:1.588,xgc:0.582,formN:45.4,formScore:0.03},
+  "Algeria":{elo:1760,eloN:45.0,svN:64.0,form:63.3,exp:14.4,coach:20.4,xg:1.883,xgc:0.49,formN:76.7,formScore:0.81},
+  "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:8.8,coach:21.5,xg:1.837,xgc:0.819,formN:43.8,formScore:-0.01},
+  "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:0.0,coach:20.4,xg:2.178,xgc:1.21,formN:37.3,formScore:-0.17},
+  "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:9.8,coach:20.4,xg:1.751,xgc:1.285,formN:18.1,formScore:-0.65},
+  "United States":{elo:1876,eloN:59.5,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572,formN:50.6,formScore:0.16},
+  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:0.0,coach:15.2,xg:1.314,xgc:0.593,formN:43.0,formScore:-0.03},
+  "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:0.0,coach:20.4,xg:1.47,xgc:1.851,formN:39.4,formScore:-0.12},
+  "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:20.8,coach:22.5,xg:1.186,xgc:0.811,formN:66.7,formScore:0.56},
+  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,form:60.4,exp:17.6,coach:28.8,xg:2.454,xgc:0.773,formN:100.0,formScore:1.39},
+  "Jordan":{elo:1685,eloN:35.6,svN:20.1,form:49.4,exp:12.3,coach:20.4,xg:1.874,xgc:1.507,formN:47.4,formScore:0.08},
+  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,form:48.8,exp:8.8,coach:0.0,xg:1.153,xgc:0.462,formN:57.0,formScore:0.32},
+  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,form:34.7,exp:7.2,coach:13.6,xg:1.322,xgc:1.327,formN:39.8,formScore:-0.11},
+  "Iraq":{elo:1618,eloN:27.3,svN:20.1,form:46.6,exp:0.0,coach:0.0,xg:1.109,xgc:0.732,formN:51.0,formScore:0.17},
+  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,form:43.3,exp:0.0,coach:0.0,xg:1.816,xgc:0.986,formN:80.7,formScore:0.91},
+  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,form:46.2,exp:0.0,coach:0.0,xg:1.623,xgc:1.184,formN:62.2,formScore:0.45},
+  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,form:30.3,exp:0.0,coach:15.2,xg:1.147,xgc:1.131,formN:35.7,formScore:-0.21},
+  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,form:15,exp:0.0,coach:0.0,xg:0.906,xgc:1.601,formN:26.1,formScore:-0.45},
+  "Haiti":{elo:1548,eloN:18.5,svN:23.0,form:40.7,exp:5.8,coach:0.0,xg:1.436,xgc:1.071,formN:67.5,formScore:0.58},
+  "South Africa":{elo:1528,eloN:16.0,svN:31.9,form:40.6,exp:8.8,coach:32.6,xg:1.355,xgc:0.973,formN:42.6,formScore:-0.04},
+  "Ghana":{elo:1510,eloN:13.8,svN:62.4,form:35.4,exp:0.0,coach:0.0,xg:1.423,xgc:1.074,formN:73.9,formScore:0.74},
+  "Curacao":{elo:1434,eloN:4.2,svN:25.6,form:34.8,exp:0.0,coach:0.0,xg:1.719,xgc:1.394,formN:57.8,formScore:0.34},
+  "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:31.9,coach:15.2,xg:0.637,xgc:1.533,formN:0.0,formScore:-1.1}
 };
 
 // Squad market value (Transfermarkt, total per nation), for display on Nations tab
@@ -477,7 +479,8 @@ function composite(team){
   const f=MODEL_DATA[team];
   if(!f) return 50;
   return +(f.eloN*WEIGHTS.elo + f.svN*WEIGHTS.form +
-           f.exp*WEIGHTS.experience + f.coach*WEIGHTS.coach).toFixed(1);
+           f.exp*WEIGHTS.experience + f.coach*WEIGHTS.coach +
+           (f.formN||0)*WEIGHTS.recentForm).toFixed(1);
 }
 
 const COMPOSITE = Object.fromEntries(Object.keys(MODEL_DATA).map(t=>[t,composite(t)]));
@@ -539,15 +542,15 @@ const GROUPS = [
 const MATCHES = {
   A:[{t1:"Mexico",t2:"Czechia",s1:1,s2:1},{t1:"South Korea",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:3,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:2}],
   B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:2,s2:1}],
-  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:2,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
+  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:1,s2:0},{t1:"Brazil",t2:"Morocco",s1:2,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
   D:[{t1:"Turkey",t2:"Paraguay",s1:1,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:2,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:1,s2:1}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:3,s2:2},{t1:"Ecuador",t2:"Curacao",s1:3,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:4,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:2,s2:1}],
+  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:3,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:4,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
   F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:2}],
   G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:1,s2:1},{t1:"Egypt",t2:"New Zealand",s1:1,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
-  H:[{t1:"Spain",t2:"Cape Verde",s1:4,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:4,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:3,s2:1}],
-  I:[{t1:"France",t2:"Senegal",s1:3,s2:2},{t1:"Norway",t2:"Iraq",s1:3,s2:1},{t1:"France",t2:"Norway",s1:4,s2:3},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:4,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:2}],
+  H:[{t1:"Spain",t2:"Cape Verde",s1:4,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:4,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:2,s2:1}],
+  I:[{t1:"France",t2:"Senegal",s1:3,s2:2},{t1:"Norway",t2:"Iraq",s1:3,s2:1},{t1:"France",t2:"Norway",s1:2,s2:2},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:4,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:2}],
   J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Austria",s1:3,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
-  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:3,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:3,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
+  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:2,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
   L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:3,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:3,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
 };
 
@@ -726,8 +729,8 @@ const OUTLOOK = {
   ],
 };
 
-const QF=[["Argentina","Netherlands"],["England","Brazil"],["France","Portugal"],["Spain","Colombia"]];
-const SF=[["Argentina","England"],["France","Spain"]];
+const QF=[["Argentina","Netherlands"],["Brazil","England"],["France","Portugal"],["Spain","Colombia"]];
+const SF=[["Argentina","Brazil"],["France","Spain"]];
 // Final teams = winners of the two semifinals; assigned after the goals engine is defined (below) so there's no contradiction.
 let FINAL_TEAMS=["Argentina","Spain"];
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1216,14 +1219,16 @@ function ThemeToggle({theme,setTheme}){
       style={{position:"relative",display:"flex",width:SEG*2,height:34,
         border:`1px solid ${accent}`,borderRadius:4,overflow:"hidden",
         flexShrink:0,cursor:"pointer",background:"transparent"}}>
-      {/* Sliding orange puck behind the active icon */}
+      {/* Lion's home cell always has a black backdrop (right segment) */}
+      <div style={{position:"absolute",top:0,right:0,width:SEG,height:"100%",background:"#000"}}/>
+      {/* Sliding orange puck behind the active icon — no inner radius so it fills the rounded corners */}
       <div style={{position:"absolute",top:0,left:0,width:SEG,height:"100%",
-        background:accent,borderRadius:2,
+        background:accent,
         transform:`translateX(${activeIdx*SEG}px)`,
         transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}/>
       {/* Divider line */}
       <div style={{position:"absolute",top:0,bottom:0,left:SEG,width:1,
-        background:accent,opacity:0.5}}/>
+        background:accent,opacity:0.5,zIndex:2}}/>
       {/* Ball segment */}
       <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
         display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -1236,7 +1241,7 @@ function ThemeToggle({theme,setTheme}){
       <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
         display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div style={{display:"flex",transform:isDark?"scale(1)":"scale(0.82)",
-          opacity:isDark?1:0.9,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
+          opacity:isDark?1:0.95,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
           <FooterLionIcon color={activeIdx===1?"#fff":accent} size={18}/>
         </div>
       </div>
@@ -2464,7 +2469,7 @@ function ModelViz(){
 
   // Factors — all share the secondary (blue) accent. The % is the differentiator, not colour.
   const FACTORS=[
-    {key:"clock",pct:80,
+    {key:"clock",pct:75,
      label:lang==="nl"?"Elo-rating":"Elo rating",
      formula:lang==="nl"?"(Elo − 1400) / 800 × 100":"(Elo − 1400) / 800 × 100",
      intro:lang==="nl"?"De betrouwbaarste maatstaf voor teamsterkte.":"The most reliable measure of team strength.",
@@ -2492,10 +2497,17 @@ function ModelViz(){
      detail:lang==="nl"
        ?"Op basis van de erelijst van de huidige bondscoach. Ancelotti (Brazilië) scoort maximaal; Scaloni en Deschamps volgen op hun WK-titels."
        :"Based on the current head coach's honours. Ancelotti (Brazil) scores maximum; Scaloni and Deschamps follow on their World Cup titles."},
+    {key:"bars",pct:5,
+     label:lang==="nl"?"Recente vorm":"Recent form",
+     formula:lang==="nl"?"gem.(werkelijk − verwacht doelsaldo), laatste 12":"avg(actual − expected goal diff), last 12",
+     intro:lang==="nl"?"Presteert een land boven of onder zijn niveau?":"Is a country over- or under-performing its level?",
+     detail:lang==="nl"
+       ?"Per wedstrijd vergelijken we het werkelijke doelsaldo met het verwachte doelsaldo op basis van het Elo-verschil, gemiddeld over de laatste 12 interlands. Noorwegen en België presteren ruim boven verwachting."
+       :"Per match we compare the actual goal difference with the expected one from the Elo gap, averaged over the last 12 internationals. Norway and Belgium over-perform clearly."},
   ];
 
   // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
-  const TITLE_PCT={"Argentina":43.9,"Spain":35.5,"France":12.5,"England":4.1,"Brazil":2.9,"Portugal":0.5,"Colombia":0.2,"Netherlands":0.1};
+  const TITLE_PCT={"Argentina":43.8,"Spain":33.5,"France":13.0,"Brazil":4.6,"England":3.5,"Portugal":0.7,"Colombia":0.4,"Netherlands":0.2};
   const FLAG_BY_TEAM={"Argentina":"AR","Spain":"ES","France":"FR","Brazil":"BR","England":"GB-ENG","Portugal":"PT","Colombia":"CO","Netherlands":"NL"};
   const TOP8=MODEL_ORDER.slice(0,8).map(team=>({
     t:team,
@@ -2522,7 +2534,7 @@ function ModelViz(){
         </div>
         {[
           {n:"1",c:blue,t:lang==="nl"?"Sterktescore":"Strength score",
-           d:lang==="nl"?"één score uit vier factoren bepaalt wie wint en de marge":"one score from four factors decides the winner and margin"},
+           d:lang==="nl"?"één score uit vijf factoren bepaalt wie wint en de marge":"one score from five factors decides the winner and margin"},
           {n:"2",c:orange,t:lang==="nl"?"Uitslag":"Scoreline",
            d:lang==="nl"?"xG en xGc vullen de hoogte van de uitslag in":"xG and xGc fill in the height of the scoreline"},
         ].map((s,i)=>(
@@ -2537,7 +2549,7 @@ function ModelViz(){
       </div>
 
       {/* STEP 1 — FACTORS (collapsed: label + weight; tap to expand) */}
-      {SL(lang==="nl"?"Stap 1 · De vier bouwstenen":"Step 1 · The four building blocks","clock")}
+      {SL(lang==="nl"?"Stap 1 · De vijf bouwstenen":"Step 1 · The five building blocks","clock")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         overflow:"hidden",marginBottom:16}}>
         {FACTORS.map((f,i)=>(
@@ -2548,7 +2560,7 @@ function ModelViz(){
               <Icon d={IC[f.key]} size={15} color={T.textSub}/>
               <span style={{flex:1,fontSize:12,fontWeight:600,color:T.text}}>{f.label}</span>
               <div style={{width:42,height:5,background:T.bg,borderRadius:3,overflow:"hidden"}}>
-                <div style={{width:`${f.pct/80*100}%`,height:"100%",background:orange,borderRadius:3}}/>
+                <div style={{width:`${f.pct/75*100}%`,height:"100%",background:orange,borderRadius:3}}/>
               </div>
               <span style={{fontSize:11,fontWeight:800,color:orange,minWidth:26,textAlign:"right"}}>{f.pct}%</span>
               <Chevron open={openFactor===i} color={T.textSub}/>
@@ -2595,10 +2607,11 @@ function ModelViz(){
             <span style={{textAlign:"right"}}>{lang==="nl"?"bijdrage":"share"}</span>
           </div>
           {[
-            {lab:"Elo",val:89,w:80,contrib:71.4},
-            {lab:lang==="nl"?"Selectie":"Squad",val:90,w:10,contrib:9.0},
+            {lab:"Elo",val:89,w:75,contrib:66.9},
+            {lab:lang==="nl"?"Selectie":"Squad",val:89,w:10,contrib:8.9},
             {lab:lang==="nl"?"Ervaring":"Experience",val:100,w:5,contrib:5.0},
             {lab:"Coach",val:77,w:5,contrib:3.9},
+            {lab:lang==="nl"?"Vorm":"Form",val:39,w:5,contrib:2.0},
           ].map((r,i)=>(
             <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,
               padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:11}}>
@@ -2614,7 +2627,7 @@ function ModelViz(){
           <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
             borderTop:`2px solid ${T.border}`,background:T.bg}}>
             <span style={{flex:1,fontSize:12,fontWeight:800,color:T.text}}>{lang==="nl"?"Sterktescore Argentinië":"Argentina's strength score"}</span>
-            <span style={{fontSize:16,fontWeight:900,color:orange}}>89,2</span>
+            <span style={{fontSize:16,fontWeight:900,color:orange}}>86,7</span>
           </div>
         </div>
       </div>
@@ -2632,10 +2645,11 @@ function ModelViz(){
           const fd=MODEL_DATA[t.t];
           const isOpen=openRank===i;
           const rows=fd?[
-            {lab:"Elo",val:Math.round(fd.eloN),w:80,contrib:fd.eloN*WEIGHTS.elo},
+            {lab:"Elo",val:Math.round(fd.eloN),w:75,contrib:fd.eloN*WEIGHTS.elo},
             {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.form},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
+            {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:5,contrib:(fd.formN||0)*WEIGHTS.recentForm},
           ]:[];
           return(
             <div key={t.t} style={{marginBottom:i<7?8:0}}>
@@ -3543,6 +3557,7 @@ export default function App(){
                   {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
                   {label:lang==="nl"?"Ervaring":"Experience",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
                   {label:"Coach",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
+                  {label:lang==="nl"?"Recente vorm":"Recent form",src:"results.csv",desc:{nl:"Werkelijk vs. verwacht doelsaldo, laatste 12 interlands per land",en:"Actual vs. expected goal difference, last 12 internationals per country"}},
                   {label:lang==="nl"?"G+A/90 spelers":"G+A/90 players",src:"FBref",desc:{nl:"Big 5 Europa 2025-26, min. 4×90 min.",en:"Big 5 Europe 2025-26, min. 4×90 min."}},
                 ].map((row,i,arr)=>(
                   <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",
