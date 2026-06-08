@@ -534,17 +534,17 @@ const GROUPS = [
 
 const MATCHES = {
   A:[{t1:"Mexico",t2:"Czechia",s1:2,s2:1},{t1:"South Korea",t2:"South Africa",s1:1,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:1,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:1}],
-  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:1,s2:1},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:2,s2:1},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
-  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:1,s2:1},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:1,s2:1},{t1:"Brazil",t2:"Haiti",s1:2,s2:0},{t1:"Morocco",t2:"Scotland",s1:2,s2:1}],
-  D:[{t1:"Turkey",t2:"United States",s1:2,s2:1},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Paraguay",s1:1,s2:2},{t1:"United States",t2:"Australia",s1:1,s2:2},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"Paraguay",t2:"United States",s1:1,s2:2}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:1,s2:1},{t1:"Germany",t2:"Ecuador",s1:2,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:0,s2:2}],
-  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:1,s2:0},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:1,s2:1},{t1:"Netherlands",t2:"Tunisia",s1:2,s2:1},{t1:"Japan",t2:"Sweden",s1:1,s2:1}],
-  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"New Zealand",s1:2,s2:1},{t1:"Iran",t2:"Egypt",s1:2,s2:1}],
-  H:[{t1:"Spain",t2:"Cape Verde",s1:3,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:1,s2:0},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:1,s2:1}],
-  I:[{t1:"France",t2:"Senegal",s1:2,s2:1},{t1:"Norway",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Norway",s1:2,s2:2},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:2,s2:1},{t1:"Norway",t2:"Senegal",s1:3,s2:1}],
-  J:[{t1:"Argentina",t2:"Algeria",s1:2,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Austria",s1:2,s2:2},{t1:"Algeria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Jordan",s1:2,s2:1},{t1:"Austria",t2:"Algeria",s1:2,s2:1}],
-  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:0},{t1:"Portugal",t2:"DR Congo",s1:1,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
-  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:2,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Ghana",s1:2,s2:1},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
+  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
+  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:2,s2:1},{t1:"Morocco",t2:"Scotland",s1:2,s2:1}],
+  D:[{t1:"Turkey",t2:"United States",s1:3,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Paraguay",s1:2,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"Paraguay",t2:"United States",s1:2,s2:1}],
+  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:1,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:0},{t1:"Ivory Coast",t2:"Curacao",s1:3,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
+  F:[{t1:"Netherlands",t2:"Sweden",s1:4,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:3,s2:1}],
+  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"New Zealand",s1:5,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
+  H:[{t1:"Spain",t2:"Cape Verde",s1:3,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:1,s2:1}],
+  I:[{t1:"France",t2:"Senegal",s1:2,s2:2},{t1:"Norway",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Norway",s1:3,s2:3},{t1:"Senegal",t2:"Iraq",s1:1,s2:1},{t1:"France",t2:"Iraq",s1:2,s2:1},{t1:"Norway",t2:"Senegal",s1:3,s2:1}],
+  J:[{t1:"Argentina",t2:"Algeria",s1:1,s2:1},{t1:"Austria",t2:"Jordan",s1:3,s2:1},{t1:"Argentina",t2:"Austria",s1:1,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Jordan",s1:3,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
+  K:[{t1:"Portugal",t2:"Uzbekistan",s1:1,s2:1},{t1:"Colombia",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"Colombia",s1:3,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:1,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:1,s2:1}],
+  L:[{t1:"England",t2:"Panama",s1:3,s2:0},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:2,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:2,s2:0},{t1:"Croatia",t2:"Panama",s1:3,s2:1}]
 };
 
 const OUTLOOK = {
@@ -722,7 +722,7 @@ const OUTLOOK = {
   ],
 };
 
-const QF=[["Argentina","Netherlands"],["England","Brazil"],["France","Portugal"],["Spain","Colombia"]];
+const QF=[["Argentina","Germany"],["England","Brazil"],["France","Portugal"],["Spain","Netherlands"]];
 const SF=[["Argentina","England"],["France","Spain"]];
 // Final teams = winners of the two semifinals; assigned after the goals engine is defined (below) so there's no contradiction.
 let FINAL_TEAMS=["Argentina","Spain"];
@@ -793,27 +793,31 @@ const GOALS_DATA={
 };
 function attackStrength(t){const d=GOALS_DATA[t];return d?d.gf/GOALS_AVG_GF:1;}
 function defenceWeakness(t){const d=GOALS_DATA[t];return d?d.ga/GOALS_AVG_GA:1;}
+// Expected goals via attack-strength model:
+//   goals_A = baseline × (A.xG / leagueAvgXG) × (B.xGc / leagueAvgXGc)
+// A's attacking strength relative to average, multiplied by B's defensive
+// weakness relative to average. Multiplicative so a strong attack against a
+// strong defence is genuinely suppressed, and a mismatch genuinely amplified.
+const GEM_XG=1.85, GEM_XGC=0.90, GOAL_BASE=1.38;
 function expectedGoals(a,b){
-  const GXAVG=1.85,GXCAVG=0.90;
   const da=MODEL_DATA[a], db=MODEL_DATA[b];
-  const xa=da?.xg??GXAVG, xca=da?.xgc??GXCAVG;
-  const xb=db?.xg??GXAVG, xcb=db?.xgc??GXCAVG;
-  let ea=(xa+xcb)/2, eb=(xb+xca)/2;
-  const ca=COMPOSITE[a]??50, cb=COMPOSITE[b]??50;
-  const diff=(ca-cb)/100;
-  ea*=(1+diff*0.25); eb*=(1-diff*0.25);
-  return [Math.max(0.2,ea),Math.max(0.2,eb)];
+  const xa=da?.xg??GEM_XG, xca=da?.xgc??GEM_XGC;
+  const xb=db?.xg??GEM_XG, xcb=db?.xgc??GEM_XGC;
+  const ea=GOAL_BASE*(xa/GEM_XG)*(xcb/GEM_XGC);
+  const eb=GOAL_BASE*(xb/GEM_XG)*(xca/GEM_XGC);
+  return [Math.max(0.15,ea),Math.max(0.15,eb)];
 }
-// Deterministic scoreline: rounded expected goals, reconciled with Model 1 (composite).
+// Deterministic scoreline: amplify the expected-goals margin so dominant
+// matchups produce realistic big scorelines (3-0, 4-1), then reconcile with
+// Model 1 (composite) so rounding never flips the win/draw/loss outcome.
 function model2Score(a,b){
   const [ea,eb]=expectedGoals(a,b);
-  // Deterministic probabilistic rounding: floor + Bernoulli on fractional part
-  const seedA=(a+b).split("").reduce((h,c)=>((h<<5)-h+c.charCodeAt(0))|0,0)&0xffff;
-  const seedB=(b+a).split("").reduce((h,c)=>((h<<5)-h+c.charCodeAt(0))|0,0)&0xffff;
-  const rA=(seedA*9301+49297)%233280/233280;
-  const rB=(seedB*9301+49297)%233280/233280;
-  const ga=Math.floor(ea)+(rA<(ea%1)?1:0);
-  const gb=Math.floor(eb)+(rB<(eb%1)?1:0);
+  let ga=Math.round(ea), gb=Math.round(eb);
+  const ca=COMPOSITE[a]??50, cb=COMPOSITE[b]??50;
+  // Reconciliation only blocks a genuine upset (weaker side winning outright).
+  // Draws are always kept — stronger teams routinely drop points.
+  if(ca>cb && gb>ga){ ga=gb; }
+  else if(cb>ca && ga>gb){ gb=ga; }
   return [ga,gb];
 }
 
@@ -2696,22 +2700,18 @@ function ModelViz(){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
-            ?"De verwachte doelpunten per land (xG) worden bepaald uit de laatste 12 wedstrijden, gecorrigeerd voor tegenstanderkwaliteit (Elo). xGc is het gemiddeld aantal tegendoelpunten. De uitslag combineert eigen aanval en tegenstander verdediging:"
-            :"Expected goals per country (xG) are derived from the last 12 matches, corrected for opponent quality (Elo). xGc is the average goals conceded. The score combines own attack and opponent defence:"}
+            ?"Per land bepalen we xG (aanvalskracht) en xGc (tegendoelpunten) uit de laatste 12 wedstrijden, gecorrigeerd voor tegenstanderkwaliteit (Elo). De doelpunten ontstaan uit de botsing van aanval en verdediging:"
+            :"Per country we derive xG (attacking strength) and xGc (goals conceded) from the last 12 matches, corrected for opponent quality (Elo). Goals emerge from the clash of attack and defence:"}
         </div>
         <div style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
           padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.9,fontFamily:"monospace"}}>
-          <div><span style={{color:orange,fontWeight:700}}>xG_A</span> = {lang==="nl"?"gemiddelde doelpunten gescoord (Elo-gecorrigeerd, laatste 12)":"avg goals scored (Elo-corrected, last 12)"}</div>
-          <div><span style={{color:orange,fontWeight:700}}>xGc_B</span> = {lang==="nl"?"gemiddelde doelpunten tegen (Elo-gecorrigeerd, laatste 12)":"avg goals conceded (Elo-corrected, last 12)"}</div>
-          <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${T.border}`}}>
-            <span style={{color:blue,fontWeight:700}}>ea</span> = (xG_A + xGc_B) / 2 × (1 + Δcomp × 0.25)
-          </div>
-          <div><span style={{color:blue,fontWeight:700}}>score</span> = {lang==="nl"?"floor(ea) + kans(ea mod 1)":"floor(ea) + Bernoulli(ea mod 1)"}</div>
+          <div><span style={{color:blue,fontWeight:700}}>doelpunten A</span> = {GOAL_BASE} × (A.xG / {GEM_XG}) × (B.xGc / {GEM_XGC})</div>
+          <div><span style={{color:blue,fontWeight:700}}>doelpunten B</span> = {GOAL_BASE} × (B.xG / {GEM_XG}) × (A.xGc / {GEM_XGC})</div>
         </div>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6}}>
           {lang==="nl"
-            ?"De composietmodifier (Δcomp × 0,25) geeft de sterkere ploeg een kleine aanvalsbonus en de zwakkere een kleine aftrek. De afronding is deterministisch-probabilistisch: het gehele deel is zeker, het decimale deel bepaalt de kans op een extra doelpunt."
-            :"The composite modifier (Δcomp × 0.25) gives the stronger side a small attack bonus and the weaker side a small reduction. Rounding is deterministically probabilistic: the integer part is certain, the decimal determines the probability of an extra goal."}
+            ?"De aanvalskracht van een land (relatief tot het gemiddelde) wordt vermenigvuldigd met de verdedigingszwakte van de tegenstander. Een topaanval tegen een sterke verdediging wordt afgeremd; een mismatch wordt uitvergroot, dus grote xG-verschillen geven ruimere uitslagen. Een sterkere ploeg kan gelijkspelen, maar de zwakkere ploeg wint nooit van een sterkere (composiet-check)."
+            :"A country's attacking strength (relative to average) is multiplied by the opponent's defensive weakness. A top attack against a strong defence is suppressed; a mismatch is amplified, so large xG gaps give wider scorelines. A stronger team can draw, but the weaker team never beats a stronger one (composite check)."}
         </div>
       </div>
 
