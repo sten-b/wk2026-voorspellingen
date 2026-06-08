@@ -48,7 +48,7 @@ const LANG = {
     knockoutTitle: "Knockoutronde",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "Hoe worden scores bepaald",
-    modelBody: "De voorspellingen zijn gebaseerd op twee dingen: hoe groot het verschil is in FIFA-ranking tussen twee landen, en hoe vaak bepaalde uitslagen in het verleden zijn voorgekomen bij WK's (uit 964 duels van 1930 tot 2022). Kleine rankingverschillen geven gelijkspelen of krappe overwinningen. Grote verschillen geven comfortabele marges. Sommige landen krijgen een aanpassing op basis van hun recente vorm, kwalificatiecampagne of selectieproblemen. Dit verschuift hun effectieve sterkte voor de berekening.",
+    modelBody: "De voorspellingen zijn gebaseerd op een composietsterkte per land (Elo, selectiewaarde, ervaring, coach) en een verwacht-doelpuntenmodel (xG/xGc) op basis van de laatste 12 interlands, gecorrigeerd voor tegenstanderkwaliteit. De score en uitslag vloeien direct voort uit de berekeningen — zonder handmatige aanpassingen.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Kwartfinales",
@@ -409,55 +409,55 @@ const FORM_ADJ = {
 const WEIGHTS = { elo:0.80, form:0.10, experience:0.05, coach:0.05 };
 
 // eloN = Elo normalised to 0-100 via (elo - 1400) / 800 * 100, clamped.
-const FACTOR_DATA = {
-  "Argentina":{elo:2114,eloN:89.2,form:89.2,exp:100.0,coach:77.4},
-  "Spain":{elo:2155,eloN:94.4,form:90.2,exp:42.2,coach:49.0},
-  "France":{elo:2062,eloN:82.8,form:98.2,exp:65.3,coach:65.5},
-  "Brazil":{elo:1991,eloN:73.9,form:96.3,exp:40.9,coach:100.0},
-  "England":{elo:2021,eloN:77.6,form:100.0,exp:52.0,coach:45.5},
-  "Colombia":{elo:1977,eloN:72.1,form:75.0,exp:33.4,coach:0.0},
-  "Portugal":{elo:1986,eloN:73.2,form:93.5,exp:0.0,coach:13.6},
-  "Netherlands":{elo:1944,eloN:68.0,form:85.7,exp:14.7,coach:32.6},
-  "Mexico":{elo:1875,eloN:59.4,form:54.0,exp:49.8,coach:22.5},
-  "Norway":{elo:1914,eloN:64.2,form:81.6,exp:0.0,coach:41.8},
-  "Croatia":{elo:1911,eloN:63.9,form:69.0,exp:35.8,coach:20.4},
-  "Turkey":{elo:1911,eloN:63.9,form:79.2,exp:0.0,coach:13.6},
-  "Belgium":{elo:1893,eloN:61.6,form:80.4,exp:13.6,coach:13.6},
-  "Japan":{elo:1906,eloN:63.2,form:66.0,exp:10.1,coach:25.4},
-  "Ecuador":{elo:1938,eloN:67.2,form:61.9,exp:0.0,coach:0.0},
-  "Switzerland":{elo:1891,eloN:61.4,form:65.8,exp:0.0,coach:22.5},
-  "Germany":{elo:1932,eloN:66.5,form:89.9,exp:0.0,coach:13.6},
-  "Senegal":{elo:1867,eloN:58.4,form:77.0,exp:26.0,coach:28.8},
-  "Morocco":{elo:1827,eloN:53.4,form:76.5,exp:35.9,coach:22.5},
-  "Uruguay":{elo:1892,eloN:61.5,form:74.7,exp:14.7,coach:21.5},
-  "Paraguay":{elo:1833,eloN:54.1,form:41.9,exp:0.0,coach:20.4},
-  "Austria":{elo:1830,eloN:53.8,form:69.9,exp:0.0,coach:15.2},
-  "Canada":{elo:1788,eloN:48.5,form:56.5,exp:21.1,coach:15.2},
-  "Algeria":{elo:1760,eloN:45.0,form:64.0,exp:14.4,coach:20.4},
-  "Australia":{elo:1777,eloN:47.1,form:23.5,exp:0.0,coach:20.4},
-  "United States":{elo:1726,eloN:40.8,form:64.8,exp:38.6,coach:13.6},
-  "Ivory Coast":{elo:1695,eloN:36.9,form:74.0,exp:17.6,coach:28.8},
-  "South Korea":{elo:1758,eloN:44.8,form:56.4,exp:8.8,coach:21.5},
-  "Iran":{elo:1772,eloN:46.5,form:28.3,exp:16.0,coach:22.5},
-  "Egypt":{elo:1696,eloN:37.0,form:47.1,exp:20.8,coach:22.5},
-  "Scotland":{elo:1782,eloN:47.8,form:59.3,exp:0.0,coach:0.0},
-  "Czechia":{elo:1740,eloN:42.5,form:65.6,exp:0.0,coach:20.4},
-  "Panama":{elo:1730,eloN:41.2,form:23.0,exp:9.8,coach:20.4},
-  "Uzbekistan":{elo:1718,eloN:39.8,form:35.3,exp:0.0,coach:15.2},
-  "Sweden":{elo:1712,eloN:39.0,form:75.0,exp:0.0,coach:20.4},
-  "Jordan":{elo:1685,eloN:35.6,form:20.1,exp:12.3,coach:20.4},
-  "DR Congo":{elo:1661,eloN:32.6,form:52.0,exp:8.8,coach:0.0},
-  "Iraq":{elo:1618,eloN:27.3,form:20.1,exp:0.0,coach:0.0},
-  "Tunisia":{elo:1628,eloN:28.5,form:29.6,exp:7.2,coach:13.6},
-  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,form:55.9,exp:0.0,coach:0.0},
-  "Cape Verde":{elo:1578,eloN:22.2,form:40.8,exp:0.0,coach:0.0},
-  "Haiti":{elo:1548,eloN:18.5,form:23.0,exp:5.8,coach:0.0},
-  "Saudi Arabia":{elo:1569,eloN:21.1,form:1.5,exp:0.0,coach:15.2},
-  "South Africa":{elo:1528,eloN:16.0,form:31.9,exp:8.8,coach:32.6},
-  "Ghana":{elo:1510,eloN:13.8,form:62.4,exp:0.0,coach:0.0},
-  "New Zealand":{elo:1562,eloN:20.2,form:20.1,exp:0.0,coach:0.0},
-  "Curacao":{elo:1434,eloN:4.2,form:25.6,exp:0.0,coach:0.0},
-  "Qatar":{elo:1421,eloN:2.6,form:0.0,exp:31.9,coach:15.2},
+const MODEL_DATA={
+  "Spain":{elo:2155,eloN:94.4,svN:90.2,form:68.7,exp:42.2,coach:49.0,xg:2.909,xgc:0.879},
+  "Argentina":{elo:2114,eloN:89.2,svN:89.2,form:63.8,exp:100.0,coach:77.4,xg:2.141,xgc:0.346},
+  "France":{elo:2062,eloN:82.8,svN:98.2,form:65.7,exp:65.3,coach:65.5,xg:2.485,xgc:0.965},
+  "England":{elo:2021,eloN:77.6,svN:100.0,form:64.5,exp:52.0,coach:45.5,xg:2.394,xgc:0.24},
+  "Brazil":{elo:1991,eloN:73.9,svN:96.3,form:57.1,exp:40.9,coach:100.0,xg:1.898,xgc:0.784},
+  "Portugal":{elo:1986,eloN:73.2,svN:93.5,form:62.2,exp:0.0,coach:13.6,xg:2.909,xgc:1.137},
+  "Colombia":{elo:1977,eloN:72.1,svN:75.0,form:50.7,exp:33.4,coach:0.0,xg:2.201,xgc:1.08},
+  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,form:60.3,exp:14.7,coach:32.6,xg:2.886,xgc:0.733},
+  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,form:56.2,exp:0.0,coach:0.0,xg:0.635,xgc:0.324},
+  "Germany":{elo:1932,eloN:66.5,svN:89.9,form:50.3,exp:0.0,coach:13.6,xg:2.44,xgc:0.834},
+  "Norway":{elo:1914,eloN:64.2,svN:81.6,form:67.0,exp:0.0,coach:41.8,xg:3.654,xgc:0.738},
+  "Croatia":{elo:1911,eloN:63.9,svN:69.0,form:53.9,exp:35.8,coach:20.4,xg:2.541,xgc:0.862},
+  "Turkey":{elo:1911,eloN:63.9,svN:79.2,form:56.0,exp:0.0,coach:13.6,xg:2.283,xgc:1.144},
+  "Japan":{elo:1906,eloN:63.2,svN:66.0,form:54.9,exp:10.1,coach:25.4,xg:1.648,xgc:0.478},
+  "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:13.6,coach:13.6,xg:3.565,xgc:0.807},
+  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:14.7,coach:21.5,xg:0.843,xgc:0.697},
+  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:0.0,coach:22.5,xg:2.268,xgc:0.667},
+  "Mexico":{elo:1875,eloN:59.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61},
+  "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:26.0,coach:28.8,xg:1.983,xgc:0.847},
+  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:0.0,coach:20.4,xg:1.213,xgc:0.811},
+  "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:0.0,coach:15.2,xg:2.46,xgc:0.59},
+  "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:35.9,coach:22.5,xg:2.11,xgc:0.345},
+  "Canada":{elo:1788,eloN:48.5,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444},
+  "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:0.0,coach:0.0,xg:2.255,xgc:1.13},
+  "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:0.0,coach:20.4,xg:1.614,xgc:0.778},
+  "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:16.0,coach:22.5,xg:1.588,xgc:0.582},
+  "Algeria":{elo:1760,eloN:45.0,svN:64.0,form:63.3,exp:14.4,coach:20.4,xg:1.883,xgc:0.49},
+  "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:8.8,coach:21.5,xg:1.837,xgc:0.819},
+  "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:0.0,coach:20.4,xg:2.178,xgc:1.21},
+  "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:9.8,coach:20.4,xg:1.751,xgc:1.285},
+  "United States":{elo:1726,eloN:40.8,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572},
+  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:0.0,coach:15.2,xg:1.314,xgc:0.593},
+  "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:0.0,coach:20.4,xg:1.47,xgc:1.851},
+  "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:20.8,coach:22.5,xg:1.186,xgc:0.811},
+  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,form:60.4,exp:17.6,coach:28.8,xg:2.454,xgc:0.773},
+  "Jordan":{elo:1685,eloN:35.6,svN:20.1,form:49.4,exp:12.3,coach:20.4,xg:1.874,xgc:1.507},
+  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,form:48.8,exp:8.8,coach:0.0,xg:1.153,xgc:0.462},
+  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,form:34.7,exp:7.2,coach:13.6,xg:1.322,xgc:1.327},
+  "Iraq":{elo:1618,eloN:27.3,svN:20.1,form:46.6,exp:0.0,coach:0.0,xg:1.109,xgc:0.732},
+  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,form:43.3,exp:0.0,coach:0.0,xg:1.816,xgc:0.986},
+  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,form:46.2,exp:0.0,coach:0.0,xg:1.623,xgc:1.184},
+  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,form:30.3,exp:0.0,coach:15.2,xg:1.147,xgc:1.131},
+  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,form:15,exp:0.0,coach:0.0,xg:0.906,xgc:1.601},
+  "Haiti":{elo:1548,eloN:18.5,svN:23.0,form:40.7,exp:5.8,coach:0.0,xg:1.436,xgc:1.071},
+  "South Africa":{elo:1528,eloN:16.0,svN:31.9,form:40.6,exp:8.8,coach:32.6,xg:1.355,xgc:0.973},
+  "Ghana":{elo:1510,eloN:13.8,svN:62.4,form:35.4,exp:0.0,coach:0.0,xg:1.423,xgc:1.074},
+  "Curacao":{elo:1434,eloN:4.2,svN:25.6,form:34.8,exp:0.0,coach:0.0,xg:1.719,xgc:1.394},
+  "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:31.9,coach:15.2,xg:0.637,xgc:1.533}
 };
 
 // Squad market value (Transfermarkt, total per nation), for display on Nations tab
@@ -470,13 +470,13 @@ const FORM_DEV={"Spain":19,"Argentina":14,"France":16,"England":14,"Brazil":7,"P
 
 
 function composite(team){
-  const f=FACTOR_DATA[team];
+  const f=MODEL_DATA[team];
   if(!f) return 50;
-  return +(f.eloN*WEIGHTS.elo + f.form*WEIGHTS.form +
+  return +(f.eloN*WEIGHTS.elo + f.svN*WEIGHTS.form +
            f.exp*WEIGHTS.experience + f.coach*WEIGHTS.coach).toFixed(1);
 }
 
-const COMPOSITE = Object.fromEntries(Object.keys(FACTOR_DATA).map(t=>[t,composite(t)]));
+const COMPOSITE = Object.fromEntries(Object.keys(MODEL_DATA).map(t=>[t,composite(t)]));
 const MODEL_ORDER = Object.keys(COMPOSITE).sort((a,b)=>COMPOSITE[b]-COMPOSITE[a]);
 const COMPOSITE_RANK = Object.fromEntries(MODEL_ORDER.map((t,i)=>[t,i+1]));
 COMPOSITE["Congo DR"]=COMPOSITE["DR Congo"];
@@ -533,18 +533,18 @@ const GROUPS = [
 ];
 
 const MATCHES = {
-  A:[{t1:"Mexico",t2:"Czechia",s1:2,s2:1},{t1:"South Korea",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Korea",s1:2,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:2,s2:1},{t1:"South Korea",t2:"Czechia",s1:1,s2:1}],
-  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Canada",s1:2,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:2,s2:1},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:2,s2:1}],
-  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Morocco",s1:2,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:2,s2:1},{t1:"Morocco",t2:"Scotland",s1:2,s2:1}],
-  D:[{t1:"Turkey",t2:"United States",s1:2,s2:1},{t1:"Paraguay",t2:"Australia",s1:2,s2:1},{t1:"Turkey",t2:"Paraguay",s1:2,s2:1},{t1:"United States",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:1},{t1:"Paraguay",t2:"United States",s1:2,s2:1}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:1},{t1:"Ecuador",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Ecuador",s1:2,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:2,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:2,s2:1}],
-  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:2,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Tunisia",s1:2,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:1}],
-  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"New Zealand",s1:2,s2:1},{t1:"Iran",t2:"Egypt",s1:2,s2:1}],
-  H:[{t1:"Spain",t2:"Cape Verde",s1:3,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:2,s2:1}],
-  I:[{t1:"France",t2:"Senegal",s1:2,s2:1},{t1:"Norway",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Norway",s1:2,s2:1},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:2,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:1}],
-  J:[{t1:"Argentina",t2:"Algeria",s1:2,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Austria",s1:2,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Jordan",s1:2,s2:1},{t1:"Austria",t2:"Algeria",s1:2,s2:1}],
-  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"Congo DR",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:1,s2:1},{t1:"Uzbekistan",t2:"Congo DR",s1:2,s2:1},{t1:"Portugal",t2:"Congo DR",s1:2,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
-  L:[{t1:"England",t2:"Panama",s1:2,s2:1},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:2,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Ghana",s1:2,s2:1},{t1:"Croatia",t2:"Panama",s1:2,s2:1}],
+  A:[{t1:"Mexico",t2:"Czechia",s1:2,s2:1},{t1:"South Korea",t2:"South Africa",s1:1,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:1,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:1}],
+  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:1,s2:1},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:2,s2:1},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
+  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:1,s2:1},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:1,s2:1},{t1:"Brazil",t2:"Haiti",s1:2,s2:0},{t1:"Morocco",t2:"Scotland",s1:2,s2:1}],
+  D:[{t1:"Turkey",t2:"United States",s1:2,s2:1},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Paraguay",s1:1,s2:2},{t1:"United States",t2:"Australia",s1:1,s2:2},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"Paraguay",t2:"United States",s1:1,s2:2}],
+  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:1,s2:1},{t1:"Germany",t2:"Ecuador",s1:2,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:0,s2:2}],
+  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:1,s2:0},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:1,s2:1},{t1:"Netherlands",t2:"Tunisia",s1:2,s2:1},{t1:"Japan",t2:"Sweden",s1:1,s2:1}],
+  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"New Zealand",s1:2,s2:1},{t1:"Iran",t2:"Egypt",s1:2,s2:1}],
+  H:[{t1:"Spain",t2:"Cape Verde",s1:3,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:1,s2:0},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:1,s2:1}],
+  I:[{t1:"France",t2:"Senegal",s1:2,s2:1},{t1:"Norway",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Norway",s1:2,s2:2},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:2,s2:1},{t1:"Norway",t2:"Senegal",s1:3,s2:1}],
+  J:[{t1:"Argentina",t2:"Algeria",s1:2,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Austria",s1:2,s2:2},{t1:"Algeria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Jordan",s1:2,s2:1},{t1:"Austria",t2:"Algeria",s1:2,s2:1}],
+  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:0},{t1:"Portugal",t2:"DR Congo",s1:1,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
+  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:2,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Ghana",s1:2,s2:1},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
 };
 
 const OUTLOOK = {
@@ -794,22 +794,26 @@ const GOALS_DATA={
 function attackStrength(t){const d=GOALS_DATA[t];return d?d.gf/GOALS_AVG_GF:1;}
 function defenceWeakness(t){const d=GOALS_DATA[t];return d?d.ga/GOALS_AVG_GA:1;}
 function expectedGoals(a,b){
-  let ea=GOALS_BASE*attackStrength(a)*defenceWeakness(b);
-  let eb=GOALS_BASE*attackStrength(b)*defenceWeakness(a);
-  return [Math.min(ea,5.5), Math.min(eb,5.5)];
+  const GXAVG=1.85,GXCAVG=0.90;
+  const da=MODEL_DATA[a], db=MODEL_DATA[b];
+  const xa=da?.xg??GXAVG, xca=da?.xgc??GXCAVG;
+  const xb=db?.xg??GXAVG, xcb=db?.xgc??GXCAVG;
+  let ea=(xa+xcb)/2, eb=(xb+xca)/2;
+  const ca=COMPOSITE[a]??50, cb=COMPOSITE[b]??50;
+  const diff=(ca-cb)/100;
+  ea*=(1+diff*0.25); eb*=(1-diff*0.25);
+  return [Math.max(0.2,ea),Math.max(0.2,eb)];
 }
 // Deterministic scoreline: rounded expected goals, reconciled with Model 1 (composite).
 function model2Score(a,b){
   const [ea,eb]=expectedGoals(a,b);
-  let ga=Math.round(ea), gb=Math.round(eb);
-  const ca=COMPOSITE[a]??50, cb=COMPOSITE[b]??50;
-  if(Math.abs(ca-cb)<2.0){                  // model 1 ~ draw -> equalise
-    const hi=Math.max(ga,gb); ga=hi; gb=hi;
-  } else if(ca>cb && ga<=gb){               // A favoured but score doesn't show it
-    ga=gb+1;
-  } else if(cb>ca && gb<=ga){
-    gb=ga+1;
-  }
+  // Deterministic probabilistic rounding: floor + Bernoulli on fractional part
+  const seedA=(a+b).split("").reduce((h,c)=>((h<<5)-h+c.charCodeAt(0))|0,0)&0xffff;
+  const seedB=(b+a).split("").reduce((h,c)=>((h<<5)-h+c.charCodeAt(0))|0,0)&0xffff;
+  const rA=(seedA*9301+49297)%233280/233280;
+  const rB=(seedB*9301+49297)%233280/233280;
+  const ga=Math.floor(ea)+(rA<(ea%1)?1:0);
+  const gb=Math.floor(eb)+(rB<(eb%1)?1:0);
   return [ga,gb];
 }
 
@@ -2531,7 +2535,7 @@ function ModelViz(){
       <div style={{background:T.card,border:`1px solid ${T.border}`,
         borderLeft:`3px solid ${orange}`,borderRadius:6,padding:"12px 13px",marginBottom:16}}>
         <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:8}}>
-          {lang==="nl"?"Twee modellen, zes stappen":"Two models, six steps"}
+          {lang==="nl"?"Twee modellen, zeven stappen":"Two models, seven steps"}
         </div>
         {[
           {n:"1",c:blue,t:lang==="nl"?"Uitslag":"Match outcome",
@@ -2637,11 +2641,11 @@ function ModelViz(){
         </div>
         {TOP8.map((t,i)=>{
           const maxSc=84;
-          const fd=FACTOR_DATA[t.t];
+          const fd=MODEL_DATA[t.t];
           const isOpen=openRank===i;
           const rows=fd?[
             {lab:"Elo",val:Math.round(fd.eloN),w:80,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.form),w:10,contrib:fd.form*WEIGHTS.form},
+            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.form},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
           ]:[];
@@ -2691,20 +2695,23 @@ function ModelViz(){
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
-          {lang==="nl"?"De hoogste sterktescore wint. De hoogte komt uit recente doelpunten:"
-            :"The higher strength score wins. The height comes from recent goals:"}
+          {lang==="nl"
+            ?"De verwachte doelpunten per land (xG) worden bepaald uit de laatste 12 wedstrijden, gecorrigeerd voor tegenstanderkwaliteit (Elo). xGc is het gemiddeld aantal tegendoelpunten. De uitslag combineert eigen aanval en tegenstander verdediging:"
+            :"Expected goals per country (xG) are derived from the last 12 matches, corrected for opponent quality (Elo). xGc is the average goals conceded. The score combines own attack and opponent defence:"}
         </div>
         <div style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
-          padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.8}}>
-          <div><span style={{color:orange,fontWeight:700}}>{lang==="nl"?"aanval":"attack"}</span> = {lang==="nl"?"goals voor":"goals for"} / {GOALS_AVG_GF.toFixed(2)}</div>
-          <div><span style={{color:orange,fontWeight:700}}>{lang==="nl"?"verdediging":"defence"}</span> = {lang==="nl"?"goals tegen":"goals against"} / {GOALS_AVG_GA.toFixed(2)}</div>
-          <div style={{marginTop:5,paddingTop:5,borderTop:`1px solid ${T.border}`}}>
-            <span style={{color:blue,fontWeight:700}}>{lang==="nl"?"verwachte goals":"expected goals"}</span> = {GOALS_BASE.toFixed(2)} × {lang==="nl"?"aanval(A)":"attack(A)"} × {lang==="nl"?"verdediging(B)":"defence(B)"}
+          padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.9,fontFamily:"monospace"}}>
+          <div><span style={{color:orange,fontWeight:700}}>xG_A</span> = {lang==="nl"?"gemiddelde doelpunten gescoord (Elo-gecorrigeerd, laatste 12)":"avg goals scored (Elo-corrected, last 12)"}</div>
+          <div><span style={{color:orange,fontWeight:700}}>xGc_B</span> = {lang==="nl"?"gemiddelde doelpunten tegen (Elo-gecorrigeerd, laatste 12)":"avg goals conceded (Elo-corrected, last 12)"}</div>
+          <div style={{marginTop:6,paddingTop:6,borderTop:`1px solid ${T.border}`}}>
+            <span style={{color:blue,fontWeight:700}}>ea</span> = (xG_A + xGc_B) / 2 × (1 + Δcomp × 0.25)
           </div>
+          <div><span style={{color:blue,fontWeight:700}}>score</span> = {lang==="nl"?"floor(ea) + kans(ea mod 1)":"floor(ea) + Bernoulli(ea mod 1)"}</div>
         </div>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6}}>
-          {lang==="nl"?"Spanje–Qatar → 4-0. Tegen Marokko's muur zakt diezelfde aanval naar 1 goal. Spreekt de uitslag de winnaar uit Stap 3 tegen, dan wint alsnog de sterkste ploeg."
-            :"Spain–Qatar → 4-0. Against Morocco's wall that same attack drops to 1 goal. If the score contradicts the Step 3 winner, the stronger team still wins."}
+          {lang==="nl"
+            ?"De composietmodifier (Δcomp × 0,25) geeft de sterkere ploeg een kleine aanvalsbonus en de zwakkere een kleine aftrek. De afronding is deterministisch-probabilistisch: het gehele deel is zeker, het decimale deel bepaalt de kans op een extra doelpunt."
+            :"The composite modifier (Δcomp × 0.25) gives the stronger side a small attack bonus and the weaker side a small reduction. Rounding is deterministically probabilistic: the integer part is certain, the decimal determines the probability of an extra goal."}
         </div>
       </div>
 
@@ -2713,8 +2720,9 @@ function ModelViz(){
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
-          {lang==="nl"?"Het toernooi 200.000 keer uitgespeeld: hoe vaak wordt elk land kampioen?"
-            :"The tournament played out 200,000 times: how often does each country win?"}
+          {lang==="nl"
+            ?"Titelkansen via softmax op de composietscores (temperatuur T=11). Een hogere score geeft exponentieel meer kans — niet gesimuleerd, maar een kalibreerde kansverdeling op basis van teamsterktes."
+            :"Title odds via softmax on composite scores (temperature T=11). A higher score gives exponentially more probability — not simulated, but a calibrated probability distribution based on team strengths."}
         </div>
         {[...TOP8].sort((a,b)=>b.pct-a.pct).map((r,i,arr)=>{
           const max=28;
@@ -2738,12 +2746,34 @@ function ModelViz(){
         </div>
       </div>
 
+
+      {/* DATA SOURCES */}
+      {SL(lang==="nl"?"Databronnen":"Data sources","info")}
+      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
+        padding:"12px",marginBottom:16}}>
+        {[
+          {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026",en:"Official Elo ratings, verified June 2026"}},
+          {label:"Selectiewaarde",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
+          {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
+          {label:"Ervaring",src:"Handmatig",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
+          {label:"Coach",src:"Handmatig",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
+          {label:"G+A/90 spelers",src:"FBref",desc:{nl:"Big 5 Europa 2025-26, min. 4×90 min.",en:"Big 5 Europe 2025-26, min. 4×90 min."}},
+        ].map((row,i,arr)=>(
+          <div key={row.label} style={{display:"flex",gap:10,alignItems:"flex-start",
+            paddingBottom:i<arr.length-1?9:0,marginBottom:i<arr.length-1?9:0,
+            borderBottom:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
+            <div style={{minWidth:104,flexShrink:0}}>
+              <div style={{fontSize:11,fontWeight:700,color:T.text}}>{row.label}</div>
+              <div style={{fontSize:9,fontWeight:600,color:orange,marginTop:1}}>{row.src}</div>
+            </div>
+            <div style={{fontSize:10,color:T.textSub,lineHeight:1.5}}>{row.desc[lang]}</div>
+          </div>
+        ))}
+      </div>
+
     </React.Fragment>
   );
 }
-
-
-
 
 // ── NATIONS TAB ───────────────────────────────────────────────────────────────
 function NationCard({n,open,onToggle}){
