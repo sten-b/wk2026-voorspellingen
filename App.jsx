@@ -1132,12 +1132,11 @@ function NavLion({themeId}){
   const isDark = themeId === "dark";
   const lionColor = isDark ? "#FF5500" : "#E07000";
   if(isDark){
-    // No circle — black square with orange inner border + orange lion
+    // No circle, no border — just the orange lion icon
     return(
-      <div style={{width:34,height:34,borderRadius:6,background:"#000",
-        border:`1.5px solid ${lionColor}`,display:"flex",alignItems:"center",
+      <div style={{width:34,height:34,display:"flex",alignItems:"center",
         justifyContent:"center",flexShrink:0}}>
-        <LionEmoji color={lionColor} size={18}/>
+        <LionEmoji color={lionColor} size={26}/>
       </div>
     );
   }
@@ -1209,18 +1208,21 @@ function ThemeToggle({theme,setTheme}){
       if(active) return "#000000";
       return T.id==="dark"?"#ffffff":T.textSub;
     }
-    // lion: orange lion when active (Lion mode), white lion when inactive (default mode)
-    return active?"#FF5500":"#ffffff";
+    // lion: always orange on its black background
+    return "#FF5500";
   };
   return(
     <div style={{display:"flex",border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
       {cfg.map(({id,Icon},i)=>{
         const active=theme===id;
+        const isLion=id==="dark";
         return(
           <button key={id} onClick={()=>setTheme(id)} style={{
             width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",
-            background:getBg(id,active),border:"none",cursor:"pointer",flexShrink:0,
-            borderLeft:i>0?`1px solid ${T.border}`:"none",
+            background:getBg(id,active),cursor:"pointer",flexShrink:0,
+            border:isLion?"1.5px solid #FF5500":"none",
+            borderLeft:i>0&&!isLion?`1px solid ${T.border}`:undefined,
+            boxSizing:"border-box",
           }}>
             <Icon color={getColor(id,active)} size={id==="dark"?18:14}/>
           </button>
