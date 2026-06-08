@@ -48,7 +48,7 @@ const LANG = {
     knockoutTitle: "Knockoutronde",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "Hoe worden scores bepaald",
-    modelBody: "De voorspellingen zijn gebaseerd op een composietsterkte per land (Elo, selectiewaarde, ervaring, coach) en een verwacht-doelpuntenmodel (xG/xGc) op basis van de laatste 12 interlands, gecorrigeerd voor tegenstanderkwaliteit. De score en uitslag vloeien direct voort uit de berekeningen — zonder handmatige aanpassingen.",
+    modelBody: "Elke wedstrijd wordt bepaald door de sterktescore per land (Elo, selectiewaarde, ervaring, coach). Het verschil in sterktescore bepaalt wie wint en met welke marge; xG en xGc uit de laatste 12 interlands vullen de hoogte van de uitslag in. Alles vloeit direct voort uit de berekeningen, zonder handmatige aanpassingen.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Kwartfinales",
@@ -76,7 +76,7 @@ const LANG = {
     knockoutTitle: "Knockout Rounds",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "How scores are determined",
-    modelBody: "Predictions are based on two things: how far apart two countries sit in the FIFA rankings, and how often each type of scoreline has actually happened at World Cups (across 964 matches from 1930 to 2022). A small ranking gap gives draws and narrow wins. A large gap gives comfortable margins. Some countries are adjusted based on recent form, their qualifying campaign, or squad issues. This shifts how strong they are treated for the calculation.",
+    modelBody: "Every match is determined by each country's strength score (Elo, squad value, experience, coach). The gap in strength score decides who wins and by what margin; xG and xGc from the last 12 internationals fill in the height of the scoreline. Everything follows directly from the calculations, with no manual adjustments.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Quarter-finals",
@@ -2511,17 +2511,17 @@ function ModelViz(){
   return(
     <React.Fragment>
 
-      {/* OVERVIEW — two models, one line each */}
+      {/* OVERVIEW — how the model works, one line each */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,
         borderLeft:`3px solid ${orange}`,borderRadius:6,padding:"12px 13px",marginBottom:16}}>
         <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:8}}>
-          {lang==="nl"?"Twee modellen, zeven stappen":"Two models, seven steps"}
+          {lang==="nl"?"Zo werkt het model":"How the model works"}
         </div>
         {[
-          {n:"1",c:blue,t:lang==="nl"?"Uitslag":"Match outcome",
-           d:lang==="nl"?"één sterktescore uit vier factoren":"one strength score from four factors"},
-          {n:"2",c:orange,t:lang==="nl"?"Score":"Scoreline",
-           d:lang==="nl"?"verwachte goals uit recente doelpunten":"expected goals from recent scoring"},
+          {n:"1",c:blue,t:lang==="nl"?"Sterktescore":"Strength score",
+           d:lang==="nl"?"één score uit vier factoren bepaalt wie wint en de marge":"one score from four factors decides the winner and margin"},
+          {n:"2",c:orange,t:lang==="nl"?"Uitslag":"Scoreline",
+           d:lang==="nl"?"xG en xGc vullen de hoogte van de uitslag in":"xG and xGc fill in the height of the scoreline"},
         ].map((s,i)=>(
           <div key={i} style={{display:"flex",gap:9,alignItems:"center",marginTop:i>0?7:0}}>
             <div style={{width:20,height:20,borderRadius:"50%",background:s.c,color:"#000",
