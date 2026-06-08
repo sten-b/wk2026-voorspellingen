@@ -431,54 +431,54 @@ const WEIGHTS = { elo:0.70, form:0.10, experience:0.05, coach:0.05, recentForm:0
 
 // eloN = Elo normalised to 0-100 via (elo - 1400) / 800 * 100, clamped.
 const MODEL_DATA={
-  "Spain":{elo:2155,eloN:94.4,svN:90.2,form:68.7,exp:42.2,coach:49.0,xg:2.909,xgc:0.879,formN:34.9,formScore:-0.23},
-  "Argentina":{elo:2114,eloN:89.2,svN:89.2,form:63.8,exp:100.0,coach:77.4,xg:2.141,xgc:0.346,formN:39.0,formScore:-0.13},
-  "France":{elo:2062,eloN:82.8,svN:98.2,form:65.7,exp:65.3,coach:65.5,xg:2.485,xgc:0.965,formN:39.8,formScore:-0.11},
-  "England":{elo:2021,eloN:77.6,svN:100.0,form:64.5,exp:52.0,coach:45.5,xg:2.394,xgc:0.24,formN:22.5,formScore:-0.54},
-  "Brazil":{elo:1991,eloN:73.9,svN:96.3,form:57.1,exp:40.9,coach:100.0,xg:1.898,xgc:0.784,formN:63.1,formScore:0.47},
-  "Portugal":{elo:1986,eloN:73.2,svN:93.5,form:62.2,exp:0.0,coach:13.6,xg:2.909,xgc:1.137,formN:57.8,formScore:0.34},
-  "Colombia":{elo:1977,eloN:72.1,svN:75.0,form:50.7,exp:33.4,coach:0.0,xg:2.201,xgc:1.08,formN:57.4,formScore:0.33},
-  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,form:60.3,exp:14.7,coach:32.6,xg:2.886,xgc:0.733,formN:47.4,formScore:0.08},
-  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,form:56.2,exp:0.0,coach:0.0,xg:0.635,xgc:0.324,formN:45.0,formScore:0.02},
-  "Germany":{elo:1932,eloN:66.5,svN:89.9,form:50.3,exp:0.0,coach:13.6,xg:2.44,xgc:0.834,formN:47.8,formScore:0.09},
-  "Norway":{elo:1914,eloN:64.2,svN:81.6,form:67.0,exp:0.0,coach:41.8,xg:3.654,xgc:0.738,formN:89.6,formScore:1.13},
-  "Croatia":{elo:1911,eloN:63.9,svN:69.0,form:53.9,exp:35.8,coach:20.4,xg:2.541,xgc:0.862,formN:33.7,formScore:-0.26},
-  "Turkey":{elo:1911,eloN:63.9,svN:79.2,form:56.0,exp:0.0,coach:13.6,xg:2.283,xgc:1.144,formN:60.6,formScore:0.41},
-  "Japan":{elo:1906,eloN:63.2,svN:66.0,form:54.9,exp:10.1,coach:25.4,xg:1.648,xgc:0.478,formN:49.8,formScore:0.14},
-  "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:13.6,coach:13.6,xg:3.565,xgc:0.807,formN:95.2,formScore:1.27},
-  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:14.7,coach:21.5,xg:0.843,xgc:0.697,formN:22.1,formScore:-0.55},
-  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:0.0,coach:22.5,xg:2.268,xgc:0.667,formN:93.6,formScore:1.23},
-  "Mexico":{elo:1915,eloN:64.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61,formN:47.8,formScore:0.09},
-  "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:26.0,coach:28.8,xg:1.983,xgc:0.847,formN:53.8,formScore:0.24},
-  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:0.0,coach:20.4,xg:1.213,xgc:0.811,formN:63.1,formScore:0.47},
-  "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:0.0,coach:15.2,xg:2.46,xgc:0.59,formN:42.6,formScore:-0.04},
-  "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:35.9,coach:22.5,xg:2.11,xgc:0.345,formN:53.4,formScore:0.23},
-  "Canada":{elo:1838,eloN:54.8,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444,formN:47.0,formScore:0.07},
-  "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:0.0,coach:0.0,xg:2.255,xgc:1.13,formN:57.4,formScore:0.33},
-  "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:0.0,coach:20.4,xg:1.614,xgc:0.778,formN:50.2,formScore:0.15},
-  "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:16.0,coach:22.5,xg:1.588,xgc:0.582,formN:45.4,formScore:0.03},
-  "Algeria":{elo:1760,eloN:45.0,svN:64.0,form:63.3,exp:14.4,coach:20.4,xg:1.883,xgc:0.49,formN:76.7,formScore:0.81},
-  "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:8.8,coach:21.5,xg:1.837,xgc:0.819,formN:43.8,formScore:-0.01},
-  "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:0.0,coach:20.4,xg:2.178,xgc:1.21,formN:37.3,formScore:-0.17},
-  "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:9.8,coach:20.4,xg:1.751,xgc:1.285,formN:18.1,formScore:-0.65},
-  "United States":{elo:1876,eloN:59.5,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572,formN:50.6,formScore:0.16},
-  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:0.0,coach:15.2,xg:1.314,xgc:0.593,formN:43.0,formScore:-0.03},
-  "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:0.0,coach:20.4,xg:1.47,xgc:1.851,formN:39.4,formScore:-0.12},
-  "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:20.8,coach:22.5,xg:1.186,xgc:0.811,formN:66.7,formScore:0.56},
-  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,form:60.4,exp:17.6,coach:28.8,xg:2.454,xgc:0.773,formN:100.0,formScore:1.39},
-  "Jordan":{elo:1685,eloN:35.6,svN:20.1,form:49.4,exp:12.3,coach:20.4,xg:1.874,xgc:1.507,formN:47.4,formScore:0.08},
-  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,form:48.8,exp:8.8,coach:0.0,xg:1.153,xgc:0.462,formN:57.0,formScore:0.32},
-  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,form:34.7,exp:7.2,coach:13.6,xg:1.322,xgc:1.327,formN:39.8,formScore:-0.11},
-  "Iraq":{elo:1618,eloN:27.3,svN:20.1,form:46.6,exp:0.0,coach:0.0,xg:1.109,xgc:0.732,formN:51.0,formScore:0.17},
-  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,form:43.3,exp:0.0,coach:0.0,xg:1.816,xgc:0.986,formN:80.7,formScore:0.91},
-  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,form:46.2,exp:0.0,coach:0.0,xg:1.623,xgc:1.184,formN:62.2,formScore:0.45},
-  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,form:30.3,exp:0.0,coach:15.2,xg:1.147,xgc:1.131,formN:35.7,formScore:-0.21},
-  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,form:15,exp:0.0,coach:0.0,xg:0.906,xgc:1.601,formN:26.1,formScore:-0.45},
-  "Haiti":{elo:1548,eloN:18.5,svN:23.0,form:40.7,exp:5.8,coach:0.0,xg:1.436,xgc:1.071,formN:67.5,formScore:0.58},
-  "South Africa":{elo:1528,eloN:16.0,svN:31.9,form:40.6,exp:8.8,coach:32.6,xg:1.355,xgc:0.973,formN:42.6,formScore:-0.04},
-  "Ghana":{elo:1510,eloN:13.8,svN:62.4,form:35.4,exp:0.0,coach:0.0,xg:1.423,xgc:1.074,formN:73.9,formScore:0.74},
-  "Curacao":{elo:1434,eloN:4.2,svN:25.6,form:34.8,exp:0.0,coach:0.0,xg:1.719,xgc:1.394,formN:57.8,formScore:0.34},
-  "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:31.9,coach:15.2,xg:0.637,xgc:1.533,formN:0.0,formScore:-1.1}
+  "Spain":{elo:2155,eloN:94.4,svN:90.2,form:68.7,exp:42.2,coach:49.0,xg:2.909,xgc:0.879,formN:79.5,formScore:0.127},
+  "Argentina":{elo:2114,eloN:89.2,svN:89.2,form:63.8,exp:100.0,coach:77.4,xg:2.141,xgc:0.346,formN:75.2,formScore:0.104},
+  "France":{elo:2062,eloN:82.8,svN:98.2,form:65.7,exp:65.3,coach:65.5,xg:2.485,xgc:0.965,formN:84.6,formScore:0.155},
+  "England":{elo:2021,eloN:77.6,svN:100.0,form:64.5,exp:52.0,coach:45.5,xg:2.394,xgc:0.24,formN:94.9,formScore:0.21},
+  "Brazil":{elo:1991,eloN:73.9,svN:96.3,form:57.1,exp:40.9,coach:100.0,xg:1.898,xgc:0.784,formN:37.6,formScore:-0.1},
+  "Portugal":{elo:1986,eloN:73.2,svN:93.5,form:62.2,exp:0.0,coach:13.6,xg:2.909,xgc:1.137,formN:66.7,formScore:0.057},
+  "Colombia":{elo:1977,eloN:72.1,svN:75.0,form:50.7,exp:33.4,coach:0.0,xg:2.201,xgc:1.08,formN:35.0,formScore:-0.114},
+  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,form:60.3,exp:14.7,coach:32.6,xg:2.886,xgc:0.733,formN:71.8,formScore:0.085},
+  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,form:56.2,exp:0.0,coach:0.0,xg:0.635,xgc:0.324,formN:31.6,formScore:-0.132},
+  "Germany":{elo:1932,eloN:66.5,svN:89.9,form:50.3,exp:0.0,coach:13.6,xg:2.44,xgc:0.834,formN:76.9,formScore:0.113},
+  "Norway":{elo:1914,eloN:64.2,svN:81.6,form:67.0,exp:0.0,coach:41.8,xg:3.654,xgc:0.738,formN:97.4,formScore:0.224},
+  "Croatia":{elo:1911,eloN:63.9,svN:69.0,form:53.9,exp:35.8,coach:20.4,xg:2.541,xgc:0.862,formN:79.5,formScore:0.127},
+  "Turkey":{elo:1911,eloN:63.9,svN:79.2,form:56.0,exp:0.0,coach:13.6,xg:2.283,xgc:1.144,formN:75.6,formScore:0.106},
+  "Japan":{elo:1906,eloN:63.2,svN:66.0,form:54.9,exp:10.1,coach:25.4,xg:1.648,xgc:0.478,formN:70.3,formScore:0.077},
+  "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:13.6,coach:13.6,xg:3.565,xgc:0.807,formN:71.8,formScore:0.085},
+  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:14.7,coach:21.5,xg:0.843,xgc:0.697,formN:22.2,formScore:-0.183},
+  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:0.0,coach:22.5,xg:2.268,xgc:0.667,formN:66.7,formScore:0.057},
+  "Mexico":{elo:1915,eloN:64.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61,formN:56.4,formScore:0.002},
+  "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:26.0,coach:28.8,xg:1.983,xgc:0.847,formN:68.7,formScore:0.069},
+  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:0.0,coach:20.4,xg:1.213,xgc:0.811,formN:24.8,formScore:-0.169},
+  "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:0.0,coach:15.2,xg:2.46,xgc:0.59,formN:75.6,formScore:0.106},
+  "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:35.9,coach:22.5,xg:2.11,xgc:0.345,formN:100.0,formScore:0.238},
+  "Canada":{elo:1838,eloN:54.8,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444,formN:53.8,formScore:-0.012},
+  "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:0.0,coach:0.0,xg:2.255,xgc:1.13,formN:53.8,formScore:-0.012},
+  "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:0.0,coach:20.4,xg:1.614,xgc:0.778,formN:58.3,formScore:0.012},
+  "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:16.0,coach:22.5,xg:1.588,xgc:0.582,formN:55.8,formScore:-0.002},
+  "Algeria":{elo:1760,eloN:45.0,svN:64.0,form:63.3,exp:14.4,coach:20.4,xg:1.883,xgc:0.49,formN:76.9,formScore:0.113},
+  "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:8.8,coach:21.5,xg:1.837,xgc:0.819,formN:67.9,formScore:0.064},
+  "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:0.0,coach:20.4,xg:2.178,xgc:1.21,formN:42.6,formScore:-0.073},
+  "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:9.8,coach:20.4,xg:1.751,xgc:1.285,formN:55.9,formScore:-0.001},
+  "United States":{elo:1876,eloN:59.5,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572,formN:48.7,formScore:-0.04},
+  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:0.0,coach:15.2,xg:1.314,xgc:0.593,formN:49.4,formScore:-0.036},
+  "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:0.0,coach:20.4,xg:1.47,xgc:1.851,formN:0.0,formScore:-0.304},
+  "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:20.8,coach:22.5,xg:1.186,xgc:0.811,formN:64.6,formScore:0.046},
+  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,form:60.4,exp:17.6,coach:28.8,xg:2.454,xgc:0.773,formN:82.6,formScore:0.144},
+  "Jordan":{elo:1685,eloN:35.6,svN:20.1,form:49.4,exp:12.3,coach:20.4,xg:1.874,xgc:1.507,formN:30.1,formScore:-0.141},
+  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,form:48.8,exp:8.8,coach:0.0,xg:1.153,xgc:0.462,formN:60.9,formScore:0.026},
+  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,form:34.7,exp:7.2,coach:13.6,xg:1.322,xgc:1.327,formN:52.8,formScore:-0.018},
+  "Iraq":{elo:1618,eloN:27.3,svN:20.1,form:46.6,exp:0.0,coach:0.0,xg:1.109,xgc:0.732,formN:56.8,formScore:0.004},
+  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,form:43.3,exp:0.0,coach:0.0,xg:1.816,xgc:0.986,formN:35.4,formScore:-0.112},
+  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,form:46.2,exp:0.0,coach:0.0,xg:1.623,xgc:1.184,formN:52.8,formScore:-0.018},
+  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,form:30.3,exp:0.0,coach:15.2,xg:1.147,xgc:1.131,formN:23.1,formScore:-0.179},
+  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,form:15,exp:0.0,coach:0.0,xg:0.906,xgc:1.601,formN:41.0,formScore:-0.081},
+  "Haiti":{elo:1548,eloN:18.5,svN:23.0,form:40.7,exp:5.8,coach:0.0,xg:1.436,xgc:1.071,formN:33.3,formScore:-0.123},
+  "South Africa":{elo:1528,eloN:16.0,svN:31.9,form:40.6,exp:8.8,coach:32.6,xg:1.355,xgc:0.973,formN:34.9,formScore:-0.115},
+  "Ghana":{elo:1510,eloN:13.8,svN:62.4,form:35.4,exp:0.0,coach:0.0,xg:1.423,xgc:1.074,formN:43.6,formScore:-0.068},
+  "Curacao":{elo:1434,eloN:4.2,svN:25.6,form:34.8,exp:0.0,coach:0.0,xg:1.719,xgc:1.394,formN:45.6,formScore:-0.056},
+  "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:31.9,coach:15.2,xg:0.637,xgc:1.533,formN:7.7,formScore:-0.262}
 };
 
 // Squad market value (Transfermarkt, total per nation), for display on Nations tab
@@ -506,9 +506,9 @@ COMPOSITE_RANK["Congo DR"]=COMPOSITE_RANK["DR Congo"];
 
 const adjRank = t => COMPOSITE_RANK[t] || 40;
 // Form indicator for the Group/Nations tabs, derived from the SAME source the
-// model uses (formScore = avg actual−expected goal difference over the last 12).
+// model uses (formScore = ½ points last 12 + ½ points WC qualifying, hosts compensated).
 // Scaled to a −5…+5 range (the strongest over/under-performer hits the extreme).
-const FORM_SCALE = 3.597;   // 5 / 1.39 (max abs formScore)
+const FORM_SCALE = 16.447;   // 5 / 0.304 (max abs formScore, v2: 50% last-12 pts + 50% WC-qual pts)
 const formDev = t => {
   const f = MODEL_DATA[t];
   if(!f || f.formScore===undefined) return undefined;
@@ -566,17 +566,17 @@ const GROUPS = [
 
 const MATCHES = {
   A:[{t1:"Mexico",t2:"Czechia",s1:1,s2:1},{t1:"South Korea",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:3,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:2}],
-  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
-  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:1,s2:0},{t1:"Brazil",t2:"Morocco",s1:2,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
+  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:2,s2:1}],
+  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
   D:[{t1:"Turkey",t2:"Paraguay",s1:1,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:2,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:1,s2:1}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:2,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
-  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:2}],
-  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
+  E:[{t1:"Germany",t2:"Ivory Coast",s1:3,s2:2},{t1:"Ecuador",t2:"Curacao",s1:2,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:4,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
+  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:1}],
+  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:1,s2:1},{t1:"Egypt",t2:"New Zealand",s1:1,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
   H:[{t1:"Spain",t2:"Cape Verde",s1:4,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:4,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:2,s2:1}],
   I:[{t1:"France",t2:"Senegal",s1:3,s2:2},{t1:"Norway",t2:"Iraq",s1:3,s2:1},{t1:"France",t2:"Norway",s1:2,s2:2},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:4,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:2}],
-  J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Austria",s1:2,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
+  J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Austria",s1:2,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
   K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:2,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
-  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:2,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
+  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:3,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:3,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
 };
 
 const OUTLOOK = {
@@ -754,8 +754,8 @@ const OUTLOOK = {
   ],
 };
 
-const QF=[["Argentina","Norway"],["Brazil","England"],["France","Portugal"],["Spain","Colombia"]];
-const SF=[["Argentina","Brazil"],["France","Spain"]];
+const QF=[["Argentina","Norway"],["England","Brazil"],["France","Portugal"],["Spain","Netherlands"]];
+const SF=[["Argentina","England"],["France","Spain"]];
 // Final teams = winners of the two semifinals; assigned after the goals engine is defined (below) so there's no contradiction.
 let FINAL_TEAMS=["Argentina","Spain"];
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2530,15 +2530,15 @@ function ModelViz(){
        :"Based on the current head coach's honours. Ancelotti (Brazil) scores maximum; Scaloni and Deschamps follow on their World Cup titles."},
     {key:"trend",pct:10,
      label:lang==="nl"?"Recente vorm":"Recent form",
-     formula:lang==="nl"?"gem.(werkelijk − verwacht doelsaldo), laatste 12":"avg(actual − expected goal diff), last 12",
-     intro:lang==="nl"?"Presteert een land boven of onder zijn niveau?":"Is a country over- or under-performing its level?",
+     formula:lang==="nl"?"½ punten laatste 12 + ½ punten WK-kwalificatie":"½ points last 12 + ½ points WC qualifying",
+     intro:lang==="nl"?"Hoeveel punten pakt een land recent?":"How many points is a country taking lately?",
      detail:lang==="nl"
-       ?"Per wedstrijd vergelijken we het werkelijke doelsaldo met het verwachte doelsaldo op basis van het Elo-verschil, gemiddeld over de laatste 12 interlands. Noorwegen en België presteren ruim boven verwachting."
-       :"Per match we compare the actual goal difference with the expected one from the Elo gap, averaged over the last 12 internationals. Norway and Belgium over-perform clearly."},
+       ?"Voor de helft de behaalde punten uit de laatste 12 interlands, voor de helft uit de WK-kwalificatie (3 per winst, 1 per gelijkspel). Gastlanden VS, Mexico en Canada spelen geen kwalificatie en krijgen daarom een positieve vormcompensatie. Marokko, Noorwegen en Engeland kwalificeerden zich foutloos."
+       :"Half from points won in the last 12 internationals, half from World Cup qualifying (3 per win, 1 per draw). Hosts USA, Mexico and Canada play no qualifiers and receive a positive form compensation. Morocco, Norway and England qualified with a perfect record."},
   ];
 
   // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
-  const TITLE_PCT={"Argentina":42.9,"Spain":31.0,"France":13.6,"Brazil":6.6,"England":3.1,"Portugal":1.0,"Colombia":0.6,"Norway":0.4};
+  const TITLE_PCT={"Argentina":42.2,"Spain":33.0,"France":15.0,"England":7.1,"Brazil":1.5,"Portugal":0.5,"Netherlands":0.2,"Norway":0.2};
   const FLAG_BY_TEAM={"Argentina":"AR","Spain":"ES","France":"FR","Brazil":"BR","England":"GB-ENG","Portugal":"PT","Colombia":"CO","Netherlands":"NL"};
   const TOP8=MODEL_ORDER.slice(0,8).map(team=>({
     t:team,
@@ -3691,7 +3691,7 @@ export default function App(){
                   {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
                   {label:lang==="nl"?"Ervaring":"Experience",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
                   {label:"Coach",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"Coachkwaliteit op basis van trackrecord",en:"Coach quality based on track record"}},
-                  {label:lang==="nl"?"Recente vorm":"Recent form",src:"results.csv",desc:{nl:"Werkelijk vs. verwacht doelsaldo, laatste 12 interlands per land",en:"Actual vs. expected goal difference, last 12 internationals per country"}},
+                  {label:lang==="nl"?"Recente vorm":"Recent form",src:"results.csv",desc:{nl:"½ punten laatste 12 interlands + ½ punten WK-kwalificatie; gastlanden gecompenseerd",en:"½ points last 12 internationals + ½ points WC qualifying; hosts compensated"}},
                   {label:lang==="nl"?"G+A/90 spelers":"G+A/90 players",src:"FBref",desc:{nl:"Big 5 Europa 2025-26, min. 4×90 min.",en:"Big 5 Europe 2025-26, min. 4×90 min."}},
                 ].map((row,i,arr)=>(
                   <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",
