@@ -61,7 +61,7 @@ const LANG = {
     knockoutTitle: "Knockoutronde",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "Hoe worden scores bepaald",
-    modelBody: "Elke wedstrijd wordt bepaald door de sterktescore per land (Elo, selectiewaarde, ervaring, coach). Het verschil in sterktescore bepaalt wie wint en met welke marge; xG en xGc uit de laatste 12 interlands vullen de hoogte van de uitslag in. Alles vloeit direct voort uit de berekeningen, zonder handmatige aanpassingen.",
+    modelBody: "Elke wedstrijd wordt bepaald door de sterktescore per land (Elo, selectiekwaliteit, recente vorm, ervaring, coach). Het verschil in sterktescore bepaalt wie wint en met welke marge; xG en xGc vullen de hoogte van de uitslag in. Alles vloeit direct voort uit de berekeningen, zonder handmatige aanpassingen.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Kwartfinales",
@@ -89,7 +89,7 @@ const LANG = {
     knockoutTitle: "Knockout Rounds",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "How scores are determined",
-    modelBody: "Every match is determined by each country's strength score (Elo, squad value, experience, coach). The gap in strength score decides who wins and by what margin; xG and xGc from the last 12 internationals fill in the height of the scoreline. Everything follows directly from the calculations, with no manual adjustments.",
+    modelBody: "Every match is determined by each country's strength score (Elo, squad quality, recent form, experience, coach). The gap in strength score decides who wins and by what margin; xG and xGc fill in the height of the scoreline. Everything follows directly from the calculations, with no manual adjustments.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Quarter-finals",
@@ -505,6 +505,14 @@ COMPOSITE["Congo DR"]=COMPOSITE["DR Congo"];
 COMPOSITE_RANK["Congo DR"]=COMPOSITE_RANK["DR Congo"];
 
 const adjRank = t => COMPOSITE_RANK[t] || 40;
+// Form indicator for the Group/Nations tabs, derived from the SAME source the
+// model uses (formScore = avg actual−expected goal difference over the last 12).
+// Returned as a signed one-decimal value so the display agrees with the model.
+const formDev = t => {
+  const f = MODEL_DATA[t];
+  if(!f || f.formScore===undefined) return undefined;
+  return Math.round(f.formScore*10)/10;
+};
 const SHORT_NL = {"United States":"VS","South Africa":"Z-Afrika","Bosnia-Herzegovina":"Bosnie","Ivory Coast":"Ivoorkust","New Zealand":"Nw.-Zeeland","Saudi Arabia":"Saoedi-Arabië","DR Congo":"Congo DR","Cape Verde":"Kaapverdië","South Korea":"Zuid-Korea"};
 const SHORT_EN = {"United States":"USA","South Africa":"S.Africa","Bosnia-Herzegovina":"Bosnia","Ivory Coast":"Ivory Cst","New Zealand":"NZ","Saudi Arabia":"Saudi Ar.","DR Congo":"DR Congo"};
 const tShort=(t,lang)=>lang==="nl"?(SHORT_NL[t]||TEAM_NL[t]||t):(SHORT_EN[t]||t);
@@ -1403,9 +1411,9 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
             {/* Left column: in-form team */}
             <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:4,overflow:"hidden"}}>
               {(()=>{
-                const bestForm=g.teams.filter(t=>FORM_DEV[t]!==undefined).sort((a,b)=>FORM_DEV[b]-FORM_DEV[a])[0];
+                const bestForm=g.teams.filter(t=>formDev(t)!==undefined).sort((a,b)=>formDev(b)-formDev(a))[0];
                 if(!bestForm) return null;
-                const dev=FORM_DEV[bestForm];
+                const dev=formDev(bestForm);
                 return <React.Fragment>
                   <span style={{fontSize:FS.caption,color:T.textFaint,flexShrink:0,whiteSpace:"nowrap"}}>{lang==="nl"?"In vorm:":"In form:"}</span>
                   <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{FLAGS[bestForm]}</span>
@@ -1435,7 +1443,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         </div>
         {sorted.map((team,i)=>{
           const pass=i<2;
-          const dev=FORM_DEV[team];
+          const dev=formDev(team);
           const fc=dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint;
           const mr=adjRank(team);
           const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";
@@ -2782,7 +2790,7 @@ function NationCard({n,open,onToggle}){
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?"Groep":"Group"} {n.group} · <span style={{color:T.textFaint}}>{n.coach}</span></div>
         </div>
         {MODEL_RANK[n.team]&&(()=>{
-          const dev=FORM_DEV[n.team];
+          const dev=formDev(n.team);
           const fc=dev>0?(T.id==="dark"?"#3DBE6E":"#1E7A40"):dev<0?(T.id==="dark"?"#FF5544":"#C0392B"):T.textSub;
           const badges=[
             dev!==undefined&&{lab:lang==="nl"?"VORM":"FORM",val:`${dev>0?"+":""}${dev}`,col:fc},
