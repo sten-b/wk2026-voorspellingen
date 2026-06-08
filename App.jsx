@@ -1205,46 +1205,41 @@ function SoccerIcon({color}){
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
   const T=useTheme();
-  const cfg=[
-    {id:"default",Icon:SoccerIcon},
-    {id:"dark",   Icon:FooterLionIcon},
-  ];
-  const getBg=(id,active)=>{
-    if(id==="default"){
-      // ball button: white when selected (default theme); orange when dark/Lion theme is on
-      if(active) return "#ffffff";
-      return T.id==="dark"?"#FF5500":"transparent";
-    }
-    // lion button: transparent in dark mode (blends, no box); black in default mode
-    return T.id==="dark"?"transparent":"#000000";
-  };
-  const getColor=(id,active)=>{
-    if(id==="default"){
-      // ball: black icon when selected (white bg); white on the orange bg in Lion mode
-      if(active) return "#000000";
-      return T.id==="dark"?"#ffffff":T.textSub;
-    }
-    // lion: same orange as the logo lion (FF5500 in dark, E07000 in default)
-    return T.id==="dark"?"#FF5500":"#E07000";
-  };
+  const accent=T.id==="dark"?T.orange:"#E07000";
+  const isDark=theme==="dark";
+  // Two segments: index 0 = default (ball), index 1 = dark (lion).
+  const activeIdx=isDark?1:0;
+  const SEG=34;                       // segment width = height (square cells)
   return(
-    <div style={{display:"flex",border:T.id==="dark"?"none":`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
-      {cfg.map(({id,Icon},i)=>{
-        const active=theme===id;
-        const isLion=id==="dark";
-        const showLionBorder=isLion&&T.id!=="dark";   // orange border only in default mode
-        return(
-          <button key={id} onClick={()=>setTheme(id)} style={{
-            width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",
-            background:getBg(id,active),cursor:"pointer",flexShrink:0,
-            border:showLionBorder?`1.5px solid #E07000`:"none",
-            borderLeft:(i>0&&!isLion&&T.id!=="dark")?`1px solid ${T.border}`:undefined,
-            boxSizing:"border-box",
-          }}>
-            <Icon color={getColor(id,active)} size={id==="dark"?18:14}/>
-          </button>
-        );
-      })}
+    <div
+      onClick={()=>setTheme(isDark?"default":"dark")}
+      style={{position:"relative",display:"flex",width:SEG*2,height:34,
+        border:`1px solid ${accent}`,borderRadius:4,overflow:"hidden",
+        flexShrink:0,cursor:"pointer",background:"transparent"}}>
+      {/* Sliding orange puck behind the active icon */}
+      <div style={{position:"absolute",top:0,left:0,width:SEG,height:"100%",
+        background:accent,borderRadius:2,
+        transform:`translateX(${activeIdx*SEG}px)`,
+        transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}/>
+      {/* Divider line */}
+      <div style={{position:"absolute",top:0,bottom:0,left:SEG,width:1,
+        background:accent,opacity:0.5}}/>
+      {/* Ball segment */}
+      <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
+        display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <div style={{display:"flex",transform:isDark?"rotate(-360deg)":"rotate(0deg)",
+          transition:"transform 0.45s cubic-bezier(.4,0,.2,1)"}}>
+          <SoccerIcon color={activeIdx===0?"#fff":accent}/>
+        </div>
+      </div>
+      {/* Lion segment */}
+      <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
+        display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <div style={{display:"flex",transform:isDark?"scale(1)":"scale(0.82)",
+          opacity:isDark?1:0.9,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
+          <FooterLionIcon color={activeIdx===1?"#fff":accent} size={18}/>
+        </div>
+      </div>
     </div>
   );
 }
