@@ -564,20 +564,9 @@ const GROUPS = [
   {id:"L",teams:["England","Croatia","Ghana","Panama"]},
 ];
 
-const MATCHES = {
-  A:[{t1:"Mexico",t2:"Czechia",s1:1,s2:1},{t1:"South Korea",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:3,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:2}],
-  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:2,s2:1}],
-  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
-  D:[{t1:"Turkey",t2:"Paraguay",s1:1,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:2,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:1,s2:1}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:3,s2:2},{t1:"Ecuador",t2:"Curacao",s1:2,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:4,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
-  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:1}],
-  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:1,s2:1},{t1:"Egypt",t2:"New Zealand",s1:1,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
-  H:[{t1:"Spain",t2:"Cape Verde",s1:4,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:4,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:2,s2:1}],
-  I:[{t1:"France",t2:"Senegal",s1:3,s2:2},{t1:"Norway",t2:"Iraq",s1:3,s2:1},{t1:"France",t2:"Norway",s1:2,s2:2},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:4,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:2}],
-  J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Austria",s1:2,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
-  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:2,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:2,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
-  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:3,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:3,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
-};
+// MATCHES, QF, SF, FINAL_TEAMS are all DERIVED LIVE from the engine below
+// (after model2Score/knockoutScore are defined) — single source of truth.
+let MATCHES = {};
 
 const OUTLOOK = {
   over:[
@@ -754,10 +743,7 @@ const OUTLOOK = {
   ],
 };
 
-const QF=[["Argentina","Norway"],["England","Brazil"],["France","Portugal"],["Spain","Netherlands"]];
-const SF=[["Argentina","England"],["France","Spain"]];
-// Final teams = winners of the two semifinals; assigned after the goals engine is defined (below) so there's no contradiction.
-let FINAL_TEAMS=["Argentina","Spain"];
+let QF=[], SF=[], FINAL_TEAMS=[];   // all derived live below from the engine
 // ─────────────────────────────────────────────────────────────────────────────
 // END MODEL CONFIGURATION — app code below, no model changes needed there
 // ─────────────────────────────────────────────────────────────────────────────
@@ -837,6 +823,35 @@ function calcStandings(gid,teams){
   });
   return[...teams].sort((a,b)=>pts[b]-pts[a]||(gf[b]-ga[b])-(gf[a]-ga[a]));
 }
+
+// ── LIVE BRACKET DERIVATION — single source of truth ────────────────────────
+// MATCHES (group scores), QF and SF are computed here from the same engine
+// (composite + model2Score + knockoutScore) that the rest of the app uses.
+// Nothing is pre-baked, so the displayed results can never drift from the model.
+(function deriveBracket(){
+  // Group fixtures: seed by composite, pair (s0,s2),(s1,s3),(s0,s1),(s2,s3),(s0,s3),(s1,s2)
+  const PAIR_IDX=[[0,2],[1,3],[0,1],[2,3],[0,3],[1,2]];
+  GROUPS.forEach(g=>{
+    const seeded=[...g.teams].sort((a,b)=>(COMPOSITE[b]??0)-(COMPOSITE[a]??0));
+    MATCHES[g.id]=PAIR_IDX.map(([i,j])=>{
+      const t1=seeded[i],t2=seeded[j];
+      const [s1,s2]=model2Score(t1,t2);
+      return {t1,t2,s1,s2};
+    });
+  });
+  // Group standings → winners, runners-up, and best four third-placed teams
+  const winners=[],runners=[],thirds=[];
+  GROUPS.forEach(g=>{
+    const tbl=calcStandings(g.id,g.teams);
+    winners.push(tbl[0]); runners.push(tbl[1]); thirds.push(tbl[2]);
+  });
+  const bestThirds=[...thirds].sort((a,b)=>(COMPOSITE[b]??0)-(COMPOSITE[a]??0)).slice(0,4);
+  // Top-8 knockout bracket, seeded by composite (highest vs lowest)
+  const top8=[...winners,...runners,...bestThirds].sort((a,b)=>(COMPOSITE[b]??0)-(COMPOSITE[a]??0)).slice(0,8);
+  QF=[[top8[0],top8[7]],[top8[3],top8[4]],[top8[2],top8[5]],[top8[1],top8[6]]];
+  const qfW=QF.map(([a,b])=>{const [sa,sb]=knockoutScore(a,b);return sa>=sb?a:b;});
+  SF=[[qfW[0],qfW[1]],[qfW[2],qfW[3]]];
+})();
 
 const GROUP_DATA=GROUPS.map(g=>({...g,table:calcStandings(g.id,g.teams),matches:MATCHES[g.id]||[]}));
 // Resolve the finalists from the semifinal results (model-consistent: the SF winner advances)
