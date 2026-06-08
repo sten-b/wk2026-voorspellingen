@@ -2212,6 +2212,16 @@ const PLAYER_WIKI = {
   "Luis Diaz":        "Luis_Díaz_(footballer,_born_1997)",
   "Yan Diomande":     "Yan_Diomandé",
   "Ritsu Doan":       "Ritsu_Doan",
+  "Virgil van Dijk": "Virgil_van_Dijk",
+  "Martin Odegaard": "Martin_Ødegaard",
+  "Rodri": "Rodri_(footballer,_born_1996)",
+  "Lautaro Martinez": "Lautaro_Martínez",
+  "Theo Hernandez": "Theo_Hernandez",
+  "Jules Kounde": "Jules_Koundé",
+  "Denzel Dumfries": "Denzel_Dumfries",
+  "Manuel Akanji": "Manuel_Akanji",
+  "Bart Verbruggen": "Bart_Verbruggen",
+  "David Raya": "David_Raya",
 };
 
 const SPOTLIGHT = [
@@ -2391,6 +2401,32 @@ function usePlayerPhoto(name) {
   return url;
 }
 
+// Round player photo with flag badge; falls back to flag-only avatar on load error or no photo.
+function PlayerAvatar({photo,flag,open,activeColor="#E07000"}){
+  const T=useTheme();
+  const [failed,setFailed]=useState(false);
+  const ring=open?activeColor:(T.borderStrong||T.border);
+  const showPhoto=photo&&!failed;
+  return(
+    <div style={{position:"relative",width:44,height:44,flexShrink:0}}>
+      {showPhoto?(
+        <img src={photo} alt="" onError={()=>setFailed(true)}
+          style={{width:44,height:44,borderRadius:"50%",objectFit:"cover",
+            border:`2px solid ${ring}`,background:T.card,display:"block"}}/>
+      ):(
+        <div style={{width:44,height:44,borderRadius:"50%",background:"#ffffff",
+          border:`2px solid ${ring}`,display:"flex",alignItems:"center",
+          justifyContent:"center",fontSize:22,lineHeight:1}}>{flag}</div>
+      )}
+      {showPhoto&&(
+        <div style={{position:"absolute",bottom:-2,right:-2,width:18,height:18,borderRadius:"50%",
+          background:"#fff",border:`1.5px solid ${T.card}`,display:"flex",alignItems:"center",
+          justifyContent:"center",fontSize:11,lineHeight:1,boxShadow:"0 1px 2px rgba(0,0,0,.25)"}}>{flag}</div>
+      )}
+    </div>
+  );
+}
+
 // ── PLAYERS TAB COMPONENT ─────────────────────────────────────────────────────
 function PlayerCard({p,open,onToggle}){
   const T=useTheme();
@@ -2399,10 +2435,8 @@ function PlayerCard({p,open,onToggle}){
   return(
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
-        {/* Flag avatar */}
-        <div style={{width:40,height:40,borderRadius:"50%",flexShrink:0,background:"#ffffff",border:`2px solid ${open?"#E07000":T.borderStrong||T.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,lineHeight:1}}>
-          {p.flag}
-        </div>
+        {/* Photo avatar with flag badge (fallback to flag if photo missing/fails) */}
+        <PlayerAvatar photo={photo} flag={p.flag} open={open}/>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
@@ -2429,9 +2463,7 @@ function DarkHorseCard({p,open,onToggle}){
   return(
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",cursor:"pointer",background:open?T.blueFaint:T.card}}>
-        <div style={{width:40,height:40,borderRadius:"50%",flexShrink:0,background:"#ffffff",border:`2px solid ${open?"#1A5296":T.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,lineHeight:1}}>
-          {p.flag}
-        </div>
+        <PlayerAvatar photo={photo} flag={p.flag} open={open} activeColor="#1A5296"/>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:FS.body,fontWeight:600,color:T.text}}>{p.name}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
