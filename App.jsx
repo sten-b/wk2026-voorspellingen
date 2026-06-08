@@ -431,58 +431,58 @@ const FORM_ADJ = {
 //           weighted by tournament strength x round depth
 //   coach = head-coach honours weighted by trophy prestige
 // Weights (sum to 1): elo .80, form .10, experience .05, coach .05
-const WEIGHTS = { elo:0.70, form:0.10, experience:0.05, coach:0.05, recentForm:0.10 };
+const WEIGHTS = { elo:0.70, squadQuality:0.10, experience:0.05, coach:0.05, recentForm:0.10 };
 
 // eloN = Elo normalised to 0-100 via (elo - 1400) / 800 * 100, clamped.
 const MODEL_DATA={
-  "Spain":{elo:2155,eloN:94.4,svN:90.2,form:68.7,exp:67.5,coach:78.5,xg:2.909,xgc:0.879,formN:79.5,formScore:0.127},
-  "Argentina":{elo:2114,eloN:89.2,svN:89.2,form:63.8,exp:100.0,coach:100.0,xg:2.141,xgc:0.346,formN:75.2,formScore:0.104},
-  "France":{elo:2062,eloN:82.8,svN:98.2,form:65.7,exp:89.6,coach:82.4,xg:2.485,xgc:0.965,formN:84.6,formScore:0.155},
-  "England":{elo:2021,eloN:77.6,svN:100.0,form:64.5,exp:87.8,coach:88.6,xg:2.394,xgc:0.24,formN:94.9,formScore:0.21},
-  "Brazil":{elo:1991,eloN:73.9,svN:96.3,form:57.1,exp:75.9,coach:98.9,xg:1.898,xgc:0.784,formN:37.6,formScore:-0.1},
-  "Portugal":{elo:1986,eloN:73.2,svN:93.5,form:62.2,exp:60.4,coach:67.8,xg:2.909,xgc:1.137,formN:66.7,formScore:0.057},
-  "Colombia":{elo:1977,eloN:72.1,svN:75.0,form:50.7,exp:64.8,coach:51.9,xg:2.201,xgc:1.08,formN:35.0,formScore:-0.114},
-  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,form:60.3,exp:45.2,coach:55.4,xg:2.886,xgc:0.733,formN:71.8,formScore:0.085},
-  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,form:56.2,exp:40.7,coach:38.3,xg:0.635,xgc:0.324,formN:31.6,formScore:-0.132},
-  "Germany":{elo:1932,eloN:66.5,svN:89.9,form:50.3,exp:46.5,coach:62.5,xg:2.44,xgc:0.834,formN:76.9,formScore:0.113},
-  "Norway":{elo:1914,eloN:64.2,svN:81.6,form:67.0,exp:0.0,coach:59.9,xg:3.654,xgc:0.738,formN:97.4,formScore:0.224},
-  "Croatia":{elo:1911,eloN:63.9,svN:69.0,form:53.9,exp:70.6,coach:48.8,xg:2.541,xgc:0.862,formN:79.5,formScore:0.127},
-  "Turkey":{elo:1911,eloN:63.9,svN:79.2,form:56.0,exp:23.8,coach:60.9,xg:2.283,xgc:1.144,formN:75.6,formScore:0.106},
-  "Japan":{elo:1906,eloN:63.2,svN:66.0,form:54.9,exp:49.1,coach:70.3,xg:1.648,xgc:0.478,formN:70.3,formScore:0.077},
-  "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:57.7,coach:74.1,xg:3.565,xgc:0.807,formN:71.8,formScore:0.085},
-  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:61.7,coach:37.1,xg:0.843,xgc:0.697,formN:22.2,formScore:-0.183},
-  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:52.4,coach:39.9,xg:2.268,xgc:0.667,formN:66.7,formScore:0.057},
-  "Mexico":{elo:1915,eloN:64.4,svN:54.0,form:53.5,exp:74.8,coach:53.1,xg:1.528,xgc:0.61,formN:56.4,formScore:0.002},
-  "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:74.0,coach:74.6,xg:1.983,xgc:0.847,formN:68.7,formScore:0.069},
-  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:29.4,coach:32.6,xg:1.213,xgc:0.811,formN:24.8,formScore:-0.169},
-  "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:23.0,coach:62.0,xg:2.46,xgc:0.59,formN:75.6,formScore:0.106},
-  "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:76.8,coach:88.3,xg:2.11,xgc:0.345,formN:100.0,formScore:0.238},
-  "Canada":{elo:1838,eloN:54.8,svN:56.5,form:51.7,exp:56.0,coach:43.1,xg:1.187,xgc:0.444,formN:53.8,formScore:-0.012},
-  "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:13.2,coach:33.1,xg:2.255,xgc:1.13,formN:53.8,formScore:-0.012},
-  "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:36.2,coach:51.4,xg:1.614,xgc:0.778,formN:58.3,formScore:0.012},
-  "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:38.2,coach:65.1,xg:1.588,xgc:0.582,formN:55.8,formScore:-0.002},
-  "Algeria":{elo:1760,eloN:45.0,svN:64.0,form:63.3,exp:36.9,coach:73.5,xg:1.883,xgc:0.49,formN:76.9,formScore:0.113},
-  "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:39.8,coach:57.8,xg:1.837,xgc:0.819,formN:67.9,formScore:0.064},
-  "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:22.2,coach:53.6,xg:2.178,xgc:1.21,formN:42.6,formScore:-0.073},
-  "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:49.3,coach:41.0,xg:1.751,xgc:1.285,formN:55.9,formScore:-0.001},
-  "United States":{elo:1876,eloN:59.5,svN:64.8,form:36.3,exp:73.0,coach:36.9,xg:1.624,xgc:1.572,formN:48.7,formScore:-0.04},
-  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:16.0,coach:35.5,xg:1.314,xgc:0.593,formN:49.4,formScore:-0.036},
-  "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:23.6,coach:17.9,xg:1.47,xgc:1.851,formN:0.0,formScore:-0.304},
-  "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:57.6,coach:46.7,xg:1.186,xgc:0.811,formN:64.6,formScore:0.046},
-  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,form:60.4,exp:47.3,coach:67.8,xg:2.454,xgc:0.773,formN:82.6,formScore:0.144},
-  "Jordan":{elo:1685,eloN:35.6,svN:20.1,form:49.4,exp:24.0,coach:33.1,xg:1.874,xgc:1.507,formN:30.1,formScore:-0.141},
-  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,form:48.8,exp:40.0,coach:51.9,xg:1.153,xgc:0.462,formN:60.9,formScore:0.026},
-  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,form:34.7,exp:57.1,coach:39.9,xg:1.322,xgc:1.327,formN:52.8,formScore:-0.018},
-  "Iraq":{elo:1618,eloN:27.3,svN:20.1,form:46.6,exp:13.3,coach:49.9,xg:1.109,xgc:0.732,formN:56.8,formScore:0.004},
-  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,form:43.3,exp:0.0,coach:17.3,xg:1.816,xgc:0.986,formN:35.4,formScore:-0.112},
-  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,form:46.2,exp:17.7,coach:34.7,xg:1.623,xgc:1.184,formN:52.8,formScore:-0.018},
-  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,form:30.3,exp:34.5,coach:30.4,xg:1.147,xgc:1.131,formN:23.1,formScore:-0.179},
-  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,form:15,exp:0.0,coach:16.3,xg:0.906,xgc:1.601,formN:41.0,formScore:-0.081},
-  "Haiti":{elo:1548,eloN:18.5,svN:23.0,form:40.7,exp:21.3,coach:43.1,xg:1.436,xgc:1.071,formN:33.3,formScore:-0.123},
-  "South Africa":{elo:1528,eloN:16.0,svN:31.9,form:40.6,exp:37.6,coach:50.5,xg:1.355,xgc:0.973,formN:34.9,formScore:-0.115},
-  "Ghana":{elo:1510,eloN:13.8,svN:62.4,form:35.4,exp:31.2,coach:12.1,xg:1.423,xgc:1.074,formN:43.6,formScore:-0.068},
-  "Curacao":{elo:1434,eloN:4.2,svN:25.6,form:34.8,exp:11.3,coach:37.3,xg:1.719,xgc:1.394,formN:45.6,formScore:-0.056},
-  "Qatar":{elo:1421,eloN:2.6,svN:0.0,form:22.2,exp:57.4,coach:0.0,xg:0.637,xgc:1.533,formN:7.7,formScore:-0.262}
+  "Spain":{elo:2155,eloN:94.4,svN:90.2,exp:67.5,coach:78.5,xg:2.909,xgc:0.879,formN:79.5,formScore:0.127},
+  "Argentina":{elo:2114,eloN:89.2,svN:89.2,exp:100.0,coach:100.0,xg:2.141,xgc:0.346,formN:75.2,formScore:0.104},
+  "France":{elo:2062,eloN:82.8,svN:98.2,exp:89.6,coach:82.4,xg:2.485,xgc:0.965,formN:84.6,formScore:0.155},
+  "England":{elo:2021,eloN:77.6,svN:100.0,exp:87.8,coach:88.6,xg:2.394,xgc:0.24,formN:94.9,formScore:0.21},
+  "Brazil":{elo:1991,eloN:73.9,svN:96.3,exp:75.9,coach:98.9,xg:1.898,xgc:0.784,formN:37.6,formScore:-0.1},
+  "Portugal":{elo:1986,eloN:73.2,svN:93.5,exp:60.4,coach:67.8,xg:2.909,xgc:1.137,formN:66.7,formScore:0.057},
+  "Colombia":{elo:1977,eloN:72.1,svN:75.0,exp:64.8,coach:51.9,xg:2.201,xgc:1.08,formN:35.0,formScore:-0.114},
+  "Netherlands":{elo:1944,eloN:68.0,svN:85.7,exp:45.2,coach:55.4,xg:2.886,xgc:0.733,formN:71.8,formScore:0.085},
+  "Ecuador":{elo:1938,eloN:67.2,svN:61.9,exp:40.7,coach:38.3,xg:0.635,xgc:0.324,formN:31.6,formScore:-0.132},
+  "Germany":{elo:1932,eloN:66.5,svN:89.9,exp:46.5,coach:62.5,xg:2.44,xgc:0.834,formN:76.9,formScore:0.113},
+  "Norway":{elo:1914,eloN:64.2,svN:81.6,exp:0.0,coach:59.9,xg:3.654,xgc:0.738,formN:97.4,formScore:0.224},
+  "Croatia":{elo:1911,eloN:63.9,svN:69.0,exp:70.6,coach:48.8,xg:2.541,xgc:0.862,formN:79.5,formScore:0.127},
+  "Turkey":{elo:1911,eloN:63.9,svN:79.2,exp:23.8,coach:60.9,xg:2.283,xgc:1.144,formN:75.6,formScore:0.106},
+  "Japan":{elo:1906,eloN:63.2,svN:66.0,exp:49.1,coach:70.3,xg:1.648,xgc:0.478,formN:70.3,formScore:0.077},
+  "Belgium":{elo:1893,eloN:61.6,svN:80.4,exp:57.7,coach:74.1,xg:3.565,xgc:0.807,formN:71.8,formScore:0.085},
+  "Uruguay":{elo:1892,eloN:61.5,svN:74.7,exp:61.7,coach:37.1,xg:0.843,xgc:0.697,formN:22.2,formScore:-0.183},
+  "Switzerland":{elo:1891,eloN:61.4,svN:65.8,exp:52.4,coach:39.9,xg:2.268,xgc:0.667,formN:66.7,formScore:0.057},
+  "Mexico":{elo:1915,eloN:64.4,svN:54.0,exp:74.8,coach:53.1,xg:1.528,xgc:0.61,formN:56.4,formScore:0.002},
+  "Senegal":{elo:1867,eloN:58.4,svN:77.0,exp:74.0,coach:74.6,xg:1.983,xgc:0.847,formN:68.7,formScore:0.069},
+  "Paraguay":{elo:1833,eloN:54.1,svN:41.9,exp:29.4,coach:32.6,xg:1.213,xgc:0.811,formN:24.8,formScore:-0.169},
+  "Austria":{elo:1830,eloN:53.8,svN:69.9,exp:23.0,coach:62.0,xg:2.46,xgc:0.59,formN:75.6,formScore:0.106},
+  "Morocco":{elo:1827,eloN:53.4,svN:76.5,exp:76.8,coach:88.3,xg:2.11,xgc:0.345,formN:100.0,formScore:0.238},
+  "Canada":{elo:1838,eloN:54.8,svN:56.5,exp:56.0,coach:43.1,xg:1.187,xgc:0.444,formN:53.8,formScore:-0.012},
+  "Scotland":{elo:1782,eloN:47.8,svN:59.3,exp:13.2,coach:33.1,xg:2.255,xgc:1.13,formN:53.8,formScore:-0.012},
+  "Australia":{elo:1777,eloN:47.1,svN:23.5,exp:36.2,coach:51.4,xg:1.614,xgc:0.778,formN:58.3,formScore:0.012},
+  "Iran":{elo:1772,eloN:46.5,svN:28.3,exp:38.2,coach:65.1,xg:1.588,xgc:0.582,formN:55.8,formScore:-0.002},
+  "Algeria":{elo:1760,eloN:45.0,svN:64.0,exp:36.9,coach:73.5,xg:1.883,xgc:0.49,formN:76.9,formScore:0.113},
+  "South Korea":{elo:1758,eloN:44.8,svN:56.4,exp:39.8,coach:57.8,xg:1.837,xgc:0.819,formN:67.9,formScore:0.064},
+  "Czechia":{elo:1740,eloN:42.5,svN:65.6,exp:22.2,coach:53.6,xg:2.178,xgc:1.21,formN:42.6,formScore:-0.073},
+  "Panama":{elo:1730,eloN:41.2,svN:23.0,exp:49.3,coach:41.0,xg:1.751,xgc:1.285,formN:55.9,formScore:-0.001},
+  "United States":{elo:1876,eloN:59.5,svN:64.8,exp:73.0,coach:36.9,xg:1.624,xgc:1.572,formN:48.7,formScore:-0.04},
+  "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,exp:16.0,coach:35.5,xg:1.314,xgc:0.593,formN:49.4,formScore:-0.036},
+  "Sweden":{elo:1712,eloN:39.0,svN:75.0,exp:23.6,coach:17.9,xg:1.47,xgc:1.851,formN:0.0,formScore:-0.304},
+  "Egypt":{elo:1696,eloN:37.0,svN:47.1,exp:57.6,coach:46.7,xg:1.186,xgc:0.811,formN:64.6,formScore:0.046},
+  "Ivory Coast":{elo:1695,eloN:36.9,svN:74.0,exp:47.3,coach:67.8,xg:2.454,xgc:0.773,formN:82.6,formScore:0.144},
+  "Jordan":{elo:1685,eloN:35.6,svN:20.1,exp:24.0,coach:33.1,xg:1.874,xgc:1.507,formN:30.1,formScore:-0.141},
+  "DR Congo":{elo:1661,eloN:32.6,svN:52.0,exp:40.0,coach:51.9,xg:1.153,xgc:0.462,formN:60.9,formScore:0.026},
+  "Tunisia":{elo:1628,eloN:28.5,svN:29.6,exp:57.1,coach:39.9,xg:1.322,xgc:1.327,formN:52.8,formScore:-0.018},
+  "Iraq":{elo:1618,eloN:27.3,svN:20.1,exp:13.3,coach:49.9,xg:1.109,xgc:0.732,formN:56.8,formScore:0.004},
+  "Bosnia-Herzegovina":{elo:1595,eloN:24.4,svN:55.9,exp:0.0,coach:17.3,xg:1.816,xgc:0.986,formN:35.4,formScore:-0.112},
+  "Cape Verde":{elo:1578,eloN:22.2,svN:40.8,exp:17.7,coach:34.7,xg:1.623,xgc:1.184,formN:52.8,formScore:-0.018},
+  "Saudi Arabia":{elo:1569,eloN:21.1,svN:1.5,exp:34.5,coach:30.4,xg:1.147,xgc:1.131,formN:23.1,formScore:-0.179},
+  "New Zealand":{elo:1562,eloN:20.2,svN:20.1,exp:0.0,coach:16.3,xg:0.906,xgc:1.601,formN:41.0,formScore:-0.081},
+  "Haiti":{elo:1548,eloN:18.5,svN:23.0,exp:21.3,coach:43.1,xg:1.436,xgc:1.071,formN:33.3,formScore:-0.123},
+  "South Africa":{elo:1528,eloN:16.0,svN:31.9,exp:37.6,coach:50.5,xg:1.355,xgc:0.973,formN:34.9,formScore:-0.115},
+  "Ghana":{elo:1510,eloN:13.8,svN:62.4,exp:31.2,coach:12.1,xg:1.423,xgc:1.074,formN:43.6,formScore:-0.068},
+  "Curacao":{elo:1434,eloN:4.2,svN:25.6,exp:11.3,coach:37.3,xg:1.719,xgc:1.394,formN:45.6,formScore:-0.056},
+  "Qatar":{elo:1421,eloN:2.6,svN:0.0,exp:57.4,coach:0.0,xg:0.637,xgc:1.533,formN:7.7,formScore:-0.262}
 };
 
 // Raw per-country source inputs (for the in-app source center; same numbers the model uses)
@@ -549,7 +549,7 @@ const FORM_DEV={"Spain":19,"Argentina":14,"France":16,"England":14,"Brazil":7,"P
 function composite(team){
   const f=MODEL_DATA[team];
   if(!f) return 50;
-  return +(f.eloN*WEIGHTS.elo + f.svN*WEIGHTS.form +
+  return +(f.eloN*WEIGHTS.elo + f.svN*WEIGHTS.squadQuality +
            f.exp*WEIGHTS.experience + f.coach*WEIGHTS.coach +
            (f.formN||0)*WEIGHTS.recentForm).toFixed(1);
 }
@@ -2710,7 +2710,7 @@ function ModelViz(){
           if(!fd) return null;
           const rows=[
             {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.form},
+            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.squadQuality},
             {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
@@ -2768,7 +2768,7 @@ function ModelViz(){
           const isOpen=openRank===i;
           const rows=fd?[
             {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.form},
+            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.squadQuality},
             {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
