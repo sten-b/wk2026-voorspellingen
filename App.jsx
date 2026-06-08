@@ -537,18 +537,18 @@ const GROUPS = [
 ];
 
 const MATCHES = {
-  A:[{t1:"Mexico",t2:"Czechia",s1:2,s2:1},{t1:"South Korea",t2:"South Africa",s1:1,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:1,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:1}],
-  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
-  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:2,s2:1},{t1:"Morocco",t2:"Scotland",s1:2,s2:1}],
-  D:[{t1:"Turkey",t2:"Paraguay",s1:2,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:3,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:2,s2:2}],
-  E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:1,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:0},{t1:"Ivory Coast",t2:"Curacao",s1:3,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
-  F:[{t1:"Netherlands",t2:"Sweden",s1:4,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:3,s2:1}],
-  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"New Zealand",s1:5,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
-  H:[{t1:"Spain",t2:"Cape Verde",s1:3,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:2,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:1,s2:1}],
-  I:[{t1:"France",t2:"Senegal",s1:2,s2:2},{t1:"Norway",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Norway",s1:3,s2:3},{t1:"Senegal",t2:"Iraq",s1:1,s2:1},{t1:"France",t2:"Iraq",s1:2,s2:1},{t1:"Norway",t2:"Senegal",s1:3,s2:1}],
-  J:[{t1:"Argentina",t2:"Algeria",s1:1,s2:1},{t1:"Austria",t2:"Jordan",s1:3,s2:1},{t1:"Argentina",t2:"Austria",s1:1,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:1},{t1:"Argentina",t2:"Jordan",s1:3,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
-  K:[{t1:"Portugal",t2:"Uzbekistan",s1:1,s2:1},{t1:"Colombia",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"Colombia",s1:3,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:1,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:1,s2:1}],
-  L:[{t1:"England",t2:"Panama",s1:3,s2:0},{t1:"Croatia",t2:"Ghana",s1:2,s2:1},{t1:"England",t2:"Croatia",s1:2,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:2,s2:0},{t1:"Croatia",t2:"Panama",s1:3,s2:1}]
+  A:[{t1:"Mexico",t2:"Czechia",s1:1,s2:1},{t1:"South Korea",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:3,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:2}],
+  B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:2,s2:1}],
+  C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:2,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:4,s2:1},{t1:"Morocco",t2:"Scotland",s1:1,s2:1}],
+  D:[{t1:"Turkey",t2:"Paraguay",s1:1,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:2,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:1,s2:1}],
+  E:[{t1:"Germany",t2:"Ivory Coast",s1:3,s2:2},{t1:"Ecuador",t2:"Curacao",s1:3,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:1},{t1:"Ivory Coast",t2:"Curacao",s1:2,s2:1},{t1:"Germany",t2:"Curacao",s1:4,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:2,s2:1}],
+  F:[{t1:"Netherlands",t2:"Sweden",s1:2,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:2,s2:2}],
+  G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:1,s2:0},{t1:"Belgium",t2:"Iran",s1:1,s2:1},{t1:"Egypt",t2:"New Zealand",s1:1,s2:1},{t1:"Belgium",t2:"New Zealand",s1:3,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
+  H:[{t1:"Spain",t2:"Cape Verde",s1:4,s2:1},{t1:"Uruguay",t2:"Saudi Arabia",s1:3,s2:1},{t1:"Spain",t2:"Uruguay",s1:2,s2:1},{t1:"Cape Verde",t2:"Saudi Arabia",s1:1,s2:1},{t1:"Spain",t2:"Saudi Arabia",s1:4,s2:1},{t1:"Uruguay",t2:"Cape Verde",s1:3,s2:1}],
+  I:[{t1:"France",t2:"Senegal",s1:3,s2:2},{t1:"Norway",t2:"Iraq",s1:3,s2:1},{t1:"France",t2:"Norway",s1:4,s2:3},{t1:"Senegal",t2:"Iraq",s1:2,s2:1},{t1:"France",t2:"Iraq",s1:4,s2:1},{t1:"Norway",t2:"Senegal",s1:2,s2:2}],
+  J:[{t1:"Argentina",t2:"Algeria",s1:3,s2:1},{t1:"Austria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Austria",s1:3,s2:1},{t1:"Algeria",t2:"Jordan",s1:2,s2:2},{t1:"Argentina",t2:"Jordan",s1:4,s2:1},{t1:"Austria",t2:"Algeria",s1:1,s2:1}],
+  K:[{t1:"Portugal",t2:"Uzbekistan",s1:2,s2:1},{t1:"Colombia",t2:"DR Congo",s1:3,s2:1},{t1:"Portugal",t2:"Colombia",s1:2,s2:2},{t1:"Uzbekistan",t2:"DR Congo",s1:1,s2:1},{t1:"Portugal",t2:"DR Congo",s1:3,s2:1},{t1:"Colombia",t2:"Uzbekistan",s1:2,s2:1}],
+  L:[{t1:"England",t2:"Panama",s1:2,s2:0},{t1:"Croatia",t2:"Ghana",s1:3,s2:1},{t1:"England",t2:"Croatia",s1:1,s2:1},{t1:"Panama",t2:"Ghana",s1:2,s2:2},{t1:"England",t2:"Ghana",s1:3,s2:0},{t1:"Croatia",t2:"Panama",s1:2,s2:1}]
 };
 
 const OUTLOOK = {
@@ -726,7 +726,7 @@ const OUTLOOK = {
   ],
 };
 
-const QF=[["Argentina","Germany"],["England","Brazil"],["France","Portugal"],["Spain","Netherlands"]];
+const QF=[["Argentina","Netherlands"],["England","Brazil"],["France","Portugal"],["Spain","Colombia"]];
 const SF=[["Argentina","England"],["France","Spain"]];
 // Final teams = winners of the two semifinals; assigned after the goals engine is defined (below) so there's no contradiction.
 let FINAL_TEAMS=["Argentina","Spain"];
@@ -756,15 +756,36 @@ function expectedGoals(a,b){
 // Deterministic scoreline: amplify the expected-goals margin so dominant
 // matchups produce realistic big scorelines (3-0, 4-1), then reconcile with
 // Model 1 (composite) so rounding never flips the win/draw/loss outcome.
+// Score engine. The composite (team strength) decides the OUTCOME and the
+// MARGIN via fixed ranges; xG/xGc fill in the actual height of the scoreline.
+//   |gap| < 20  → draw
+//   20–35       → win by 1
+//   35–50       → win by 2
+//   > 50        → win by 3
+// The loser's tally comes from their own expected goals (so an attacking match
+// runs higher, a defensive one stays low); the winner is loser + margin.
+function marginFromGap(g){
+  g=Math.abs(g);
+  if(g<20) return 0;
+  if(g<35) return 1;
+  if(g<50) return 2;
+  return 3;
+}
 function model2Score(a,b){
   const [ea,eb]=expectedGoals(a,b);
-  let ga=Math.round(ea), gb=Math.round(eb);
   const ca=COMPOSITE[a]??50, cb=COMPOSITE[b]??50;
-  // Reconciliation only blocks a genuine upset (weaker side winning outright).
-  // Draws are always kept — stronger teams routinely drop points.
-  if(ca>cb && gb>ga){ ga=gb; }
-  else if(cb>ca && ga>gb){ gb=ga; }
-  return [ga,gb];
+  const diff=ca-cb;
+  const margin=marginFromGap(diff);
+  if(margin===0){                                 // draw — height from combined xG
+    const lvl=Math.max(0,Math.round((ea+eb)/2));
+    return [lvl,lvl];
+  }
+  if(diff>0){                                     // A wins by `margin`
+    const loser=Math.max(0,Math.round(eb));
+    return [loser+margin, loser];
+  }
+  const loser=Math.max(0,Math.round(ea));         // B wins by `margin`
+  return [loser, loser+margin];
 }
 
 // Knockout scoreline now comes from Model 2 (expected goals), reconciled with
@@ -2655,18 +2676,20 @@ function ModelViz(){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
-            ?"Elk land heeft een xG (aanvalskracht) en xGc (verdediging) uit de laatste 12 wedstrijden. De doelpunten volgen uit aanval × zwakte van de tegenstander:"
-            :"Each country has an xG (attack) and xGc (defence) from its last 12 matches. Goals follow from attack × opponent's weakness:"}
+            ?"De sterktescore bepaalt wie wint én met welke marge; xG en xGc vullen de hoogte van de uitslag in."
+            :"The strength score decides who wins and by what margin; xG and xGc fill in the height of the scoreline."}
         </div>
         <div style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
-          padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.9,fontFamily:"monospace"}}>
-          <div><span style={{color:blue,fontWeight:700}}>doelpunten A</span> = {GOAL_BASE} × (A.xG / {GEM_XG}) × (B.xGc / {GEM_XGC})</div>
-          <div><span style={{color:blue,fontWeight:700}}>doelpunten B</span> = {GOAL_BASE} × (B.xG / {GEM_XG}) × (A.xGc / {GEM_XGC})</div>
+          padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.9}}>
+          <div><span style={{color:blue,fontWeight:700}}>{lang==="nl"?"verschil":"gap"} &lt; 20</span> → {lang==="nl"?"gelijkspel":"draw"}</div>
+          <div><span style={{color:blue,fontWeight:700}}>20–35</span> → {lang==="nl"?"wint met 1":"win by 1"}</div>
+          <div><span style={{color:blue,fontWeight:700}}>35–50</span> → {lang==="nl"?"wint met 2":"win by 2"}</div>
+          <div><span style={{color:blue,fontWeight:700}}>&gt; 50</span> → {lang==="nl"?"wint met 3":"win by 3"}</div>
         </div>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6}}>
           {lang==="nl"
-            ?"Grote verschillen geven ruimere uitslagen. Een sterkere ploeg kan gelijkspelen, maar verliest nooit van een zwakkere."
-            :"Bigger gaps give wider scorelines. A stronger side can draw, but never loses to a weaker one."}
+            ?"De marge volgt uit het verschil in sterktescore. De xG/xGc bepalen het exacte aantal doelpunten binnen die marge: een aanvallend duel wordt 3-1, een defensief duel 1-0."
+            :"The margin follows from the strength-score gap. xG/xGc set the exact number of goals within that margin: an attacking match becomes 3-1, a defensive one 1-0."}
         </div>
       </div>
 
