@@ -427,12 +427,12 @@ const MODEL_DATA={
   "Belgium":{elo:1893,eloN:61.6,svN:80.4,form:65.1,exp:13.6,coach:13.6,xg:3.565,xgc:0.807},
   "Uruguay":{elo:1892,eloN:61.5,svN:74.7,form:33.3,exp:14.7,coach:21.5,xg:0.843,xgc:0.697},
   "Switzerland":{elo:1891,eloN:61.4,svN:65.8,form:64.2,exp:0.0,coach:22.5,xg:2.268,xgc:0.667},
-  "Mexico":{elo:1875,eloN:59.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61},
+  "Mexico":{elo:1915,eloN:64.4,svN:54.0,form:53.5,exp:49.8,coach:22.5,xg:1.528,xgc:0.61},
   "Senegal":{elo:1867,eloN:58.4,svN:77.0,form:52.4,exp:26.0,coach:28.8,xg:1.983,xgc:0.847},
   "Paraguay":{elo:1833,eloN:54.1,svN:41.9,form:40.9,exp:0.0,coach:20.4,xg:1.213,xgc:0.811},
   "Austria":{elo:1830,eloN:53.8,svN:69.9,form:59.0,exp:0.0,coach:15.2,xg:2.46,xgc:0.59},
   "Morocco":{elo:1827,eloN:53.4,svN:76.5,form:72.1,exp:35.9,coach:22.5,xg:2.11,xgc:0.345},
-  "Canada":{elo:1788,eloN:48.5,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444},
+  "Canada":{elo:1838,eloN:54.8,svN:56.5,form:51.7,exp:21.1,coach:15.2,xg:1.187,xgc:0.444},
   "Scotland":{elo:1782,eloN:47.8,svN:59.3,form:49.7,exp:0.0,coach:0.0,xg:2.255,xgc:1.13},
   "Australia":{elo:1777,eloN:47.1,svN:23.5,form:62.3,exp:0.0,coach:20.4,xg:1.614,xgc:0.778},
   "Iran":{elo:1772,eloN:46.5,svN:28.3,form:47.2,exp:16.0,coach:22.5,xg:1.588,xgc:0.582},
@@ -440,7 +440,7 @@ const MODEL_DATA={
   "South Korea":{elo:1758,eloN:44.8,svN:56.4,form:56.5,exp:8.8,coach:21.5,xg:1.837,xgc:0.819},
   "Czechia":{elo:1740,eloN:42.5,svN:65.6,form:44.1,exp:0.0,coach:20.4,xg:2.178,xgc:1.21},
   "Panama":{elo:1730,eloN:41.2,svN:23.0,form:49.3,exp:9.8,coach:20.4,xg:1.751,xgc:1.285},
-  "United States":{elo:1726,eloN:40.8,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572},
+  "United States":{elo:1876,eloN:59.5,svN:64.8,form:36.3,exp:38.6,coach:13.6,xg:1.624,xgc:1.572},
   "Uzbekistan":{elo:1718,eloN:39.8,svN:35.3,form:51.7,exp:0.0,coach:15.2,xg:1.314,xgc:0.593},
   "Sweden":{elo:1712,eloN:39.0,svN:75.0,form:26.0,exp:0.0,coach:20.4,xg:1.47,xgc:1.851},
   "Egypt":{elo:1696,eloN:37.0,svN:47.1,form:43.5,exp:20.8,coach:22.5,xg:1.186,xgc:0.811},
@@ -536,7 +536,7 @@ const MATCHES = {
   A:[{t1:"Mexico",t2:"Czechia",s1:2,s2:1},{t1:"South Korea",t2:"South Africa",s1:1,s2:1},{t1:"Mexico",t2:"South Korea",s1:1,s2:1},{t1:"Czechia",t2:"South Africa",s1:2,s2:1},{t1:"Mexico",t2:"South Africa",s1:1,s2:1},{t1:"South Korea",t2:"Czechia",s1:2,s2:1}],
   B:[{t1:"Switzerland",t2:"Bosnia-Herzegovina",s1:2,s2:1},{t1:"Canada",t2:"Qatar",s1:2,s2:0},{t1:"Switzerland",t2:"Canada",s1:1,s2:1},{t1:"Bosnia-Herzegovina",t2:"Qatar",s1:2,s2:1},{t1:"Switzerland",t2:"Qatar",s1:3,s2:0},{t1:"Canada",t2:"Bosnia-Herzegovina",s1:1,s2:1}],
   C:[{t1:"Brazil",t2:"Scotland",s1:2,s2:1},{t1:"Morocco",t2:"Haiti",s1:2,s2:0},{t1:"Brazil",t2:"Morocco",s1:1,s2:1},{t1:"Scotland",t2:"Haiti",s1:2,s2:1},{t1:"Brazil",t2:"Haiti",s1:2,s2:1},{t1:"Morocco",t2:"Scotland",s1:2,s2:1}],
-  D:[{t1:"Turkey",t2:"United States",s1:3,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Paraguay",s1:2,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"Paraguay",t2:"United States",s1:2,s2:1}],
+  D:[{t1:"Turkey",t2:"Paraguay",s1:2,s2:1},{t1:"United States",t2:"Australia",s1:2,s2:2},{t1:"Turkey",t2:"United States",s1:3,s2:2},{t1:"Paraguay",t2:"Australia",s1:1,s2:1},{t1:"Turkey",t2:"Australia",s1:2,s2:2},{t1:"United States",t2:"Paraguay",s1:2,s2:2}],
   E:[{t1:"Germany",t2:"Ivory Coast",s1:2,s2:2},{t1:"Ecuador",t2:"Curacao",s1:1,s2:0},{t1:"Germany",t2:"Ecuador",s1:1,s2:0},{t1:"Ivory Coast",t2:"Curacao",s1:3,s2:1},{t1:"Germany",t2:"Curacao",s1:3,s2:1},{t1:"Ecuador",t2:"Ivory Coast",s1:1,s2:1}],
   F:[{t1:"Netherlands",t2:"Sweden",s1:4,s2:1},{t1:"Japan",t2:"Tunisia",s1:2,s2:1},{t1:"Netherlands",t2:"Japan",s1:1,s2:1},{t1:"Sweden",t2:"Tunisia",s1:2,s2:2},{t1:"Netherlands",t2:"Tunisia",s1:3,s2:1},{t1:"Japan",t2:"Sweden",s1:3,s2:1}],
   G:[{t1:"Belgium",t2:"Egypt",s1:2,s2:1},{t1:"Iran",t2:"New Zealand",s1:2,s2:0},{t1:"Belgium",t2:"Iran",s1:2,s2:1},{t1:"Egypt",t2:"New Zealand",s1:2,s2:1},{t1:"Belgium",t2:"New Zealand",s1:5,s2:1},{t1:"Iran",t2:"Egypt",s1:1,s2:1}],
@@ -2456,7 +2456,7 @@ function ModelViz(){
   ];
 
   // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
-  const TITLE_PCT={"Argentina":44.0,"Spain":35.4,"France":12.6,"England":4.1,"Brazil":2.9,"Portugal":0.4,"Colombia":0.2,"Netherlands":0.1};
+  const TITLE_PCT={"Argentina":43.9,"Spain":35.5,"France":12.5,"England":4.1,"Brazil":2.9,"Portugal":0.5,"Colombia":0.2,"Netherlands":0.1};
   const FLAG_BY_TEAM={"Argentina":"AR","Spain":"ES","France":"FR","Brazil":"BR","England":"GB-ENG","Portugal":"PT","Colombia":"CO","Netherlands":"NL"};
   const TOP8=MODEL_ORDER.slice(0,8).map(team=>({
     t:team,
@@ -3489,7 +3489,7 @@ export default function App(){
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
                 padding:"12px",marginBottom:20}}>
                 {[
-                  {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026",en:"Official Elo ratings, verified June 2026"}},
+                  {label:"Elo",src:"eloratings.net",desc:{nl:"Officiële Elo-ratings, geverifieerd juni 2026. Gastlanden (VS, Mexico, Canada) krijgen een correctie voor de gemiste kwalificatiecyclus.",en:"Official Elo ratings, verified June 2026. Hosts (USA, Mexico, Canada) receive a correction for the missed qualifying cycle."}},
                   {label:lang==="nl"?"Selectiewaarde":"Squad value",src:"Transfermarkt",desc:{nl:"Totale marktwaarde per selectie, mei 2026",en:"Total squad market value, May 2026"}},
                   {label:"xG / xGc",src:"results.csv",desc:{nl:"49.365 interlands t/m juni 2026 — laatste 12 per land, Elo-gecorrigeerd",en:"49,365 internationals to June 2026 — last 12 per country, Elo-corrected"}},
                   {label:lang==="nl"?"Ervaring":"Experience",src:lang==="nl"?"Handmatig":"Manual",desc:{nl:"WK-deelnames en kwalificatiecampagnes",en:"World Cup appearances and qualifying campaigns"}},
