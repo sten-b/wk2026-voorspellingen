@@ -1,0 +1,194 @@
+{
+ "Argentina": {
+  "score": 96,
+  "basis": "Scaloni: WK 2022 + Copa América 2021 & 2024 + Finalissima — wereldkampioen"
+ },
+ "Brazil": {
+  "score": 98,
+  "basis": "Ancelotti: 5× Champions League, landstitels in alle top-5 competities — meest gedecoreerde clubcoach"
+ },
+ "France": {
+  "score": 90,
+  "basis": "Deschamps: WK 2018, WK-finale 2022, EK-finale 2016 — Ligue 1 & CL als speler/coach"
+ },
+ "Spain": {
+  "score": 72,
+  "basis": "De la Fuente: UEFA Nations League 2023, EK 2024 winnaar met Spanje; jeugd-EK titels"
+ },
+ "England": {
+  "score": 88,
+  "basis": "Tuchel: Champions League 2021 (Chelsea), CL-finale (PSG), Bundesliga/Ligue 1 top-niveau"
+ },
+ "Portugal": {
+  "score": 70,
+  "basis": "Martinez: FA Cup (Wigan), Belgische gouden generatie WK-brons; top-5 league ervaring"
+ },
+ "Netherlands": {
+  "score": 68,
+  "basis": "Koeman: landstitels Ajax/PSV-speler, Valencia/Barcelona, EK-finale-coach Nederland"
+ },
+ "Germany": {
+  "score": 74,
+  "basis": "Nagelsmann: Bundesliga top (Leipzig, Bayern), CL-halve finale — jong toptalent"
+ },
+ "Belgium": {
+  "score": 74,
+  "basis": "Garcia: Ligue 1-titel (Lille 2011), Roma/Napoli/OM, CL-ervaring — top-5 league niveau"
+ },
+ "Croatia": {
+  "score": 66,
+  "basis": "Dalic: WK-finale 2018, WK-brons 2022 met Kroatië; AFC clubtitels"
+ },
+ "Uruguay": {
+  "score": 82,
+  "basis": "Bielsa: invloedrijk, Leeds-promotie PL, Athletic/OM, Argentinië olympisch goud"
+ },
+ "Mexico": {
+  "score": 64,
+  "basis": "Aguirre: ervaren in La Liga (Atlético, Espanyol), meerdere WK's als bondscoach"
+ },
+ "United States": {
+  "score": 78,
+  "basis": "Pochettino: CL-finale (Tottenham), PSG Ligue 1-titel — top-5 league elite"
+ },
+ "Senegal": {
+  "score": 50,
+  "basis": "Cissé-opvolger Pape Thiaw/eerdere: Afrika Cup 2021 won Senegal; continentaal niveau"
+ },
+ "Morocco": {
+  "score": 58,
+  "basis": "Regragui: WK-halve finale 2022, CAF Champions League (Wydad) — continentaal succes"
+ },
+ "Switzerland": {
+  "score": 48,
+  "basis": "Yakin: Zwitserse clubtitels (Basel), degelijk maar geen internationale prijzen"
+ },
+ "Colombia": {
+  "score": 46,
+  "basis": "Lorenzo: Copa América-finale 2024 met Colombia; beperkte clubprijzen"
+ },
+ "Norway": {
+  "score": 44,
+  "basis": "Solbakken: Noorse/Deense landstitels (Kopenhagen), geen groot internationaal succes"
+ },
+ "Japan": {
+  "score": 46,
+  "basis": "Moriyasu: J-League titels (Hiroshima), stabiele WK-kwalificaties"
+ },
+ "Iran": {
+  "score": 40,
+  "basis": "Ghalenoei: Iraanse clubtitels, Aziatisch niveau"
+ },
+ "Egypt": {
+  "score": 42,
+  "basis": "Hossam Hassan: Egyptische clubervaring, legendarisch speler, beperkt coachpalmares"
+ },
+ "Australia": {
+  "score": 42,
+  "basis": "Popovic: A-League ervaring, Aziatische CL-finale"
+ },
+ "Algeria": {
+  "score": 56,
+  "basis": "Petkovic: leidde Zwitserland op WK's/EK's, Lazio Coppa Italia — top-5 ervaring"
+ },
+ "Austria": {
+  "score": 76,
+  "basis": "Rangnick: vernieuwer, Leipzig/Schalke Bundesliga-top, invloedrijk systeemcoach"
+ },
+ "Turkey": {
+  "score": 50,
+  "basis": "Montella: Serie A ervaring (Milan, Fiorentina), Coppa-finales"
+ },
+ "Sweden": {
+  "score": 44,
+  "basis": "Tomasson: Deens topspeler, Blackburn-promotie, opbouwende bondscoach"
+ },
+ "Ecuador": {
+  "score": 38,
+  "basis": "Beccacece: Argentijnse/Ecuadoraanse clubs, geen grote prijzen"
+ },
+ "South Korea": {
+  "score": 48,
+  "basis": "Hong Myung-bo: K-League titel, WK-halve finale als speler 2002, Aziatisch niveau"
+ },
+ "Ghana": {
+  "score": 40,
+  "basis": "Addo: Borussia Dortmund-staf, opbouwende rol, beperkt hoofdtrainerspalmares"
+ },
+ "Ivory Coast": {
+  "score": 48,
+  "basis": "Faé: Afrika Cup 2023 winnaar (interim) met Ivoorkust — continentale titel"
+ },
+ "Paraguay": {
+  "score": 54,
+  "basis": "Alfaro: leidde Ecuador naar WK 2022, Boca Juniors-finales Copa Libertadores; ervaren Zuid-Amerikaans"
+ },
+ "Saudi Arabia": {
+  "score": 72,
+  "basis": "Renard: 2× Afrika Cup (Zambia 2012, Ivoorkust 2015), WK-stunt vs Argentinië 2022; ervaren internationaal"
+ },
+ "Uzbekistan": {
+  "score": 64,
+  "basis": "Cannavaro: WK-winnaar 2006 als speler (Ballon d'Or), coachte Guangzhou/Benevento/Udinese — naam, beperkt clubpalmares als coach"
+ },
+ "Scotland": {
+  "score": 44,
+  "basis": "Clarke: leidde Schotland naar 2 EK's, Kilmarnock — degelijk Brits niveau"
+ },
+ "Czechia": {
+  "score": 40,
+  "basis": "Hašek: Tsjechische clubs, ervaren maar beperkt internationaal succes"
+ },
+ "Tunisia": {
+  "score": 38,
+  "basis": "Kadri: Tunesische clubs, Afrikaans niveau"
+ },
+ "Canada": {
+  "score": 52,
+  "basis": "Marsch: RB-systeem, Leipzig/Leeds Premier League, MLS-titel — top-5 ervaring"
+ },
+ "Bosnia-Herzegovina": {
+  "score": 36,
+  "basis": "Barbarez: oud-international, beperkte hoofdtrainerservaring"
+ },
+ "Panama": {
+  "score": 40,
+  "basis": "Christiansen: Cyprus/Leeds ervaring, CONCACAF-opbouw"
+ },
+ "Jordan": {
+  "score": 40,
+  "basis": "Sellami: oud-Marokkaans international, leidde Jordanië naar 1e WK ooit; CAF-clubervaring"
+ },
+ "DR Congo": {
+  "score": 42,
+  "basis": "Desabre: Afrikaanse clubs (Pyramids), CAF-ervaring"
+ },
+ "Qatar": {
+  "score": 66,
+  "basis": "Lopetegui: Europa League (Sevilla 2020), Spanje/Real Madrid-bondscoach, Porto-titels"
+ },
+ "Iraq": {
+  "score": 30,
+  "basis": "Ammar Sabah: beperkt internationaal gedocumenteerd palmares"
+ },
+ "Haiti": {
+  "score": 40,
+  "basis": "Migné: leidde Kenia/Congo op Afrika Cup, Haïti naar 1e WK; internationale opbouwervaring"
+ },
+ "Cape Verde": {
+  "score": 30,
+  "basis": "Brito: lokale/regionale ervaring"
+ },
+ "Curacao": {
+  "score": 50,
+  "basis": "Rutten: Eredivisie-ervaring (PSV, Feyenoord, Twente-titel als assistent), Schalke — degelijk Europees niveau"
+ },
+ "New Zealand": {
+  "score": 34,
+  "basis": "Bazeley: Engelse jeugdinternational, opbouwende rol Nieuw-Zeeland, Oceanisch niveau"
+ },
+ "South Africa": {
+  "score": 50,
+  "basis": "Broos: Afrika Cup 2017 winnaar (Kameroen) — continentale titel"
+ }
+}
