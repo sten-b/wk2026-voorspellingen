@@ -1215,8 +1215,8 @@ function ThemeToggle({theme,setTheme}){
       if(active) return "#ffffff";
       return T.id==="dark"?"#FF5500":"transparent";
     }
-    // lion button: always black background
-    return "#000000";
+    // lion button: transparent in dark mode (blends, no box); black in default mode
+    return T.id==="dark"?"transparent":"#000000";
   };
   const getColor=(id,active)=>{
     if(id==="default"){
@@ -1224,20 +1224,21 @@ function ThemeToggle({theme,setTheme}){
       if(active) return "#000000";
       return T.id==="dark"?"#ffffff":T.textSub;
     }
-    // lion: always orange on its black background
-    return "#E07000";
+    // lion: same orange as the logo lion (FF5500 in dark, E07000 in default)
+    return T.id==="dark"?"#FF5500":"#E07000";
   };
   return(
-    <div style={{display:"flex",border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
+    <div style={{display:"flex",border:T.id==="dark"?"none":`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
       {cfg.map(({id,Icon},i)=>{
         const active=theme===id;
         const isLion=id==="dark";
+        const showLionBorder=isLion&&T.id!=="dark";   // orange border only in default mode
         return(
           <button key={id} onClick={()=>setTheme(id)} style={{
             width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",
             background:getBg(id,active),cursor:"pointer",flexShrink:0,
-            border:isLion?"1.5px solid #E07000":"none",
-            borderLeft:i>0&&!isLion?`1px solid ${T.border}`:undefined,
+            border:showLionBorder?`1.5px solid #E07000`:"none",
+            borderLeft:(i>0&&!isLion&&T.id!=="dark")?`1px solid ${T.border}`:undefined,
             boxSizing:"border-box",
           }}>
             <Icon color={getColor(id,active)} size={id==="dark"?18:14}/>
@@ -1409,26 +1410,28 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       </div>
       {/* Standings — always visible */}
       <div style={{borderBottom:`1px solid ${T.border}`}}>
-        <div style={{display:"flex",alignItems:"center",gap:8,padding:"4px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
-          <span style={{width:14,flexShrink:0}}/>
-          <span style={{width:14,flexShrink:0}}/>
-          <span style={{flex:1,fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Land":"Country"}</span>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0,minWidth:20,textAlign:"right"}}>{lang==="nl"?"Vorm":"Form"}</span>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0}}>{lang==="nl"?"Rang":"Rank"}</span>
-          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0,minWidth:16,textAlign:"right"}}>{lang==="nl"?"Ptn":"Pts"}</span>
-          <span style={{width:18,flexShrink:0}}/>
+        <div style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"5px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
+          <span/>
+          <span/>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Land":"Country"}</span>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Vorm":"Form"}</span>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Rang":"Rank"}</span>
+          <span style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right"}}>{lang==="nl"?"Ptn":"Pts"}</span>
         </div>
         {sorted.map((team,i)=>{
           const pass=i<2;
+          const dev=FORM_DEV[team];
+          const fc=dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint;
+          const mr=adjRank(team);
+          const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";
           return(
-            <div key={team} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?"rgba(224,112,0,0.05)":"transparent"}}>
-              <span style={{width:14,fontSize:11,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center",flexShrink:0}}>{i+1}</span>
-              <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-              <span style={{flex:1,fontSize:12,fontWeight:pass?600:400,color:pass?T.text:T.textSub}}>{tName(team,lang)}</span>
-              {(()=>{const dev=FORM_DEV[team];if(dev===undefined)return null;const fc=dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint;return <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:9,fontWeight:700,color:fc,flexShrink:0,minWidth:20,textAlign:"right"}}>{dev>0?"+":""}{dev}</span>;})()}
-              {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
-              <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textFaint,flexShrink:0,minWidth:16,textAlign:"right"}}>{pts[team]}</span>
-              <span style={{fontSize:9,color:T.textFaint,flexShrink:0}}>pts</span>
+            <div key={team} style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?"rgba(224,112,0,0.05)":"transparent"}}>
+              <span style={{fontSize:11,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center"}}>{i+1}</span>
+              <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
+              <span style={{fontSize:12,fontWeight:pass?600:400,color:pass?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+              <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:9,fontWeight:700,color:fc,textAlign:"right"}}>{dev===undefined?"":(dev>0?"+":"")+dev}</span>
+              <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2,textAlign:"right"}}>#{mr}</span>
+              <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textFaint,textAlign:"right"}}>{pts[team]}</span>
             </div>
           );
         })}
@@ -2585,16 +2588,16 @@ function ModelViz(){
         {/* calculation table — properly outlined */}
         <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
           {/* column legend */}
-          <div style={{display:"flex",alignItems:"center",gap:6,padding:"7px 10px",
+          <div style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,padding:"7px 10px",
             background:T.bg,borderBottom:`1px solid ${T.border}`,
             fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
             color:T.textFaint}}>
-            <span style={{flex:1}}>{lang==="nl"?"factor":"factor"}</span>
-            <span style={{minWidth:26,textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
-            <span style={{width:7}}/>
-            <span style={{minWidth:26,textAlign:"right"}}>{lang==="nl"?"gewicht":"weight"}</span>
-            <span style={{width:7}}/>
-            <span style={{minWidth:32,textAlign:"right"}}>{lang==="nl"?"bijdrage":"share"}</span>
+            <span>{lang==="nl"?"factor":"factor"}</span>
+            <span style={{textAlign:"right"}}>{lang==="nl"?"score":"score"}</span>
+            <span/>
+            <span style={{textAlign:"right"}}>{lang==="nl"?"gewicht":"weight"}</span>
+            <span/>
+            <span style={{textAlign:"right"}}>{lang==="nl"?"bijdrage":"share"}</span>
           </div>
           {[
             {lab:"Elo",val:89,w:80,contrib:71.4},
@@ -2602,14 +2605,14 @@ function ModelViz(){
             {lab:lang==="nl"?"Ervaring":"Experience",val:100,w:5,contrib:5.0},
             {lab:"Coach",val:77,w:5,contrib:3.9},
           ].map((r,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:6,
+            <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 30px 12px 34px 12px 36px",alignItems:"center",gap:4,
               padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:11}}>
-              <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
-              <span style={{color:T.textSub,minWidth:26,textAlign:"right"}}>{r.val}</span>
-              <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
-              <span style={{color:T.textSub,minWidth:26,textAlign:"right"}}>{r.w}%</span>
-              <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
-              <span style={{fontWeight:800,color:blue,minWidth:32,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+              <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
+              <span style={{color:T.textSub,textAlign:"right"}}>{r.val}</span>
+              <span style={{color:T.textFaint,textAlign:"center"}}>×</span>
+              <span style={{color:T.textSub,textAlign:"right"}}>{r.w}%</span>
+              <span style={{color:T.textFaint,textAlign:"center"}}>=</span>
+              <span style={{fontWeight:800,color:blue,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
             </div>
           ))}
           {/* total */}
