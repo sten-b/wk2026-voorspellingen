@@ -512,7 +512,7 @@ const FORM_SCALE = 3.597;   // 5 / 1.39 (max abs formScore)
 const formDev = t => {
   const f = MODEL_DATA[t];
   if(!f || f.formScore===undefined) return undefined;
-  const v = Math.round(f.formScore*FORM_SCALE*10)/10;
+  const v = Math.round(f.formScore*FORM_SCALE);
   return Math.max(-5,Math.min(5,v));
 };
 const SHORT_NL = {"United States":"VS","South Africa":"Z-Afrika","Bosnia-Herzegovina":"Bosnie","Ivory Coast":"Ivoorkust","New Zealand":"Nw.-Zeeland","Saudi Arabia":"Saoedi-Arabië","DR Congo":"Congo DR","Cape Verde":"Kaapverdië","South Korea":"Zuid-Korea"};
@@ -2482,6 +2482,11 @@ function ModelViz(){
     bars:   "M18 20V10M12 20V4M6 20v-6",
     arrow:  "M5 12h14M12 5l7 7-7 7",
     info:   "M12 16v-4M12 8h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    star:   "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+    layers: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+    sigma:  "M18 4H6l6 8-6 8h12",
+    scale:  "M12 3v18M5 8l-3 6a3 3 0 006 0L5 8zM19 8l-3 6a3 3 0 006 0l-3-6zM7 8h10",
+    flame:  "M12 2c1 4-2 5-2 8a4 4 0 008 0c0-2-1-3-1-5 2 1 4 4 4 7a7 7 0 01-14 0c0-4 3-6 5-10z",
   };
 
   const SL=(text,icon)=>(
@@ -2495,14 +2500,14 @@ function ModelViz(){
 
   // Factors — all share the secondary (blue) accent. The % is the differentiator, not colour.
   const FACTORS=[
-    {key:"clock",pct:70,
+    {key:"star",pct:70,
      label:lang==="nl"?"Elo-rating":"Elo rating",
      formula:lang==="nl"?"(Elo − 1400) / 800 × 100":"(Elo − 1400) / 800 × 100",
      intro:lang==="nl"?"De betrouwbaarste maatstaf voor teamsterkte.":"The most reliable measure of team strength.",
      detail:lang==="nl"
        ?"Puntensysteem dat na elke interland bijwerkt: winst tegen een sterke ploeg telt het zwaarst. Officiële waarden van eloratings.net."
        :"A points system updated after every match: beating a strong side counts most. Official values from eloratings.net."},
-    {key:"trend",pct:10,
+    {key:"users",pct:10,
      label:lang==="nl"?"Selectiekwaliteit":"Squad quality",
      formula:lang==="nl"?"log(marktwaarde selectie), geschaald 0–100":"log(squad market value), scaled 0–100",
      intro:lang==="nl"?"Individueel talent, los van resultaten.":"Individual talent, independent of results.",
@@ -2523,7 +2528,7 @@ function ModelViz(){
      detail:lang==="nl"
        ?"Op basis van de erelijst van de huidige bondscoach. Ancelotti (Brazilië) scoort maximaal; Scaloni en Deschamps volgen op hun WK-titels."
        :"Based on the current head coach's honours. Ancelotti (Brazil) scores maximum; Scaloni and Deschamps follow on their World Cup titles."},
-    {key:"bars",pct:10,
+    {key:"trend",pct:10,
      label:lang==="nl"?"Recente vorm":"Recent form",
      formula:lang==="nl"?"gem.(werkelijk − verwacht doelsaldo), laatste 12":"avg(actual − expected goal diff), last 12",
      intro:lang==="nl"?"Presteert een land boven of onder zijn niveau?":"Is a country over- or under-performing its level?",
@@ -2537,7 +2542,7 @@ function ModelViz(){
   const FLAG_BY_TEAM={"Argentina":"AR","Spain":"ES","France":"FR","Brazil":"BR","England":"GB-ENG","Portugal":"PT","Colombia":"CO","Netherlands":"NL"};
   const TOP8=MODEL_ORDER.slice(0,8).map(team=>({
     t:team,
-    f:FLAG_BY_TEAM[team]||"",
+    f:FLAGS[team]||"",
     pct:TITLE_PCT[team]??0,
     sc:COMPOSITE[team],
     mo:COMPOSITE_RANK[team],
@@ -2577,7 +2582,7 @@ function ModelViz(){
       </div>
 
       {/* STEP 1 — FACTORS (collapsed: label + weight; tap to expand) */}
-      {SL(lang==="nl"?"Stap 1 · De vijf bouwstenen":"Step 1 · The five building blocks","clock")}
+      {SL(lang==="nl"?"Stap 1 · De vijf bouwstenen":"Step 1 · The five building blocks","layers")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         overflow:"hidden",marginBottom:16}}>
         {[...FACTORS].sort((a,b)=>b.pct-a.pct).map((f,i)=>(
@@ -2607,7 +2612,7 @@ function ModelViz(){
       </div>
 
       {/* STEP 2 — CALCULATION BRIDGE */}
-      {SL(lang==="nl"?"Stap 2 · Naar één score":"Step 2 · Into one score","arrow")}
+      {SL(lang==="nl"?"Stap 2 · Naar één score":"Step 2 · Into one score","sigma")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
@@ -2703,7 +2708,7 @@ function ModelViz(){
                 style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
                   padding:"3px 4px",borderRadius:4,background:isOpen?T.orangeFaint:"transparent"}}>
                 <span style={{fontSize:FS.small,fontWeight:700,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
-                <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAG_BY_CODE[t.f]}</span>
+                <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{t.f}</span>
                 <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
                   overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(t.t)}</span>
                 <div style={{flex:1,height:8,background:T.bg,borderRadius:4,overflow:"hidden"}}>
@@ -2775,7 +2780,7 @@ function ModelViz(){
           return(
             <div key={r.t} style={{display:"flex",alignItems:"center",gap:8,marginBottom:i<arr.length-1?9:0}}>
               <span style={{fontSize:FS.small,fontWeight:800,color:T.textFaint,width:14,flexShrink:0,textAlign:"right"}}>{i+1}</span>
-              <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{FLAG_BY_CODE[r.f]}</span>
+              <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{r.f}</span>
               <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(r.t)}</span>
               <div style={{flex:1,height:12,background:T.bg,borderRadius:4,overflow:"hidden"}}>
@@ -3558,7 +3563,7 @@ export default function App(){
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
                     strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-                    <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                   </svg>
                   <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
                     textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
