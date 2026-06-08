@@ -272,6 +272,8 @@ const KO_EXPL = {
     "Spain-Colombia":"Spanje tegen een fysiek sterke, gretige Colombiaanse ploeg. Luis Díaz is het grootste gevaar en zorgt voor de aansluitingstreffer, maar Spanjes balbezit en de creativiteit van Yamal en Pedri zijn over negentig minuten te veel. Rodri controleert het tempo vanuit de diepte: een verdiende 2-1 die comfortabeler aanvoelt dan de score.",
     "Spain-Belgium":"Spanje versus het enige ploeg dat qua organisatie en ervaring in de buurt komt. De Bruyne probeert het spel te dicteren maar Rodri en Pedri controleren het tempo volledig. Yamal maakt het verschil langs de rechterkant: zijn directheid is het kwaliteitsverschil dat België niet kan compenseren. Een knappe maar verdiende Spaanse overwinning.",
     "France-Germany":"Frankrijks individuele kwaliteit is de doorslaggevende factor. Mbappe exploiteert de ruimte achter Duitslands hoge defensielinie en Tchouameni wint de middenveldstrijd fysiek. Duitsland is competitief maar de Fransen zijn klinischer in de beslissende momenten. Musiala maakt het uitdagend maar Frankrijk beslist.",
+    "Argentina-Germany":"Een klassieker tussen twee WK-grootmachten. Duitsland heeft de hoogste aanvalswaarde van de twee, maar Argentiniës verdediging is de beste van het toernooi (xGc 0,35) en smoort het Duitse opbouwspel. Mac Allister en Álvarez prikken op de tegenaanval; Duitsland komt terug tot 2-1 via Musiala, maar Argentiniës ervaring en kalmte beslissen het duel.",
+    "Spain-Netherlands":"Twee balgedreven ploegen die allebei willen voetballen — een open, hoogwaardige wedstrijd. Spanje heeft via Pedri en Yamal net iets meer controle en creativiteit, Nederland countert gevaarlijk met Gakpo en Simons. Het wordt een doelpuntrijk gevecht (3-2): Oranje blijft tot het eind in de buurt, maar Spanjes klasse op het middenveld geeft de doorslag.",
     "Argentina-England":"Argentiniës toernooiervaring in beslissende momenten is de sleutel. Bellingham geeft Engeland hun beste kansen maar Argentiniës defensieve organisatie is bij tegendruk elitair. Alvarez creëert de kansen, Mac Allister dicteert het tempo. Engeland vecht maar Argentinië trekt het over de streep.",
     "Brazil-Portugal":"Twee aanvallend begaafde ploegen die allebei iets te winnen hebben. Vinicius doet wat hij bij Real Madrid altijd doet maar Portugal weerstaat lang. Ronaldo markeert zijn aanwezigheid maar Brazilië heeft meer gevaar. Vinicius beslist met een moment van individuele klasse.",
     "France-Spain":"De bepalende wedstrijd voor de finale. Spanje heeft meer de bal maar Frankrijk is gevaarlijker op de omschakeling. Yamal zoekt de diepte, Mbappe pikt de tegenaanval op. Het gaat op en neer: Spanje controleert, Frankrijk countered. Griezmanns positie achter de spits vervalst Rodri's zicht. Frankrijk wint via hun efficiëntie op de counter.",
@@ -286,6 +288,8 @@ const KO_EXPL = {
     "Spain-Colombia":"Spain against a physically strong, eager Colombia. Luis Díaz is the biggest threat and grabs a consolation, but Spain's possession and the creativity of Yamal and Pedri are too much over ninety minutes. Rodri controls the tempo from deep: a deserved 2-1 that feels more comfortable than the scoreline.",
     "Spain-Belgium":"Spain versus the only side that comes close in organisation and experience. De Bruyne tries to dictate but Rodri and Pedri control the tempo completely. Yamal makes the difference on the right: his directness is the quality gap Belgium cannot compensate for. A hard-fought but deserved Spanish victory.",
     "France-Germany":"France's individual quality is the decisive factor. Mbappe's pace exploits the space behind Germany's high defensive line and Tchouameni dominates midfield physically. Germany are competitive: Musiala makes it difficult: but France are more clinical in the decisive moments.",
+    "Argentina-Germany":"A classic between two World Cup giants. Germany carry the higher attacking value of the two, but Argentina's defence is the best in the tournament (xGc 0.35) and smothers the German build-up. Mac Allister and Álvarez strike on the counter; Germany pull one back through Musiala to make it 2-1, but Argentina's experience and composure settle it.",
+    "Spain-Netherlands":"Two possession-driven sides who both want to play — an open, high-quality match. Spain have slightly more control and creativity through Pedri and Yamal, while the Dutch counter dangerously via Gakpo and Simons. It becomes a goal-filled contest (3-2): the Netherlands stay close to the end, but Spain's midfield class proves decisive.",
     "Argentina-England":"Argentina's tournament experience in pressure situations proves decisive. Bellingham gives England their best chance but Argentina's defensive organisation under sustained pressure is elite. Alvarez creates the chances, Mac Allister dictates the tempo. England fight but Argentina pull it over the line.",
     "Brazil-Portugal":"Two attacking-minded sides with plenty at stake. Vinicius does what he does at Real Madrid but Portugal resist for long periods. Ronaldo marks his presence but Brazil carry more threat overall. Vinicius decides it with a moment of individual brilliance that Diogo Costa cannot stop.",
     "France-Spain":"The defining match before the final. Spain have more possession but France are more dangerous on the counter. Yamal looks for depth, Mbappe picks up the transition. End-to-end: Spain control, France counter. Griezmann's positioning behind the striker disrupts Rodri's sight lines. France's counter-attacking efficiency ultimately proves decisive.",
@@ -1125,13 +1129,20 @@ function Chevron({open=false, color="currentColor", size=10}){
 // KNVB logo (without text) — used as nav/footer badge in lion/dark-lion modes
 // Colors: Dark Lion = orange lion on black bg; Lion/Away = orange lion on cream bg
 function NavLion({themeId}){
-  // dark mode: orange lion on dark circle; default mode: orange lion on light circle
   const isDark = themeId === "dark";
   const lionColor = isDark ? "#FF5500" : "#E07000";
-  const circleBg  = isDark ? "#1A1A1A" : "#FFF5EA";
-  const circleBorder = lionColor;
+  if(isDark){
+    // No circle — black square with orange inner border + orange lion
+    return(
+      <div style={{width:34,height:34,borderRadius:6,background:"#000",
+        border:`1.5px solid ${lionColor}`,display:"flex",alignItems:"center",
+        justifyContent:"center",flexShrink:0}}>
+        <LionEmoji color={lionColor} size={18}/>
+      </div>
+    );
+  }
   return(
-    <div style={{width:34,height:34,borderRadius:"50%",background:circleBg,border:`1.5px solid ${circleBorder}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+    <div style={{width:34,height:34,borderRadius:"50%",background:"#FFF5EA",border:`1.5px solid ${lionColor}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
       <LionEmoji color={lionColor} size={16}/>
     </div>
   );
@@ -1333,7 +1344,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
   const lang=useLang();
   const tr=useT();
   const {setTab}=useNav();
-  const isOpen=openGroup===g.id;
+  const showMatches=openGroup===g.id;   // now only controls the prognoses block
   const pts={},gf={},ga={};
   g.teams.forEach(t=>{pts[t]=0;gf[t]=0;ga[t]=0;});
   g.matches.forEach(({t1,t2,s1,s2})=>{
@@ -1342,11 +1353,11 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
   });
   const sorted=[...g.teams].sort((a,b)=>pts[b]-pts[a]||(gf[b]-ga[b])-(gf[a]-ga[a]));
   return(
-    <div style={{background:T.card,border:`1px solid ${isOpen?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
-      {/* Header */}
-      <div onClick={()=>setOpenGroup(isOpen?null:g.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",cursor:"pointer",background:isOpen?T.orangeFaint:T.card}}>
+    <div style={{background:T.card,border:`1px solid ${showMatches?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
+      {/* Header — static (not a toggle) */}
+      <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:T.card,borderBottom:`1px solid ${T.border}`}}>
         {/* Group letter — rounded square */}
-        <div style={{width:26,height:26,borderRadius:4,background:isOpen?"#E07000":"#1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+        <div style={{width:26,height:26,borderRadius:4,background:"#1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
           <span style={{color:"#fff",fontSize:11,fontWeight:700,letterSpacing:0}}>{g.id}</span>
         </div>
         {/* Group label + two-column indicator row */}
@@ -1377,30 +1388,32 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
             </div>
           </div>
         </div>
-        <Chevron open={isOpen} color={T.textSub}/>
       </div>
-      {/* Expanded: standings + matches */}
-      {isOpen&&(
+      {/* Standings — always visible */}
+      <div style={{borderBottom:`1px solid ${T.border}`}}>
+        {sorted.map((team,i)=>{
+          const pass=i<2;
+          return(
+            <div key={team} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?"rgba(224,112,0,0.05)":"transparent"}}>
+              <span style={{width:14,fontSize:11,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center",flexShrink:0}}>{i+1}</span>
+              <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
+              <span style={{flex:1,fontSize:12,fontWeight:pass?600:400,color:pass?T.text:T.textSub}}>{tName(team,lang)}</span>
+              {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
+              <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textFaint,flexShrink:0,minWidth:16,textAlign:"right"}}>{pts[team]}</span>
+              <span style={{fontSize:9,color:T.textFaint,flexShrink:0}}>pts</span>
+            </div>
+          );
+        })}
+      </div>
+      {/* Prognoses — collapsible */}
+      <div onClick={()=>setOpenGroup(showMatches?null:g.id)}
+        style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+          padding:"8px 12px",cursor:"pointer",background:showMatches?T.orangeFaint:T.card}}>
+        <span style={{fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</span>
+        <Chevron open={showMatches} color={T.textSub}/>
+      </div>
+      {showMatches&&(
         <div style={{borderTop:`1px solid ${T.border}`}}>
-          {/* Mini standings table */}
-          <div style={{borderBottom:`1px solid ${T.border}`}}>
-            {sorted.map((team,i)=>{
-              const adj=FORM_ADJ[team]||0;
-              const pass=i<2;
-              return(
-                <div key={team} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?"rgba(224,112,0,0.05)":"transparent"}}>
-                  <span style={{width:14,fontSize:11,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center",flexShrink:0}}>{i+1}</span>
-                  <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-                  <span style={{flex:1,fontSize:12,fontWeight:pass?600:400,color:pass?T.text:T.textSub}}>{tName(team,lang)}</span>
-                  {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:9,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
-                  <span style={{fontSize:11,fontWeight:700,color:pass?T.text:T.textFaint,flexShrink:0,minWidth:16,textAlign:"right"}}>{pts[team]}</span>
-                  <span style={{fontSize:9,color:T.textFaint,flexShrink:0}}>pts</span>
-                </div>
-              );
-            })}
-          </div>
-          {/* Matches */}
-          <div style={{padding:"4px 12px 2px",fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</div>
           {g.matches.map(({t1,t2,s1,s2})=>{
             const k=`${t1}-${t2}`;
             return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} open={openMatches[k]} onToggle={e=>{e.stopPropagation();toggleMatch(k);}}/>;
@@ -2640,8 +2653,8 @@ function ModelViz(){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
-            ?"Per land bepalen we xG (aanvalskracht) en xGc (tegendoelpunten) uit de laatste 12 wedstrijden, gecorrigeerd voor tegenstanderkwaliteit (Elo). De doelpunten ontstaan uit de botsing van aanval en verdediging:"
-            :"Per country we derive xG (attacking strength) and xGc (goals conceded) from the last 12 matches, corrected for opponent quality (Elo). Goals emerge from the clash of attack and defence:"}
+            ?"Elk land heeft een xG (aanvalskracht) en xGc (verdediging) uit de laatste 12 wedstrijden. De doelpunten volgen uit aanval × zwakte van de tegenstander:"
+            :"Each country has an xG (attack) and xGc (defence) from its last 12 matches. Goals follow from attack × opponent's weakness:"}
         </div>
         <div style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
           padding:"9px 11px",marginBottom:11,fontSize:11,color:T.text,lineHeight:1.9,fontFamily:"monospace"}}>
@@ -2650,8 +2663,8 @@ function ModelViz(){
         </div>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6}}>
           {lang==="nl"
-            ?"De aanvalskracht van een land (relatief tot het gemiddelde) wordt vermenigvuldigd met de verdedigingszwakte van de tegenstander. Een topaanval tegen een sterke verdediging wordt afgeremd; een mismatch wordt uitvergroot, dus grote xG-verschillen geven ruimere uitslagen. Een sterkere ploeg kan gelijkspelen, maar de zwakkere ploeg wint nooit van een sterkere (composiet-check)."
-            :"A country's attacking strength (relative to average) is multiplied by the opponent's defensive weakness. A top attack against a strong defence is suppressed; a mismatch is amplified, so large xG gaps give wider scorelines. A stronger team can draw, but the weaker team never beats a stronger one (composite check)."}
+            ?"Grote verschillen geven ruimere uitslagen. Een sterkere ploeg kan gelijkspelen, maar verliest nooit van een zwakkere."
+            :"Bigger gaps give wider scorelines. A stronger side can draw, but never loses to a weaker one."}
         </div>
       </div>
 
@@ -2661,8 +2674,8 @@ function ModelViz(){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
-            ?"Het toernooi is 50.000 keer gesimuleerd (Monte Carlo). Elke wedstrijd wordt beslist op basis van het verschil in sterktescore via een logistische winkans, inclusief gelijke spellen in de groepsfase. Het percentage is hoe vaak elk land kampioen werd."
-            :"The tournament was simulated 50,000 times (Monte Carlo). Each match is decided from the strength-score gap via a logistic win probability, including draws in the group stage. The percentage is how often each country became champion."}
+            ?"Het toernooi is 50.000 keer gesimuleerd. Elke wedstrijd beslist op het sterkteverschil; het percentage is hoe vaak elk land kampioen werd."
+            :"The tournament was simulated 50,000 times. Each match is decided on the strength gap; the percentage is how often each country won the title."}
         </div>
         {[...TOP8].sort((a,b)=>b.pct-a.pct).map((r,i,arr)=>{
           const max=46;
@@ -3079,6 +3092,7 @@ function FBrefStatsSection(){
   const lang=useLang();
   const [limit,setLimit]=React.useState(10);
   const [natFilter,setNatFilter]=React.useState("");
+  const [sortKey,setSortKey]=React.useState("ga90");  // ga90 | g90 | a90
   const orange=T.id==="dark"?"#FF5500":"#E07000";
   const blue=T.id==="dark"?"#909090":"#1A5296";
   const green=T.id==="dark"?"#3DBE6E":"#1E7A40";
@@ -3089,7 +3103,8 @@ function FBrefStatsSection(){
     return T.textFaint;
   };
   const nations=[...new Set(FBREF_WC.map(p=>p.country))].sort();
-  const filtered=natFilter?FBREF_WC.filter(p=>p.country===natFilter):FBREF_WC;
+  const base=natFilter?FBREF_WC.filter(p=>p.country===natFilter):FBREF_WC;
+  const filtered=[...base].sort((a,b)=>b[sortKey]-a[sortKey]);
   const visible=filtered.slice(0,limit);
   const COLS="26px 1fr 30px 24px 54px 36px 36px 42px";
   const HDR=lang==="nl"
@@ -3142,10 +3157,21 @@ function FBrefStatsSection(){
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:8}}>
           <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"6px 10px",
             borderBottom:`2px solid ${T.border}`,background:T.id==="dark"?"#161616":T.bg}}>
-            {HDR.map((h,i)=>(<div key={h} style={{fontSize:8,fontWeight:700,letterSpacing:0.5,
-              textTransform:"uppercase",color:T.textFaint,textAlign:i>=5?"right":"left"}}>{h}</div>))}
+            {HDR.map((h,i)=>{
+              const sortable=i>=5;
+              const keyFor=["","","","","","g90","a90","ga90"][i];
+              const active=sortable&&sortKey===keyFor;
+              return(
+              <div key={h} onClick={sortable?()=>{setSortKey(keyFor);setLimit(l=>l);}:undefined}
+                style={{fontSize:8,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
+                  color:active?orange:T.textFaint,textAlign:i>=5?"right":"left",
+                  cursor:sortable?"pointer":"default",userSelect:"none"}}>
+                {h}{active?" ↓":""}
+              </div>
+              );
+            })}
           </div>
-          {visible.map((p,i)=>(<Row key={p.name+i} p={p} rank={natFilter?p.r:i+1}/>))}
+          {visible.map((p,i)=>(<Row key={p.name+i} p={p} rank={i+1}/>))}
         </div>
         {/* Expand */}
         <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap"}}>
