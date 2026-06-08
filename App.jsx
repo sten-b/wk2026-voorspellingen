@@ -733,66 +733,8 @@ let FINAL_TEAMS=["Argentina","Spain"];
 // ── MODEL 2: EXPECTED-GOALS ENGINE ──────────────────────────────────────────
 // Model 1 (COMPOSITE) decides WHO wins; Model 2 decides the SCORELINE HEIGHT,
 // from real goals scored/conceded over the last 12 months (martj42 dataset).
-//   attackStrength(t)  = goalsFor   / tournament avg goalsFor
-//   defenceWeakness(t) = goalsAgainst / tournament avg goalsAgainst
-//   expectedGoals(A vs B) = BASE x attackStrength(A) x defenceWeakness(B)
 // The rounded scoreline is then reconciled with Model 1 so the stronger team
 // (higher composite) is never shown losing.
-const GOALS_AVG_GF=1.8860;
-const GOALS_AVG_GA=0.9333;
-const GOALS_BASE=1.4097;
-const GOALS_DATA={
-  "Mexico":{gf:1.43,ga:0.67},
-  "South Korea":{gf:1.73,ga:1.09},
-  "South Africa":{gf:1.5,ga:0.79},
-  "Czechia":{gf:2.09,ga:1.27},
-  "Canada":{gf:1.4,ga:0.4},
-  "Switzerland":{gf:2.36,ga:0.73},
-  "Bosnia-Herzegovina":{gf:1.91,ga:1.09},
-  "Qatar":{gf:0.75,ga:1.67},
-  "Brazil":{gf:2.36,ga:1.0},
-  "Morocco":{gf:2.08,ga:0.25},
-  "Scotland":{gf:2.27,ga:0.91},
-  "Haiti":{gf:1.29,ga:1.36},
-  "United States":{gf:1.82,ga:1.59},
-  "Turkey":{gf:2.27,ga:1.27},
-  "Australia":{gf:1.36,ga:1.0},
-  "Paraguay":{gf:1.2,ga:1.0},
-  "Germany":{gf:2.55,ga:0.91},
-  "Ivory Coast":{gf:2.0,ga:0.53},
-  "Ecuador":{gf:0.9,ga:0.5},
-  "Curacao":{gf:1.86,ga:1.29},
-  "Netherlands":{gf:2.8,ga:0.7},
-  "Japan":{gf:1.9,ga:0.6},
-  "Sweden":{gf:1.55,ga:2.09},
-  "Tunisia":{gf:1.72,ga:1.06},
-  "Belgium":{gf:3.73,ga:0.82},
-  "Egypt":{gf:1.2,ga:0.75},
-  "Iran":{gf:1.89,ga:0.56},
-  "New Zealand":{gf:0.73,ga:1.82},
-  "Spain":{gf:2.7,ga:0.5},
-  "Saudi Arabia":{gf:1.1,ga:1.25},
-  "Cape Verde":{gf:1.55,ga:1.18},
-  "Uruguay":{gf:1.11,ga:0.78},
-  "France":{gf:2.4,ga:0.8},
-  "Norway":{gf:3.1,ga:0.7},
-  "Senegal":{gf:2.59,ga:0.82},
-  "Iraq":{gf:1.14,ga:0.64},
-  "Argentina":{gf:2.44,ga:0.33},
-  "Algeria":{gf:2.1,ga:0.6},
-  "Austria":{gf:2.7,ga:0.4},
-  "Jordan":{gf:1.62,ga:1.56},
-  "Portugal":{gf:2.6,ga:1.0},
-  "DR Congo":{gf:1.5,ga:0.57},
-  "Uzbekistan":{gf:1.44,ga:0.78},
-  "Colombia":{gf:2.4,ga:1.1},
-  "England":{gf:2.2,ga:0.5},
-  "Croatia":{gf:2.2,ga:1.0},
-  "Ghana":{gf:1.1,ga:1.4},
-  "Panama":{gf:1.89,ga:1.17},
-};
-function attackStrength(t){const d=GOALS_DATA[t];return d?d.gf/GOALS_AVG_GF:1;}
-function defenceWeakness(t){const d=GOALS_DATA[t];return d?d.ga/GOALS_AVG_GA:1;}
 // Expected goals via attack-strength model:
 //   goals_A = baseline × (A.xG / leagueAvgXG) × (B.xGc / leagueAvgXGc)
 // A's attacking strength relative to average, multiplied by B's defensive
@@ -2515,8 +2457,8 @@ function ModelViz(){
        :"Scored from the current head coach's honours: trophies won (league titles, cups, continental and World Cup honours) weighted by prestige. Example: Ancelotti (Brazil) scores maximum as the most decorated club coach ever; Scaloni (Argentina) and Deschamps (France) follow on their World Cup titles."},
   ];
 
-  // Real Monte-Carlo title odds (200k simulations on the composite scores).
-  const TITLE_PCT={"Argentina":21.7,"Spain":21.6,"France":12.0,"England":7.2,"Brazil":6.5,"Portugal":3.4,"Colombia":2.9,"Netherlands":2.5};
+  // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
+  const TITLE_PCT={"Argentina":44.0,"Spain":35.4,"France":12.6,"England":4.1,"Brazil":2.9,"Portugal":0.4,"Colombia":0.2,"Netherlands":0.1};
   const FLAG_BY_TEAM={"Argentina":"AR","Spain":"ES","France":"FR","Brazil":"BR","England":"GB-ENG","Portugal":"PT","Colombia":"CO","Netherlands":"NL"};
   const TOP8=MODEL_ORDER.slice(0,8).map(team=>({
     t:team,
@@ -2721,11 +2663,11 @@ function ModelViz(){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:11,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
           {lang==="nl"
-            ?"Titelkansen via softmax op de composietscores (temperatuur T=11). Een hogere score geeft exponentieel meer kans — niet gesimuleerd, maar een kalibreerde kansverdeling op basis van teamsterktes."
-            :"Title odds via softmax on composite scores (temperature T=11). A higher score gives exponentially more probability — not simulated, but a calibrated probability distribution based on team strengths."}
+            ?"Het toernooi is 50.000 keer gesimuleerd (Monte Carlo). Elke wedstrijd wordt beslist op basis van het verschil in sterktescore via een logistische winkans, inclusief gelijke spellen in de groepsfase. Het percentage is hoe vaak elk land kampioen werd."
+            :"The tournament was simulated 50,000 times (Monte Carlo). Each match is decided from the strength-score gap via a logistic win probability, including draws in the group stage. The percentage is how often each country became champion."}
         </div>
         {[...TOP8].sort((a,b)=>b.pct-a.pct).map((r,i,arr)=>{
-          const max=28;
+          const max=46;
           return(
             <div key={r.t} style={{display:"flex",alignItems:"center",gap:8,marginBottom:i<arr.length-1?9:0}}>
               <span style={{fontSize:11,fontWeight:800,color:T.textFaint,width:14,flexShrink:0,textAlign:"right"}}>{i+1}</span>
@@ -2741,8 +2683,8 @@ function ModelViz(){
         })}
         <div style={{marginTop:11,paddingTop:8,borderTop:`1px solid ${T.border}`,
           fontSize:10,color:T.textFaint,lineHeight:1.5}}>
-          {lang==="nl"?"De overige ~15% verdeelt zich over de andere 40 landen."
-            :"The remaining ~15% is split across the other 40 nations."}
+          {lang==="nl"?"De resterende kans verdeelt zich over de overige 40 landen, die elk minder dan 0,5% scoorden."
+            :"The remaining probability is split across the other 40 nations, each scoring under 0.5%."}
         </div>
       </div>
 
