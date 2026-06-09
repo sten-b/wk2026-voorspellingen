@@ -3888,17 +3888,17 @@ function PlayersTab(){
       {/* Welcome + tournament intro — first thing on the WK2026 tab */}
       <div style={{marginBottom:20}}>
         <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,letterSpacing:-0.5,margin:"2px 0 8px",lineHeight:1.1}}>
-          {lang==="nl"?"Welkom bij WK 2026":"Welcome to WC 2026"}
+          {lang==="nl"?"Het WK, doorgerekend":"The World Cup, computed"}
         </h2>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.65,margin:"0 0 12px"}}>
           {lang==="nl"
-            ?"Deze app voorspelt het complete WK 2026 met één data-gedreven model — van elke groepswedstrijd tot de finale. Bekijk hieronder de landen, de uitblinkers en het droomelftal, of duik via het model-icoon in de cijfers achter elke uitslag."
-            :"This app predicts the entire 2026 World Cup with a single data-driven model — from every group game to the final. Browse the nations, the standout players and the dream XI below, or tap the model icon to dive into the numbers behind every result."}
+            ?"Eén data-gedreven model voorspelt het volledige WK 2026, van elke groepswedstrijd tot de finale. Verken hieronder de landen, spelers en het droomelftal, of open het model-icoon voor de cijfers achter elke uitslag."
+            :"A single data-driven model predicts the entire 2026 World Cup, from every group game to the final. Explore the nations, players and dream XI below, or open the model icon for the numbers behind each result."}
         </p>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
           {lang==="nl"
-            ?"Voor het eerst is het WK met 48 landen, verspreid over drie gastlanden en een heel continent — het grootste toernooi ooit. Spanje arriveert als Europees kampioen en topfavoriet, maar Argentinië verdedigt de titel met Messi in vermoedelijk zijn laatste WK. Frankrijk en Engeland hebben de diepste selecties van een generatie, terwijl Noorwegen met Haaland en Brazilië met hun nieuwe lichting elke favoriet kunnen laten struikelen. Marokko wil 2022 herhalen, Mexico speelt op eigen bodem en hoogte, en talenten als Yamal en Gilberto Mora kunnen sterren worden voor onze ogen. De nieuwe opzet betekent extra knock-outrondes, meer verrassingen en minder marge voor fouten. Eén slechte avond en zelfs de grootste naam ligt eruit. Elke wedstrijd hieronder is doorgerekend — maar voetbal blijft voetbal. Laat het toernooi beginnen."
-            :"For the first time the World Cup features 48 nations, spread across three host countries and an entire continent — the biggest tournament ever. Spain arrive as European champions and top favourites, but Argentina defend the title with Messi in what is likely his final World Cup. France and England bring the deepest squads of a generation, while Norway with Haaland and Brazil with their new wave can trip up any favourite. Morocco want to repeat 2022, Mexico play on home soil and altitude, and talents like Yamal and Gilberto Mora could become stars before our eyes. The new format means extra knockout rounds, more surprises and less margin for error. One bad night and even the biggest name is out. Every match below is computed — but football is still football. Let the tournament begin."}
+            ?"Voor het eerst met 48 landen, verdeeld over drie gastlanden — het grootste WK ooit. Spanje arriveert als Europees kampioen en favoriet, terwijl Argentinië de titel verdedigt met Messi in vermoedelijk zijn laatste WK. Frankrijk, Engeland, Brazilië en Noorwegen wachten, en outsiders als Marokko en gastland Mexico kunnen verrassen. De nieuwe opzet kent extra knock-outrondes en weinig marge: één slechte avond en de grootste naam ligt eruit."
+            :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain arrive as European champions and favourites, while Argentina defend the title with Messi in what is likely his last World Cup. France, England, Brazil and Norway lie in wait, and outsiders like Morocco and hosts Mexico could surprise. The new format brings extra knockout rounds and little margin: one bad night and the biggest name is out."}
         </p>
       </div>
 
