@@ -43,19 +43,19 @@ const THEMES = {
     tabInactive: t => ({ color:"#AAAAAA" }),
     pill: (active,t) => active ? { background:"#FF5500", color:"#000000", fontWeight:700 } : { background:"#1A1A1A", color:"#777777" },
   },
-  // Orange Lion = AWAY kit: bold orange canvas, white cards, black highlights, warm orange shades
+  // Orange Lion = 2004 away kit: clean bright orange, generous white structure, soft warm accents
   orangeLion: {
     id:"orangeLion",
-    bg:"#E35A00", card:"#FFFFFF", nav:"#C94E00",
-    border:"#F2935033", borderStrong:"#0D0D0D",
-    text:"#1A1207", textSub:"#7A4A1E", textFaint:"#B98A5E",
-    orange:"#E35A00", blue:"#0D0D0D",   // "secondary"/section accent = black highlight
-    gold:"#FFB300",
-    orangeFaint:"#FFEDDC", blueFaint:"#F7F2EE",
-    green:"#1E7A40", red:"#B5231B",
-    activeTab: t => ({ color:"#0D0D0D", borderBottom:"3px solid #0D0D0D", fontWeight:700 }),
-    tabInactive: t => ({ color:"#FFE7D2" }),
-    pill: (active,t) => active ? { background:"#0D0D0D", color:"#FF7A1A", fontWeight:700 } : { background:"#FFFFFF", color:"#9A5A22" },
+    bg:"#F26212", card:"#FFFFFF", nav:"#FFFFFF",
+    border:"#FFFFFF", borderStrong:"#FFFFFF",
+    text:"#1F1206", textSub:"#8A4A1E", textFaint:"#B07A4A",
+    orange:"#E35A00", blue:"#C44A00",
+    gold:"#E8A33D",
+    orangeFaint:"#FFF1E6", blueFaint:"#FFF7F0",
+    green:"#1E7A40", red:"#C0392B",
+    activeTab: t => ({ color:"#fff", borderBottom:"3px solid #fff", fontWeight:700 }),
+    tabInactive: t => ({ color:"rgba(255,255,255,0.7)" }),
+    pill: (active,t) => active ? { background:"#fff", color:"#E35A00", fontWeight:700 } : { background:"rgba(255,255,255,0.18)", color:"#fff" },
   },
 
 }
@@ -1318,53 +1318,42 @@ function SoccerIcon({color}){
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
   const T=useTheme();
-  const accent=T.orange;
-  // Three segments: 0 = default (ball, white), 1 = dark Lion (black cell), 2 = orange Lion (orange cell).
+  // Three segments: 0 = default (ball), 1 = dark Lion, 2 = orange Lion.
   const order=["default","dark","orangeLion"];
   const activeIdx=Math.max(0,order.indexOf(theme));
   const next=()=>setTheme(order[(activeIdx+1)%order.length]);
-  const SEG=30;
+  const SEG=30, H=30;
+  // The toggle frame uses a neutral track; the active cell gets a filled puck.
+  const trackBorder=T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#0D0D0D":T.border);
+  const puckColor=activeIdx===0?T.orange:activeIdx===1?"#0D0D0D":"#0D0D0D";
+  const cells=[
+    {render:on=><SoccerIcon color={on?"#fff":T.textFaint}/>},
+    {render:on=><FooterLionIcon color={on?"#FF5500":T.textFaint} size={16}/>},
+    {render:on=><FooterLionIcon color={on?"#E35A00":T.textFaint} size={16}/>},
+  ];
   return(
     <div
       onClick={next}
-      style={{position:"relative",display:"flex",width:SEG*3,height:30,
-        border:`1px solid ${accent}`,borderRadius:4,overflow:"hidden",
-        flexShrink:0,cursor:"pointer",background:"transparent"}}>
-      {/* Home cells backdrops: dark Lion (middle) black, orange Lion (right) orange */}
-      <div style={{position:"absolute",top:0,left:SEG,width:SEG,height:"100%",background:"#000"}}/>
-      <div style={{position:"absolute",top:0,left:SEG*2,width:SEG,height:"100%",background:"#E35A00"}}/>
-      {/* Sliding puck behind active icon */}
+      style={{position:"relative",display:"flex",width:SEG*3,height:H,
+        border:`1px solid ${trackBorder}`,borderRadius:6,overflow:"hidden",
+        flexShrink:0,cursor:"pointer",background:T.id==="dark"?"#1A1A1A":"#fff"}}>
+      {/* Single sliding puck behind the active icon */}
       <div style={{position:"absolute",top:0,left:0,width:SEG,height:"100%",
-        background:activeIdx===2?"#0D0D0D":accent,
+        background:puckColor,
         transform:`translateX(${activeIdx*SEG}px)`,
-        transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1),background 0.3s ease"}}/>
-      {/* Dividers */}
-      <div style={{position:"absolute",top:0,bottom:0,left:SEG,width:1,background:accent,opacity:0.5,zIndex:2}}/>
-      <div style={{position:"absolute",top:0,bottom:0,left:SEG*2,width:1,background:accent,opacity:0.5,zIndex:2}}/>
-      {/* Ball segment (default) */}
-      <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
-        display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <div style={{display:"flex",transform:activeIdx===0?"rotate(0deg)":"rotate(-360deg)",
-          transition:"transform 0.45s cubic-bezier(.4,0,.2,1)"}}>
-          <SoccerIcon color={activeIdx===0?"#fff":accent}/>
+        transition:"transform 0.3s cubic-bezier(.34,1.3,.6,1),background 0.3s ease"}}/>
+      {/* Dividers between cells */}
+      <div style={{position:"absolute",top:6,bottom:6,left:SEG,width:1,background:trackBorder,opacity:0.4,zIndex:2}}/>
+      <div style={{position:"absolute",top:6,bottom:6,left:SEG*2,width:1,background:trackBorder,opacity:0.4,zIndex:2}}/>
+      {cells.map((c,i)=>(
+        <div key={i} style={{position:"relative",zIndex:1,width:SEG,height:"100%",
+          display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{display:"flex",transform:activeIdx===i?"scale(1)":"scale(0.85)",
+            transition:"transform 0.3s cubic-bezier(.34,1.3,.6,1)"}}>
+            {c.render(activeIdx===i)}
+          </div>
         </div>
-      </div>
-      {/* Dark Lion segment */}
-      <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
-        display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <div style={{display:"flex",transform:activeIdx===1?"scale(1)":"scale(0.82)",
-          opacity:activeIdx===1?1:0.95,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
-          <FooterLionIcon color={activeIdx===1?"#FF5500":"#fff"} size={16}/>
-        </div>
-      </div>
-      {/* Orange Lion segment */}
-      <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
-        display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <div style={{display:"flex",transform:activeIdx===2?"scale(1)":"scale(0.82)",
-          opacity:activeIdx===2?1:0.95,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
-          <FooterLionIcon color={activeIdx===2?"#fff":"#0D0D0D"} size={16}/>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }
