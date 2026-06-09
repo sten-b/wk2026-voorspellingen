@@ -4111,13 +4111,13 @@ function AppLoader({onDone}){
           <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
           <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
         </div>
-        <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:4,color:"rgba(255,255,255,0.62)"}}>WORLD CUP 2026</span>
+        <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,color:"rgba(255,255,255,0.85)"}}>WORLD CUP 2026</span>
       </div>
       {/* Stage: title, flipping lion, subtitle (existing loader) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
         opacity:stageOpacity,transition:"opacity 0.55s ease"}}>
-        <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(255,255,255,0.8)",marginBottom:-6}}>Sten's</span>
-        <span style={{fontSize:FS.h2,fontWeight:800,letterSpacing:3,color:"#FFFFFF"}}>WK2026</span>
+        <span style={{fontSize:FS.small,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-6}}>Sten's</span>
+        <span style={{fontSize:FS.display,fontWeight:900,letterSpacing:2,color:"#FFFFFF"}}>WK2026</span>
         <div style={{perspective:"600px"}}>
           <div style={{position:"relative",width:96,height:96,
             transformStyle:"preserve-3d",
@@ -4133,7 +4133,7 @@ function AppLoader({onDone}){
             </div>
           </div>
         </div>
-        <span style={{fontSize:FS.small,fontWeight:600,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.85)"}}>
+        <span style={{fontSize:FS.body,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)"}}>
           Voorspelling
         </span>
       </div>
