@@ -85,7 +85,7 @@ const LANG = {
     final: "Finale · MetLife Stadium · 19 juli",
     whyScore: "Waarom deze score?",
     predictedChampionLabel: "Voorspelde kampioen",
-    matchPredictions: "Wedstrijdprognoses",
+    matchPredictions: "Wedstrijdvoorspellingen",
     projection: "Prognose",
     risk: "Risico",
     group: "Groep",
@@ -1618,6 +1618,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
   const tr=useT();
   const {setTab}=useNav();
   const expanded=openGroup===g.id;   // controls the WHOLE group body (standings + matches)
+  const [predOpen,setPredOpen]=React.useState(false); // predictions start folded within the group
   const pts={},gf={},ga={};
   g.teams.forEach(t=>{pts[t]=0;gf[t]=0;ga[t]=0;});
   g.matches.forEach(({t1,t2,s1,s2})=>{
@@ -1699,16 +1700,21 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           );
         })}
       </div>
-      {/* Prognoses */}
-      <div style={{padding:"8px 12px 4px",background:T.card}}>
-        <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</span>
+      {/* Predictions — collapsible, folded by default */}
+      <div onClick={()=>setPredOpen(o=>!o)}
+        style={{padding:"9px 12px",background:T.card,borderTop:`1px solid ${T.border}`,
+          display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}>
+        <span style={{flex:1,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</span>
+        <Chevron open={predOpen} color={T.textSub}/>
       </div>
-      <div style={{borderTop:`1px solid ${T.border}`}}>
-        {g.matches.map(({t1,t2,s1,s2,date})=>{
-          const k=`${t1}-${t2}`;
-          return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} date={date} open={openMatches[k]} onToggle={e=>{e.stopPropagation();toggleMatch(k);}}/>;
-        })}
-      </div>
+      {predOpen&&(
+        <div style={{borderTop:`1px solid ${T.border}`}}>
+          {g.matches.map(({t1,t2,s1,s2,date})=>{
+            const k=`${t1}-${t2}`;
+            return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} date={date} open={openMatches[k]} onToggle={e=>{e.stopPropagation();toggleMatch(k);}}/>;
+          })}
+        </div>
+      )}
       </React.Fragment>)}
     </div>
   );
@@ -1775,7 +1781,13 @@ function FinalExplainer({openMatches,toggleMatch}){
         <Chevron open={fo} color={T.orange}/>
       </div>
       {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>{KO_DATE_LABEL.FINAL[lang]} · MetLife Stadium</div>
+        <div style={{display:"inline-flex",alignItems:"center",gap:5,marginBottom:7,
+          padding:"3px 9px",borderRadius:20,
+          background:T.id==="orangeLion"?"rgba(13,13,13,0.12)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)"),
+          border:`1px solid ${T.id==="orangeLion"?"rgba(13,13,13,0.25)":T.orange+"44"}`}}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#0D0D0D":T.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:0.4,color:T.id==="orangeLion"?"#0D0D0D":T.orange}}>{KO_DATE_LABEL.FINAL[lang]} · MetLife Stadium</span>
+        </div>
         <span style={{fontWeight:600,color:T.text}}>{tName(FINAL_TEAMS[0],lang)} {fsA}–{fsB} {tName(FINAL_TEAMS[1],lang)}.{" "}</span>
         {fe}
       </div>}
@@ -1819,8 +1831,13 @@ function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
       )}
       {isOpen&&expl&&(
         <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-          {dateLabel&&<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>{dateLabel}</div>}
-          <span style={{fontWeight:600,color:T.text}}>{tName(a,lang)} {sA}–{sB} {tName(b,lang)}.{" "}</span>
+          {dateLabel&&<div style={{display:"inline-flex",alignItems:"center",gap:5,marginBottom:7,
+            padding:"3px 9px",borderRadius:20,
+            background:T.id==="orangeLion"?"rgba(13,13,13,0.12)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)"),
+            border:`1px solid ${T.id==="orangeLion"?"rgba(13,13,13,0.25)":T.orange+"44"}`}}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#0D0D0D":T.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:0.4,color:T.id==="orangeLion"?"#0D0D0D":T.orange}}>{dateLabel}</span>
+          </div>}
 
           {expl}
         </div>
@@ -3384,7 +3401,7 @@ function NationsTab({preOpen=null}){
                 padding:"9px 13px",marginBottom:listOpen?0:24}}>
               <Chevron open={listOpen} color={T.textSub}/>
               <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
-                {lang==="nl"?`Bekijk top ${ranked.length} landen`:`View top ${ranked.length} nations`}
+                {lang==="nl"?"Volledige ranglijst":"Full ranking"}
               </span>
             </div>
             {listOpen&&(()=>{
@@ -3946,10 +3963,7 @@ function PlayersTab(){
       {/* ═══ NATIONS ═══ */}
       {view==="nations"&&(
         <div>
-          <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,margin:"2px 0 10px",letterSpacing:-0.5}}>{lang==="nl"?"Landen":"Nations"}</h2>
-          <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:14,paddingLeft:2}}>
-            {lang==="nl"?"Per land het profiel, de vorm en de modelrang — gesorteerd op modelsterkte.":"Per nation: profile, form and model rank — sorted by model strength."}
-          </div>
+          <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,margin:"2px 0 14px",letterSpacing:-0.5}}>{lang==="nl"?"Landen":"Nations"}</h2>
           <NationsTab/>
         </div>
       )}
@@ -3970,7 +3984,7 @@ function PlayersTab(){
           padding:"9px 13px",marginBottom:spotlightMore?0:24}}>
         <Chevron open={spotlightMore} color={T.textSub}/>
         <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
-          {lang==="nl"?`Bekijk overige sterspelers (${SPOTLIGHT.length-1})`:`View other stars (${SPOTLIGHT.length-1})`}
+          {lang==="nl"?`Meer sterspelers (${SPOTLIGHT.length-1})`:`More star players (${SPOTLIGHT.length-1})`}
         </span>
       </div>
       {spotlightMore&&(
@@ -3991,7 +4005,7 @@ function PlayersTab(){
           padding:"9px 13px",marginBottom:darkMore?0:24}}>
         <Chevron open={darkMore} color={T.textSub}/>
         <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
-          {lang==="nl"?`Bekijk overige talenten (${DARK_HORSES.length-1})`:`View other talents (${DARK_HORSES.length-1})`}
+          {lang==="nl"?`Meer talenten (${DARK_HORSES.length-1})`:`More talents (${DARK_HORSES.length-1})`}
         </span>
       </div>
       {darkMore&&(
@@ -4012,9 +4026,6 @@ function PlayersTab(){
       <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,margin:"2px 0 12px",letterSpacing:-0.5}}>{lang==="nl"?"FPL-team":"FPL team"}</h2>
 
       {/* Best XI */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
-        {lang==="nl"?"Beste Elftal van het Toernooi":"Tournament Best XI"}
-      </div>
       <PitchViz/>
       {/* Player list */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden",marginBottom:10}}>
