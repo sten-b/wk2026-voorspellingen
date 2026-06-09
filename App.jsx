@@ -3801,21 +3801,25 @@ function AppLoader({onDone}){
     const t1=setTimeout(()=>setPhase(1),50);     // fade in: WK2026 + white lion + Voorspelling
     const t2=setTimeout(()=>setPhase(2),650);    // 3D flip: white lion -> black lion
     const t3=setTimeout(()=>setPhase(3),1150);   // bg fades to black, stage (lion+text) fades out (~1s shown)
-    const t4=setTimeout(()=>setPhase(4),1600);   // orange lion grows from small to screen-size (engulf)
-    const t5=setTimeout(()=>onDone&&onDone(),2750); // reveal app
-    return()=>{[t1,t2,t3,t4,t5].forEach(clearTimeout);};
+    const t4=setTimeout(()=>setPhase(4),1550);   // orange lion grows fast from very small to screen-size
+    const t5=setTimeout(()=>setPhase(5),2250);   // whole loader fades to transparent (reveals the app)
+    const t6=setTimeout(()=>onDone&&onDone(),2800); // unmount after fade completes
+    return()=>{[t1,t2,t3,t4,t5,t6].forEach(clearTimeout);};
   },[]);
   // Background: orange until phase 3, then black.
   const bg=phase>=3?"#0D0D0D":"#E85100";
   const flipped=phase>=2;
   // Stage = WK2026 + lion + Voorspelling. Visible phases 1-2, fades out at phase 3.
   const stageOpacity=phase===0?0:(phase>=3?0:1);
-  // Engulf lion: always mounted, starts tiny+invisible, grows to fill screen at phase 4.
-  const engulfScale=phase>=4?11:0.25;
+  // Engulf lion: always mounted, starts very tiny + invisible, grows fast to fill screen at phase 4.
+  const engulfScale=phase>=4?12:0.08;
   const engulfOpacity=phase===4?1:0;
+  // Whole overlay fades to transparent at the end, revealing the app behind it.
+  const overlayOpacity=phase>=5?0:1;
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:bg,transition:"background 0.55s ease",
+      background:bg,opacity:overlayOpacity,
+      transition:"background 0.55s ease, opacity 0.55s ease",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
       {/* Stage: title, flipping lion, subtitle */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
@@ -3840,11 +3844,11 @@ function AppLoader({onDone}){
           Voorspelling
         </span>
       </div>
-      {/* Engulf lion: orange, grows from small to screen-size */}
+      {/* Engulf lion: orange, grows fast from very small to screen-size */}
       <div style={{position:"absolute",
         opacity:engulfOpacity,
         transform:`scale(${engulfScale})`,
-        transition:"opacity 0.5s ease, transform 1.05s cubic-bezier(.5,0,.75,.25)",
+        transition:"opacity 0.4s ease, transform 0.7s cubic-bezier(.45,0,.7,.35)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
         <LionEmoji color="#FF5500" size={96}/>
       </div>
