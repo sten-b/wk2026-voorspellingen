@@ -1600,41 +1600,30 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         <Chevron open={expanded} color={T.textSub}/>
       </div>
 
-      {/* Summary bottom bar — shown when COLLAPSED: qualifiers + in-form + matches icon */}
+      {/* Summary bottom bar — shown when COLLAPSED: in-form (left) + qualifiers (right) */}
       {!expanded&&(
         <div onClick={()=>setOpenGroup(g.id)}
           style={{display:"flex",alignItems:"center",gap:10,padding:"9px 13px",
             borderTop:`1px solid ${T.border}`,cursor:"pointer",background:T.bg,flexWrap:"nowrap",overflow:"hidden"}}>
-          {/* Qualifiers: green arrow + two flags */}
-          <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
-            <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
-            <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"door":"to qualify"}</span>
-            {sorted.slice(0,2).map(t=>(
-              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
-            ))}
-          </div>
-          {/* In-form */}
+          {/* In-form (left) */}
           {bestForm&&(()=>{
             const dev=formDev(bestForm);
             return(
-              <div style={{display:"flex",alignItems:"center",gap:3,flexShrink:0,marginLeft:"auto"}}>
-                <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"vorm":"form"}</span>
-                <span style={{fontSize:14,lineHeight:1}}>{FLAGS[bestForm]}</span>
+              <div style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
+                <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"in vorm":"in form"}</span>
+                <span style={{fontSize:15,lineHeight:1}}>{FLAGS[bestForm]}</span>
                 <span style={{fontSize:FS.caption,fontWeight:700,color:dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):T.textFaint}}>{dev>0?"+":""}{dev}</span>
               </div>
             );
           })()}
-          {/* Matches/field icon — expands the games */}
-          <span title={lang==="nl"?"Bekijk wedstrijden":"View matches"}
-            style={{display:"flex",alignItems:"center",flexShrink:0,paddingLeft:8,borderLeft:`1px solid ${T.border}`}}>
-            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" style={{flexShrink:0}}>
-              <rect x="0.7" y="0.7" width="18.6" height="12.6" rx="1.6" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
-              <line x1="10" y1="0.7" x2="10" y2="13.3" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
-              <circle cx="10" cy="7" r="2.4" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
-              <rect x="0.7" y="4" width="2.6" height="6" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
-              <rect x="16.7" y="4" width="2.6" height="6" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
-            </svg>
-          </span>
+          {/* Qualifiers (right): green arrow + two flags */}
+          <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0,marginLeft:"auto"}}>
+            <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
+            <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"kwalificeren":"to qualify"}</span>
+            {sorted.slice(0,2).map(t=>(
+              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
+            ))}
+          </div>
         </div>
       )}
 
