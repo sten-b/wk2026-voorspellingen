@@ -2873,11 +2873,11 @@ function ModelViz(){
                 <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,
                   padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
                   <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
-                  <span style={{color:T.textSub,textAlign:"right"}}>{r.val}</span>
+                  <span style={{fontWeight:400,color:T.textSub,textAlign:"right"}}>{r.val}</span>
                   <span style={{color:T.textFaint,textAlign:"center"}}>×</span>
-                  <span style={{color:T.textSub,textAlign:"right"}}>{r.w}%</span>
+                  <span style={{fontWeight:400,color:T.textSub,textAlign:"right"}}>{r.w}%</span>
                   <span style={{color:T.textFaint,textAlign:"center"}}>=</span>
-                  <span style={{fontWeight:700,color:blue,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+                  <span style={{fontWeight:700,color:T.text,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
                 </div>
               ))}
               {/* total */}
@@ -2886,7 +2886,7 @@ function ModelViz(){
                 <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>
                   {lang==="nl"?"Sterktescore":"Strength score"} {tName(exTeam,lang)}
                 </span>
-                <span style={{fontSize:FS.display,fontWeight:800,color:orange}}>{total.toFixed(1).replace(".",lang==="nl"?",":".")}</span>
+                <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{total.toFixed(1).replace(".",lang==="nl"?",":".")}</span>
               </div>
             </div>
           );
@@ -2932,13 +2932,13 @@ function ModelViz(){
                 <div style={{padding:"8px 4px 4px 44px"}}>
                   {rows.map((r,j)=>(
                     <div key={j} style={{display:"flex",alignItems:"center",gap:6,
-                      padding:"4px 0",borderTop:j>0?`1px solid ${T.border}`:"none",fontSize:FS.caption}}>
+                      padding:"5px 0",borderTop:j>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
                       <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
-                      <span style={{color:T.textSub,minWidth:24,textAlign:"right"}}>{r.val}</span>
+                      <span style={{fontWeight:400,color:T.textSub,minWidth:24,textAlign:"right"}}>{r.val}</span>
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
-                      <span style={{color:T.textSub,minWidth:24,textAlign:"right"}}>{r.w}%</span>
+                      <span style={{fontWeight:400,color:T.textSub,minWidth:24,textAlign:"right"}}>{r.w}%</span>
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
-                      <span style={{fontWeight:700,color:blue,minWidth:30,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+                      <span style={{fontWeight:700,color:T.text,minWidth:30,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
                     </div>
                   ))}
                   <div style={{display:"flex",alignItems:"center",marginTop:5,paddingTop:6,
@@ -4162,14 +4162,14 @@ export default function App(){
                           return(
                             <div key={t} style={{display:"grid",gridTemplateColumns:"1fr 44px 40px 36px 38px 38px 52px",
                               gap:4,padding:"6px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",
-                              fontSize:FS.caption,alignItems:"center"}}>
+                              fontSize:FS.small,alignItems:"center"}}>
                               <span style={{fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t,lang)}</span>
-                              <span style={{textAlign:"right",color:T.textSub}}>{s.elo}</span>
-                              <span style={{textAlign:"right",color:T.textSub}}>{s.sv}</span>
-                              <span style={{textAlign:"right",color:T.textSub}}>{s.xg}</span>
-                              <span style={{textAlign:"right",color:T.textSub}}>{s.xgc}</span>
-                              <span style={{textAlign:"right",color:T.textSub}}>{s.exp}</span>
-                              <span style={{textAlign:"right",color:T.textSub}}>{s.f12}/{s.fq}</span>
+                              <span style={{textAlign:"right",fontWeight:400,color:T.textSub}}>{s.elo}</span>
+                              <span style={{textAlign:"right",fontWeight:400,color:T.textSub}}>{s.sv}</span>
+                              <span style={{textAlign:"right",fontWeight:400,color:T.textSub}}>{s.xg}</span>
+                              <span style={{textAlign:"right",fontWeight:400,color:T.textSub}}>{s.xgc}</span>
+                              <span style={{textAlign:"right",fontWeight:400,color:T.textSub}}>{s.exp}</span>
+                              <span style={{textAlign:"right",fontWeight:400,color:T.textSub}}>{s.f12}/{s.fq}</span>
                             </div>
                           );
                         })}
