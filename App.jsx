@@ -2056,7 +2056,7 @@ const NATIONS_DATA = [
    stars:["Leandro Bacuna","Myron Boadu","Cuco Martina","Elson Hooi","Chedric Bazoer"],
    form:{nl:"Historische eerste WK-kwalificatie (7 zeges, 28:5). Sterk thuis, maar de recente oefennederlagen tegen Chili (0-2), Australië (1-5) en Schotland (1-4) tonen het kloofje met de top.",en:"A historic first World Cup qualification (7 wins, 28:5). Strong at home, but recent friendly losses to Chile (0-2), Australia (1-5) and Scotland (1-4) show the gap to the elite."},
    news:{nl:"De meeste selectiespelers zijn actief in de tweede en derde divisies van Europa of de MLS. Jeune bonnen zoals Antonucci geven creatief aanstootgevend maar ze ontbreken de kwaliteit om topploegen te bedreigen.",en:"Most squad players are active in second and third divisions of Europe or the MLS. Young talents like Antonucci provide creative threat but they lack the quality to trouble top sides."},
-   outlook:{nl:"laagste van het toernooi. Groep E (Duitsland, Ecuador, Ivoorkust): punten zijn vrijwel onmogelijk. Aanwezig zijn is zelf de prestatie voor dit eilandvoetbal.",en:"lowest in the tournament. Group E (Germany, Ecuador, Ivory Coast): points are virtually impossible. Being here is itself the achievement for this island football nation."},
+   outlook:{nl:"Debutant met de zwakste selectie en laagste Elo-rating van het toernooi. Groep E (Duitsland, Ecuador, Ivoorkust): punten zijn vrijwel onmogelijk. Aanwezig zijn is zelf de prestatie voor dit eilandvoetbal.",en:"Debutant with the weakest squad and lowest Elo rating in the tournament. Group E (Germany, Ecuador, Ivory Coast): points are virtually impossible. Being here is itself the achievement for this island football nation."},
    formRating:-6},
 
   // GROUP F
@@ -2116,13 +2116,13 @@ const NATIONS_DATA = [
    stars:["Lamine Yamal","Pedri","Rodri","Nico Williams","Dani Olmo"],
    form:{nl:"Vlekkeloze kwalificatie (5 zeges, ongeslagen, 21:2) als Europees kampioen. Recent iets gehaperd: een teleurstellend 1-1 gelijkspel tegen Irak en 0-0 tegen Egypte vlak voor het toernooi.",en:"A flawless qualification (5 wins, unbeaten, 21:2) as European champions. Recently stuttered slightly: a disappointing 1-1 draw with Iraq and 0-0 with Egypt just before the tournament."},
    news:{nl:"Merino (stressfractuur voet) is toch geselecteerd na een snelle revalidatie. Fermin Lopez mist het toernooi met een gebroken middenvoetsbeentje. Geen Real Madrid-spelers, een principebeslissing van De la Fuente. Yamal speelde door lichte hamstringklachten in de voorbereiding.",en:"Merino (foot stress fracture) made the squad after a quick recovery. Fermin Lopez misses the tournament with a broken metatarsal. No Real Madrid players selected, a principled decision by De la Fuente. Yamal played through minor hamstring discomfort in preparation."},
-   outlook:{nl:"en hoogste Elo-rating (1905) van alle 48 deelnemers. Groep H (Uruguay, Saudi-Arabië, Kaapverdië) is comfortabel. In de knockouts potentieel op België in de kwartfinale: een aantrekkelijke en beheersbare weg naar de finale.",en:"and highest Elo rating (1905) of all 48 participants. Group H (Uruguay, Saudi Arabia, Cape Verde) is comfortable. In the knockouts potentially facing Belgium in the quarter-final: an attractive and manageable route to the final."},
+   outlook:{nl:"Topfavoriet met de sterkste selectie en hoogste Elo-rating (1905) van alle 48 deelnemers. Groep H (Uruguay, Saudi-Arabië, Kaapverdië) is comfortabel. In de knockouts potentieel op België in de kwartfinale: een aantrekkelijke en beheersbare weg naar de finale.",en:"Top favourite with the strongest squad and highest Elo rating (1905) of all 48 participants. Group H (Uruguay, Saudi Arabia, Cape Verde) is comfortable. In the knockouts potentially facing Belgium in the quarter-final: an attractive and manageable route to the final."},
    formRating:0},
   {team:"Uruguay",flag:"🇺🇾",group:"H",coach:"Marcelo Bielsa",formation:"4-3-3",
    stars:["Federico Valverde","Darwin Nunez","Ronald Araujo","Jose Maria Gimenez","Rodrigo Bentancur"],
    form:{nl:"Moeizame kwalificatie onder Bielsa (3 zeges, 6 remises), veel gelijke spelen. Recent defensief degelijk (0-0 tegen Mexico en Algerije, 1-1 tegen Engeland) maar weinig scorend.",en:"A laboured qualification under Bielsa (3 wins, 6 draws), lots of stalemates. Recently defensively sound (0-0 with Mexico and Algeria, 1-1 with England) but low-scoring."},
    news:{nl:"Araujo (Barcelona) was maandenlang geblesseerd maar is fit verklaard voor het toernooi. Bielsa's hoge pressing vereist topconditie; het team heeft zwaar geoefend in de voorbereiding. Bentancur (Spurs) drijft het middenveld naast Valverde.",en:"Araujo (Barcelona) was injured for months but declared fit for the tournament. Bielsa's high press requires peak fitness; the team trained intensively in preparation. Bentancur (Spurs) drives midfield alongside Valverde."},
-   outlook:{nl:"maar Copa América-winnaar en met Valverde als beste middenvelder ter wereld. Groep H (Spanje, Saudi-Arabië, Kaapverdië): de tweede plek is het doel. In de knockouts zijn ze gevaarlijk voor elke ploeg die niet in topvorm is.",en:"but Copa América winner and with Valverde as the world's best midfielder. Group H (Spain, Saudi Arabia, Cape Verde): second place is the target. In the knockouts they are dangerous for any side not in top form."},
+   outlook:{nl:"Geen titelfavoriet, maar Copa América-winnaar en met Valverde als beste middenvelder ter wereld. Groep H (Spanje, Saudi-Arabië, Kaapverdië): de tweede plek is het doel. In de knockouts zijn ze gevaarlijk voor elke ploeg die niet in topvorm is.",en:"Not a title favourite, but Copa América winner and with Valverde as the world's best midfielder. Group H (Spain, Saudi Arabia, Cape Verde): second place is the target. In the knockouts they are dangerous for any side not in top form."},
    formRating:-2},
   {team:"Saudi Arabia",flag:"🇸🇦",group:"H",coach:"Giorgos Donis",formation:"4-2-3-1",
    stars:["Salem Al-Dawsari","Saleh Al-Shehri","Yasser Al-Shahrani","Mohammed Al-Owais","Ali Al-Bulaihi"],
@@ -2148,7 +2148,7 @@ const NATIONS_DATA = [
    stars:["Erling Haaland","Martin Odegaard","Alexander Sorloth","Sander Berge","Antonio Nusa"],
    form:{nl:"Perfecte kwalificatie: 8 wedstrijden, 8 zeges, 37:5, gedreven door Haaland. In bloedvorm: 4-1 tegen Italië, 3-1 tegen Zweden. Eerste WK sinds 1998 en in topvorm.",en:"A perfect qualification: 8 games, 8 wins, 37:5, driven by Haaland. In superb form: 4-1 over Italy, 3-1 over Sweden. First World Cup since 1998, and flying."},
    news:{nl:"Haaland fit ondanks spierproblemen laat in het seizoen bij Man City. Odegaard fit na het Arsenal-titelseizoen. Nusa (Dortmund, 20) is de opkomende derde kracht. Groep I: Noorwegen opent vs Irak, daarna Senegal en Mbappe's Frankrijk.",en:"Haaland fit despite late-season muscle concerns at Man City. Odegaard fit after Arsenal's title season. Nusa (Dortmund, 20) is the emerging third force. Group I: Norway open vs Iraq, then Senegal and Mbappe's France."},
-   outlook:{nl:"hoger dan elke Aziatische of Afrikaanse ploeg. De echte vraag: kunnen ze Mbappe's Frankrijk matchen in de groep? Een gelijkspel zou voldoende zijn voor doorgang. In de knockouts wacht potentieel Argentinië in de R16.",en:"higher than any Asian or African side. The real question: can they match Mbappe's France in the group? A draw would be enough for progression. In the knockouts, potentially Argentina awaits in the round of 16."},
+   outlook:{nl:"Met Haaland voorin ligt hun aanvallend potentieel hoger dan elke Aziatische of Afrikaanse ploeg. De echte vraag: kunnen ze Mbappe's Frankrijk matchen in de groep? Een gelijkspel zou voldoende zijn voor doorgang. In de knockouts wacht potentieel Argentinië in de R16.",en:"With Haaland up front their attacking potential is higher than any Asian or African side. The real question: can they match Mbappe's France in the group? A draw would be enough for progression. In the knockouts, potentially Argentina awaits in the round of 16."},
    formRating:-18},
   {team:"Senegal",flag:"🇸🇳",group:"I",coach:"Pape Thiaw",formation:"4-3-3",
    stars:["Sadio Mane","Nicolas Jackson","Ismaila Sarr","Pape Matar Sarr","Kalidou Koulibaly"],
@@ -2168,13 +2168,13 @@ const NATIONS_DATA = [
    stars:["Lionel Messi","Julian Alvarez","Rodrigo De Paul","Emiliano Martinez","Alexis Mac Allister"],
    form:{nl:"Regerend wereldkampioen, sterke kwalificatie (7 zeges, 23:8). In vorm: 5-0 tegen Zambia, 2-0 tegen Honduras. Messi miste eind mei een oefenduel met een lichte blessure maar wordt fit verwacht.",en:"Reigning world champions, a strong qualification (7 wins, 23:8). In form: 5-0 over Zambia, 2-0 over Honduras. Messi missed a late-May friendly with a minor injury but is expected fit."},
    news:{nl:"Balerdi definitief afwezig (kuit). Molina, Paredes, Paz en Montiel trainen apart en zijn twijfelachtig voor de opener vs Algerije (16 juni). Scaloni bevestigde: iedereen die niet 100% fit is wordt vervangen. Mac Allister in uitstekende vorm bij Liverpool.",en:"Balerdi definitively out (calf). Molina, Paredes, Paz and Montiel training separately and doubtful for opener vs Algeria (June 16). Scaloni confirmed: anyone not 100% fit will be replaced. Mac Allister in excellent form at Liverpool."},
-   outlook:{nl:"maar het blessureprofiel verlaagt de effectieve sterkte met 15-30 punten. Als Messi fit is, kunnen ze iedereen verslaan. Knockoutpad via Noorwegen (R16) en potentieel Engeland (KF): extreem zwaar als alle geblesseerden niet herstellen.",en:"but the injury profile reduces effective strength by 15-30 points. If Messi is fit they can beat anyone. Knockout path via Norway (R16) and potentially England (QF): extremely tough if the injured players do not recover."},
+   outlook:{nl:"Wereldkampioen en op papier titelkandidaat, maar het blessureprofiel verlaagt de effectieve sterkte met 15-30 punten. Als Messi fit is, kunnen ze iedereen verslaan. Knockoutpad via Noorwegen (R16) en potentieel Engeland (KF): extreem zwaar als alle geblesseerden niet herstellen.",en:"World champions and a title contender on paper, but the injury profile reduces effective strength by 15-30 points. If Messi is fit they can beat anyone. Knockout path via Norway (R16) and potentially England (QF): extremely tough if the injured players do not recover."},
    formRating:3},
   {team:"Colombia",flag:"🇨🇴",group:"J",coach:"Néstor Lorenzo",formation:"4-3-3",
    stars:["Luis Diaz","James Rodriguez","Richard Rios","Jhon Cordoba","Davinson Sanchez"],
    form:{nl:"Wisselvallige Zuid-Amerikaanse kwalificatie (4 zeges, 4 nederlagen). Maar recent in de lift: 3-0 tegen Australië, 3-1 tegen Costa Rica, al volgde een 1-3 tegen Frankrijk.",en:"An inconsistent South American qualification (4 wins, 4 losses). But recently improving: 3-0 over Australia, 3-1 over Costa Rica, though a 1-3 to France followed."},
    news:{nl:"James Rodriguez (36) is meegenomen maar is niet meer de dominante speler van Rusland 2018. Caicedo (Chelsea) is werkelijk wereldklasse als defensieve middenvelder en de beste aankoop van Colombia's systeem. Hincapie (Bayer Leverkusen) verdedigend sterk.",en:"James Rodriguez (36) is included but no longer the dominant player of Russia 2018. Caicedo (Chelsea) is genuinely world-class as defensive midfielder and the best acquisition for Colombia's system. Hincapie (Bayer Leverkusen) defensively strong."},
-   outlook:{nl:"maar de Copa América-finale en Diaz's clubvorm suggereren dat ze worden onderschat. Groep K (Portugal, DR Congo, Oezbekistan): een ideale loting. Ze winnen de groep als Diaz en Rios presteren.",en:"but the Copa América final and Diaz's club form suggest they are underrated. Group K (Portugal, Congo DR, Uzbekistan): an ideal draw. They win the group if Diaz and Rios perform."},
+   outlook:{nl:"Een outsider, maar de Copa América-finale en Diaz's clubvorm suggereren dat ze worden onderschat. Groep K (Portugal, DR Congo, Oezbekistan): een ideale loting. Ze winnen de groep als Diaz en Rios presteren.",en:"An outsider, but the Copa América final and Diaz's club form suggest they are underrated. Group K (Portugal, Congo DR, Uzbekistan): an ideal draw. They win the group if Diaz and Rios perform."},
    formRating:-7},
   {team:"Austria",flag:"🇦🇹",group:"J",coach:"Ralf Rangnick",formation:"4-2-3-1",
    stars:["Marcel Sabitzer","Konrad Laimer","Christoph Baumgartner","Marko Arnautovic","Patrick Wimmer"],
@@ -3027,7 +3027,6 @@ function NationBadges({team,dark}){
   const items=[
     dev!==undefined&&{lab:lang==="nl"?"Vorm":"Form",val:`${dev>0?"+":""}${dev}`},
     SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s},
-    {lab:"Model",val:`#${MODEL_RANK[team]}`},
   ].filter(Boolean);
   return(
     <div style={{display:"flex",alignItems:"stretch",flexShrink:0,
@@ -3059,9 +3058,16 @@ function NationChampionCard({n}){
         <svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}>
           <path d="M5 4h14v3a4 4 0 01-4 4h-1.2A3 3 0 0113 13.8V16h2a1 1 0 011 1v2H8v-2a1 1 0 011-1h2v-2.2A3 3 0 019.2 11H8a4 4 0 01-4-4V4z"/>
         </svg>
-        <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:1.4,textTransform:"uppercase",color:T.orange}}>
+        <span style={{flex:1,fontSize:FS.caption,fontWeight:800,letterSpacing:1.4,textTransform:"uppercase",color:T.orange}}>
           {lang==="nl"?"Topfavoriet":"Top Favourite"}
         </span>
+        {MODEL_RANK[n.team]&&(
+          <span style={{fontSize:FS.caption,fontWeight:800,color:"#fff",
+            background:"rgba(255,255,255,0.14)",border:`1px solid ${T.orange}`,
+            borderRadius:6,padding:"2px 8px",flexShrink:0}}>
+            {lang==="nl"?"Model":"Model"} #{MODEL_RANK[n.team]}
+          </span>
+        )}
       </div>
       <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:11}}>
         <div style={{width:54,height:54,borderRadius:"50%",background:"rgba(255,255,255,0.12)",
@@ -3073,7 +3079,7 @@ function NationChampionCard({n}){
             {lang==="nl"?"Groep":"Group"} {n.group} · {n.coach}</div>
         </div>
       </div>
-      <div style={{marginBottom:11}}><NationBadges team={n.team} dark/></div>
+      <div style={{display:"flex",marginBottom:11}}><NationBadges team={n.team} dark/></div>
       <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55}}>{n.outlook[lang]}</div>
     </div>
   );
@@ -3090,6 +3096,10 @@ function NationCard({n,open,onToggle,compact}){
       : {background:T.card,border:`1px solid ${open?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
       {/* Header */}
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:8,padding:compact?"8px 12px":"11px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
+        {MODEL_RANK[n.team]&&(
+          <span style={{fontSize:FS.caption,fontWeight:800,color:T.id==="dark"?T.orange:T.blue,
+            minWidth:compact?20:24,textAlign:"right",flexShrink:0}}>#{MODEL_RANK[n.team]}</span>
+        )}
         <span style={{fontSize:compact?16:20,lineHeight:1,flexShrink:0}}>{n.flag}</span>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:FS.body,fontWeight:700,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?TEAM_NL[n.team]||n.team:n.team}</div>
@@ -3717,11 +3727,6 @@ function PlayersTab(){
       {/* Best XI */}
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
         {lang==="nl"?"Beste Elftal van het Toernooi":"Tournament Best XI"}
-      </div>
-      <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.6,marginBottom:10,paddingLeft:13,paddingRight:13}}>
-        {lang==="nl"
-          ?"Een FPL-stijl team (Fantasy-opstelling, 4-3-3), gekozen op drie factoren: (1) clubvorm in seizoen 2025/26 — goals, assists en clean sheets; (2) verwacht toernooipad uit dit model — hoe verder een land komt, hoe meer wedstrijden en punten; (3) consensus uit WK-fantasycommunities per positie. Geen output van het voorspellingsmodel zelf."
-          :"An FPL-style team (fantasy line-up, 4-3-3), chosen on three factors: (1) club form in the 2025/26 season — goals, assists and clean sheets; (2) expected tournament path from this model — the further a nation goes, the more matches and points; (3) consensus from World Cup fantasy communities per position. Not an output of the prediction model itself."}
       </div>
       <PitchViz/>
       {/* Player list */}
