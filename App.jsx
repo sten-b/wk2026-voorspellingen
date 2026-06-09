@@ -4057,14 +4057,14 @@ function AppLoader({onDone}){
     // Phase 0.5 : red-white-blue accent sweep
     // Phase 1   : weave — black→orange, WC logo scales/fades out, the "Sten's/WK2026/lion" stage fades in
     // Phases 2-6: the existing loader sequence (flip → engulf → whoosh)
-    const tA=setTimeout(()=>setPhase(0.3),60);   // WC roundel + 26 in
-    const tB=setTimeout(()=>setPhase(0.6),460);  // accent sweep
-    const t1=setTimeout(()=>setPhase(1),1200);   // weave begins: WC drifts out, stage eases in
-    const t2=setTimeout(()=>setPhase(2),2150);   // 3D flip: white lion -> black lion
-    const t3=setTimeout(()=>setPhase(3),2650);   // bg fades to black, stage fades out
-    const t4=setTimeout(()=>setPhase(4),3050);   // orange lion grows from tiny
-    const t5=setTimeout(()=>setPhase(5),3750);   // whole loader fades to transparent
-    const t6=setTimeout(()=>onDone&&onDone(),4300); // unmount after fade
+    const tA=setTimeout(()=>setPhase(0.3),80);    // WC roundel + 26 ease in
+    const tB=setTimeout(()=>setPhase(0.6),720);   // accent sweep (after the mark settles)
+    const t1=setTimeout(()=>setPhase(1),1500);    // weave begins: WC drifts out, stage eases in
+    const t2=setTimeout(()=>setPhase(2),2600);    // 3D flip: white lion -> black lion
+    const t3=setTimeout(()=>setPhase(3),3250);    // bg fades to black, stage fades out
+    const t4=setTimeout(()=>setPhase(4),3650);    // orange lion grows from tiny
+    const t5=setTimeout(()=>setPhase(5),4450);    // whole loader fades to transparent
+    const t6=setTimeout(()=>onDone&&onDone(),5050); // unmount after fade
     return()=>{[tA,tB,t1,t2,t3,t4,t5,t6].forEach(clearTimeout);};
   },[]);
   // Background: black during the WC intro (phase<1), orange through the main stage, black from phase 3.
@@ -4086,18 +4086,18 @@ function AppLoader({onDone}){
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:bg,opacity:overlayOpacity,
       transition:phase>=5
-        ? "opacity 0.5s cubic-bezier(.4,0,.2,1) 0.15s"
-        : "background 0.9s cubic-bezier(.4,0,.2,1), opacity 0.55s ease",
+        ? "opacity 0.6s cubic-bezier(.4,0,.2,1) 0.1s"
+        : "background 1.1s cubic-bezier(.4,0,.2,1), opacity 0.6s cubic-bezier(.4,0,.2,1)",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
       {/* WC2026-themed intro: red-white-blue accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
-        transition:"opacity 0.5s ease",pointerEvents:"none",
+        transition:"opacity 0.7s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
       {/* WC2026-themed intro: original World Cup 2026 mark (roundel badge + 26 + RWB bars) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
         opacity:wcOpacity,transform:`translateY(${wcLift}px) scale(${wcScale})`,
         transition:"opacity 0.85s cubic-bezier(.4,0,.2,1), transform 0.95s cubic-bezier(.34,1.2,.5,1)",
-        pointerEvents:"none"}}>
+        pointerEvents:"none",willChange:"transform,opacity"}}>
         <svg width="100" height="100" viewBox="0 0 100 100" aria-hidden="true"
           style={{filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))"}}>
           <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
@@ -4122,14 +4122,14 @@ function AppLoader({onDone}){
       {/* Stage: title, flipping lion, subtitle (existing loader) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
         opacity:stageOpacity,transform:`translateY(${stageLift}px)`,
-        transition:"opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.34,1.2,.5,1)"}}>
+        transition:"opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.34,1.2,.5,1)",willChange:"transform,opacity"}}>
         <span style={{fontSize:FS.small,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-6,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
         <span style={{fontSize:FS.display,fontWeight:900,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
         <div style={{perspective:"600px"}}>
           <div style={{position:"relative",width:96,height:96,
             transformStyle:"preserve-3d",
             transform:flipped?"rotateY(180deg)":"rotateY(0deg)",
-            transition:"transform 0.7s cubic-bezier(.6,.05,.3,1)"}}>
+            transition:"transform 0.85s cubic-bezier(.45,.05,.25,1)",willChange:"transform"}}>
             <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
               display:"flex",alignItems:"center",justifyContent:"center"}}>
               <LionEmoji color="#FFFFFF" size={96}/>
@@ -4140,15 +4140,20 @@ function AppLoader({onDone}){
             </div>
           </div>
         </div>
-        <span style={{fontSize:FS.body,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>
-          Voorspelling
-        </span>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+          <span style={{fontSize:FS.small,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>
+            Data-driven
+          </span>
+          <span style={{fontSize:FS.body,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>
+            Voorspellingen
+          </span>
+        </div>
       </div>
       {/* Engulf lion: orange, grows fast from very small to screen-size */}
       <div style={{position:"absolute",
         opacity:engulfOpacity,
         transform:`scale(${engulfScale})`,
-        transition:"opacity 0.4s ease, transform 0.7s cubic-bezier(.45,0,.7,.35)",
+        transition:"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.85s cubic-bezier(.5,0,.75,.4)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
         <LionEmoji color="#FF5500" size={96}/>
       </div>
