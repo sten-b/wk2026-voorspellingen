@@ -3935,34 +3935,63 @@ function PlayersTab(){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    const t1=setTimeout(()=>setPhase(1),50);     // fade in: WK2026 + white lion + Voorspelling
-    const t2=setTimeout(()=>setPhase(2),650);    // 3D flip: white lion -> black lion
-    const t3=setTimeout(()=>setPhase(3),1150);   // bg fades to black, stage (lion+text) fades out (~1s shown)
-    const t4=setTimeout(()=>setPhase(4),1550);   // orange lion grows fast from very small to screen-size
-    const t5=setTimeout(()=>setPhase(5),2250);   // whole loader fades to transparent (reveals the app)
-    const t6=setTimeout(()=>onDone&&onDone(),2800); // unmount after fade completes
-    return()=>{[t1,t2,t3,t4,t5,t6].forEach(clearTimeout);};
+    // Phase 0   : WC2026-themed intro (gold trophy + "26" on black) fades in
+    // Phase 0.5 : red-white-blue accent sweep
+    // Phase 1   : weave — black→orange, WC logo scales/fades out, the "Sten's/WK2026/lion" stage fades in
+    // Phases 2-6: the existing loader sequence (flip → engulf → whoosh)
+    const tA=setTimeout(()=>setPhase(0.3),60);   // WC trophy + 26 in
+    const tB=setTimeout(()=>setPhase(0.6),420);  // accent sweep
+    const t1=setTimeout(()=>setPhase(1),1150);   // weave into orange stage
+    const t2=setTimeout(()=>setPhase(2),1750);   // 3D flip: white lion -> black lion
+    const t3=setTimeout(()=>setPhase(3),2250);   // bg fades to black, stage fades out
+    const t4=setTimeout(()=>setPhase(4),2650);   // orange lion grows from tiny
+    const t5=setTimeout(()=>setPhase(5),3350);   // whole loader fades to transparent
+    const t6=setTimeout(()=>onDone&&onDone(),3900); // unmount after fade
+    return()=>{[tA,tB,t1,t2,t3,t4,t5,t6].forEach(clearTimeout);};
   },[]);
-  // Background: orange until phase 3, then black.
-  const bg=phase>=3?"#0D0D0D":"#E85100";
+  // Background: black during the WC intro (phase<1), orange through the main stage, black from phase 3.
+  const bg=phase>=3?"#0D0D0D":(phase<1?"#0D0D0D":"#E85100");
   const flipped=phase>=2;
-  // Stage = WK2026 + lion + Voorspelling. Visible phases 1-2, fades out at phase 3.
-  const stageOpacity=phase===0?0:(phase>=3?0:1);
-  // Engulf lion: always mounted, starts very tiny + invisible, rushes to fill screen, keeps growing through the whoosh.
+  // WC2026 intro visible only during phase 0–0.6, fades out as the weave begins.
+  const wcOpacity=phase===0?0:(phase>=1?0:1);
+  const wcScale=phase>=1?1.45:(phase>=0.3?1:0.72);
+  const sweepOpacity=(phase>=0.6&&phase<1)?1:0;
+  // Stage = Sten's + WK2026 + lion + Voorspelling. Fades in at the weave (phase 1), out at phase 3.
+  const stageOpacity=phase<1?0:(phase>=3?0:1);
+  // Engulf lion: grows from tiny to fill screen, keeps growing through the whoosh.
   const engulfScale=phase>=5?16:(phase>=4?12:0.08);
   const engulfOpacity=phase>=4?1:0;
-  // Whole overlay fades to transparent at the end, revealing the app behind it.
   const overlayOpacity=phase>=5?0:1;
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:bg,opacity:overlayOpacity,
       transition:phase>=5
-        ? "opacity 0.5s cubic-bezier(.4,0,.2,1) 0.15s"   // whoosh: brief hold, then swoop away
-        : "background 0.55s ease, opacity 0.55s ease",
+        ? "opacity 0.5s cubic-bezier(.4,0,.2,1) 0.15s"
+        : "background 0.6s ease, opacity 0.55s ease",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-      {/* Stage: title, flipping lion, subtitle */}
+      {/* WC2026-themed intro: red-white-blue accent sweep */}
+      <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
+        transition:"opacity 0.5s ease",pointerEvents:"none",
+        background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
+      {/* WC2026-themed intro: gold trophy + stacked 26 */}
+      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:8,
+        opacity:wcOpacity,transform:`scale(${wcScale})`,
+        transition:"opacity 0.5s ease, transform 0.6s cubic-bezier(.34,1.56,.64,1)",pointerEvents:"none"}}>
+        <svg width="78" height="104" viewBox="0 0 90 120" aria-hidden="true">
+          <defs><linearGradient id="wcGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FFE7A0"/><stop offset="0.55" stopColor="#E8B84B"/><stop offset="1" stopColor="#C0871F"/>
+          </linearGradient></defs>
+          <ellipse cx="45" cy="20" rx="15" ry="16" fill="url(#wcGold)"/>
+          <path d="M45 36 C31 42 27 58 31 76 C34 90 40 99 45 103 C50 99 56 90 59 76 C63 58 59 42 45 36 Z" fill="url(#wcGold)"/>
+          <rect x="31" y="103" width="28" height="6" rx="2" fill="#C0871F"/>
+          <rect x="27" y="109" width="36" height="6" rx="2" fill="#C0871F"/>
+        </svg>
+        <span style={{fontSize:38,fontWeight:800,letterSpacing:1,lineHeight:0.82,color:"#FFFFFF"}}>26</span>
+        <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:3,color:"#E8B84B"}}>WE ARE 26</span>
+      </div>
+      {/* Stage: title, flipping lion, subtitle (existing loader) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
-        opacity:stageOpacity,transition:"opacity 0.5s ease"}}>
+        opacity:stageOpacity,transition:"opacity 0.55s ease"}}>
         <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(255,255,255,0.8)",marginBottom:-6}}>Sten's</span>
         <span style={{fontSize:FS.h2,fontWeight:800,letterSpacing:3,color:"#FFFFFF"}}>WK2026</span>
         <div style={{perspective:"600px"}}>
