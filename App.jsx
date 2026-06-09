@@ -43,20 +43,21 @@ const THEMES = {
     tabInactive: t => ({ color:"#AAAAAA" }),
     pill: (active,t) => active ? { background:"#FF5500", color:"#000000", fontWeight:700 } : { background:"#1A1A1A", color:"#777777" },
   },
-  // Orange Lion = AWAY kit: orange dominant (same orange as dark mode), white as structure,
-  // subtle lighter-orange hints, black used sparingly as the sharp accent.
+  // Orange Lion = AWAY kit: fully orange. Graded orange shades for surfaces/tints,
+  // white + light-orange + grey type, black as the sharp accent. One thin RWB (Dutch flag) hint.
   orangeLion: {
     id:"orangeLion",
-    bg:"#FF5500", card:"#FFFFFF", nav:"#FF5500",
-    border:"#FF7A33", borderStrong:"#FFFFFF",
-    text:"#1A1208", textSub:"#5A3318", textFaint:"#9A6A45",
-    orange:"#FF5500", blue:"#0D0D0D",       // "secondary"/accent = black, used sparingly
-    gold:"#FFAA00",
-    orangeFaint:"#FFF1E9", blueFaint:"#FFF6F0",
-    green:"#1E7A40", red:"#C0392B",
-    activeTab: t => ({ color:"#0D0D0D", borderBottom:"3px solid #0D0D0D", fontWeight:700 }),
-    tabInactive: t => ({ color:"rgba(13,13,13,0.55)" }),
-    pill: (active,t) => active ? { background:"#0D0D0D", color:"#FF5500", fontWeight:700 } : { background:"rgba(255,255,255,0.85)", color:"#B23C00" },
+    bg:"#E85100", card:"#FF6A1A", nav:"#D94800",
+    border:"#FF8A4D", borderStrong:"#FFFFFF",
+    text:"#FFFFFF", textSub:"#FFD9BF", textFaint:"#FFB78A",
+    orange:"#FF7A33", blue:"#0D0D0D",        // accent = black, used sparingly
+    gold:"#FFC861",
+    orangeFaint:"#FF7E38", blueFaint:"#FF8A4D",
+    green:"#9BE8B4", red:"#FFC2B8",
+    rwb:true,                                 // enables the subtle red-white-blue hint
+    activeTab: t => ({ color:"#FFFFFF", borderBottom:"3px solid #FFFFFF", fontWeight:700 }),
+    tabInactive: t => ({ color:"rgba(255,255,255,0.62)" }),
+    pill: (active,t) => active ? { background:"#0D0D0D", color:"#FF7A33", fontWeight:700 } : { background:"rgba(255,255,255,0.16)", color:"#FFFFFF" },
   },
 
 }
@@ -1320,7 +1321,7 @@ function SoccerIcon({color}){
 
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
-  const SEG=30, H=30;
+  const SEG=34, H=34;
   const BLACK="#0D0D0D", ORANGE="#E35A00", WHITE="#FFFFFF";
   // Per-cell appearance keyed by the ACTIVE theme.
   // cell 0 = ball (default), cell 1 = dark Lion, cell 2 = orange Lion.
@@ -1407,7 +1408,13 @@ function Nav({tab,setTab}){
   ];
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
-      <div style={{height:4,background:T.id==="orangeLion"?"#0D0D0D":"#E07000"}}/>
+      {T.id==="orangeLion"
+        ? <div style={{height:3,display:"flex"}} aria-hidden="true">
+            <div style={{flex:1,background:"#AE1C28"}}/>
+            <div style={{flex:1,background:"#FFFFFF"}}/>
+            <div style={{flex:1,background:"#21468B"}}/>
+          </div>
+        : <div style={{height:4,background:"#E07000"}}/>}
       <div style={{display:"flex",alignItems:"stretch",padding:"0 10px",width:"100%",boxSizing:"border-box"}}>
         <div style={{display:"flex",alignItems:"center",marginRight:10,flexShrink:0}}>
           {T.id==="dark"
@@ -1603,10 +1610,10 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
         const pass=i<2;
         return(
           <div key={team} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 10px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:i===0?"rgba(224,112,0,0.08)":i===1?"rgba(26,82,150,0.05)":"transparent"}}>
-            <span style={{width:14,fontSize:FS.small,fontWeight:700,color:i===0?"#E07000":i===1?"#1A5296":T.border,flexShrink:0,textAlign:"center"}}>{i+1}</span>
+            <span style={{width:14,fontSize:FS.small,fontWeight:700,color:i===0?(T.id==="orangeLion"?"#FFFFFF":"#E07000"):i===1?(T.id==="orangeLion"?"#FFD9BF":"#1A5296"):T.textFaint,flexShrink:0,textAlign:"center"}}>{i+1}</span>
             <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]||"🏳"}</span></TeamLink>
             <span style={{flex:1,fontSize:FS.body,color:pass?T.text:T.textSub,fontWeight:pass?500:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            {(()=>{const mr=adjRank(team);const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
+            {(()=>{const mr=adjRank(team);const rc=mr<=8?(T.id==="orangeLion"?"#5BE08A":"#1E7A40"):mr<=24?(T.id==="orangeLion"?"#FFFFFF":"#E07000"):(T.id==="orangeLion"?"#FFB0A6":"#C0392B");return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
             <span style={{fontSize:FS.small,fontWeight:700,color:pass?T.text:T.textSub,flexShrink:0}}>{pts[team]}</span>
           </div>
         );
