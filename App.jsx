@@ -4,6 +4,9 @@ import React, { useState, createContext, useContext, useEffect } from "react";
 // ── TYPE SCALE ───────────────────────────────────────────────────────────────
 // Single source of truth for text sizes. Collapses the previous 15 ad-hoc sizes
 // into 7 deliberate roles. Emoji/flag glyphs are sized separately (not type).
+// ── ONE FONT FAMILY for the entire app ───────────────────────────────────────
+const FONT = "'Inter','Helvetica Neue',Helvetica,Arial,sans-serif";
+
 const FS = {
   display: 22,   // hero numbers (champion score, big stats)
   h1: 17,        // page / major section titles
@@ -13,6 +16,62 @@ const FS = {
   caption: 10,   // captions, sub-labels, helper text
   micro: 8,      // column headers, tiny uppercase tags
 };
+
+// ── CENTRALISED TYPOGRAPHY SYSTEM ────────────────────────────────────────────
+// One coherent set of text roles (size × weight) used across the app, so we stop
+// hand-mixing bold/size everywhere. Pair with a theme text colour (T.text /
+// T.textSub / T.textFaint) at the call site, or use TXT() below.
+const WEIGHT = { regular:400, medium:600, semibold:700, bold:800 };
+const TYPE = {
+  hero:    { fontSize:FS.display, fontWeight:WEIGHT.bold,    letterSpacing:-0.4 },
+  title:   { fontSize:FS.h1,      fontWeight:WEIGHT.bold,    letterSpacing:-0.3 },
+  cardTitle:{fontSize:FS.h2,      fontWeight:WEIGHT.semibold,letterSpacing:-0.2 },
+  body:    { fontSize:FS.body,    fontWeight:WEIGHT.regular, lineHeight:1.6 },
+  bodyStrong:{fontSize:FS.body,   fontWeight:WEIGHT.semibold },
+  label:   { fontSize:FS.small,   fontWeight:WEIGHT.medium },
+  value:   { fontSize:FS.small,   fontWeight:WEIGHT.semibold },
+  caption: { fontSize:FS.caption, fontWeight:WEIGHT.regular, lineHeight:1.5 },
+  eyebrow: { fontSize:FS.micro,   fontWeight:WEIGHT.bold, letterSpacing:1.2, textTransform:"uppercase" },
+  tag:     { fontSize:FS.micro,   fontWeight:WEIGHT.bold, letterSpacing:0.4 },
+};
+
+// ── CENTRALISED MARKER / HIGHLIGHT SYSTEM ────────────────────────────────────
+// Tinted backgrounds + borders for badges, pills, indicators and icon frames.
+// Always derived from the active theme so highlights stay on-palette in every mode.
+// tone: "orange" (primary) | "blue" (secondary) | "up"/"green" | "down"/"red" | "neutral"
+function marker(T, tone="orange"){
+  const OL=T.id==="orangeLion", D=T.id==="dark";
+  const map={
+    orange:{ fg:OL?"#0D0D0D":T.orange, base:OL?"#FFFFFF":T.orange },
+    blue:  { fg:OL?"#0D0D0D":T.blue,   base:OL?"#0D0D0D":T.blue },
+    green: { fg:T.green, base:T.green },
+    up:    { fg:T.green, base:T.green },
+    red:   { fg:T.red,   base:T.red },
+    down:  { fg:T.red,   base:T.red },
+    neutral:{fg:T.textSub, base:T.textSub },
+  };
+  const c=map[tone]||map.orange;
+  // soft tinted background + hairline border in the same hue
+  const tintBg = OL ? "rgba(255,255,255,0.16)"
+    : (D ? hexA(c.base,0.16) : hexA(c.base,0.12));
+  const tintBorder = OL ? "rgba(255,255,255,0.45)" : hexA(c.base,0.30);
+  return { fg:c.fg, base:c.base, bg:tintBg, border:tintBorder };
+}
+// hex (#RRGGBB) -> rgba string with alpha; passes through rgb()/named as-is with opacity fallback
+function hexA(hex,a){
+  if(typeof hex==="string" && /^#([0-9a-f]{6})$/i.test(hex)){
+    const n=parseInt(hex.slice(1),16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+  }
+  return hex;
+}
+// Standard chip/pill style object (badges, date chips, indicators)
+function chipStyle(T, tone="orange"){
+  const m=marker(T,tone);
+  return { display:"inline-flex", alignItems:"center", gap:5, padding:"3px 9px",
+    borderRadius:20, background:m.bg, border:`1px solid ${m.border}`,
+    fontSize:FS.micro, fontWeight:WEIGHT.bold, letterSpacing:0.4, color:m.fg };
+}
 
 const THEMES = {
   // Default: clean modern — orange accent, deep blue secondary, white cards
@@ -144,153 +203,153 @@ const TEAM_NL = {
 
 const MATCH_EXPL = {
   nl: {
-    "Mexico-South Africa":"Mexico opent als grote favoriet en gebruikt het thuisvoordeel van het Noord-Amerikaanse continent. Zuid-Afrika mist de technische kwaliteit om 90 minuten een compact blok te bewaren en Mexico snijdt hen open via de flanken. Een comfortabele overwinning die de toon zet voor de groep.",
-    "South Korea-Czechia":"Zuid-Korea's hoge pressing en atletisch vermogen is meer dan Tsjechië's middenblokkering aankan. Son Heung-min is de doorslaggevende factor: zijn beweging tussen de linies geeft Tsjechië geen structureel antwoord. Een verdiende Zuid-Koreaanse overwinning.",
-    "Mexico-South Korea":"De topwedstrijd van Groep A. Beide ploegen drukken hoog en heffen elkaar op qua intensiteit. Zuid-Korea is georganiseerd genoeg om mee te doen, Mexico hoeft zich niet volledig bloot te geven. Het model verwacht een gelijkspel als logisch resultaat.",
-    "South Africa-Czechia":"Zuid-Afrika toonde op de Afrika Cup dat ze moeilijk te breken zijn, maar Soucek en Barak controleren het tempo goed. Tsjechië wint een rommelige maar verdiende wedstrijd via standaardsituaties.",
-    "Mexico-Czechia":"Met kwalificatie nagenoeg zeker roteert Mexico, maar behoudt nog steeds te veel klasse voor een vermoeide Tsjechische ploeg. Raul Jimenez leidt de aanval en Mexico sluit de groep af met een comfortabele overwinning.",
-    "South Korea-South Africa":"Zuid-Korea heeft deze overwinning nodig om progressie te garanderen en weet dat. Son en Lee Jae-sung slopen de Zuid-Afrikaanse defensie in de omschakeling. Een dominante vertoning die kwalificatie bevestigt.",
-    "Canada-Bosnia-Herzegovina":"Canada in Toronto is een echte thuiswedstrijd: het publiek tilt hen mee. Alphonso Davies explodeert via links langs de trage Bosnische defensie. Canada's intensiteit over 90 minuten is te groot voor een ploeg die hier niet voor gebouwd is.",
-    "Qatar-Switzerland":"Qatar wordt tactisch overtroffen door Shaqiri, Embolo en Xhaka. Xhaka domineert het middenveld en Qatar kan de Zwitserse pressing niet bijhouden. Een professionele maar comfortabele Zwitserse overwinning.",
-    "Canada-Qatar":"Met een overwinning op zak geeft Canada niet los. Jonathan David leidt de aanval en Canada wint opnieuw comfortabel: de kwaliteitskloof is te groot voor Qatar.",
-    "Switzerland-Bosnia-Herzegovina":"Zwitserland is in elk opzicht technisch superieur. Embolo's fysieke kracht en Xhaka's middenveldregie intimideren de Bosnische organisatie. Een gecontroleerde Zwitserse overwinning zonder echte spanning.",
-    "Canada-Switzerland":"De beslissende groepswedstrijd met beide ploegen al door. Zwitserlands gedisciplineerde organisatie houdt Canada's directe stijl goed bij. Een berekend gelijkspel waarbij beiden hun sterspelers sparen voor de knockouts.",
-    "Bosnia-Herzegovina-Qatar":"Twee uitgeschakelde ploegen spelen voor de eer. Dzeko is het kwaliteitsverschil maar zijn benen zijn op. Een gelijkspel is het logische resultaat van een wedstrijd met weinig inzet.",
-    "Brazil-Morocco":"De topwedstrijd van Groep C. Regragui zet Marokko neer in de WK 2022-stijl: diep, compact, gevaarlijk op de omschakeling via Hakimi. Vinicius Jr. is de enige speler die dit blok individueel kan openbreken. Een benauwde overwinning voor Brazilië: Marokko verdient meer.",
-    "Haiti-Scotland":"Schotlands technische kwaliteit en snelheid op de flanken overspoelen een Haïti dat het internationale niveau net te hoog vindt. Robertson en McTominay controleren de wedstrijd. Een comfortabele Schotse overwinning.",
-    "Brazil-Haiti":"Met kwalificatie op zak roteert Ancelotti en geeft speeltijd aan zijn bankspelers. De kwaliteitskloof is te groot voor Haïti. Brazilië wint ruim en geeft jongeren speelminuten.",
-    "Scotland-Morocco":"Marokko's tactische intelligentie is te veel voor Schotland. Brahim Diaz vindt de opening, Amrabat sluit de middenlinie volledig af. Schotland wordt uitgeschakeld zonder echt een antwoord te vinden.",
-    "Brazil-Scotland":"Brazilië heeft kwalificatie nodig en is gefocust. Endrick's kwaliteit in kleine ruimtes opent Schotland voor rust. Brazilië beheert het spel in de tweede helft en wint zonder te forceren.",
-    "Morocco-Haiti":"Marokko roteert fors maar de kwaliteitskloof is enorm. Ben Seghir en Ounahi spelen vrijuit. Een comfortabele Marokkaanse overwinning waarmee ze de groep afsluiten als groepswinnaars.",
-    "United States-Paraguay":"De VS speelt voor 80.000 fans in MetLife Stadium: het thuisvoordeel is reëel. Pulisic's beweging vindt voortdurend ruimte. De VS scoort via tegenpressing en wint een verdiende openingswedstrijd.",
-    "Australia-Turkey":"Beide ploegen spelen een vergelijkbare, directe stijl. De meest fysiek betwiste wedstrijd van de groep. Geen van beide teams vindt het beslissende kwaliteitsmoment: een gelijkspel is het eerlijke resultaat.",
-    "United States-Australia":"De VS verscherpt na de opener. Reyna exploiteert de ruimte achter Australiës hoge linie. Australië creëert kansen maar Turner redt. De VS wint een efficiënte wedstrijd.",
-    "Turkey-Paraguay":"Twee ploegen wiens lot nog hangt maar geen van beiden zet zich bloot. Calhanoglu raakt de paal. Een gelijkspel dient beiden maar stelt niemand tevreden.",
-    "United States-Turkey":"De VS weet dat een overwinning de groepswinst bevestigt en drukt agressief van de aftrap. Musah en Adams domineren het middenveld volledig. Een duidelijke Amerikaanse overwinning.",
-    "Australia-Paraguay":"Australië heeft een overwinning nodig om door te gaan en speelt met de intensiteit die daarbij past. Een doelpunt via een slordige actie geeft Australië de winst die hun pressing verdient.",
-    "Germany-Curacao":"Duitsland opent het toernooi tegen het kleinste land in de competitie. Musiala en Wirtz combineren vrijuit, Havertz profiteert. Een overtuigende openingsoverwinning die vertrouwen geeft voor de rest van de groep.",
-    "Ivory Coast-Ecuador":"Ecuador's ongeslagen reeks en Caicedo's elite aanwezigheid vertalen zich in dit resultaat. Caicedo breekt Ivoorkusts aanvallen op; Páez maakt het verschil in de tweede helft. Ecuador wint een verdiende wedstrijd.",
-    "Germany-Ivory Coast":"Een echte test voor Duitslands defensieve structuur. Haller geeft Schlotterbeck problemen met zijn fysieke aanwezigheid. Duitsland leidt via Musiala maar Haller gelijkt. Duitsland redt het via een standaardsituatie in de slotfase: knapper dan verwacht.",
-    "Ecuador-Curacao":"Caicedo en Páez spelen vrijuit tegen een Curaçao dat simpelweg niet het niveau heeft. Ecuador domineert via omschakelingsmomenten en individuele kwaliteit. Een vlotte overwinning zonder echte weerstand.",
-    "Germany-Ecuador":"De bepalende wedstrijd van Groep E. Na aanpassingen zijn beide landen effectief gelijkwaardig. Caicedo gedijt in de ruimte die Nagelsmanns blok toestaat. Een intense wedstrijd die in een gelijkspel eindigt: beiden tevreden met de puntdeling.",
-    "Ivory Coast-Curacao":"Haller en Kessie hebben te veel klasse voor Curaçaos blok. Ivoorkust wint met meer moeite dan de kwaliteitskloof zou suggereren: Curaçao verdedigt beter dan verwacht.",
-    "Netherlands-Japan":"De wedstrijd van de groepsfase. Na Japans vormcorrectie zijn deze landen nagenoeg gelijkwaardig in het model. Doan en Kubo drukken de Nederlandse backs meedogenloos. Van Dijk houdt de boel overeind. Een intensief gelijkspel weerspiegelt de werkelijke krachtsverhouding.",
-    "Sweden-Tunisia":"Twee pragmatische, georganiseerde ploegen. Isak leidt intelligent en pakt zijn moment. Zweden wint een gedisciplineerde wedstrijd beslist door een enkel moment van individuele kwaliteit.",
-    "Netherlands-Sweden":"Nederland controleert de bal efficiënt en Zweden kan niet meekomen met Gakpo op de flank. Isak wordt geïsoleerd zonder service. Nederland wint zonder de hoogste versnelling te gebruiken.",
-    "Japan-Tunisia":"Japans hoge pressing past perfect bij een Tunesische ploeg die langzaam wil opbouwen. Kubo's techniek en Doans directheid veroorzaken de hele wedstrijd problemen. Japan wint een klinische wedstrijd en bevestigt kwalificatie.",
-    "Netherlands-Tunisia":"Met kwalificatie op zak roteert Nederland maar behoudt genoeg kwaliteit. Tunesië verdedigt diep maar Nederlands breedte vindt tweemaal het net. Een professionele overwinning.",
-    "Japan-Sweden":"De strijd om de tweede plek. Japans hoge pressing en intensiteit past perfect bij Zwedens tragere tempo. Japan wint met een beslissend doelpunt laat in de tweede helft.",
-    "Belgium-Egypt":"Salah is een van de weinige spelers die een wedstrijd solo kan winnen: zijn beweging geeft Belgische backs echte problemen. De Bruyne draagt België in de aanval. Het model verwacht een gelijkspel als eerlijk resultaat van twee ploegen die elkaar in evenwicht houden.",
-    "Iran-New Zealand":"Irans gedisciplineerde 4-5-1 sluit ruimte efficiënt af en Nieuw-Zeeland worstelt met creëren. Taremi maakt een standaardsituatie vroeg af. Iran wint comfortabel.",
-    "Belgium-Iran":"Belgiums snelheid via Doku is het sleutelelement. Irans defensielinie worstelt met zijn directheid. De Bruyne creëert én scoort. Een relatief efficiënte Belgische overwinning.",
-    "Egypt-New Zealand":"Salah is fris en Nieuw-Zeeland heeft geen antwoord op zijn beweging. Salah scoort en assisteert. Egypte wint overtuigend en begint er als een echte R16-kanshebber uit te zien.",
-    "Belgium-New Zealand":"België roteert na een lastige opener maar de kwaliteitskloof is enorm. Doku en Trossard vinden de pockets die ertoe doen. Een routineuze overwinning.",
-    "Egypt-Iran":"De beslissende wedstrijd van Groep G. Irans defensieve discipline geeft Egypte echte problemen. Maar Salah vindt twintig minuten voor tijd een halve meter en krul de bal in de bovenhoek. Egypte wint en Iran is uitgeschakeld.",
-    "Spain-Cape Verde":"Spanje's positiespel op vol vermogen. Williams, Yamal en Pedri combineren vrijuit. Kaapverdië heeft geen antwoord op het positionele geweld. Een van de mooiste groepsfaseprestaties van het toernooi.",
-    "Saudi Arabia-Uruguay":"Zonder het verrassingselement van 2022 staat Saoedi-Arabië tegenover een volwassen, fysiek Uruguay gebouwd rond Valverde en Ugarte. Darwin Núñez bezorgt de centrale verdedigers echte problemen. Uruguay wint overtuigend.",
-    "Spain-Saudi Arabia":"Spanje behandelt dit als een trainingsoefening. Pedri en Olmo domineren het balbezit zo volledig dat Saoedi-Arabië amper in aanvallende positie aan de bal komt.",
-    "Uruguay-Cape Verde":"Valverde en Bentancur bazen comfortabel over het middenveld. Uruguay wint met weinig dramatiek en bevestigt kwalificatie.",
-    "Spain-Uruguay":"De prestigewedstrijd van de groep. Uruguay zit dieper en Valverde's vermogen om hoog te drukken maakt het Spanje moeilijker. Spanje leidt via een Yamal-knaller voor rust. Darwin Núñez maakt het ongemakkelijk maar Spanje houdt stand in een echt competitieve wedstrijd.",
-    "Saudi Arabia-Cape Verde":"Saoedi-Arabië weet dat ze uitgeschakeld zijn maar eer staat op het spel. Kaapverdië kan evenmin kwalificeren. Een matige wedstrijd beslist door een late vrije trap.",
-    "France-Senegal":"De meest meeslepende groepswedstrijd van het toernooi. Senegals Gana Gueye en Kouyaté domineren de middenveldstrijd fysiek. Mbappe is het beslissende verschil: hij creëert de eerste en scoort de tweede. Senegal antwoordt via Dias beweging, maar Frankrijk wint een onstuimige wedstrijd.",
-    "Iraq-Norway":"Irak mist de fysieke en tactische tools om Haaland 90 minuten te bevatten. Haaland scoort meerdere keren en Sörloth voegt toe via een Ødegaard-steekpass. Noorwegens hoge pressing verstikt de Iraakse opbouw volledig.",
-    "France-Iraq":"Frankrijk roteert met kwalificatie op zak maar individuele klasse produceert toch meerdere doelpunten. Mbappe krijgt er twee. Irak is in elk opzicht overtroffen.",
-    "Senegal-Norway":"Twee fysieke, directe ploegen met nagenoeg identieke gecorrigeerde rankings. Haaland vs Dia is het uitschietende duel. Beide ploegen drukken hoog en creëren kansen. Een gelijkspel weerspiegelt de werkelijke gelijkwaardigheid.",
-    "France-Norway":"Haaland trekt Noorwegen in de wedstrijd door een defensieve fout te benutten en Noorwegen drukt op een gelijkmaker. Maar de diepte van de Franse bank is ongeëvenaard: Griezmanns invalbeurt verandert het middenveld en Frankrijk wint via een klinische treffer vlak voor het einde.",
-    "Senegal-Iraq":"Senegal heeft te veel kwaliteit via Dia en Sarr. Irak verdedigt aanvankelijk diep maar Senegals snelheid vindt uiteindelijk de gaten. Een verdiende Senegalese overwinning die kwalificatie bevestigt.",
-    "Argentina-Algeria":"Algerije worstelt op dit niveau zonder Mahrez op zijn best. Argentiniës nieuwe generatie: Álvarez en Fernández: heeft te veel kwaliteit. Argentina wint comfortabel ondanks vroege dreiging bij standaardsituaties.",
-    "Austria-Jordan":"Oostenrijk is een van Europa's meest complete technische ploegen buiten de elite. Jordanië is defensief poreus bij hoge pressing. Arnautovic en Gregoritsch veroorzaken de hele wedstrijd problemen. Een comfortabele Oostenrijkse overwinning.",
-    "Argentina-Austria":"Argentiniës meest competitieve groepswedstrijd. Oostenrijk zit in een middenblokkering maar Álvarez' intelligente beweging vindt tweemaal de ruimte tussen de linies. Een doeltreffende Argentijnse overwinning die de nieuwe tactische identiteit toont: efficiënt, verticaal, klinisch.",
-    "Algeria-Jordan":"Een gelijkwaardig duel dat Algerije wint via beter positiespel. Bennacer controleert het tempo. Jordanië verdient een treffer via een lange afstandsschot maar Algerije houdt stand voor de overwinning.",
-    "Argentina-Jordan":"Met kwalificatie al zeker geeft Scaloni jongeren speeltijd. Maar zelfs Argentiniës tweede elftal is te goed voor Jordanië. Lautaro Martínez toont zijn klasse.",
-    "Austria-Algeria":"Oostenrijk heeft een punt nodig voor de tweede plek; Algerije heeft een overwinning nodig om te overleven. Echte spanning. Sabitzer scoort vroeg; Bounedjah gelijkt. Oostenrijk houdt stand voor de overwinning in een nerveuze slotfase.",
-    "Portugal-Congo DR":"Portugals aanvalslinie: Bernardo Silva, Leão en Fernandes: produceert combinaties die Congo DRs verdedigers niet kunnen bijhouden. Portugal wint routine-matig zonder de hoogste versnelling te gebruiken.",
-    "Colombia-Uzbekistan":"Colombia's vormcorrectie weerspiegelt Díaz' kwaliteit en hun collectieve aanvallende klasse. Oezbekistan maakt hun WK-debuut maar mist toernooiervaring. Colombia drukt meedogenloos en scoort meerdere keren via omschakeling.",
-    "Portugal-Uzbekistan":"Leão, Pedro Neto en Gonçalo Ramos krijgen vrij spel tegen een Oezbekistan dat op dit niveau wordt overweldigd. Portugal scoort meerdere keren voor het uur en begint te rouleren.",
-    "Colombia-Congo DR":"Colombia's defensieve structuur is te solide voor Congo DRs directe aanvallers. Díaz en Arias exploiteren de ruimte op de omschakeling. Een efficiënte overwinning die kwalificatie bevestigt.",
-    "Portugal-Colombia":"De groepsfinale. Na aanpassingen zijn beide landen in het model effectief gelijkwaardig. Bruno Fernandes vs Colombia's creatieve hart is de sleutelstrijd. Beide ploegen zijn al door en overdrijven niet. Een berekend gelijkspel.",
-    "Congo DR-Uzbekistan":"Een evenwichtige wedstrijd tussen twee gelijkwaardig geklasseerde landen. Congo DRs Muleka is de voornaamste aanvallende dreiging. Congo DR steelt de overwinning via een corner in de tweede helft.",
-    "England-Croatia":"Na Engeland's correctie zijn ze functioneel gelijkwaardig aan Kroatië. Bellinghams creativiteit veroorzaakt problemen maar Modrićs ervaring houdt Kroatië georganiseerd. Een gelijkspel verrast niemand: deze ploegen neutraliseren elkaar in grote toernooien.",
-    "Ghana-Panama":"Ghana heeft het individuele kwaliteitsvoordeel via Kudus en Parteys middenveldcontrole. Panama verdedigt diep maar Ghana vindt tweemaal de opening via standaardsituaties en individuele kwaliteit.",
-    "England-Ghana":"Engeland is volledig gefocust. Bellingham dicteert het tempo en Kanes positiespel creëert ruimte voor Saka en Foden. Ghana wordt overvleugeld en Engeland wint overtuigend.",
-    "Croatia-Panama":"Kroatië's technische combinatiespel ontmantelt Panamas diep verdedigende blok. Modrić vindt voortdurend de gaten. Een efficiënte Kroatische overwinning.",
-    "England-Panama":"Engeland roteert en beheert de speeltijd van sterspelers. Maar zelfs hun tweede keuze is te goed voor Panama. Engeland wint ruim en sluit de groep bovenaan af.",
-    "Croatia-Ghana":"Kroatië begint scherp en scoort tweemaal via Kramarić en Kovačić. Ghana kan niet bijkomen. Kroatië bevestigt de tweede plek in Groep L.",
+    "Mexico-Czechia":"Met kwalificatie nagenoeg zeker roteert Mexico, maar behoudt nog steeds te veel klasse voor een vermoeide Tsjechische ploeg. Het model komt uit op 1-1: een gelijkspel.",
+    "South Korea-South Africa":"Zuid-Korea heeft deze overwinning nodig om progressie te garanderen en weet dat. Son en Lee Jae-sung slopen de Zuid-Afrikaanse defensie in de omschakeling. Zuid-Korea wint nipt met 2-1.",
+    "Mexico-South Korea":"De topwedstrijd van Groep A. Beide ploegen drukken hoog en heffen elkaar op qua intensiteit. Zuid-Korea is georganiseerd genoeg om mee te doen, Mexico hoeft zich niet volledig bloot te geven. Het model komt uit op 1-1: een gelijkspel.",
+    "Czechia-South Africa":"Zuid-Afrika toonde op de Afrika Cup dat ze moeilijk te breken zijn, maar Soucek en Barak controleren het tempo goed. Tsjechie wint nipt met 2-1.",
+    "Mexico-South Africa":"Mexico opent als grote favoriet en gebruikt het thuisvoordeel van het Noord-Amerikaanse continent. Zuid-Afrika mist de technische kwaliteit om 90 minuten een compact blok te bewaren en Mexico snijdt hen open via de flanken. Mexico wint verdiend met 3-1.",
+    "South Korea-Czechia":"Zuid-Korea's hoge pressing en atletisch vermogen is meer dan Tsjechië's middenblokkering aankan. Son Heung-min is de doorslaggevende factor: zijn beweging tussen de linies geeft Tsjechië geen structureel antwoord. Het model komt uit op 2-2: een gelijkspel.",
+    "Switzerland-Bosnia-Herzegovina":"Zwitserland is in elk opzicht technisch superieur. Embolo's fysieke kracht en Xhaka's middenveldregie intimideren de Bosnische organisatie. Switzerland-Bosnia wint nipt met 2-1.",
+    "Canada-Qatar":"Met een overwinning op zak geeft Canada niet los. Canada wint verdiend met 2-0.",
+    "Switzerland-Canada":"De beslissende groepswedstrijd met beide ploegen al door. Zwitserlands gedisciplineerde organisatie houdt Canada's directe stijl goed bij. Het model komt uit op 1-1: een gelijkspel.",
+    "Bosnia-Herzegovina-Qatar":"Twee uitgeschakelde ploegen spelen voor de eer. Dzeko is het kwaliteitsverschil maar zijn benen zijn op. Bosnie-Herzegovina wint nipt met 2-1.",
+    "Switzerland-Qatar":"Qatar wordt tactisch overtroffen door Shaqiri, Embolo en Xhaka. Xhaka domineert het middenveld en Qatar kan de Zwitserse pressing niet bijhouden. Zwitserland wint overtuigend met 3-0.",
+    "Canada-Bosnia-Herzegovina":"Canada in Toronto is een echte thuiswedstrijd: het publiek tilt hen mee. Alphonso Davies explodeert via links langs de trage Bosnische defensie. Canada-Bosnia wint nipt met 2-1.",
+    "Brazil-Scotland":"Brazilië heeft kwalificatie nodig en is gefocust. Endrick's kwaliteit in kleine ruimtes opent Schotland voor rust. Brazilië wint nipt met 2-1.",
+    "Morocco-Haiti":"Marokko roteert fors maar de kwaliteitskloof is enorm. Ben Seghir en Ounahi spelen vrijuit. Marokko wint verdiend met 2-0.",
+    "Brazil-Morocco":"De topwedstrijd van Groep C. Regragui zet Marokko neer in de WK 2022-stijl: diep, compact, gevaarlijk op de omschakeling via Hakimi. Vinicius Jr. is de enige speler die dit blok individueel kan openbreken. Het model komt uit op 1-1: een gelijkspel.",
+    "Scotland-Haiti":"Schotlands technische kwaliteit en snelheid op de flanken overspoelen een Haïti dat het internationale niveau net te hoog vindt. Robertson en McTominay controleren de wedstrijd. Schotland wint nipt met 2-1.",
+    "Brazil-Haiti":"Met kwalificatie op zak roteert Ancelotti en geeft speeltijd aan zijn bankspelers. De kwaliteitskloof is te groot voor Haïti. Brazilië wint overtuigend met 4-1.",
+    "Morocco-Scotland":"Marokko's tactische intelligentie is te veel voor Schotland. Brahim Diaz vindt de opening, Amrabat sluit de middenlinie volledig af. Het model komt uit op 1-1: een gelijkspel.",
+    "Turkey-Paraguay":"Twee ploegen wiens lot nog hangt maar geen van beiden zet zich bloot. Calhanoglu raakt de paal. Het model komt uit op 1-1: een gelijkspel.",
+    "United States-Australia":"De VS verscherpt na de opener. Reyna exploiteert de ruimte achter Australiës hoge linie. Australië creëert kansen maar Turner redt. Het model komt uit op 2-2: een gelijkspel.",
+    "Turkey-United States":"De VS weet dat een overwinning de groepswinst bevestigt en drukt agressief van de aftrap. Musah en Adams domineren het middenveld volledig. Het model komt uit op 2-2: een gelijkspel.",
+    "Paraguay-Australia":"Australië heeft een overwinning nodig om door te gaan en speelt met de intensiteit die daarbij past. Het model komt uit op 1-1: een gelijkspel.",
+    "Turkey-Australia":"Beide ploegen spelen een vergelijkbare, directe stijl. De meest fysiek betwiste wedstrijd van de groep. Het model komt uit op 2-2: een gelijkspel.",
+    "United States-Paraguay":"De VS speelt voor 80.000 fans in MetLife Stadium: het thuisvoordeel is reëel. Pulisic's beweging vindt voortdurend ruimte. Het model komt uit op 1-1: een gelijkspel.",
+    "Germany-Ivory Coast":"Een echte test voor Duitslands defensieve structuur. Haller geeft Schlotterbeck problemen met zijn fysieke aanwezigheid. Duitsland leidt via Musiala maar Haller gelijkt. Duitsland wint nipt met 3-2.",
+    "Ecuador-Curacao":"Caicedo en Páez spelen vrijuit tegen een Curaçao dat simpelweg niet het niveau heeft. Ecuador domineert via omschakelingsmomenten en individuele kwaliteit. Ecuador wint verdiend met 2-0.",
+    "Germany-Ecuador":"De bepalende wedstrijd van Groep E. Na aanpassingen zijn beide landen effectief gelijkwaardig. Caicedo gedijt in de ruimte die Nagelsmanns blok toestaat. Het model komt uit op 1-1: een gelijkspel.",
+    "Ivory Coast-Curacao":"Haller en Kessie hebben te veel klasse voor Curaçaos blok. Ivoorkust wint nipt met 2-1.",
+    "Germany-Curacao":"Duitsland opent het toernooi tegen het kleinste land in de competitie. Musiala en Wirtz combineren vrijuit, Havertz profiteert. Duitsland wint overtuigend met 4-1.",
+    "Ecuador-Ivory Coast":"Ecuador's ongeslagen reeks en Caicedo's elite aanwezigheid vertalen zich in dit resultaat. Caicedo breekt Ivoorkusts aanvallen op; Páez maakt het verschil in de tweede helft. Het model komt uit op 1-1: een gelijkspel.",
+    "Netherlands-Sweden":"Nederland controleert de bal efficiënt en Zweden kan niet meekomen met Gakpo op de flank. Isak wordt geïsoleerd zonder service. Nederland wint nipt met 2-1.",
+    "Japan-Tunisia":"Japans hoge pressing past perfect bij een Tunesische ploeg die langzaam wil opbouwen. Kubo's techniek en Doans directheid veroorzaken de hele wedstrijd problemen. Japan wint nipt met 2-1.",
+    "Netherlands-Japan":"De wedstrijd van de groepsfase. Na Japans vormcorrectie zijn deze landen nagenoeg gelijkwaardig in het model. Doan en Kubo drukken de Nederlandse backs meedogenloos. Van Dijk houdt de boel overeind. Het model komt uit op 1-1: een gelijkspel.",
+    "Sweden-Tunisia":"Twee pragmatische, georganiseerde ploegen. Isak leidt intelligent en pakt zijn moment. Het model komt uit op 2-2: een gelijkspel.",
+    "Netherlands-Tunisia":"Met kwalificatie op zak roteert Nederland maar behoudt genoeg kwaliteit. Tunesië verdedigt diep maar Nederlands breedte vindt tweemaal het net. Nederland wint verdiend met 3-1.",
+    "Japan-Sweden":"De strijd om de tweede plek. Japans hoge pressing en intensiteit past perfect bij Zwedens tragere tempo. Japan wint nipt met 2-1.",
+    "Belgium-Egypt":"Salah is een van de weinige spelers die een wedstrijd solo kan winnen: zijn beweging geeft Belgische backs echte problemen. De Bruyne draagt België in de aanval. Belgie wint nipt met 2-1.",
+    "Iran-New Zealand":"Irans gedisciplineerde 4-5-1 sluit ruimte efficiënt af en Nieuw-Zeeland worstelt met creëren. Taremi maakt een standaardsituatie vroeg af. Iran wint nipt met 1-0.",
+    "Belgium-Iran":"Belgiums snelheid via Doku is het sleutelelement. Irans defensielinie worstelt met zijn directheid. De Bruyne creëert én scoort. Het model komt uit op 1-1: een gelijkspel.",
+    "Egypt-New Zealand":"Salah is fris en Nieuw-Zeeland heeft geen antwoord op zijn beweging. Salah scoort en assisteert. Egypte wint nipt met 2-1.",
+    "Belgium-New Zealand":"België roteert na een lastige opener maar de kwaliteitskloof is enorm. Doku en Trossard vinden de pockets die ertoe doen. Belgie wint verdiend met 3-1.",
+    "Iran-Egypt":"De beslissende wedstrijd van Groep G. Irans defensieve discipline geeft Egypte echte problemen. Maar Salah vindt twintig minuten voor tijd een halve meter en krul de bal in de bovenhoek. Het model komt uit op 1-1: een gelijkspel.",
+    "Spain-Cape Verde":"Spanje's positiespel op vol vermogen. Williams, Yamal en Pedri combineren vrijuit. Kaapverdië heeft geen antwoord op het positionele geweld. Spanje wint overtuigend met 4-1.",
+    "Uruguay-Saudi Arabia":"Zonder het verrassingselement van 2022 staat Saoedi-Arabië tegenover een volwassen, fysiek Uruguay gebouwd rond Valverde en Ugarte. Darwin Núñez bezorgt de centrale verdedigers echte problemen. Uruguay wint verdiend met 3-1.",
+    "Spain-Uruguay":"De prestigewedstrijd van de groep. Uruguay zit dieper en Valverde's vermogen om hoog te drukken maakt het Spanje moeilijker. Spanje leidt via een Yamal-knaller voor rust. Spanje wint nipt met 2-1.",
+    "Cape Verde-Saudi Arabia":"Saoedi-Arabië weet dat ze uitgeschakeld zijn maar eer staat op het spel. Kaapverdië kan evenmin kwalificeren. Het model komt uit op 1-1: een gelijkspel.",
+    "Spain-Saudi Arabia":"Spanje behandelt dit als een trainingsoefening. Spanje wint overtuigend met 4-1.",
+    "Uruguay-Cape Verde":"Valverde en Bentancur bazen comfortabel over het middenveld. Uruguay wint nipt met 2-1.",
+    "France-Senegal":"De meest meeslepende groepswedstrijd van het toernooi. Senegals Gana Gueye en Kouyaté domineren de middenveldstrijd fysiek. Mbappe is het beslissende verschil: hij creëert de eerste en scoort de tweede. Frankrijk wint nipt met 3-2.",
+    "Norway-Iraq":"Irak mist de fysieke en tactische tools om Haaland 90 minuten te bevatten. Haaland scoort meerdere keren en Sörloth voegt toe via een Ødegaard-steekpass. Noorwegen wint verdiend met 3-1.",
+    "France-Norway":"Haaland trekt Noorwegen in de wedstrijd door een defensieve fout te benutten en Noorwegen drukt op een gelijkmaker. Het model komt uit op 2-2: een gelijkspel.",
+    "Senegal-Iraq":"Senegal heeft te veel kwaliteit via Dia en Sarr. Irak verdedigt aanvankelijk diep maar Senegals snelheid vindt uiteindelijk de gaten. Senegal wint nipt met 2-1.",
+    "France-Iraq":"Frankrijk roteert met kwalificatie op zak maar individuele klasse produceert toch meerdere doelpunten. Mbappe krijgt er twee. Frankrijk wint overtuigend met 4-1.",
+    "Norway-Senegal":"Twee fysieke, directe ploegen met nagenoeg identieke gecorrigeerde rankings. Haaland vs Dia is het uitschietende duel. Beide ploegen drukken hoog en creëren kansen. Het model komt uit op 2-2: een gelijkspel.",
+    "Argentina-Algeria":"Algerije worstelt op dit niveau zonder Mahrez op zijn best. Argentiniës nieuwe generatie: Álvarez en Fernández: heeft te veel kwaliteit. Argentinië wint verdiend met 3-1.",
+    "Austria-Jordan":"Oostenrijk is een van Europa's meest complete technische ploegen buiten de elite. Jordanië is defensief poreus bij hoge pressing. Arnautovic en Gregoritsch veroorzaken de hele wedstrijd problemen. Oostenrijk wint nipt met 2-1.",
+    "Argentina-Austria":"Argentiniës meest competitieve groepswedstrijd. Oostenrijk zit in een middenblokkering maar Álvarez' intelligente beweging vindt tweemaal de ruimte tussen de linies. Argentinië wint nipt met 2-1.",
+    "Algeria-Jordan":"Een gelijkwaardig duel dat Algerije wint via beter positiespel. Bennacer controleert het tempo. Het model komt uit op 2-2: een gelijkspel.",
+    "Argentina-Jordan":"Met kwalificatie al zeker geeft Scaloni jongeren speeltijd. Maar zelfs Argentiniës tweede elftal is te goed voor Jordanië. Argentinië wint overtuigend met 4-1.",
+    "Austria-Algeria":"Oostenrijk heeft een punt nodig voor de tweede plek; Algerije heeft een overwinning nodig om te overleven. Echte spanning. Sabitzer scoort vroeg; Bounedjah gelijkt. Het model komt uit op 1-1: een gelijkspel.",
+    "Portugal-Uzbekistan":"Leão, Pedro Neto en Gonçalo Ramos krijgen vrij spel tegen een Oezbekistan dat op dit niveau wordt overweldigd. Portugal wint verdiend met 3-1.",
+    "Colombia-Congo DR":"Colombia's defensieve structuur is te solide voor Congo DRs directe aanvallers. Díaz en Arias exploiteren de ruimte op de omschakeling. Colombia wint nipt met 3-2.",
+    "Portugal-Colombia":"De groepsfinale. Na aanpassingen zijn beide landen in het model effectief gelijkwaardig. Bruno Fernandes vs Colombia's creatieve hart is de sleutelstrijd. Beide ploegen zijn al door en overdrijven niet. Het model komt uit op 2-2: een gelijkspel.",
+    "Uzbekistan-Congo DR":"Een evenwichtige wedstrijd tussen twee gelijkwaardig geklasseerde landen. Congo DRs Muleka is de voornaamste aanvallende dreiging. Het model komt uit op 1-1: een gelijkspel.",
+    "Portugal-Congo DR":"Portugals aanvalslinie: Bernardo Silva, Leão en Fernandes: produceert combinaties die Congo DRs verdedigers niet kunnen bijhouden. Portugal wint verdiend met 4-2.",
+    "Colombia-Uzbekistan":"Colombia's vormcorrectie weerspiegelt Díaz' kwaliteit en hun collectieve aanvallende klasse. Oezbekistan maakt hun WK-debuut maar mist toernooiervaring. Colombia wint nipt met 2-1.",
+    "England-Panama":"Engeland roteert en beheert de speeltijd van sterspelers. Maar zelfs hun tweede keuze is te goed voor Panama. Engeland wint verdiend met 2-0.",
+    "Croatia-Ghana":"Kroatië begint scherp en scoort tweemaal via Kramarić en Kovačić. Ghana kan niet bijkomen. Kroatie wint verdiend met 3-1.",
+    "England-Croatia":"Na Engeland's correctie zijn ze functioneel gelijkwaardig aan Kroatië. Bellinghams creativiteit veroorzaakt problemen maar Modrićs ervaring houdt Kroatië georganiseerd. Het model komt uit op 1-1: een gelijkspel.",
+    "Panama-Ghana":"Ghana heeft het individuele kwaliteitsvoordeel via Kudus en Parteys middenveldcontrole. Het model komt uit op 2-2: een gelijkspel.",
+    "England-Ghana":"Engeland is volledig gefocust. Bellingham dicteert het tempo en Kanes positiespel creëert ruimte voor Saka en Foden. Engeland wint overtuigend met 3-0.",
+    "Croatia-Panama":"Kroatië's technische combinatiespel ontmantelt Panamas diep verdedigende blok. Modrić vindt voortdurend de gaten. Kroatie wint nipt met 2-1."
   },
   en: {
-    "Mexico-South Africa":"Mexico open as heavy favourites using their North American home advantage from the first whistle. South Africa lack the technical quality to maintain a compact defensive shape for 90 minutes. Mexico carve them apart on the flanks. A comfortable opening win that sets the tone for the group.",
-    "South Korea-Czechia":"South Korea's high-energy 4-3-3 generates more chances than Czechia's mid-block can absorb, with Son Heung-min as the decisive factor. His movement between the lines has no structural answer. A deserved South Korean win.",
-    "Mexico-South Korea":"The key match of Group A. Both sides press high and match each other in intensity. South Korea are organised enough to stay in it; Mexico don't need to overextend. The model expects a draw as the logical outcome.",
-    "South Africa-Czechia":"South Africa showed at AFCON they are hard to break down, but Soucek and Barak control the tempo effectively. Czechia win a scrappy but deserved game through set pieces.",
-    "Mexico-Czechia":"With qualification nearly assured Mexico rotate, but still have too much quality for a tired Czech side. Raul Jimenez leads the line and Mexico close the group with a comfortable win.",
-    "South Korea-South Africa":"South Korea need this win to guarantee progression and play with that urgency. Son and Lee Jae-sung pull apart the South African defence on the counter. A dominant display that seals qualification.",
-    "Canada-Bosnia-Herzegovina":"Canada in Toronto is a genuine home match: the crowd carries them. Alphonso Davies explodes down the left past Bosnia's slower defensive line. Canada's intensity over 90 minutes is simply too much for a side not built to handle it.",
-    "Qatar-Switzerland":"Qatar are outplayed tactically by Shaqiri, Embolo and Xhaka. Xhaka controls the midfield and Qatar cannot cope with the Swiss press. A professional and comfortable Swiss win.",
-    "Canada-Qatar":"With a win already banked Canada don't let go. Jonathan David leads the line and Canada win comfortably: the quality gap is too large for Qatar.",
-    "Switzerland-Bosnia-Herzegovina":"Switzerland are technically superior in every department. Embolo's physicality and Xhaka's midfield control overpower Bosnia's organisation. A controlled Swiss win without real drama.",
-    "Canada-Switzerland":"The group's deciding match with both sides already through. Switzerland's disciplined shape contains Canada's directness. A calculated draw where both sides protect their key players for the knockouts.",
-    "Bosnia-Herzegovina-Qatar":"Two eliminated sides playing for pride. Dzeko is the quality difference but his legs are fading. A draw is the natural result with little at stake.",
-    "Brazil-Morocco":"The standout match of Group C. Regragui sets Morocco up in their 2022 semi-final shape: deep, compact, dangerous on the counter through Hakimi. Vinicius Jr. is the only player who can unlock this individually. A tight Brazil win: Morocco deserve more from it.",
-    "Haiti-Scotland":"Scotland's technical quality and wide pace overwhelm a Haiti side that finds the level just too high. Robertson and McTominay control proceedings. A comfortable Scottish win.",
-    "Brazil-Haiti":"With qualification secured Ancelotti rotates, handing fringe players minutes. The quality gap is too large for Haiti. Brazil win comfortably while keeping their key players fresh.",
-    "Scotland-Morocco":"Morocco's tactical intelligence is too much for Scotland. Brahim Diaz finds the opening; Amrabat closes the midfield entirely. Scotland are eliminated without ever finding an answer.",
-    "Brazil-Scotland":"Brazil need the win to maintain momentum and are focused. Endrick's quality in tight spaces unlocks Scotland before half-time. Brazil manage the second half and win without needing to push hard.",
-    "Morocco-Haiti":"Morocco rotate heavily but the quality gap is enormous. Ben Seghir and Ounahi play with freedom. A comfortable Moroccan win that confirms them as group winners.",
-    "United States-Paraguay":"The USA play in front of 80,000 at MetLife Stadium: the home advantage is genuine. Pulisic's movement finds space consistently. The USA score through counter-pressing and win a deserved opening match.",
-    "Australia-Turkey":"Two direct, physically similar sides. The most physically contested match of the group. Neither team finds the decisive moment of quality: a draw is the fair result.",
-    "United States-Australia":"The USA sharpen after the opener. Reyna exploits the space behind Australia's high line. Australia create chances but the goalkeeper holds firm. An efficient USA win.",
-    "Turkey-Paraguay":"Two sides with their fate still open but neither willing to overcommit. Calhanoglu hits the post. A draw serves both but satisfies nobody.",
-    "United States-Turkey":"The USA know a win confirms the group and press aggressively from the off. Musah and Adams fully control the midfield. A clear and deserved American win.",
-    "Australia-Paraguay":"Australia need a win to advance and play with the urgency that demands. A scrappy goal rewards their pressing and sends Australia through.",
-    "Germany-Curacao":"Germany open their tournament against the smallest nation in the competition. Musiala and Wirtz combine freely, Havertz finishes. A convincing opening win that builds confidence heading into the harder games.",
-    "Ivory Coast-Ecuador":"Ecuador's unbeaten run and Caicedo's elite presence tell in this result. Caicedo breaks up Ivory Coast attacks; Páez makes the difference in the second half. A deserved Ecuador win.",
-    "Germany-Ivory Coast":"A genuine test of Germany's defensive structure. Haller causes Schlotterbeck problems with his physicality. Germany lead through Musiala but Haller equalises. Germany rescue it with a late set piece: narrower than expected.",
-    "Ecuador-Curacao":"Caicedo and Páez play freely against a Curaçao that simply doesn't have the level. Ecuador dominate through transitions and individual quality. A smooth win with no real resistance.",
-    "Germany-Ecuador":"The decisive match of Group E. After adjustments both sides are effectively level in the model. Caicedo thrives in the space Nagelsmann's block allows. An intense match that ends level: both sides satisfied with the point.",
-    "Ivory Coast-Curacao":"Haller and Kessie have too much class for Curaçao's block. Ivory Coast win with more difficulty than the quality gap would suggest: Curaçao defend better than expected.",
-    "Netherlands-Japan":"The match of the group stage. After Japan's form adjustment these sides are rated almost identically. Doan and Kubo press the Dutch full-backs relentlessly. Van Dijk holds things together. An intense draw that genuinely reflects the balance of play.",
-    "Sweden-Tunisia":"Two pragmatic, organised sides. Isak leads Sweden's line intelligently and takes his one clear chance. A disciplined Swedish win decided by a single moment of individual quality.",
-    "Netherlands-Sweden":"Netherlands control the ball efficiently and Sweden can't live with Gakpo on the flank. Isak is isolated without service. Netherlands win without ever moving out of second gear.",
-    "Japan-Tunisia":"Japan's high press is tailor-made to hurt a Tunisia side that likes to build slowly. Kubo's technical quality and Doan's directness cause problems throughout. A clinical Japan win that secures their progression.",
-    "Netherlands-Tunisia":"With qualification secured Netherlands rotate but retain enough quality. Tunisia set up deep but Dutch width finds the net twice. A professional win.",
-    "Japan-Sweden":"The second-place decider. Japan's high press and intensity is perfect against Sweden's slower tempo. Japan win it with a decisive late goal.",
-    "Belgium-Egypt":"Salah is one of the few players who can win a match single-handedly: his movement causes Belgium's defenders real problems. De Bruyne carries Belgium in attack. The model expects a draw as the honest result of two sides that cancel each other out.",
-    "Iran-New Zealand":"Iran's disciplined 4-5-1 closes space effectively and New Zealand struggle to create. Taremi finishes a set piece early. Iran win comfortably.",
-    "Belgium-Iran":"Belgium's pace through Doku is the key weapon. Iran's defensive line struggles with his directness. De Bruyne creates and scores. A relatively straightforward Belgian win.",
-    "Egypt-New Zealand":"Salah is fresh and New Zealand have no answer to his movement. Salah scores and assists. Egypt win convincingly and begin to look like genuine last-16 contenders.",
-    "Belgium-New Zealand":"Belgium rotate after a difficult opener but the quality gap is enormous. Doku and Trossard find the pockets that matter. A routine win.",
-    "Egypt-Iran":"The decisive Group G match. Iran's defensive discipline gives Egypt real problems. But Salah finds half a yard twenty minutes from time and bends one into the top corner. Egypt win and Iran are eliminated.",
-    "Spain-Cape Verde":"Spain's positional system at full flow. Williams, Yamal and Pedri combine freely. Cape Verde have no answer to the positional pressure. One of the tournament's most aesthetically pleasing group stage performances.",
-    "Saudi Arabia-Uruguay":"Without the shock factor of 2022, Saudi Arabia face a mature physical Uruguay built around Valverde and Ugarte. Darwin Núñez causes their centre-backs real problems. Uruguay win convincingly.",
-    "Spain-Saudi Arabia":"Spain treat this as a training exercise. Pedri and Olmo dominate possession so completely that Saudi Arabia barely touch the ball in attacking positions.",
-    "Uruguay-Cape Verde":"Valverde and Bentancur boss midfield comfortably. Uruguay win with little drama and confirm their progression.",
-    "Spain-Uruguay":"The group's prestige match. Uruguay sit deeper and Valverde's ability to press high makes Spain work harder. Spain lead through a Yamal thunderbolt before half-time. Darwin Núñez makes it uncomfortable in the second half but Spain hold on in a genuinely competitive game.",
-    "Saudi Arabia-Cape Verde":"Saudi Arabia know they're out but pride is on the line. Cape Verde are equally unable to qualify. A poor match decided by a late free kick.",
-    "France-Senegal":"The tournament's most compelling group fixture. Senegal's Gana Gueye and Kouyaté physically dominate the midfield battle. Mbappe is the decisive difference: he creates the first and scores the second. Senegal reply through Dia's movement but France win a breathless match.",
-    "Iraq-Norway":"Iraq lack the physical and tactical tools to contain Haaland for 90 minutes. Haaland scores multiple times and Sörloth adds another from an Ødegaard through ball. Norway's high press suffocates Iraq's build-up completely.",
-    "France-Iraq":"France manage the game with rotations but individual quality still produces multiple goals. Mbappe gets two. Iraq are outmatched in every department.",
-    "Senegal-Norway":"Two physical, direct sides with nearly identical adjusted rankings. Haaland vs Dia is the standout battle. Both teams press high and create chances. A draw genuinely reflects the balance.",
-    "France-Norway":"Haaland drags Norway into the contest by finishing after a defensive error and Norway push for more. But France's bench depth is unmatched: Griezmann's introduction changes the midfield picture and France win with a composed finish in the closing minutes.",
-    "Senegal-Iraq":"Senegal have too much quality through Dia and Sarr. Iraq set up deep and are hard to break initially, but Senegal's pace eventually finds the gaps. A deserved Senegalese win that secures their qualification.",
-    "Argentina-Algeria":"Algeria struggle at this level without Mahrez at full capacity. Argentina's new generation: Álvarez and Fernández: have too much quality. Argentina win comfortably despite Algeria's early set-piece threat.",
-    "Austria-Jordan":"Austria are one of Europe's most technically complete sides outside the elite. Jordan are defensively open against high-tempo pressing. Arnautovic and Gregoritsch cause problems throughout. A comfortable Austrian win.",
-    "Argentina-Austria":"Argentina's most competitive group match. Austria sit in a mid-block but Álvarez's intelligent movement finds pockets between the lines twice. An efficient Argentine win that shows their new tactical identity: vertical, clinical, pragmatic.",
-    "Algeria-Jordan":"An evenly-contested match that Algeria edge through better positional play. Bennacer controls the tempo. Jordan earn a consolation through a long-range effort but Algeria hold on.",
-    "Argentina-Jordan":"With qualification already secured Scaloni gives youth players game time. But even Argentina's second string is too much for Jordan. Lautaro Martínez demonstrates his class.",
-    "Austria-Algeria":"Austria need a point for second place; Algeria need a win to survive. Genuine tension. Sabitzer scores early; Bounedjah equalises. Austria hold on for the win in a nervy final stretch.",
-    "Portugal-Congo DR":"Portugal's forward line: Bernardo Silva, Leão and Fernandes: produce combinations Congo DR's defenders cannot track. Portugal win routinely without reaching top gear.",
-    "Colombia-Uzbekistan":"Colombia's form correction reflects Díaz's quality and their collective attacking class. Uzbekistan are making their World Cup debut and lack tournament experience. Colombia press relentlessly and score multiple times through transitions.",
-    "Portugal-Uzbekistan":"Leão, Pedro Neto and Gonçalo Ramos are given free rein against a Uzbekistan side that is simply overmatched. Portugal score multiple times before the hour and begin rotating.",
-    "Colombia-Congo DR":"Colombia's defensive structure is too solid for Congo DR's direct forwards. Díaz and Arias exploit space on the counter. An efficient win that confirms Colombia's qualification.",
-    "Portugal-Colombia":"The group decider. After adjustments both sides are effectively level in the model. Bruno Fernandes vs Colombia's creative hub is the key battle. Both teams are already through and neither overextends. A calculated draw.",
-    "Congo DR-Uzbekistan":"A low-quality but competitive match between two similarly-ranked sides. Congo DR's Muleka is the main attacking threat. Congo DR nick it through a second-half corner.",
-    "England-Croatia":"After England's correction both sides are functionally equivalent. Bellingham's creativity causes problems but Modrić's experience keeps Croatia organised. A draw surprises nobody: these sides consistently neutralise each other at major tournaments.",
-    "Ghana-Panama":"Ghana have the individual quality edge through Kudus and Partey's midfield dominance. Panama defend deep but Ghana find the breakthrough twice through set pieces and individual quality.",
-    "England-Ghana":"England are fully focused and Bellingham dictates the tempo. Kane's positioning creates space for Saka and Foden. Ghana are overpowered and England win convincingly.",
-    "Croatia-Panama":"Croatia's technical combination play dismantles Panama's deep defensive block. Modrić finds gaps consistently. An efficient Croatian win.",
-    "England-Panama":"England rotate and manage the minutes of their key players. But even their second choice is too much for Panama. England win comfortably and close the group in first place.",
-    "Croatia-Ghana":"Croatia start sharply and score twice through Kramarić and Kovačić. Ghana cannot recover. Croatia confirm second place in Group L.",
-  },
+    "Mexico-Czechia":"With qualification nearly assured Mexico rotate, but still have too much quality for a tired Czech side. The model lands on 1-1: a draw.",
+    "South Korea-South Africa":"South Korea need this win to guarantee progression and play with that urgency. Son and Lee Jae-sung pull apart the South African defence on the counter. South Korea edge it 2-1.",
+    "Mexico-South Korea":"The key match of Group A. Both sides press high and match each other in intensity. South Korea are organised enough to stay in it; Mexico don't need to overextend. The model lands on 1-1: a draw.",
+    "Czechia-South Africa":"South Africa showed at AFCON they are hard to break down, but Soucek and Barak control the tempo effectively. Czechia edge it 2-1.",
+    "Mexico-South Africa":"Mexico open as heavy favourites using their North American home advantage from the first whistle. South Africa lack the technical quality to maintain a compact defensive shape for 90 minutes. Mexico carve them apart on the flanks. Mexico earn a deserved 3-1 win.",
+    "South Korea-Czechia":"South Korea's high-energy 4-3-3 generates more chances than Czechia's mid-block can absorb, with Son Heung-min as the decisive factor. His movement between the lines has no structural answer. The model lands on 2-2: a draw.",
+    "Switzerland-Bosnia-Herzegovina":"Switzerland are technically superior in every department. Embolo's physicality and Xhaka's midfield control overpower Bosnia's organisation. Switzerland-Bosnia edge it 2-1.",
+    "Canada-Qatar":"With a win already banked Canada don't let go. Canada earn a deserved 2-0 win.",
+    "Switzerland-Canada":"The group's deciding match with both sides already through. Switzerland's disciplined shape contains Canada's directness. The model lands on 1-1: a draw.",
+    "Bosnia-Herzegovina-Qatar":"Two eliminated sides playing for pride. Dzeko is the quality difference but his legs are fading. Bosnia-Herzegovina edge it 2-1.",
+    "Switzerland-Qatar":"Qatar are outplayed tactically by Shaqiri, Embolo and Xhaka. Xhaka controls the midfield and Qatar cannot cope with the Swiss press. Switzerland win convincingly, 3-0.",
+    "Canada-Bosnia-Herzegovina":"Canada in Toronto is a genuine home match: the crowd carries them. Alphonso Davies explodes down the left past Bosnia's slower defensive line. Canada-Bosnia edge it 2-1.",
+    "Brazil-Scotland":"Brazil need the win to maintain momentum and are focused. Endrick's quality in tight spaces unlocks Scotland before half-time. Brazil edge it 2-1.",
+    "Morocco-Haiti":"Morocco rotate heavily but the quality gap is enormous. Ben Seghir and Ounahi play with freedom. Morocco earn a deserved 2-0 win.",
+    "Brazil-Morocco":"The standout match of Group C. Regragui sets Morocco up in their 2022 semi-final shape: deep, compact, dangerous on the counter through Hakimi. Vinicius Jr. is the only player who can unlock this individually. The model lands on 1-1: a draw.",
+    "Scotland-Haiti":"Scotland's technical quality and wide pace overwhelm a Haiti side that finds the level just too high. Robertson and McTominay control proceedings. Scotland edge it 2-1.",
+    "Brazil-Haiti":"With qualification secured Ancelotti rotates, handing fringe players minutes. The quality gap is too large for Haiti. Brazil win convincingly, 4-1.",
+    "Morocco-Scotland":"Morocco's tactical intelligence is too much for Scotland. Brahim Diaz finds the opening; Amrabat closes the midfield entirely. The model lands on 1-1: a draw.",
+    "Turkey-Paraguay":"Two sides with their fate still open but neither willing to overcommit. Calhanoglu hits the post. The model lands on 1-1: a draw.",
+    "United States-Australia":"The USA sharpen after the opener. Reyna exploits the space behind Australia's high line. Australia create chances but the goalkeeper holds firm. The model lands on 2-2: a draw.",
+    "Turkey-United States":"The USA know a win confirms the group and press aggressively from the off. Musah and Adams fully control the midfield. The model lands on 2-2: a draw.",
+    "Paraguay-Australia":"Australia need a win to advance and play with the urgency that demands. The model lands on 1-1: a draw.",
+    "Turkey-Australia":"Two direct, physically similar sides. The most physically contested match of the group. The model lands on 2-2: a draw.",
+    "United States-Paraguay":"The USA play in front of 80,000 at MetLife Stadium: the home advantage is genuine. Pulisic's movement finds space consistently. The model lands on 1-1: a draw.",
+    "Germany-Ivory Coast":"A genuine test of Germany's defensive structure. Haller causes Schlotterbeck problems with his physicality. Germany lead through Musiala but Haller equalises. Germany edge it 3-2.",
+    "Ecuador-Curacao":"Caicedo and Páez play freely against a Curaçao that simply doesn't have the level. Ecuador dominate through transitions and individual quality. Ecuador earn a deserved 2-0 win.",
+    "Germany-Ecuador":"The decisive match of Group E. After adjustments both sides are effectively level in the model. Caicedo thrives in the space Nagelsmann's block allows. The model lands on 1-1: a draw.",
+    "Ivory Coast-Curacao":"Haller and Kessie have too much class for Curaçao's block. Ivory Coast edge it 2-1.",
+    "Germany-Curacao":"Germany open their tournament against the smallest nation in the competition. Musiala and Wirtz combine freely, Havertz finishes. Germany win convincingly, 4-1.",
+    "Ecuador-Ivory Coast":"Ecuador's unbeaten run and Caicedo's elite presence tell in this result. Caicedo breaks up Ivory Coast attacks; Páez makes the difference in the second half. The model lands on 1-1: a draw.",
+    "Netherlands-Sweden":"Netherlands control the ball efficiently and Sweden can't live with Gakpo on the flank. Isak is isolated without service. Netherlands edge it 2-1.",
+    "Japan-Tunisia":"Japan's high press is tailor-made to hurt a Tunisia side that likes to build slowly. Kubo's technical quality and Doan's directness cause problems throughout. Japan edge it 2-1.",
+    "Netherlands-Japan":"The match of the group stage. After Japan's form adjustment these sides are rated almost identically. Doan and Kubo press the Dutch full-backs relentlessly. Van Dijk holds things together. The model lands on 1-1: a draw.",
+    "Sweden-Tunisia":"Two pragmatic, organised sides. Isak leads Sweden's line intelligently and takes his one clear chance. The model lands on 2-2: a draw.",
+    "Netherlands-Tunisia":"With qualification secured Netherlands rotate but retain enough quality. Tunisia set up deep but Dutch width finds the net twice. Netherlands earn a deserved 3-1 win.",
+    "Japan-Sweden":"The second-place decider. Japan's high press and intensity is perfect against Sweden's slower tempo. Japan edge it 2-1.",
+    "Belgium-Egypt":"Salah is one of the few players who can win a match single-handedly: his movement causes Belgium's defenders real problems. De Bruyne carries Belgium in attack. Belgium edge it 2-1.",
+    "Iran-New Zealand":"Iran's disciplined 4-5-1 closes space effectively and New Zealand struggle to create. Taremi finishes a set piece early. Iran edge it 1-0.",
+    "Belgium-Iran":"Belgium's pace through Doku is the key weapon. Iran's defensive line struggles with his directness. De Bruyne creates and scores. The model lands on 1-1: a draw.",
+    "Egypt-New Zealand":"Salah is fresh and New Zealand have no answer to his movement. Salah scores and assists. Egypt edge it 2-1.",
+    "Belgium-New Zealand":"Belgium rotate after a difficult opener but the quality gap is enormous. Doku and Trossard find the pockets that matter. Belgium earn a deserved 3-1 win.",
+    "Iran-Egypt":"The decisive Group G match. Iran's defensive discipline gives Egypt real problems. But Salah finds half a yard twenty minutes from time and bends one into the top corner. The model lands on 1-1: a draw.",
+    "Spain-Cape Verde":"Spain's positional system at full flow. Williams, Yamal and Pedri combine freely. Cape Verde have no answer to the positional pressure. Spain win convincingly, 4-1.",
+    "Uruguay-Saudi Arabia":"Without the shock factor of 2022, Saudi Arabia face a mature physical Uruguay built around Valverde and Ugarte. Darwin Núñez causes their centre-backs real problems. Uruguay earn a deserved 3-1 win.",
+    "Spain-Uruguay":"The group's prestige match. Uruguay sit deeper and Valverde's ability to press high makes Spain work harder. Spain lead through a Yamal thunderbolt before half-time. Spain edge it 2-1.",
+    "Cape Verde-Saudi Arabia":"Saudi Arabia know they're out but pride is on the line. Cape Verde are equally unable to qualify. The model lands on 1-1: a draw.",
+    "Spain-Saudi Arabia":"Spain treat this as a training exercise. Spain win convincingly, 4-1.",
+    "Uruguay-Cape Verde":"Valverde and Bentancur boss midfield comfortably. Uruguay edge it 2-1.",
+    "France-Senegal":"The tournament's most compelling group fixture. Senegal's Gana Gueye and Kouyaté physically dominate the midfield battle. Mbappe is the decisive difference: he creates the first and scores the second. France edge it 3-2.",
+    "Norway-Iraq":"Iraq lack the physical and tactical tools to contain Haaland for 90 minutes. Haaland scores multiple times and Sörloth adds another from an Ødegaard through ball. Norway earn a deserved 3-1 win.",
+    "France-Norway":"Haaland drags Norway into the contest by finishing after a defensive error and Norway push for more. The model lands on 2-2: a draw.",
+    "Senegal-Iraq":"Senegal have too much quality through Dia and Sarr. Iraq set up deep and are hard to break initially, but Senegal's pace eventually finds the gaps. Senegal edge it 2-1.",
+    "France-Iraq":"France manage the game with rotations but individual quality still produces multiple goals. Mbappe gets two. France win convincingly, 4-1.",
+    "Norway-Senegal":"Two physical, direct sides with nearly identical adjusted rankings. Haaland vs Dia is the standout battle. Both teams press high and create chances. The model lands on 2-2: a draw.",
+    "Argentina-Algeria":"Algeria struggle at this level without Mahrez at full capacity. Argentina's new generation: Álvarez and Fernández: have too much quality. Argentina earn a deserved 3-1 win.",
+    "Austria-Jordan":"Austria are one of Europe's most technically complete sides outside the elite. Jordan are defensively open against high-tempo pressing. Arnautovic and Gregoritsch cause problems throughout. Austria edge it 2-1.",
+    "Argentina-Austria":"Argentina's most competitive group match. Austria sit in a mid-block but Álvarez's intelligent movement finds pockets between the lines twice. Argentina edge it 2-1.",
+    "Algeria-Jordan":"An evenly-contested match that Algeria edge through better positional play. Bennacer controls the tempo. The model lands on 2-2: a draw.",
+    "Argentina-Jordan":"With qualification already secured Scaloni gives youth players game time. But even Argentina's second string is too much for Jordan. Argentina win convincingly, 4-1.",
+    "Austria-Algeria":"Austria need a point for second place; Algeria need a win to survive. Genuine tension. Sabitzer scores early; Bounedjah equalises. The model lands on 1-1: a draw.",
+    "Portugal-Uzbekistan":"Leão, Pedro Neto and Gonçalo Ramos are given free rein against a Uzbekistan side that is simply overmatched. Portugal earn a deserved 3-1 win.",
+    "Colombia-Congo DR":"Colombia's defensive structure is too solid for Congo DR's direct forwards. Díaz and Arias exploit space on the counter. Colombia edge it 3-2.",
+    "Portugal-Colombia":"The group decider. After adjustments both sides are effectively level in the model. Bruno Fernandes vs Colombia's creative hub is the key battle. Both teams are already through and neither overextends. The model lands on 2-2: a draw.",
+    "Uzbekistan-Congo DR":"A low-quality but competitive match between two similarly-ranked sides. Congo DR's Muleka is the main attacking threat. The model lands on 1-1: a draw.",
+    "Portugal-Congo DR":"Portugal's forward line: Bernardo Silva, Leão and Fernandes: produce combinations Congo DR's defenders cannot track. Portugal earn a deserved 4-2 win.",
+    "Colombia-Uzbekistan":"Colombia's form correction reflects Díaz's quality and their collective attacking class. Uzbekistan are making their World Cup debut and lack tournament experience. Colombia edge it 2-1.",
+    "England-Panama":"England rotate and manage the minutes of their key players. But even their second choice is too much for Panama. England earn a deserved 2-0 win.",
+    "Croatia-Ghana":"Croatia start sharply and score twice through Kramarić and Kovačić. Ghana cannot recover. Croatia earn a deserved 3-1 win.",
+    "England-Croatia":"After England's correction both sides are functionally equivalent. Bellingham's creativity causes problems but Modrić's experience keeps Croatia organised. The model lands on 1-1: a draw.",
+    "Panama-Ghana":"Ghana have the individual quality edge through Kudus and Partey's midfield dominance. The model lands on 2-2: a draw.",
+    "England-Ghana":"England are fully focused and Bellingham dictates the tempo. Kane's positioning creates space for Saka and Foden. England win convincingly, 3-0.",
+    "Croatia-Panama":"Croatia's technical combination play dismantles Panama's deep defensive block. Modrić finds gaps consistently. Croatia edge it 2-1."
+  }
 };
 
 const KO_EXPL = {
@@ -1483,10 +1542,10 @@ function DataTabButton({onOpen,active}){
     <button onClick={handle} aria-label={lang==="nl"?"Model":"Model"}
       title={lang==="nl"?"Bekijk het model":"View the model"}
       style={{width:28,height:28,flexShrink:0,cursor:"pointer",
-        border:`1px solid ${frameBorder}`,borderRadius:6,background:bg,
+        border:"none",borderRadius:0,background:"transparent",
         display:"flex",alignItems:"center",justifyContent:"center",padding:0,
         transform:anim?"scale(0.9)":"scale(1)",
-        transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1), background 0.25s ease, border-color 0.25s ease"}}>
+        transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1)"}}>
       <style>{`@keyframes dataPulse{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}`}</style>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
         {/* connectors: parent down to the two children */}
@@ -1780,14 +1839,11 @@ function FinalExplainer({openMatches,toggleMatch}){
         <Chevron open={fo} color={T.orange}/>
       </div>
       {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-        <div style={{display:"flex",width:"fit-content",alignItems:"center",gap:5,marginBottom:7,
-          padding:"3px 9px",borderRadius:20,
-          background:T.id==="orangeLion"?"rgba(13,13,13,0.12)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)"),
-          border:`1px solid ${T.id==="orangeLion"?"rgba(13,13,13,0.25)":T.orange+"44"}`}}>
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#0D0D0D":T.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:0.4,color:T.id==="orangeLion"?"#0D0D0D":T.orange}}>{KO_DATE_LABEL.FINAL[lang]} · MetLife Stadium</span>
+        <div style={{...chipStyle(T,"orange"),width:"fit-content",marginBottom:7}}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={marker(T,"orange").fg} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:0.4}}>{KO_DATE_LABEL.FINAL[lang]} · MetLife Stadium</span>
         </div>
-        <span style={{fontWeight:600,color:T.text}}>{tName(FINAL_TEAMS[0],lang)} {fsA}–{fsB} {tName(FINAL_TEAMS[1],lang)}.{" "}</span>
+        <span style={{fontWeight:WEIGHT.semibold,color:T.text}}>{tName(FINAL_TEAMS[0],lang)} {fsA}–{fsB} {tName(FINAL_TEAMS[1],lang)}.{" "}</span>
         {fe}
       </div>}
     </React.Fragment>
@@ -1830,12 +1886,9 @@ function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
       )}
       {isOpen&&expl&&(
         <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-          {dateLabel&&<div style={{display:"flex",width:"fit-content",alignItems:"center",gap:5,marginBottom:7,
-            padding:"3px 9px",borderRadius:20,
-            background:T.id==="orangeLion"?"rgba(13,13,13,0.12)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)"),
-            border:`1px solid ${T.id==="orangeLion"?"rgba(13,13,13,0.25)":T.orange+"44"}`}}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#0D0D0D":T.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:0.4,color:T.id==="orangeLion"?"#0D0D0D":T.orange}}>{dateLabel}</span>
+          {dateLabel&&<div style={{...chipStyle(T,"orange"),width:"fit-content",marginBottom:7}}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={marker(T,"orange").fg} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:0.4}}>{dateLabel}</span>
           </div>}
 
           {expl}
@@ -2982,7 +3035,7 @@ function ModelViz(){
             </div>
             {openFactor===i&&(
               <div style={{padding:"0 12px 11px 37px"}}>
-                <div style={{fontSize:FS.caption,fontFamily:"ui-monospace,Menlo,monospace",
+                <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,
                   color:T.id==="dark"?T.orange:T.blue,background:T.bg,
                   border:`1px solid ${T.border}`,borderRadius:4,
                   padding:"5px 8px",marginBottom:8,lineHeight:1.5}}>{f.formula}</div>
@@ -4324,7 +4377,7 @@ export default function App(){
           ? "radial-gradient(120% 80% at 50% 0%, #FF7A2E 0%, #E85100 45%, #D94800 100%)"
           : T.bg,
         fontSize:FS.body,color:T.text,overflowX:"hidden"}}>
-        <style>{`*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}button{font-family:inherit;cursor:pointer;}`}</style>
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');*{box-sizing:border-box;margin:0;padding:0;font-family:${FONT};}body{font-family:${FONT};}button,input,select,textarea{font-family:${FONT};cursor:pointer;}`}</style>
         <Nav tab={tab} setTab={setTab}/>
 
         <div style={{padding:"14px 16px 80px",width:"100%",boxSizing:"border-box"}}>
