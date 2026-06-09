@@ -1010,7 +1010,6 @@ function NewsSection(){
   const lang=useLang();
   const [liveItems,setLiveItems]=React.useState(null);
   const [loadingLive,setLoadingLive]=React.useState(true);
-  const [expandedImportant,setExpandedImportant]=React.useState(false);
   const [expandedRecent,setExpandedRecent]=React.useState(false);
 
   const statusColor={out:"#C0392B",doubtful:"#E07000",fit:"#1E7A40",news:"#1A5296"};
@@ -1030,16 +1029,12 @@ function NewsSection(){
     return days[d.getDay()];
   };
 
-  // Live news from BBC Sport World Cup RSS — most reliable free source with actual article links.
-  // Fallback to Guardian Football RSS if BBC returns nothing relevant.
+  // Live news from BBC Sport World Cup RSS only — filtered to World Cup articles.
   // allorigins.win is a public CORS proxy that works cross-origin without API keys.
   React.useEffect(()=>{
     const SEVEN_DAYS_AGO=new Date(Date.now()-7*24*60*60*1000);
-    // Ordered by reliability and WC2026 coverage quality
     const RSS_SOURCES=[
       {url:"https://feeds.bbci.co.uk/sport/football/rss.xml",             name:"BBC Sport"},
-      {url:"https://www.theguardian.com/football/rss",                     name:"The Guardian"},
-      {url:"https://www.goal.com/feeds/en/news",                           name:"Goal.com"},
     ];
     const proxy="https://api.allorigins.win/get?url=";
 
@@ -1114,31 +1109,6 @@ function NewsSection(){
   const cutoff=new Date(Date.now()-SEVEN_DAYS);
   const filteredFallback=NEWS_FALLBACK_RECENT.filter(item=>new Date(item.date)>=cutoff);
   const recentItems=liveItems||(filteredFallback.length>0?filteredFallback:[]);
-  const importantItems=NEWS_FALLBACK_IMPORTANT;
-
-  // Important item card — compact keyword style
-  const ImportantCard=({item,i})=>(
-    <div style={{background:T.card,border:`1px solid ${T.border}`,
-      borderLeft:`3px solid ${statusColor[item.status]||"#888"}`,
-      borderRadius:4,padding:"6px 10px",display:"flex",alignItems:"center",gap:8}}>
-      <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{item.flag}</span>
-      <div style={{flex:1,minWidth:0}}>
-        <span style={{fontSize:FS.caption,fontWeight:600,color:T.text}}>{item.player}</span>
-        <span style={{fontSize:FS.caption,color:T.textFaint,marginLeft:5}}>{item.team}</span>
-        <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{item.kw[lang]||item.kw.en}</div>
-      </div>
-      <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:2,flexShrink:0}}>
-        <span style={{fontSize:FS.micro,fontWeight:700,color:statusColor[item.status]||"#888",
-          border:`1px solid ${statusColor[item.status]||"#888"}`,
-          borderRadius:3,padding:"1px 4px",whiteSpace:"nowrap"}}>
-          {(statusLabel[lang]||statusLabel.en)[item.status]||item.status}
-        </span>
-        {item.url&&<a href={item.url} target="_blank" rel="noopener noreferrer"
-          onClick={e=>e.stopPropagation()}
-          style={{fontSize:FS.micro,color:T.orange,textDecoration:"none"}}>↗</a>}
-      </div>
-    </div>
-  );
 
   // Recent item card — full detail with relative date
   const RecentCard=({item,i})=>(
@@ -1186,7 +1156,6 @@ function NewsSection(){
     </div>
   );
 
-  const visibleImportant=expandedImportant?importantItems:importantItems.slice(0,5);
   const visibleRecent=expandedRecent?recentItems:recentItems.slice(0,5);
 
   return(
@@ -1226,24 +1195,6 @@ function NewsSection(){
           {expandedRecent
             ?(lang==="nl"?"Minder ↑":"Less ↑")
             :(lang==="nl"?`+${recentItems.length-5} meer ↓`:`+${recentItems.length-5} more ↓`)}
-        </div>
-      )}
-
-      {/* SECTION 2: IMPORTANT — key news, may be older */}
-      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
-        color:T.textSub,marginBottom:6}}>
-        {lang==="nl"?"Belangrijk":"Important"}
-      </div>
-      <div style={{display:"flex",flexDirection:"column",gap:4}}>
-        {visibleImportant.map((item,i)=><ImportantCard key={i} item={item} i={i}/>)}
-      </div>
-      {importantItems.length>5&&(
-        <div onClick={()=>setExpandedImportant(!expandedImportant)}
-          style={{marginTop:4,textAlign:"center",fontSize:FS.caption,color:T.orange,
-            cursor:"pointer",padding:"3px 0"}}>
-          {expandedImportant
-            ?(lang==="nl"?"Minder ↑":"Less ↑")
-            :(lang==="nl"?`+${importantItems.length-5} meer ↓`:`+${importantItems.length-5} more ↓`)}
         </div>
       )}
     </div>
@@ -3524,26 +3475,22 @@ function InjuriesSection(){
     fit:{nl:"Fit",en:"Fit"},
   };
   return(
-    <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden"}}>
-      {INJURIES.map((p,i)=>(
-        <div key={p.name} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",
-          borderTop:i>0?`1px solid ${T.border}`:"none"}}>
-          <span style={{fontSize:18,lineHeight:1,flexShrink:0,marginTop:1}}>{p.flag}</span>
+    <div style={{display:"flex",flexDirection:"column",gap:4}}>
+      {INJURIES.map((p)=>(
+        <div key={p.name} style={{background:T.card,border:`1px solid ${T.border}`,
+          borderLeft:`3px solid ${sevColor[p.sev]||"#888"}`,
+          borderRadius:4,padding:"6px 10px",display:"flex",alignItems:"center",gap:8}}>
+          <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{p.flag}</span>
           <div style={{flex:1,minWidth:0}}>
-            <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-              <span style={{fontSize:FS.body,fontWeight:700,color:T.text}}>{p.name}</span>
-              <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.3,textTransform:"uppercase",
-                color:sevColor[p.sev],border:`1px solid ${sevColor[p.sev]}`,borderRadius:3,padding:"1px 5px"}}>
-                {sevLabel[p.sev][lang]}
-              </span>
-            </div>
-            <div style={{fontSize:FS.caption,color:T.textSub,marginTop:2}}>
-              {p.pos} · {p.club} · {p.status[lang]}
-            </div>
-            <div style={{fontSize:FS.caption,color:T.textFaint,marginTop:2,lineHeight:1.4}}>
-              {p.note[lang]}
-            </div>
+            <span style={{fontSize:FS.caption,fontWeight:600,color:T.text}}>{p.name}</span>
+            <span style={{fontSize:FS.caption,color:T.textFaint,marginLeft:5}}>{p.club}</span>
+            <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.status[lang]}</div>
           </div>
+          <span style={{fontSize:FS.micro,fontWeight:700,color:sevColor[p.sev]||"#888",
+            border:`1px solid ${sevColor[p.sev]||"#888"}`,
+            borderRadius:3,padding:"1px 4px",whiteSpace:"nowrap",flexShrink:0}}>
+            {sevLabel[p.sev][lang]}
+          </span>
         </div>
       ))}
     </div>
@@ -3816,15 +3763,17 @@ function AppLoader({onDone}){
   const flipped=phase>=2;
   // Stage = WK2026 + lion + Voorspelling. Visible phases 1-2, fades out at phase 3.
   const stageOpacity=phase===0?0:(phase>=3?0:1);
-  // Engulf lion: always mounted, starts very tiny + invisible, grows fast to fill screen at phase 4.
-  const engulfScale=phase>=4?12:0.08;
-  const engulfOpacity=phase===4?1:0;
+  // Engulf lion: always mounted, starts very tiny + invisible, rushes to fill screen, keeps growing through the whoosh.
+  const engulfScale=phase>=5?16:(phase>=4?12:0.08);
+  const engulfOpacity=phase>=4?1:0;
   // Whole overlay fades to transparent at the end, revealing the app behind it.
   const overlayOpacity=phase>=5?0:1;
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:bg,opacity:overlayOpacity,
-      transition:"background 0.55s ease, opacity 0.55s ease",
+      transition:phase>=5
+        ? "opacity 0.5s cubic-bezier(.4,0,.2,1) 0.15s"   // whoosh: brief hold, then swoop away
+        : "background 0.55s ease, opacity 0.55s ease",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
       {/* Stage: title, flipping lion, subtitle */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
