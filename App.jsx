@@ -1533,13 +1533,12 @@ function Nav({tab,setTab}){
             ? <NavLion themeId="dark"/>
             : T.id==="orangeLion"
             ? <NavLion themeId="orangeLion"/>
-            : <svg width="26" height="29" viewBox="0 0 40 44" aria-label="SB" style={{display:"block"}}>
+            : <svg width="28" height="28" viewBox="0 0 48 48" aria-label="SB" style={{display:"block"}}>
                 <defs><linearGradient id="sbLogo" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0" stopColor="#FF8A3D"/><stop offset="1" stopColor="#D14E00"/>
                 </linearGradient></defs>
-                <path d="M20 1.5 L37.5 7.2 V22 C37.5 32.8 29.8 39.8 20 42.6 C10.2 39.8 2.5 32.8 2.5 22 V7.2 Z" fill="url(#sbLogo)"/>
-                <path d="M20 1.5 L37.5 7.2 V22 C37.5 32.8 29.8 39.8 20 42.6 C10.2 39.8 2.5 32.8 2.5 22 V7.2 Z" fill="none" stroke="#FFFFFF" strokeWidth="1" opacity="0.35"/>
-                <text x="20" y="27" fontFamily="'Helvetica Neue',Arial,sans-serif" fontWeight="800" fontSize="16" fill="#FFFFFF" textAnchor="middle" letterSpacing="-1">SB</text>
+                <rect x="2" y="2" width="44" height="44" rx="15" fill="url(#sbLogo)"/>
+                <text x="24" y="34" fontFamily="'Helvetica Neue',Arial,sans-serif" fontWeight="800" fontStyle="italic" fontSize="26" fill="#FFFFFF" textAnchor="middle" letterSpacing="-3">SB</text>
               </svg>
           }
         </div>
