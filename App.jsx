@@ -1479,8 +1479,6 @@ function DataTabButton({onOpen,active}){
   const frameBorder=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
   const bg=active?(T.id==="orangeLion"?"rgba(255,255,255,0.22)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)")):"transparent";
   const handle=(e)=>{e.stopPropagation();setAnim(true);setTimeout(()=>setAnim(false),520);onOpen&&onOpen();};
-  // three analytics bars that bounce on click
-  const bars=[{x:5,h:8,d:0},{x:10.5,h:13,d:0.06},{x:16,h:5,d:0.12}];
   return(
     <button onClick={handle} aria-label={lang==="nl"?"Model":"Model"}
       title={lang==="nl"?"Bekijk het model":"View the model"}
@@ -1489,13 +1487,15 @@ function DataTabButton({onOpen,active}){
         display:"flex",alignItems:"center",justifyContent:"center",padding:0,
         transform:anim?"scale(0.9)":"scale(1)",
         transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1), background 0.25s ease, border-color 0.25s ease"}}>
-      <style>{`@keyframes dataBar{0%{transform:scaleY(1)}30%{transform:scaleY(0.45)}70%{transform:scaleY(1.18)}100%{transform:scaleY(1)}}`}</style>
+      <style>{`@keyframes dataPulse{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}`}</style>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
-        <path d="M3 21h18" stroke={iconCol} strokeWidth="2" strokeLinecap="round"/>
-        {bars.map((b,i)=>(
-          <rect key={i} x={b.x} y={20-b.h} width="3" height={b.h} rx="1" fill={iconCol}
-            style={{transformOrigin:`${b.x+1.5}px 20px`,
-              animation:anim?`dataBar 0.5s ${b.d}s ease`:"none"}}/>
+        {/* connections */}
+        <path d="M6.6 7 10.4 11M6.6 17 10.4 13M13.6 11 17.4 7M13.6 13 17.4 17" stroke={iconCol} strokeWidth="1.6" strokeLinecap="round"/>
+        {/* nodes (pulse on click) */}
+        {[{x:5,y:6},{x:5,y:18},{x:12,y:12,r:2.3},{x:19,y:6},{x:19,y:18}].map((n,i)=>(
+          <circle key={i} cx={n.x} cy={n.y} r={n.r||1.9} fill={iconCol}
+            style={{transformOrigin:`${n.x}px ${n.y}px`,
+              animation:anim?`dataPulse 0.5s ${i*0.05}s ease`:"none"}}/>
         ))}
       </svg>
     </button>
@@ -3923,7 +3923,7 @@ function PlayersTab(){
       <div style={{marginBottom:20}}>
         <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",
           color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>
-          {lang==="nl"?"Sten's model":"Sten's model"}
+          {lang==="nl"?"Het model":"The model"}
         </div>
         <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,letterSpacing:-0.5,margin:"0 0 8px",lineHeight:1.1}}>
           {lang==="nl"?"Het WK, doorgerekend":"The World Cup, computed"}
@@ -3933,6 +3933,40 @@ function PlayersTab(){
             ?"Eén data-gedreven model om mijn WK 2026 poules te voorspellen, van elke groepswedstrijd tot de finale. Verken hieronder de landen, spelers en het droomelftal, of open het model-icoon voor de cijfers achter elke uitslag."
             :"A single data-driven model to predict my 2026 World Cup pools, from every group game to the final. Explore the nations, players and dream XI below, or open the model icon for the numbers behind each result."}
         </p>
+        {/* How the model works — minimalist 3-step flow */}
+        <div style={{display:"flex",alignItems:"stretch",margin:"4px 0 16px",
+          border:`1px solid ${T.border}`,borderRadius:10,overflow:"hidden",background:T.card}}>
+          {[
+            {nl:"Databronnen",en:"Data sources",
+             icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
+            {nl:"Landscore",en:"Team score",
+             icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20" /></>},
+            {nl:"Uitslag",en:"Result",
+             icon:<><path d="M5 12l4 4L19 6"/></>},
+          ].map((s,i,arr)=>(
+            <React.Fragment key={i}>
+              <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",
+                justifyContent:"flex-start",gap:7,padding:"13px 4px"}}>
+                <div style={{width:32,height:32,borderRadius:9,flexShrink:0,
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  background:T.id==="orangeLion"?"rgba(255,255,255,0.16)":(T.id==="dark"?"rgba(255,85,0,0.12)":T.orangeFaint)}}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    stroke={T.id==="orangeLion"?"#FFFFFF":T.orange} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                    {s.icon}
+                  </svg>
+                </div>
+                <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.3,color:T.textSub,textAlign:"center",lineHeight:1.2}}>
+                  {lang==="nl"?s.nl:s.en}
+                </span>
+              </div>
+              {i<arr.length-1&&(
+                <div style={{display:"flex",alignItems:"center",color:T.textFaint,flexShrink:0}}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
           {lang==="nl"
             ?"Voor het eerst met 48 landen, verdeeld over drie gastlanden — het grootste WK ooit. Spanje arriveert als Europees kampioen en favoriet, terwijl Argentinië de titel verdedigt met Messi in vermoedelijk zijn laatste WK. Frankrijk, Engeland, Brazilië en Noorwegen wachten, en outsiders als Marokko en gastland Mexico kunnen verrassen. De nieuwe opzet kent extra knock-outrondes en weinig marge: één slechte avond en de grootste naam ligt eruit."
