@@ -1521,7 +1521,7 @@ function Nav({tab,setTab}){
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
       {(T.id==="orangeLion"||T.id==="dark")
-        ? <div style={{height:T.id==="orangeLion"?8:5,display:"flex"}} aria-hidden="true">
+        ? <div style={{height:8,display:"flex"}} aria-hidden="true">
             <div style={{flex:1,background:"#AE1C28"}}/>
             <div style={{flex:1,background:"#FFFFFF"}}/>
             <div style={{flex:1,background:"#21468B"}}/>
@@ -3240,6 +3240,7 @@ function NationBadges({team,dark}){
   const bg=dark?"rgba(255,255,255,0.08)":(OL?"rgba(255,255,255,0.14)":(T.id==="dark"?"#161616":T.bg));
   const divider=dark?"rgba(255,255,255,0.18)":(OL?"rgba(255,255,255,0.22)":T.border);
   const items=[
+    FIFA_RANKINGS[team]&&{lab:lang==="nl"?"FIFA":"FIFA",val:`#${FIFA_RANKINGS[team]}`},
     dev!==undefined&&{lab:lang==="nl"?"Vorm":"Form",val:`${dev>0?"+":""}${dev}`},
     SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s,money:true},
   ].filter(Boolean);
