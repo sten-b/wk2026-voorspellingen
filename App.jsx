@@ -2645,8 +2645,8 @@ function ChampionCard({p,label,icon}){
   return(
     <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
       borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",
-      border:T.id==="orangeLion"?"1px solid rgba(255,255,255,0.55)":undefined,
-      borderLeft:`4px solid ${T.orange}`,
+      border:"1px solid rgba(255,255,255,0.12)",
+      borderLeft:"4px solid #E8730A",
       position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
         background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
@@ -3267,8 +3267,8 @@ function NationChampionCard({n}){
   return(
     <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
       borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",
-      border:T.id==="orangeLion"?"1px solid rgba(255,255,255,0.55)":undefined,
-      borderLeft:`4px solid ${T.orange}`,
+      border:"1px solid rgba(255,255,255,0.12)",
+      borderLeft:"4px solid #E8730A",
       position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
         background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
@@ -3930,8 +3930,8 @@ function PlayersTab(){
         </h2>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.65,margin:"0 0 12px"}}>
           {lang==="nl"
-            ?"Eén data-gedreven model voorspelt het volledige WK 2026, van elke groepswedstrijd tot de finale. Verken hieronder de landen, spelers en het droomelftal, of open het model-icoon voor de cijfers achter elke uitslag."
-            :"A single data-driven model predicts the entire 2026 World Cup, from every group game to the final. Explore the nations, players and dream XI below, or open the model icon for the numbers behind each result."}
+            ?"Eén data-gedreven model om mijn WK 2026 poules te voorspellen, van elke groepswedstrijd tot de finale. Verken hieronder de landen, spelers en het droomelftal, of open het model-icoon voor de cijfers achter elke uitslag."
+            :"A single data-driven model to predict my 2026 World Cup pools, from every group game to the final. Explore the nations, players and dream XI below, or open the model icon for the numbers behind each result."}
         </p>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
           {lang==="nl"
