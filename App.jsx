@@ -299,12 +299,12 @@ const KO_EXPL = {
     "Argentina-Norway":"Argentinië treft een Noorwegen dat op vorm de kwartfinale haalde, met Haaland als constante dreiging. Maar Argentiniës complete elftal en toernooiroutine zijn een maatje te groot: Mac Allister en Álvarez controleren het tempo. Haaland prikt er nog 1 binnen voor de 2-1, maar Argentinië staat defensief te sterk en gaat door.",
     "England-Brazil":"Twee zwaargewichten met contrasterende stijlen: Engelands structuur tegen Braziliaanse individuele klasse. Bellingham trekt het middenveld naar zich toe en Saka's directheid langs rechts is het wapen dat Brazilië niet neutraliseert. Vinícius blijft gevaarlijk en maakt er 2-1 van, maar Engeland controleert de cruciale fases en houdt stand.",
     "Brazil-England":"Twee zwaargewichten, gescheiden door het kleinste verschil. Braziliës recente vorm en aanvallende klasse geven net de doorslag: Vinícius en Rodrygo vinden ruimte achter de Engelse defensie, terwijl Engeland via Bellingham en Saka blijft dreigen. Engeland komt terug tot 2-1, maar Brazilië is in de beslissende momenten net iets gevaarlijker en trekt het over de streep.",
-    "France-Portugal":"Frankrijks balans tussen controle en omschakeling tegen een Portugal dat op leeftijd begint te raken. Mbappé exploiteert de ruimte achter de Portugese defensie en Tchouaméni wint het fysieke duel op het middenveld. Portugal vecht terug tot 2-1 via een moment van Ronaldo, maar Frankrijk is klinischer en beslist het.",
+    "France-Portugal":"Frankrijks balans tussen controle en omschakeling tegen een Portugal dat op leeftijd begint te raken. Mbappé exploiteert de ruimte achter de Portugese defensie en Frankrijk wint het fysieke duel op het middenveld. Portugal vecht terug tot 2-1 via een moment van Ronaldo, maar Frankrijk is klinischer en beslist het.",
     "Spain-Colombia":"Spanje tegen een fysiek sterke, gretige Colombiaanse ploeg. Luis Díaz is het grootste gevaar en zorgt voor de aansluitingstreffer, maar Spanjes balbezit en de creativiteit van Yamal en Pedri zijn over negentig minuten te veel. Rodri controleert het tempo vanuit de diepte: een verdiende 2-1 die comfortabeler aanvoelt dan de score.",
     "Spain-Belgium":"Spanje versus het enige ploeg dat qua organisatie en ervaring in de buurt komt. De Bruyne probeert het spel te dicteren maar Rodri en Pedri controleren het tempo volledig. Yamal maakt het verschil langs de rechterkant: zijn directheid is het kwaliteitsverschil dat België niet kan compenseren. Een knappe maar verdiende Spaanse overwinning.",
-    "France-Germany":"Frankrijks individuele kwaliteit is de doorslaggevende factor. Mbappe exploiteert de ruimte achter Duitslands hoge defensielinie en Tchouameni wint de middenveldstrijd fysiek. Duitsland is competitief maar de Fransen zijn klinischer in de beslissende momenten. Musiala maakt het uitdagend maar Frankrijk beslist.",
+    "France-Germany":"Frankrijks individuele kwaliteit is de doorslaggevende factor. Mbappe exploiteert de ruimte achter Duitslands hoge defensielinie en Frankrijk wint de middenveldstrijd fysiek. Duitsland is competitief maar de Fransen zijn klinischer in de beslissende momenten. Musiala maakt het uitdagend maar Frankrijk beslist.",
     "Argentina-Germany":"Een klassieker tussen twee WK-grootmachten. Duitsland heeft de hoogste aanvalswaarde van de twee, maar Argentiniës verdediging is de beste van het toernooi (xGc 0,35) en smoort het Duitse opbouwspel. Mac Allister en Álvarez prikken op de tegenaanval; Duitsland komt terug tot 2-1 via Musiala, maar Argentiniës ervaring en kalmte beslissen het duel.",
-    "Spain-Netherlands":"Twee balgedreven ploegen die allebei willen voetballen — een open, hoogwaardige wedstrijd. Spanje heeft via Pedri en Yamal net iets meer controle en creativiteit, Nederland countert gevaarlijk met Gakpo en Simons. Het wordt een doelpuntrijk gevecht (3-2): Oranje blijft tot het eind in de buurt, maar Spanjes klasse op het middenveld geeft de doorslag.",
+    "Spain-Netherlands":"Twee balgedreven ploegen die allebei willen voetballen — een open, hoogwaardige wedstrijd. Spanje heeft via Pedri en Yamal net iets meer controle en creativiteit, Nederland countert gevaarlijk met Gakpo en de loopacties van Dumfries. Het wordt een doelpuntrijk gevecht (3-2): Oranje blijft tot het eind in de buurt, maar Spanjes klasse op het middenveld geeft de doorslag.",
     "Argentina-England":"Argentiniës toernooiervaring in beslissende momenten is de sleutel. Bellingham geeft Engeland hun beste kansen maar Argentiniës defensieve organisatie is bij tegendruk elitair. Alvarez creëert de kansen, Mac Allister dicteert het tempo. Engeland vecht maar Argentinië trekt het over de streep.",
     "Brazil-Portugal":"Twee aanvallend begaafde ploegen die allebei iets te winnen hebben. Vinicius doet wat hij bij Real Madrid altijd doet maar Portugal weerstaat lang. Ronaldo markeert zijn aanwezigheid maar Brazilië heeft meer gevaar. Vinicius beslist met een moment van individuele klasse.",
     "France-Spain":"De bepalende wedstrijd voor de finale. Spanje heeft meer de bal maar Frankrijk is gevaarlijker op de omschakeling. Yamal zoekt de diepte, Mbappe pikt de tegenaanval op. Het gaat op en neer: Spanje controleert, Frankrijk countered. Griezmanns positie achter de spits vervalst Rodri's zicht. Frankrijk wint via hun efficiëntie op de counter.",
@@ -319,12 +319,12 @@ const KO_EXPL = {
     "Argentina-Norway":"Argentina face a Norway side that reached the quarters on form, with Haaland a constant threat. But Argentina's complete team and tournament savvy are a level above: Mac Allister and Álvarez control the tempo. Haaland pulls one back for 2-1, but Argentina are too solid defensively and go through.",
     "England-Brazil":"Two heavyweights with contrasting styles: England's structure against Brazilian individual brilliance. Bellingham draws the midfield to him and Saka's directness down the right is the weapon Brazil cannot neutralise. Vinícius stays dangerous and makes it 2-1, but England control the crucial phases and hold on.",
     "Brazil-England":"Two heavyweights separated by the smallest of margins. Brazil's recent form and attacking class just tip it: Vinícius and Rodrygo find space behind the English defence, while England keep threatening through Bellingham and Saka. England pull back to 2-1, but Brazil are a fraction more dangerous in the decisive moments and see it through.",
-    "France-Portugal":"France's balance of control and transition against a Portugal side starting to age. Mbappé exploits the space behind the Portuguese defence and Tchouaméni wins the physical midfield battle. Portugal fight back to 2-1 through a Ronaldo moment, but France are more clinical and see it out.",
+    "France-Portugal":"France's balance of control and transition against a Portugal side starting to age. Mbappé exploits the space behind the Portuguese defence and France win the physical midfield battle. Portugal fight back to 2-1 through a Ronaldo moment, but France are more clinical and see it out.",
     "Spain-Colombia":"Spain against a physically strong, eager Colombia. Luis Díaz is the biggest threat and grabs a consolation, but Spain's possession and the creativity of Yamal and Pedri are too much over ninety minutes. Rodri controls the tempo from deep: a deserved 2-1 that feels more comfortable than the scoreline.",
     "Spain-Belgium":"Spain versus the only side that comes close in organisation and experience. De Bruyne tries to dictate but Rodri and Pedri control the tempo completely. Yamal makes the difference on the right: his directness is the quality gap Belgium cannot compensate for. A hard-fought but deserved Spanish victory.",
-    "France-Germany":"France's individual quality is the decisive factor. Mbappe's pace exploits the space behind Germany's high defensive line and Tchouameni dominates midfield physically. Germany are competitive: Musiala makes it difficult: but France are more clinical in the decisive moments.",
+    "France-Germany":"France's individual quality is the decisive factor. Mbappe's pace exploits the space behind Germany's high defensive line and France dominate midfield physically. Germany are competitive: Musiala makes it difficult: but France are more clinical in the decisive moments.",
     "Argentina-Germany":"A classic between two World Cup giants. Germany carry the higher attacking value of the two, but Argentina's defence is the best in the tournament (xGc 0.35) and smothers the German build-up. Mac Allister and Álvarez strike on the counter; Germany pull one back through Musiala to make it 2-1, but Argentina's experience and composure settle it.",
-    "Spain-Netherlands":"Two possession-driven sides who both want to play — an open, high-quality match. Spain have slightly more control and creativity through Pedri and Yamal, while the Dutch counter dangerously via Gakpo and Simons. It becomes a goal-filled contest (3-2): the Netherlands stay close to the end, but Spain's midfield class proves decisive.",
+    "Spain-Netherlands":"Two possession-driven sides who both want to play — an open, high-quality match. Spain have slightly more control and creativity through Pedri and Yamal, while the Dutch counter dangerously via Gakpo and the overlapping runs of Dumfries. It becomes a goal-filled contest (3-2): the Netherlands stay close to the end, but Spain's midfield class proves decisive.",
     "Argentina-England":"Argentina's tournament experience in pressure situations proves decisive. Bellingham gives England their best chance but Argentina's defensive organisation under sustained pressure is elite. Alvarez creates the chances, Mac Allister dictates the tempo. England fight but Argentina pull it over the line.",
     "Brazil-Portugal":"Two attacking-minded sides with plenty at stake. Vinicius does what he does at Real Madrid but Portugal resist for long periods. Ronaldo marks his presence but Brazil carry more threat overall. Vinicius decides it with a moment of individual brilliance that Diogo Costa cannot stop.",
     "France-Spain":"The defining match before the final. Spain have more possession but France are more dangerous on the counter. Yamal looks for depth, Mbappe picks up the transition. End-to-end: Spain control, France counter. Griezmann's positioning behind the striker disrupts Rodri's sight lines. France's counter-attacking efficiency ultimately proves decisive.",
@@ -941,7 +941,21 @@ const useTheme=()=>useContext(ThemeCtx);
 const useT=()=>LANG[useContext(LangCtx)];
 const useNav=()=>useContext(NavCtx);
 const tName=(t,lang)=>lang==="nl"?(TEAM_NL[t]||t):t;
-const mExpl=(k,lang)=>MATCH_EXPL[lang]?.[k]||"";
+const mExpl=(k,lang)=>{
+  const tbl=MATCH_EXPL[lang]||{};
+  if(tbl[k]) return tbl[k];
+  // The match-key team order is seeded by model strength and can flip; the description
+  // is the same fixture either way, so fall back to the reversed key.
+  const parts=k.split("-");
+  if(parts.length>=2){
+    // handle hyphenated names (e.g. Bosnia-Herzegovina, Congo DR has no hyphen)
+    for(let i=1;i<parts.length;i++){
+      const a=parts.slice(0,i).join("-"), b=parts.slice(i).join("-");
+      if(tbl[`${b}-${a}`]) return tbl[`${b}-${a}`];
+    }
+  }
+  return "";
+};
 const koExpl=(k,lang)=>KO_EXPL[lang]?.[k]||"";
 
 // ── CHEVRON ICON — consistent open/close indicator ──────────────────────────
@@ -3665,17 +3679,53 @@ function PSection({label,sub,accent}){
 function PlayersTab(){
   const T=useTheme();
   const lang=useLang();
+  const [view,setView]=useState("players");
   const [openSpotlight,setOpenSpotlight]=useState({});
   const [spotlightMore,setSpotlightMore]=useState(false);
   const [darkMore,setDarkMore]=useState(false);
   const [openDark,setOpenDark]=useState({});
   const [openXI,setOpenXI]=useState({});
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
+  const OL=T.id==="orangeLion";
+  const views=[
+    {id:"nations",label:lang==="nl"?"Landen":"Nations"},
+    {id:"players",label:lang==="nl"?"Spelers":"Players"},
+    {id:"fpl",label:lang==="nl"?"FPL-team":"FPL team"},
+  ];
   return(
     <div>
-      {/* ═══ CATEGORY 1: SPELERDATA (player data) ═══ */}
-      <PSection label={lang==="nl"?"Spelers":"Players"}
-        sub={lang==="nl"?"Sterspelers, opkomende talenten en statistieken per speler.":"Star players, emerging talents and per-player statistics."}/>
+      {/* View switcher: Nations / Players / FPL team */}
+      <div style={{display:"flex",gap:0,marginBottom:18,
+        border:`1px solid ${OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,
+        borderRadius:8,overflow:"hidden"}}>
+        {views.map((v,i)=>{
+          const active=view===v.id;
+          return(
+            <button key={v.id} onClick={()=>setView(v.id)}
+              style={{flex:1,padding:"9px 4px",fontSize:FS.small,
+                fontWeight:active?800:600,cursor:"pointer",border:"none",
+                borderLeft:i>0?`1px solid ${OL?"rgba(255,255,255,0.5)":(T.id==="dark"?"#FF5500":"#E07000")}`:"none",
+                background:active?(OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")):"transparent",
+                color:active?(OL?"#0D0D0D":"#FFFFFF"):(OL?"#FFFFFF":T.textSub),
+                transition:"background 0.2s ease, color 0.2s ease"}}>
+              {v.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ═══ NATIONS ═══ */}
+      {view==="nations"&&(
+        <div>
+          <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:14,paddingLeft:2}}>
+            {lang==="nl"?"Per land het profiel, de vorm en de modelrang — gesorteerd op modelsterkte.":"Per nation: profile, form and model rank — sorted by model strength."}
+          </div>
+          <NationsTab/>
+        </div>
+      )}
+
+      {/* ═══ PLAYERS (player data) ═══ */}
+      {view==="players"&&(<React.Fragment>
 
       {/* Spotlight — star champion card on top */}
       <ChampionCard p={SPOTLIGHT[0]}
@@ -3722,9 +3772,13 @@ function PlayersTab(){
       {/* Player stats (xGA per 90) — part of the player-data category */}
       <FBrefStatsSection/>
 
-      {/* ═══ CATEGORY 2: FPL-TEAM (the fantasy XI) ═══ */}
-      <PSection label={lang==="nl"?"FPL-team":"FPL team"}
-        sub={lang==="nl"?"Een fantasy-opstelling op basis van clubvorm en het verwachte toernooipad — geen modeloutput.":"A fantasy line-up based on club form and expected tournament path — not model output."}/>
+      </React.Fragment>)}
+
+      {/* ═══ FPL-TEAM (the fantasy XI) ═══ */}
+      {view==="fpl"&&(<React.Fragment>
+      <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:14,paddingLeft:2}}>
+        {lang==="nl"?"Een fantasy-opstelling op basis van clubvorm en het verwachte toernooipad — geen modeloutput.":"A fantasy line-up based on club form and expected tournament path — not model output."}
+      </div>
 
       {/* Best XI */}
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
@@ -3793,10 +3847,7 @@ function PlayersTab(){
         ))}
       </div>
 
-      {/* ═══ CATEGORY 3: LANDEN (nation info) ═══ */}
-      <PSection label={lang==="nl"?"Landen":"Nations"}
-        sub={lang==="nl"?"Per land het profiel, de vorm en de modelrang.":"Per nation: profile, form and model rank."}/>
-      <NationsTab/>
+      </React.Fragment>)}
     </div>
   );
 }
