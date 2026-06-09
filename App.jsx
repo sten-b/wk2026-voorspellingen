@@ -3883,9 +3883,10 @@ function InjuriesSection(){
 }
 
 // ── TOP-12 PLAYERS BY TRANSFER VALUE (verified WC2026 selections) ─────────────
-// Stats: 2025/26 domestic league. npxG/90 & xA/90 from FBref/FootyStats, MP domestic league,
-// WS = WhoScored season average rating. All figures real & source-traceable.
-const PLAYERS_TOP12=[
+// Top 30 WC2026 players by transfer value (CIES/Transfermarkt). Stats: 2025/26 domestic league.
+// npxG/90 & xA/90 via FBref/FootyStats; MP = league apps; WS = season rating (WhoScored/FotMob,
+// best available source). Defenders' npxG/xA are naturally near-zero. Figures source-traceable.
+const PLAYERS_TOP30=[
 {"r":1,"name":"Lamine Yamal","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Barcelona","comp":"La Liga","mp":28,"npxg90":0.59,"xa90":0.44,"ws":8.2,"val":"€200m"},
 {"r":2,"name":"Michael Olise","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Bayern Munich","comp":"Bundesliga","mp":32,"npxg90":0.6,"xa90":0.64,"ws":7.8,"val":"€185m"},
 {"r":3,"name":"Erling Haaland","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"FW","squad":"Man City","comp":"Premier League","mp":35,"npxg90":0.63,"xa90":0.19,"ws":7.5,"val":"€180m"},
@@ -3894,10 +3895,28 @@ const PLAYERS_TOP12=[
 {"r":6,"name":"Vinícius Júnior","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":36,"npxg90":0.47,"xa90":0.24,"ws":7.3,"val":"€150m"},
 {"r":7,"name":"Pedri","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","comp":"La Liga","mp":29,"npxg90":0.12,"xa90":0.51,"ws":7.2,"val":"€140m"},
 {"r":8,"name":"Florian Wirtz","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.29,"xa90":0.26,"ws":6.85,"val":"€140m"},
-{"r":9,"name":"Alexander Isak","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":14,"npxg90":0.29,"xa90":0.1,"ws":6.32,"val":"€120m"},
-{"r":10,"name":"Harry Kane","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Bayern Munich","comp":"Bundesliga","mp":31,"npxg90":0.64,"xa90":0.22,"ws":8.1,"val":"€100m"},
-{"r":11,"name":"Vitinha","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Paris S-G","comp":"Ligue 1","mp":29,"npxg90":0.13,"xa90":0.3,"ws":7.1,"val":"€90m"},
-{"r":12,"name":"Pau Cubarsí","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"DF","squad":"Barcelona","comp":"La Liga","mp":29,"npxg90":0.02,"xa90":0.0,"ws":6.9,"val":"€90m"},
+{"r":9,"name":"Désiré Doué","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris S-G","comp":"Ligue 1","mp":23,"npxg90":0.51,"xa90":0.32,"ws":7.3,"val":"€135m"},
+{"r":10,"name":"Arda Güler","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Real Madrid","comp":"La Liga","mp":33,"npxg90":0.26,"xa90":0.46,"ws":7.43,"val":"€130m"},
+{"r":11,"name":"João Neves","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Paris S-G","comp":"Ligue 1","mp":15,"npxg90":0.1,"xa90":0.13,"ws":7.2,"val":"€130m"},
+{"r":12,"name":"Alexander Isak","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":14,"npxg90":0.29,"xa90":0.1,"ws":6.32,"val":"€120m"},
+{"r":13,"name":"Estêvão","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","comp":"Premier League","mp":17,"npxg90":0.3,"xa90":0.2,"ws":7.0,"val":"€119m"},
+{"r":14,"name":"Cole Palmer","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":26,"npxg90":0.31,"xa90":0.13,"ws":7.04,"val":"€116m"},
+{"r":15,"name":"Kenan Yıldız","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Juventus","comp":"Serie A","mp":36,"npxg90":0.4,"xa90":0.27,"ws":7.5,"val":"€121m"},
+{"r":16,"name":"Hugo Ekitiké","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":28,"npxg90":0.56,"xa90":0.19,"ws":7.08,"val":"€124m"},
+{"r":17,"name":"Morgan Rogers","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Aston Villa","comp":"Premier League","mp":37,"npxg90":0.2,"xa90":0.16,"ws":7.0,"val":"€126m"},
+{"r":18,"name":"Nick Woltemade","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Newcastle","comp":"Premier League","mp":33,"npxg90":0.31,"xa90":0.15,"ws":7.0,"val":"€121m"},
+{"r":19,"name":"Julián Álvarez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Atlético Madrid","comp":"La Liga","mp":29,"npxg90":0.34,"xa90":0.24,"ws":7.0,"val":"€128m"},
+{"r":20,"name":"Lautaro Martínez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Inter","comp":"Serie A","mp":30,"npxg90":0.72,"xa90":0.24,"ws":7.47,"val":"€110m"},
+{"r":21,"name":"Dean Huijsen","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"DF","squad":"Real Madrid","comp":"La Liga","mp":30,"npxg90":0.05,"xa90":0.03,"ws":7.1,"val":"€108m"},
+{"r":22,"name":"Enzo Fernández","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":36,"npxg90":0.31,"xa90":0.12,"ws":7.3,"val":"€104m"},
+{"r":23,"name":"Rayan Cherki","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Man City","comp":"Premier League","mp":33,"npxg90":0.33,"xa90":0.58,"ws":7.3,"val":"€101m"},
+{"r":24,"name":"Ryan Gravenberch","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.16,"xa90":0.21,"ws":7.43,"val":"€101m"},
+{"r":25,"name":"João Pedro","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","comp":"Premier League","mp":35,"npxg90":0.49,"xa90":0.17,"ws":7.18,"val":"€101m"},
+{"r":26,"name":"Cody Gakpo","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.3,"xa90":0.2,"ws":7.17,"val":"€100m"},
+{"r":27,"name":"Moisés Caicedo","nat":"ECU","flag":"🇪🇨","country":"Ecuador","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":33,"npxg90":0.1,"xa90":0.08,"ws":7.2,"val":"€99m"},
+{"r":28,"name":"William Saliba","nat":"FRA","flag":"🇫🇷","country":"France","pos":"DF","squad":"Arsenal","comp":"Premier League","mp":31,"npxg90":0.03,"xa90":0.0,"ws":7.16,"val":"€96m"},
+{"r":29,"name":"Joško Gvardiol","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"DF","squad":"Man City","comp":"Premier League","mp":30,"npxg90":0.06,"xa90":0.05,"ws":7.0,"val":"€95m"},
+{"r":30,"name":"Viktor Gyökeres","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Arsenal","comp":"Premier League","mp":36,"npxg90":0.43,"xa90":0.08,"ws":6.82,"val":"€94m"},
 ];
 
 // ── FBREF STATS SECTION COMPONENT ────────────────────────────────────────────
@@ -3916,7 +3935,7 @@ function FBrefStatsSection(){
     return T.textFaint;
   };
   const valNum=(p)=>parseInt(String(p.val).replace(/[^0-9]/g,""),10);
-  const sorted=[...PLAYERS_TOP12].sort((a,b)=>{
+  const sorted=[...PLAYERS_TOP30].sort((a,b)=>{
     if(sortKey==="val") return valNum(b)-valNum(a);
     return b[sortKey]-a[sortKey];
   });
@@ -3946,15 +3965,18 @@ function FBrefStatsSection(){
   );
   return(
     <React.Fragment>
-      {/* Top 12 by transfer value */}
+      {/* Top 30 by transfer value */}
       <div>
-        <div style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:4,paddingLeft:13}}>
-          {lang==="nl"?"Top 12 op marktwaarde":"Top 12 by market value"}
+        <div style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:6,paddingLeft:13}}>
+          {lang==="nl"?"De 30 duurste WK-gangers":"The 30 most valuable WC players"}
         </div>
-        <div style={{fontSize:FS.caption,color:T.textFaint,marginBottom:12,paddingLeft:13,paddingRight:13,lineHeight:1.5}}>
-          {lang==="nl"
-            ?"Geselecteerd voor het WK 2026, gerangschikt op transferwaarde. Cijfers: seizoen 2025/26 (competitie). npxG/90 en xA/90 via FBref/FootyStats, WS = WhoScored-seizoensrating."
-            :"WC 2026 selections, ranked by transfer value. Figures: 2025/26 league season. npxG/90 and xA/90 via FBref/FootyStats, WS = WhoScored season rating."}
+        {/* Compact legend */}
+        <div style={{display:"flex",flexWrap:"wrap",gap:"4px 10px",fontSize:FS.micro,color:T.textFaint,marginBottom:12,paddingLeft:13,paddingRight:13,lineHeight:1.5}}>
+          <span><b style={{color:T.textSub}}>Wed</b> {lang==="nl"?"wedstrijden":"matches"}</span>
+          <span><b style={{color:orange}}>npxG</b> {lang==="nl"?"per 90":"per 90"}</span>
+          <span><b style={{color:blue}}>xA</b> {lang==="nl"?"per 90":"per 90"}</span>
+          <span><b style={{color:gold}}>WS</b> {lang==="nl"?"seizoensrating":"season rating"}</span>
+          <span style={{flexBasis:"100%"}}>{lang==="nl"?"Competitie 2025/26 · waarde via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob (beste beschikbare bron)":"2025/26 league · value via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob (best available source)"}</span>
         </div>
         {/* Table */}
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:8}}>
