@@ -1470,9 +1470,9 @@ function MatchRow({t1,s1,t2,s2,matchKey,open,onToggle}){
         <TeamLink team={t1}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t1]||"🏳"}</span></TeamLink>
         <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t1?600:400,color:winner===t1||draw?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t1,lang)}</span>
         <div style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
-          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t1?T.orange:draw?T.blue:T.textSub,minWidth:14,textAlign:"right"}}>{s1}</span>
+          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t1?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?T.blue:T.textSub,minWidth:14,textAlign:"right"}}>{s1}</span>
           <span style={{fontSize:FS.caption,color:T.textFaint}}>-</span>
-          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t2?T.orange:draw?T.blue:T.textSub,minWidth:14,textAlign:"left"}}>{s2}</span>
+          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t2?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?T.blue:T.textSub,minWidth:14,textAlign:"left"}}>{s2}</span>
         </div>
         <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t2?600:400,color:winner===t2||draw?T.text:T.textSub,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t2,lang)}</span>
         <TeamLink team={t2}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t2]||"🏳"}</span></TeamLink>
@@ -1647,7 +1647,7 @@ function FinalExplainer({openMatches,toggleMatch}){
   return(
     <React.Fragment>
       <div onClick={()=>toggleMatch(fk)} style={{borderTop:`1px solid ${T.border}`,padding:"5px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",background:fo?T.orangeFaint:T.bg}}>
-        <span style={{fontSize:FS.small,color:T.orange,fontWeight:600}}>{tr.whyScore}</span>
+        <span style={{fontSize:FS.small,color:T.id==="orangeLion"?"#0D0D0D":T.orange,fontWeight:600}}>{tr.whyScore}</span>
         <Chevron open={fo} color={T.orange}/>
       </div>
       {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
@@ -1682,7 +1682,7 @@ function KOCard({a,b,openMatches,toggleMatch}){
       ))}
       {expl&&(
         <div onClick={()=>toggleMatch?.(key)} style={{borderTop:`1px solid ${T.border}`,padding:"5px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",background:isOpen?T.orangeFaint:T.bg}}>
-          <span style={{fontSize:FS.small,color:T.orange,fontWeight:600}}>{tr.whyScore}</span>
+          <span style={{fontSize:FS.small,color:T.id==="orangeLion"?"#0D0D0D":T.orange,fontWeight:600}}>{tr.whyScore}</span>
           <Chevron open={isOpen} color={T.orange}/>
         </div>
       )}
@@ -1702,6 +1702,9 @@ function BracketMatch({teamA,scoreA,teamB,scoreB,onClick}){
   const T=useTheme();
   const lang=useLang();
   const aW=scoreA>scoreB;
+  const OL=T.id==="orangeLion";
+  const winCol=OL?"#FFFFFF":T.orange;
+  const loseCol=OL?"rgba(255,255,255,0.62)":T.textSub;
   return(
     <div onClick={onClick} style={{background:T.card,border:`1px solid ${onClick?T.orange:T.border}`,borderTop:`2px solid ${T.blue}`,borderRadius:4,padding:"5px 7px",minWidth:0,cursor:onClick?"pointer":"default",transition:"border-color 0.15s"}}>
       {[{team:teamA,score:scoreA,win:aW},{team:teamB,score:scoreB,win:!aW}].map(({team,score,win},i)=>(
@@ -1709,8 +1712,8 @@ function BracketMatch({teamA,scoreA,teamB,scoreB,onClick}){
           {i===1&&<div style={{height:1,background:T.border,margin:"3px 0"}}/>}
           <div style={{display:"flex",alignItems:"center",gap:5,height:26}}>
             <span style={{fontSize:12,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
-            <span style={{flex:1,fontSize:FS.small,fontWeight:win?600:400,color:win?T.orange:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            <span style={{fontSize:FS.small,fontWeight:700,color:win?T.orange:T.textSub,flexShrink:0}}>{score}</span>
+            <span style={{flex:1,fontSize:FS.small,fontWeight:win?700:400,color:win?winCol:loseCol,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+            <span style={{fontSize:FS.small,fontWeight:700,color:win?winCol:loseCol,flexShrink:0}}>{score}</span>
           </div>
         </div>
       ))}
@@ -1729,6 +1732,9 @@ function KnockoutBracket({scrollToMatch}){
   const Tile=({a,b,mk,accent=false})=>{
     const[sA,sB]=KO_SCORES[mk]||[1,0];
     const aW=sA>sB;
+    const OL=T.id==="orangeLion";
+    const winCol=OL?"#FFFFFF":T.orange;
+    const loseCol=OL?"rgba(255,255,255,0.62)":T.textSub;
     return(
       <div onClick={()=>scrollToMatch&&scrollToMatch(mk)}
         style={{background:T.card,
@@ -1742,12 +1748,12 @@ function KnockoutBracket({scrollToMatch}){
             borderTop:i?`1px solid ${T.border}`:"none"}}>
             <span style={{fontSize:12,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
             <span style={{flex:1,fontSize:FS.caption,fontWeight:w?700:400,
-              color:w?T.orange:T.textSub,
+              color:w?winCol:loseCol,
               overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
               {tName(team,lang)}
             </span>
             <span style={{fontSize:FS.caption,fontWeight:700,
-              color:w?T.orange:T.textSub,flexShrink:0,minWidth:12,textAlign:"right"}}>
+              color:w?winCol:loseCol,flexShrink:0,minWidth:12,textAlign:"right"}}>
               {s}
             </span>
           </div>
@@ -1853,11 +1859,11 @@ function KnockoutBracket({scrollToMatch}){
               borderTop:i?`1px solid ${T.border}`:"none"}}>
               <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[team]}</span>
               <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:400,
-                color:w?T.orange:T.textSub,
+                color:w?(T.id==="orangeLion"?"#FFFFFF":T.orange):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                 {tName(team,lang)}
               </span>
-              <span style={{fontSize:FS.small,fontWeight:700,color:w?T.orange:T.textSub,flexShrink:0}}>
+              <span style={{fontSize:FS.small,fontWeight:700,color:w?(T.id==="orangeLion"?"#FFFFFF":T.orange):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),flexShrink:0}}>
                 {s}
               </span>
             </div>
@@ -1865,7 +1871,7 @@ function KnockoutBracket({scrollToMatch}){
           <div style={{marginTop:6,paddingTop:5,borderTop:`1px solid ${T.border}`,
             display:"flex",alignItems:"center",gap:5}}>
             <span style={{fontSize:12}}>🏆</span>
-            <span style={{fontSize:FS.caption,fontWeight:700,color:T.orange}}>
+            <span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
               {tName(fWin,lang)}
             </span>
           </div>
@@ -3541,8 +3547,8 @@ function FBrefStatsSection(){
   const [limit,setLimit]=React.useState(10);
   const [natFilter,setNatFilter]=React.useState("");
   const [sortKey,setSortKey]=React.useState("ga90");  // ga90 | g90 | a90
-  const orange=T.id==="dark"?"#FF5500":"#E07000";
-  const blue=T.id==="dark"?"#909090":T.blue;
+  const orange=T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#FFFFFF":"#E07000");
+  const blue=T.id==="dark"?"#909090":(T.id==="orangeLion"?"rgba(255,255,255,0.78)":T.blue);
   const green=T.id==="dark"?"#3DBE6E":"#1E7A40";
   const posColor=(pos)=>{
     if(!pos) return T.textFaint;
@@ -3605,7 +3611,7 @@ function FBrefStatsSection(){
               return(
               <div key={h} onClick={sortable?()=>{setSortKey(keyFor);setLimit(l=>l);}:undefined}
                 style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
-                  color:active?orange:T.textFaint,textAlign:i>=3?"right":"left",
+                  color:active?(T.id==="orangeLion"?"#FFFFFF":orange):(T.id==="orangeLion"?"rgba(255,255,255,0.85)":T.textFaint),textAlign:i>=3?"right":"left",
                   cursor:sortable?"pointer":"default",userSelect:"none"}}>
                 {h}{active?" ↓":""}
               </div>
@@ -3784,7 +3790,45 @@ function PlayersTab(){
 }
 
 // ── APP ──────────────────────────────────────────────────────────────────────
+// ── APP LOADER (intro animation) ──────────────────────────────────────────────
+// Phase 0: orange background + white lion (animated in)
+// Phase 1: fade to black background + orange lion
+// Phase 2: fully black (lion fades out), then the loader unmounts to reveal the app
+function AppLoader({onDone}){
+  const [phase,setPhase]=React.useState(0);
+  React.useEffect(()=>{
+    const t1=setTimeout(()=>setPhase(1),1100);   // orange+white -> black+orange
+    const t2=setTimeout(()=>setPhase(2),2000);   // -> fully black (lion fades)
+    const t3=setTimeout(()=>onDone&&onDone(),2650); // reveal app
+    return()=>{clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);};
+  },[]);
+  const bg=phase===0?"#E85100":"#0D0D0D";
+  const lionColor=phase===0?"#FFFFFF":"#FF5500";
+  const lionOpacity=phase===2?0:1;
+  const lionScale=phase===0?1:(phase===1?1.04:0.9);
+  return(
+    <div style={{position:"fixed",inset:0,zIndex:9999,
+      background:bg,transition:"background 0.6s ease",
+      display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <style>{`
+        @keyframes lionIn{0%{opacity:0;transform:scale(0.7)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
+        @keyframes lionPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+      `}</style>
+      <div style={{
+        opacity:lionOpacity,
+        transform:`scale(${lionScale})`,
+        transition:"opacity 0.55s ease, transform 0.6s ease, color 0.6s ease",
+        animation:phase===0?"lionIn 0.9s ease both":"none",
+        display:"flex"}}>
+        <LionEmoji color={lionColor} size={108}/>
+      </div>
+    </div>
+  );
+}
+
+
 export default function App(){
+  const [loading,setLoading]=useState(true);
   const [lang,setLang]=useState("nl");
   const [theme,setTheme]=useState("default");
   const [tab,setTab]=useState("bracket");
@@ -3811,6 +3855,7 @@ export default function App(){
     <ThemeCtx.Provider value={T}>
     <LangCtx.Provider value={lang}>
     <NavCtx.Provider value={{setTab,setNationsOpen}}>
+      {loading&&<AppLoader onDone={()=>setLoading(false)}/>}
       <div style={{minHeight:"100vh",background:T.bg,fontSize:FS.body,color:T.text,overflowX:"hidden"}}>
         <style>{`*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}button{font-family:inherit;cursor:pointer;}`}</style>
         <Nav tab={tab} setTab={setTab}/>
