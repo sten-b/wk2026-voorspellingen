@@ -759,6 +759,12 @@ function fmtDate(iso,lang){
   const mn=(lang==="nl"?MON_NL:MON_EN)[d.getMonth()];
   return `${dn} ${d.getDate()} ${mn}`;
 }
+// Knockout round date windows (real WC2026 calendar), shown as text labels.
+const KO_DATE_LABEL={
+  QF:{nl:"9–11 jul",en:"9–11 Jul"},
+  SF:{nl:"14–15 jul",en:"14–15 Jul"},
+  FINAL:{nl:"zo 19 jul",en:"Sun 19 Jul"},
+};
 
 const OUTLOOK = {
   over:[
@@ -1428,7 +1434,7 @@ function ThemeToggle({theme,setTheme}){
     orangeLion:[
       {bg:ORANGE,icon:WHITE},   // white ball, orange bg
       {bg:BLACK, icon:ORANGE},  // orange Lion, black bg
-      {bg:WHITE, icon:ORANGE},  // orange Lion, white bg
+      {bg:ORANGE,icon:WHITE},   // white Lion, orange bg (active/default state of orange mode)
     ],
   };
   const active=M[theme]||M.default;
@@ -1469,9 +1475,9 @@ function DataTabButton({onOpen,active}){
   const lang=useLang();
   const [anim,setAnim]=React.useState(false);
   // Per-theme colors for the icon + frame.
-  const iconCol=T.id==="orangeLion"?"#0D0D0D":(T.id==="dark"?"#FF5500":"#E07000");
+  const iconCol=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
   const frameBorder=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
-  const bg=active?(T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)")):"transparent";
+  const bg=active?(T.id==="orangeLion"?"rgba(255,255,255,0.22)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)")):"transparent";
   const handle=(e)=>{e.stopPropagation();setAnim(true);setTimeout(()=>setAnim(false),520);onOpen&&onOpen();};
   // three analytics bars that bounce on click
   const bars=[{x:5,h:8,d:0},{x:10.5,h:13,d:0.06},{x:16,h:5,d:0.12}];
@@ -1765,6 +1771,7 @@ function FinalExplainer({openMatches,toggleMatch}){
         <Chevron open={fo} color={T.orange}/>
       </div>
       {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
+        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>{KO_DATE_LABEL.FINAL[lang]} · MetLife Stadium</div>
         <span style={{fontWeight:600,color:T.text}}>{tName(FINAL_TEAMS[0],lang)} {fsA}–{fsB} {tName(FINAL_TEAMS[1],lang)}.{" "}</span>
         {fe}
       </div>}
@@ -1773,7 +1780,7 @@ function FinalExplainer({openMatches,toggleMatch}){
 }
 
 // ── KO CARD ───────────────────────────────────────────────────────────────────
-function KOCard({a,b,openMatches,toggleMatch}){
+function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
   const T=useTheme();
   const lang=useLang();
   const tr=useT();
@@ -1784,16 +1791,22 @@ function KOCard({a,b,openMatches,toggleMatch}){
   const isOpen=openMatches?.[key];
   return(
     <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:`2px solid ${T.blue}`,borderRadius:4,overflow:"hidden"}}>
-      {[{team:a,score:sA,win:aW},{team:b,score:sB,win:!aW}].map(({team,score,win},i)=>(
+      {[{team:a,score:sA,win:aW},{team:b,score:sB,win:!aW}].map(({team,score,win},i)=>{
+        const OL=T.id==="orangeLion";
+        const winCol=OL?"#0D0D0D":T.orange;
+        const nameWin=OL?"#0D0D0D":T.text;
+        const nameLose=OL?"rgba(13,13,13,0.6)":T.textSub;
+        return(
         <div key={team}>
           {i===1&&<div style={{height:1,background:T.border}}/>}
           <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:win?T.orangeFaint:"transparent"}}>
             <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-            <span style={{flex:1,fontSize:FS.body,fontWeight:win?600:400,color:win?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            <span style={{fontSize:FS.h2,fontWeight:700,color:win?T.orange:T.textSub,flexShrink:0}}>{score}</span>
+            <span style={{flex:1,fontSize:FS.body,fontWeight:win?600:400,color:win?nameWin:nameLose,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+            <span style={{fontSize:FS.h2,fontWeight:700,color:win?winCol:nameLose,flexShrink:0}}>{score}</span>
           </div>
         </div>
-      ))}
+        );
+      })}
       {expl&&(
         <div onClick={()=>toggleMatch?.(key)} style={{borderTop:`1px solid ${T.border}`,padding:"5px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",background:isOpen?T.orangeFaint:T.bg}}>
           <span style={{fontSize:FS.small,color:T.id==="orangeLion"?"#0D0D0D":T.orange,fontWeight:600}}>{tr.whyScore}</span>
@@ -1802,6 +1815,7 @@ function KOCard({a,b,openMatches,toggleMatch}){
       )}
       {isOpen&&expl&&(
         <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
+          {dateLabel&&<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>{dateLabel}</div>}
           <span style={{fontWeight:600,color:T.text}}>{tName(a,lang)} {sA}–{sB} {tName(b,lang)}.{" "}</span>
 
           {expl}
@@ -1817,8 +1831,9 @@ function BracketMatch({teamA,scoreA,teamB,scoreB,onClick}){
   const lang=useLang();
   const aW=scoreA>scoreB;
   const OL=T.id==="orangeLion";
-  const winCol=OL?"#FFFFFF":T.orange;
-  const loseCol=OL?"rgba(255,255,255,0.62)":T.textSub;
+  // Orange mode: orange card bg washes out white/orange text, so use dark high-contrast.
+  const winCol=OL?"#0D0D0D":T.orange;
+  const loseCol=OL?"rgba(13,13,13,0.55)":T.textSub;
   return(
     <div onClick={onClick} style={{background:T.card,border:`1px solid ${onClick?T.orange:T.border}`,borderTop:`2px solid ${T.blue}`,borderRadius:4,padding:"5px 7px",minWidth:0,cursor:onClick?"pointer":"default",transition:"border-color 0.15s"}}>
       {[{team:teamA,score:scoreA,win:aW},{team:teamB,score:scoreB,win:!aW}].map(({team,score,win},i)=>(
@@ -1847,8 +1862,8 @@ function KnockoutBracket({scrollToMatch}){
     const[sA,sB]=KO_SCORES[mk]||[1,0];
     const aW=sA>sB;
     const OL=T.id==="orangeLion";
-    const winCol=OL?"#FFFFFF":T.orange;
-    const loseCol=OL?"rgba(255,255,255,0.62)":T.textSub;
+    const winCol=OL?"#0D0D0D":T.orange;
+    const loseCol=OL?"rgba(13,13,13,0.55)":T.textSub;
     return(
       <div onClick={()=>scrollToMatch&&scrollToMatch(mk)}
         style={{background:T.card,
@@ -3862,6 +3877,7 @@ function PlayersTab(){
       {/* ═══ NATIONS ═══ */}
       {view==="nations"&&(
         <div>
+          <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,margin:"2px 0 10px",letterSpacing:-0.5}}>{lang==="nl"?"Landen":"Nations"}</h2>
           <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:14,paddingLeft:2}}>
             {lang==="nl"?"Per land het profiel, de vorm en de modelrang — gesorteerd op modelsterkte.":"Per nation: profile, form and model rank — sorted by model strength."}
           </div>
@@ -3871,6 +3887,8 @@ function PlayersTab(){
 
       {/* ═══ PLAYERS (player data) ═══ */}
       {view==="players"&&(<React.Fragment>
+
+      <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,margin:"2px 0 12px",letterSpacing:-0.5}}>{lang==="nl"?"Spelers":"Players"}</h2>
 
       {/* Spotlight — star champion card on top */}
       <ChampionCard p={SPOTLIGHT[0]}
@@ -3921,6 +3939,8 @@ function PlayersTab(){
 
       {/* ═══ FPL-TEAM (the fantasy XI) ═══ */}
       {view==="fpl"&&(<React.Fragment>
+
+      <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,margin:"2px 0 12px",letterSpacing:-0.5}}>{lang==="nl"?"FPL-team":"FPL team"}</h2>
 
       {/* Best XI */}
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
@@ -4228,13 +4248,13 @@ export default function App(){
                       <div style={{fontSize:FS.h2,fontWeight:700,color:T.text}}>{tr.knockoutTitle}</div>
                     </div>
                     <KnockoutBracket scrollToMatch={scrollToMatch}/>
-                    {[{label:tr.qf,rounds:QF},{label:tr.sf,rounds:SF}].map(({label,rounds})=>(
+                    {[{label:tr.qf,rounds:QF,dk:"QF"},{label:tr.sf,rounds:SF,dk:"SF"}].map(({label,rounds,dk})=>(
                       <div key={label} style={{marginBottom:14}}>
-                        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label}</div>
+                        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label} · {KO_DATE_LABEL[dk][lang]}</div>
                         <div style={{display:"flex",flexDirection:"column",gap:8}}>
                           {rounds.map(([a,b])=>(
                             <div key={`${a}-${b}`} ref={el=>koCardRefs.current[`${a}-${b}`]=el}>
-                              <KOCard a={a} b={b} openMatches={openMatches} toggleMatch={toggleMatch}/>
+                              <KOCard a={a} b={b} openMatches={openMatches} toggleMatch={toggleMatch} dateLabel={KO_DATE_LABEL[dk][lang]}/>
                             </div>
                           ))}
                         </div>
