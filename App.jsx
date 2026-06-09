@@ -2837,14 +2837,19 @@ function ModelViz(){
     flame:  "M12 2c1 4-2 5-2 8a4 4 0 008 0c0-2-1-3-1-5 2 1 4 4 4 7a7 7 0 01-14 0c0-4 3-6 5-10z",
   };
 
-  const SL=(text,icon)=>(
-    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,
-      paddingBottom:5,borderBottom:`2px solid ${T.border}`}}>
-      {icon&&<Icon d={IC[icon]} size={12} color={T.textSub}/>}
-      <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,
-        textTransform:"uppercase",color:T.textSub}}>{text}</span>
-    </div>
-  );
+  const SL=(text,icon)=>{
+    // "Stap 1 · Title" → split into step tag + title for a cleaner modern header
+    const parts=String(text).split(" · ");
+    const tag=parts.length>1?parts[0]:null;
+    const title=parts.length>1?parts.slice(1).join(" · "):text;
+    return(
+      <div style={{display:"flex",alignItems:"baseline",gap:8,marginTop:24,marginBottom:12}}>
+        {tag&&<span style={{fontSize:FS.micro,fontWeight:800,letterSpacing:1.5,textTransform:"uppercase",
+          color:orange,flexShrink:0}}>{tag}</span>}
+        <span style={{fontSize:FS.h2,fontWeight:800,color:T.text,letterSpacing:-0.3,lineHeight:1.1}}>{title}</span>
+      </div>
+    );
+  };
 
   // Factors — all share the secondary (blue) accent. The % is the differentiator, not colour.
   const FACTORS=[
@@ -2905,28 +2910,32 @@ function ModelViz(){
   return(
     <React.Fragment>
 
-      {/* OVERVIEW — how the model works, one line each */}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,
-        borderLeft:`3px solid ${orange}`,borderRadius:6,padding:"12px 13px",marginBottom:16}}>
-        <div style={{fontSize:FS.body,fontWeight:700,color:T.text,marginBottom:8}}>
+      {/* OVERVIEW — clean minimalist pipeline header */}
+      <div style={{marginBottom:20}}>
+        <div style={{fontSize:FS.display,fontWeight:800,color:T.text,letterSpacing:-0.5,marginBottom:6}}>
           {lang==="nl"?"Zo werkt het model":"How the model works"}
         </div>
-        {[
-          {n:"1",c:blue,t:lang==="nl"?"Sterktescore":"Strength score",
-           d:lang==="nl"?"één score uit vijf factoren bepaalt wie wint en de marge":"one score from five factors decides the winner and margin"},
-          {n:"2",c:orange,t:lang==="nl"?"Uitslag":"Scoreline",
-           d:lang==="nl"?"xG en xGc vullen de hoogte van de uitslag in":"xG and xGc fill in the height of the scoreline"},
-        ].map((s,i)=>(
-          <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginTop:i>0?10:0}}>
-            <div style={{width:20,height:20,borderRadius:"50%",background:s.c,color:T.id==="dark"?"#000":"#fff",
-              fontSize:FS.small,fontWeight:800,flexShrink:0,display:"flex",alignItems:"center",
-              justifyContent:"center",marginTop:1}}>{s.n}</div>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:FS.small,fontWeight:700,color:T.text,lineHeight:1.3}}>{s.t}</div>
-              <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.4,marginTop:1}}>{s.d}</div>
+        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:16,maxWidth:520}}>
+          {lang==="nl"
+            ?"Vijf gewogen factoren vormen één sterktescore per land. Het verschil tussen twee scores bepaalt wie wint en met welke marge; xG en xGc bepalen de hoogte van de uitslag. Alles volgt direct uit de data, zonder handmatige correcties."
+            :"Five weighted factors form one strength score per country. The gap between two scores decides who wins and by what margin; xG and xGc set the height of the scoreline. Everything follows directly from the data, with no manual corrections."}
+        </div>
+        {/* compact step flow */}
+        <div style={{display:"flex",alignItems:"stretch",gap:0,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
+          {[
+            {n:"1",t:lang==="nl"?"Factoren":"Factors"},
+            {n:"2",t:lang==="nl"?"Score":"Score"},
+            {n:"3",t:lang==="nl"?"Ranglijst":"Ranking"},
+            {n:"4",t:lang==="nl"?"Uitslag":"Result"},
+            {n:"5",t:lang==="nl"?"Titelkans":"Odds"},
+          ].map((s,i)=>(
+            <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,
+              padding:"9px 2px",borderLeft:i>0?`1px solid ${T.border}`:"none",background:T.card}}>
+              <span style={{fontSize:FS.micro,fontWeight:800,color:orange,lineHeight:1}}>{s.n}</span>
+              <span style={{fontSize:FS.micro,fontWeight:600,color:T.textSub,textAlign:"center",lineHeight:1.2,letterSpacing:0.2}}>{s.t}</span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* STEP 1 — FACTORS (collapsed: label + weight; tap to expand) */}
@@ -2986,18 +2995,19 @@ function ModelViz(){
           const fd=MODEL_DATA[exTeam];
           if(!fd) return null;
           const coachSc=(COACH_SCORE[exTeam]!==undefined)?COACH_SCORE[exTeam]:fd.coach;
+          const squadSc=(SQUAD_QUALITY[exTeam]!==undefined?SQUAD_QUALITY[exTeam]:fd.svN);
           const rows=[
-            {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round((SQUAD_QUALITY[exTeam]!==undefined?SQUAD_QUALITY[exTeam]:fd.svN)),w:10,contrib:(SQUAD_QUALITY[exTeam]!==undefined?SQUAD_QUALITY[exTeam]:fd.svN)*WEIGHTS.squadQuality},
-            {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
-            {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
-            {lab:"Coach",val:Math.round(coachSc),w:5,contrib:coachSc*WEIGHTS.coach},
-          ];
-          const total=COMPOSITE[exTeam];
+            {lab:"Elo",sc:fd.eloN,w:70},
+            {lab:lang==="nl"?"Selectie":"Squad",sc:squadSc,w:10},
+            {lab:lang==="nl"?"Vorm":"Form",sc:(fd.formN||0),w:10},
+            {lab:lang==="nl"?"Ervaring":"Experience",sc:fd.exp,w:5},
+            {lab:"Coach",sc:coachSc,w:5},
+          ].map(r=>({...r,val:+r.sc.toFixed(1),contrib:r.sc*(r.w/100)}));
+          const total=rows.reduce((s,r)=>s+ +r.contrib.toFixed(1),0);
           return(
             <div style={{border:`1px solid ${T.border}`,borderRadius:5,overflow:"hidden"}}>
               {/* column legend */}
-              <div style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,padding:"7px 10px",
+              <div style={{display:"grid",gridTemplateColumns:"1fr 38px 10px 34px 10px 40px",alignItems:"center",gap:4,padding:"7px 10px",
                 background:T.bg,borderBottom:`1px solid ${T.border}`,
                 fontSize:FS.micro,fontWeight:700,letterSpacing:0,textTransform:"uppercase",
                 color:T.textFaint}}>
@@ -3009,14 +3019,14 @@ function ModelViz(){
                 <span style={{textAlign:"right"}}>{lang==="nl"?"bijdr.":"share"}</span>
               </div>
               {rows.map((r,i)=>(
-                <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 28px 10px 34px 10px 40px",alignItems:"center",gap:4,
+                <div key={i} style={{display:"grid",gridTemplateColumns:"1fr 38px 10px 34px 10px 40px",alignItems:"center",gap:4,
                   padding:"7px 10px",borderTop:i>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
                   <span style={{fontWeight:600,color:T.text}}>{r.lab}</span>
-                  <span style={{fontWeight:400,color:T.textSub,textAlign:"right"}}>{r.val}</span>
+                  <span style={{fontWeight:400,color:T.textSub,textAlign:"right"}}>{r.val.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                   <span style={{color:T.textFaint,textAlign:"center"}}>×</span>
                   <span style={{fontWeight:400,color:T.textSub,textAlign:"right"}}>{r.w}%</span>
                   <span style={{color:T.textFaint,textAlign:"center"}}>=</span>
-                  <span style={{fontWeight:700,color:T.text,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+                  <span style={{fontWeight:700,color:T.text,textAlign:"right"}}>{r.contrib.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                 </div>
               ))}
               {/* Coach provenance — makes the 5% coach factor traceable */}
@@ -3056,12 +3066,12 @@ function ModelViz(){
           const fd=MODEL_DATA[t.t];
           const isOpen=openRank===i;
           const rows=fd?[
-            {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round((SQUAD_QUALITY[t.t]!==undefined?SQUAD_QUALITY[t.t]:fd.svN)),w:10,contrib:(SQUAD_QUALITY[t.t]!==undefined?SQUAD_QUALITY[t.t]:fd.svN)*WEIGHTS.squadQuality},
-            {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
-            {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
-            {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
-          ]:[];
+            {lab:"Elo",sc:fd.eloN,w:70},
+            {lab:lang==="nl"?"Selectie":"Squad",sc:(SQUAD_QUALITY[t.t]!==undefined?SQUAD_QUALITY[t.t]:fd.svN),w:10},
+            {lab:lang==="nl"?"Vorm":"Form",sc:(fd.formN||0),w:10},
+            {lab:lang==="nl"?"Ervaring":"Experience",sc:fd.exp,w:5},
+            {lab:"Coach",sc:(COACH_SCORE[t.t]!==undefined?COACH_SCORE[t.t]:fd.coach),w:5},
+          ].map(r=>({...r,val:+r.sc.toFixed(1),contrib:r.sc*(r.w/100)})):[];
           return(
             <div key={t.t} style={{marginBottom:i<7?8:0}}>
               <div onClick={()=>setOpenRank(isOpen?null:i)}
@@ -3084,17 +3094,17 @@ function ModelViz(){
                     <div key={j} style={{display:"flex",alignItems:"center",gap:6,
                       padding:"5px 0",borderTop:j>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
                       <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
-                      <span style={{fontWeight:400,color:T.textSub,minWidth:24,textAlign:"right"}}>{r.val}</span>
+                      <span style={{fontWeight:400,color:T.textSub,minWidth:30,textAlign:"right"}}>{r.val.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
                       <span style={{fontWeight:400,color:T.textSub,minWidth:24,textAlign:"right"}}>{r.w}%</span>
                       <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
-                      <span style={{fontWeight:700,color:T.text,minWidth:30,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
+                      <span style={{fontWeight:700,color:T.text,minWidth:30,textAlign:"right"}}>{r.contrib.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                     </div>
                   ))}
                   <div style={{display:"flex",alignItems:"center",marginTop:5,paddingTop:6,
                     borderTop:`2px solid ${T.border}`}}>
                     <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Sterktescore":"Strength score"}</span>
-                    <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{t.sc.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
+                    <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{rows.reduce((s,r)=>s+ +r.contrib.toFixed(1),0).toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                   </div>
                 </div>
               )}
