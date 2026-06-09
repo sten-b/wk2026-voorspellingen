@@ -2664,7 +2664,7 @@ function ModelViz(){
   );
   const IC={
     clock:  "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-    users:  "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 7a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75",
+    users:  "M19 20a7 7 0 00-14 0M12 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z",
     trend:  "M3 3v18h18M7 16l4-4 4 4 4-4",
     trophy: "M8 21h8M12 17v4M5 3h14l-1 7a6 6 0 01-12 0L5 3zM3 7h18",
     coach:  "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
@@ -3482,11 +3482,11 @@ function FBrefStatsSection(){
     <React.Fragment>
       {/* WC Players table */}
       <div style={{marginTop:28}}>
-        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12}}>
+        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12,paddingLeft:13}}>
           {lang==="nl"?"xGA per 90":"xGA per 90"}
         </div>
         {/* Nation filter */}
-        <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap"}}>
+        <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap",paddingLeft:13}}>
           <span style={{fontSize:FS.caption,color:T.textSub}}>{lang==="nl"?"Land:":"Nation:"}</span>
           <select value={natFilter} onChange={e=>{setNatFilter(e.target.value);setLimit(10);}}
             style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:4,border:`1px solid ${T.border}`,
@@ -3533,7 +3533,7 @@ function FBrefStatsSection(){
       </div>
       {/* Missed out */}
       <div style={{marginTop:28}}>
-        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12}}>
+        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12,paddingLeft:13}}>
           {lang==="nl"?"Grote afwezigen":"Notable absentees"}
         </div>
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
@@ -3570,28 +3570,14 @@ function PlayersTab(){
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   return(
     <div>
-      {/* Featured star — champion card attached to a subtle foldout */}
-      <ChampionCard p={SPOTLIGHT[0]}/>
-      <div onClick={()=>setSpotlightMore(o=>!o)}
-        style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
-          background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
-          borderBottomLeftRadius:spotlightMore?0:8,borderBottomRightRadius:spotlightMore?0:8,
-          padding:"9px 13px",marginBottom:spotlightMore?0:24}}>
-        <Chevron open={spotlightMore} color={T.textSub}/>
-        <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
-          {lang==="nl"?"Bekijk top 10":"View top 10"}
+      {/* Onder de radar (was Talenten) — placed above the spotlight */}
+      <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:10,paddingLeft:13}}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={T.textSub} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <span style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub}}>
+          {lang==="nl"?"Onder de Radar":"Under the Radar"}
         </span>
-      </div>
-      {spotlightMore&&(
-        <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
-          borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
-          {SPOTLIGHT.slice(1).map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
-        </div>
-      )}
-
-      {/* Talents */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:10}}>
-        {lang==="nl"?"Talenten":"Talents"}
       </div>
       <ChampionCard p={DARK_HORSES[0]}/>
       <div onClick={()=>setDarkMore(o=>!o)}
@@ -3611,11 +3597,38 @@ function PlayersTab(){
         </div>
       )}
 
+      {/* Spotlight — featured star champion card attached to a subtle foldout */}
+      <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:10,paddingLeft:13}}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill={T.textSub} stroke="none" style={{flexShrink:0}}>
+          <path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/>
+        </svg>
+        <span style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub}}>
+          {lang==="nl"?"Sterspelers":"Spotlight"}
+        </span>
+      </div>
+      <ChampionCard p={SPOTLIGHT[0]}/>
+      <div onClick={()=>setSpotlightMore(o=>!o)}
+        style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
+          background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:spotlightMore?0:8,borderBottomRightRadius:spotlightMore?0:8,
+          padding:"9px 13px",marginBottom:spotlightMore?0:24}}>
+        <Chevron open={spotlightMore} color={T.textSub}/>
+        <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
+          {lang==="nl"?"Bekijk top 10":"View top 10"}
+        </span>
+      </div>
+      {spotlightMore&&(
+        <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
+          {SPOTLIGHT.slice(1).map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
+        </div>
+      )}
+
       {/* Best XI */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10}}>
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
         {lang==="nl"?"Beste Elftal van het Toernooi":"Tournament Best XI"}
       </div>
-      <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
+      <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap",paddingLeft:13}}>
         <span style={{fontSize:FS.caption,fontWeight:700,color:T.green}}>{lang==="nl"?"xG = verwachte doelpunten":"xG = expected goals"}</span>
         <span style={{fontSize:FS.caption,fontWeight:700,color:T.blue}}>{lang==="nl"?"xA = verwachte assists":"xA = expected assists"}</span>
       </div>
