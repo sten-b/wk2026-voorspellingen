@@ -3859,65 +3859,79 @@ function InjuriesSection(){
   );
 }
 
+// ── TOP-12 PLAYERS BY TRANSFER VALUE (verified WC2026 selections) ─────────────
+// Stats: 2025/26 domestic league. npxG/90 & xA/90 from FBref/FootyStats, MP domestic league,
+// WS = WhoScored season average rating. All figures real & source-traceable.
+const PLAYERS_TOP12=[
+{"r":1,"name":"Lamine Yamal","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Barcelona","comp":"La Liga","mp":28,"npxg90":0.59,"xa90":0.44,"ws":8.2,"val":"€200m"},
+{"r":2,"name":"Michael Olise","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Bayern Munich","comp":"Bundesliga","mp":32,"npxg90":0.6,"xa90":0.64,"ws":7.8,"val":"€185m"},
+{"r":3,"name":"Erling Haaland","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"FW","squad":"Man City","comp":"Premier League","mp":35,"npxg90":0.63,"xa90":0.19,"ws":7.5,"val":"€180m"},
+{"r":4,"name":"Kylian Mbappé","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":31,"npxg90":0.7,"xa90":0.26,"ws":7.7,"val":"€180m"},
+{"r":5,"name":"Jude Bellingham","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Real Madrid","comp":"La Liga","mp":28,"npxg90":0.4,"xa90":0.27,"ws":7.2,"val":"€160m"},
+{"r":6,"name":"Vinícius Júnior","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":36,"npxg90":0.47,"xa90":0.24,"ws":7.3,"val":"€150m"},
+{"r":7,"name":"Pedri","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","comp":"La Liga","mp":29,"npxg90":0.12,"xa90":0.51,"ws":7.2,"val":"€140m"},
+{"r":8,"name":"Florian Wirtz","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.29,"xa90":0.26,"ws":6.85,"val":"€140m"},
+{"r":9,"name":"Alexander Isak","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":14,"npxg90":0.29,"xa90":0.1,"ws":6.32,"val":"€120m"},
+{"r":10,"name":"Harry Kane","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Bayern Munich","comp":"Bundesliga","mp":31,"npxg90":0.64,"xa90":0.22,"ws":8.1,"val":"€100m"},
+{"r":11,"name":"Vitinha","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Paris S-G","comp":"Ligue 1","mp":29,"npxg90":0.13,"xa90":0.3,"ws":7.1,"val":"€90m"},
+{"r":12,"name":"Pau Cubarsí","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"DF","squad":"Barcelona","comp":"La Liga","mp":29,"npxg90":0.02,"xa90":0.0,"ws":6.9,"val":"€90m"},
+];
+
 // ── FBREF STATS SECTION COMPONENT ────────────────────────────────────────────
 function FBrefStatsSection(){
   const T=useTheme();
   const lang=useLang();
-  const [limit,setLimit]=React.useState(10);
-  const [natFilter,setNatFilter]=React.useState("");
-  const [sortKey,setSortKey]=React.useState("ga90");  // ga90 | g90 | a90
+  const [sortKey,setSortKey]=React.useState("val");  // val | mp | npxg90 | xa90 | ws
   const orange=T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#FFFFFF":"#E07000");
   const blue=T.id==="dark"?"#909090":(T.id==="orangeLion"?"rgba(255,255,255,0.78)":T.blue);
   const green=T.id==="dark"?"#3DBE6E":"#1E7A40";
+  const gold=T.id==="orangeLion"?"#FFE08A":(T.id==="dark"?"#E8B84B":"#B8860B");
   const posColor=(pos)=>{
     if(!pos) return T.textFaint;
     const p=pos.split(",")[0];
     if(p==="FW") return orange; if(p==="MF") return blue; if(p==="DF") return green;
     return T.textFaint;
   };
-  const nations=[...new Set(FBREF_WC.map(p=>p.country))].sort();
-  const base=natFilter?FBREF_WC.filter(p=>p.country===natFilter):FBREF_WC;
-  const filtered=[...base].sort((a,b)=>b[sortKey]-a[sortKey]);
-  const visible=filtered.slice(0,limit);
-  const COLS="1fr 24px 54px 38px 38px 44px";
+  const valNum=(p)=>parseInt(String(p.val).replace(/[^0-9]/g,""),10);
+  const sorted=[...PLAYERS_TOP12].sort((a,b)=>{
+    if(sortKey==="val") return valNum(b)-valNum(a);
+    return b[sortKey]-a[sortKey];
+  });
+  const COLS="20px 1fr 26px 30px 42px 42px 38px";
   const HDR=lang==="nl"
-    ?["Speler","Pos","Club","G/90","A/90","G+A/90"]
-    :["Player","Pos","Club","G/90","A/90","G+A/90"];
-  const Row=({p,rank,accentColor})=>(
-    <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"7px 12px",
+    ?["#","Speler","Pos","Wed","npxG","xA","WS"]
+    :["#","Player","Pos","MP","npxG","xA","WS"];
+  const Row=({p,rank})=>(
+    <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"8px 12px",
       borderBottom:`1px solid ${T.border}`,alignItems:"center"}}>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,color:T.textFaint,textAlign:"left"}}>{rank}</div>
       <div style={{minWidth:0,display:"flex",alignItems:"center",gap:8}}>
         <span style={{fontSize:17,lineHeight:1,flexShrink:0}}>{p.flag}</span>
-        <span style={{fontSize:FS.small,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</span>
+        <div style={{minWidth:0}}>
+          <div style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+          <div style={{fontSize:FS.micro,color:T.textFaint,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.squad} · {p.val}</div>
+        </div>
       </div>
       <div>
         <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:posColor(p.pos),background:`${posColor(p.pos)}18`,borderRadius:3,padding:"1px 4px"}}>{p.pos}</span>
       </div>
-      <div style={{fontSize:FS.caption,color:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.squad}</div>
-      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:orange,textAlign:"right"}}>{p.g90.toFixed(2)}</div>
-      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:blue,textAlign:"right"}}>{p.a90.toFixed(2)}</div>
-      <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:accentColor||T.text,textAlign:"right"}}>{p.ga90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub,textAlign:"right"}}>{p.mp}</div>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:orange,textAlign:"right"}}>{p.npxg90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:blue,textAlign:"right"}}>{p.xa90.toFixed(2)}</div>
+      <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:gold,textAlign:"right"}}>{p.ws.toFixed(2)}</div>
     </div>
   );
   return(
     <React.Fragment>
-      {/* WC Players table */}
+      {/* Top 12 by transfer value */}
       <div>
-        <div style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12,paddingLeft:13}}>
-          {lang==="nl"?"Spelerstatistieken":"Player stats"}
+        <div style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:4,paddingLeft:13}}>
+          {lang==="nl"?"Top 12 op marktwaarde":"Top 12 by market value"}
         </div>
-        {/* Nation filter */}
-        <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap",paddingLeft:13}}>
-          <span style={{fontSize:FS.caption,color:T.textSub}}>{lang==="nl"?"Land:":"Nation:"}</span>
-          <select value={natFilter} onChange={e=>{setNatFilter(e.target.value);setLimit(10);}}
-            style={{fontSize:FS.caption,padding:"3px 8px",borderRadius:4,border:`1px solid ${T.border}`,
-              background:T.card,color:T.text}}>
-            <option value="">{lang==="nl"?"Alle landen":"All nations"} ({FBREF_WC.length})</option>
-            {nations.map(n=>(<option key={n} value={n}>{n}</option>))}
-          </select>
-          {natFilter&&(<span style={{fontSize:FS.caption,color:T.textFaint}}>
-            {filtered.length} {lang==="nl"?"spelers":"players"}
-          </span>)}
+        <div style={{fontSize:FS.caption,color:T.textFaint,marginBottom:12,paddingLeft:13,paddingRight:13,lineHeight:1.5}}>
+          {lang==="nl"
+            ?"Geselecteerd voor het WK 2026, gerangschikt op transferwaarde. Cijfers: seizoen 2025/26 (competitie). npxG/90 en xA/90 via FBref/FootyStats, WS = WhoScored-seizoensrating."
+            :"WC 2026 selections, ranked by transfer value. Figures: 2025/26 league season. npxG/90 and xA/90 via FBref/FootyStats, WS = WhoScored season rating."}
         </div>
         {/* Table */}
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:8}}>
@@ -3925,11 +3939,11 @@ function FBrefStatsSection(){
             borderBottom:`2px solid ${T.border}`,background:T.id==="dark"?"#161616":T.bg}}>
             {HDR.map((h,i)=>{
               const sortable=i>=3;
-              const keyFor=["","","","g90","a90","ga90"][i];
+              const keyFor=["","","","mp","npxg90","xa90","ws"][i];
               const active=sortable&&sortKey===keyFor;
               return(
-              <div key={h} onClick={sortable?()=>{setSortKey(keyFor);setLimit(l=>l);}:undefined}
-                style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",
+              <div key={h} onClick={sortable?()=>setSortKey(keyFor):undefined}
+                style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.3,textTransform:"uppercase",
                   color:active?(T.id==="orangeLion"?"#FFFFFF":orange):(T.id==="orangeLion"?"rgba(255,255,255,0.85)":T.textFaint),textAlign:i>=3?"right":"left",
                   cursor:sortable?"pointer":"default",userSelect:"none"}}>
                 {h}{active?" ↓":""}
@@ -3937,19 +3951,12 @@ function FBrefStatsSection(){
               );
             })}
           </div>
-          {visible.map((p,i)=>(<Row key={p.name+i} p={p} rank={i+1}/>))}
+          {sorted.map((p,i)=>(<Row key={p.name} p={p} rank={i+1}/>))}
         </div>
-        {/* Expand */}
-        <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap",justifyContent:"center"}}>
-          {[{n:10,lab:"Top 10"},{n:50,lab:"Top 50"},{n:FBREF_WC.length,lab:lang==="nl"?"Alle":"All"}].map(({n,lab})=>(
-            <button key={lab} onClick={()=>setLimit(n)}
-              style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:4,cursor:"pointer",
-                border:`1px solid ${limit===n?orange:T.border}`,
-                background:limit===n?orange:"transparent",
-                color:limit===n?"#fff":T.textSub}}>
-              {lab}
-            </button>
-          ))}
+        <div style={{fontSize:FS.micro,color:T.textFaint,marginBottom:20,paddingLeft:13,paddingRight:13,lineHeight:1.5}}>
+          {lang==="nl"
+            ?"Tik op npxG, xA of WS om te sorteren. npxG = verwachte goals zonder penalty's. Verdedigers (zoals Cubarsí) hebben logischerwijs lage aanvallende cijfers."
+            :"Tap npxG, xA or WS to sort. npxG = non-penalty expected goals. Defenders (like Cubarsí) naturally post low attacking figures."}
         </div>
       </div>
       {/* Missed out */}
