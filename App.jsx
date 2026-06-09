@@ -1508,9 +1508,9 @@ function Nav({tab,setTab}){
   const lang=useLang();
   const tr=useT();
   const tabs=[
+    {id:"players",label:"WK2026"},
     {id:"bracket",label:tr.tabs.bracket},
     {id:"knockout",label:tr.tabs.knockout},
-    {id:"players",label:tr.tabs.players},
   ];
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
@@ -1548,6 +1548,10 @@ function Nav({tab,setTab}){
           }}>{t.label}</button>
           );
         })}
+        {/* Model icon — pinned top-right */}
+        <div style={{marginLeft:"auto",display:"flex",alignItems:"center",flexShrink:0}}>
+          <DataTabButton active={tab==="model"} onOpen={()=>setTab("model")}/>
+        </div>
       </div>
     </div>
   );
@@ -1618,8 +1622,10 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       {/* Header — toggles the whole group */}
       <div onClick={()=>setOpenGroup(expanded?null:g.id)}
         style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:expanded?T.orangeFaint:T.card,cursor:"pointer"}}>
-        <div style={{width:26,height:26,borderRadius:4,background:OL?"#F0EDE9":T.blue,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-          <span style={{color:OL?"#1A1208":"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
+        <div style={{width:24,height:24,borderRadius:6,flexShrink:0,
+          display:"flex",alignItems:"center",justifyContent:"center",
+          background:OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}}>
+          <span style={{color:OL?"#E85100":"#FFFFFF",fontSize:FS.small,fontWeight:800,letterSpacing:0,lineHeight:1}}>{g.id}</span>
         </div>
         <div style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text,lineHeight:1,whiteSpace:"nowrap"}}>
           {lang==="nl"?"Groep":"Group"} {g.id}
@@ -4100,7 +4106,7 @@ export default function App(){
   const [loading,setLoading]=useState(true);
   const [lang,setLang]=useState("nl");
   const [theme,setTheme]=useState("default");
-  const [tab,setTab]=useState("bracket");
+  const [tab,setTab]=useState("players");
   const [newsOpen,setNewsOpen]=useState(false);
   const [injuriesOpen,setInjuriesOpen]=useState(false);
   const [srcOpen,setSrcOpen]=useState(false);
@@ -4437,9 +4443,6 @@ export default function App(){
             <div style={{fontSize:FS.small,fontWeight:600,color:T.text}}>Sten Bossong</div>
             <div style={{fontSize:FS.caption,color:T.textSub}}>{tr.footerSub}</div>
           </div>
-
-          {/* Model tab (data icon) */}
-          <DataTabButton active={tab==="model"} onOpen={()=>setTab("model")}/>
 
           {/* Theme toggle */}
           <ThemeToggle theme={theme} setTheme={setTheme}/>
