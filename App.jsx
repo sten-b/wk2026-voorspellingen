@@ -3921,9 +3921,6 @@ function PlayersTab(){
 
       {/* ═══ FPL-TEAM (the fantasy XI) ═══ */}
       {view==="fpl"&&(<React.Fragment>
-      <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:14,paddingLeft:2}}>
-        {lang==="nl"?"Een fantasy-opstelling op basis van clubvorm en het verwachte toernooipad — geen modeloutput.":"A fantasy line-up based on club form and expected tournament path — not model output."}
-      </div>
 
       {/* Best XI */}
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
