@@ -3188,6 +3188,49 @@ function ModelViz(){
             ?"De marge volgt uit het verschil in sterktescore. De xG/xGc bepalen het exacte aantal doelpunten binnen die marge: een aanvallend duel wordt 3-1, een defensief duel 1-0."
             :"The margin follows from the strength-score gap. xG/xGc set the exact number of goals within that margin: an attacking match becomes 3-1, a defensive one 1-0."}
         </div>
+        {/* Worked example — live computation of one real match */}
+        {(()=>{
+          const A="Spain",B="Uruguay";
+          if(COMPOSITE[A]===undefined||COMPOSITE[B]===undefined) return null;
+          const gap=COMPOSITE[A]-COMPOSITE[B];
+          const margin=marginFromGap(gap);
+          const [ea,eb]=expectedGoals(A,B);
+          const [sA,sB]=model2Score(A,B);
+          const nf=(x)=>x.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1});
+          const Row=({label,children})=>(
+            <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:`1px solid ${T.border}`}}>
+              <span style={{flex:1,fontSize:FS.caption,color:T.textSub}}>{label}</span>
+              <span style={{fontSize:FS.small,fontWeight:700,color:T.text,textAlign:"right"}}>{children}</span>
+            </div>
+          );
+          return(
+            <div style={{marginTop:13,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden"}}>
+              <div style={{padding:"8px 11px",background:T.bg,borderBottom:`1px solid ${T.border}`,
+                fontSize:FS.micro,fontWeight:800,letterSpacing:1,textTransform:"uppercase",color:orange}}>
+                {lang==="nl"?"Voorbeeld":"Worked example"}
+              </div>
+              <div style={{padding:"4px 11px 9px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,padding:"9px 0 4px"}}>
+                  <span style={{fontSize:15}}>{FLAGS[A]}</span>
+                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{tName(A,lang)} – {tName(B,lang)} {FLAGS[B]}</span>
+                </div>
+                <Row label={lang==="nl"?"Sterktescores":"Strength scores"}>{nf(COMPOSITE[A])} vs {nf(COMPOSITE[B])}</Row>
+                <Row label={lang==="nl"?"Verschil":"Gap"}>{nf(Math.abs(gap))}</Row>
+                <Row label={lang==="nl"?"→ marge":"→ margin"}>{margin===0?(lang==="nl"?"gelijkspel":"draw"):`+${margin}`}</Row>
+                <Row label={lang==="nl"?"xG (verwachte goals)":"xG (expected goals)"}>{nf(ea)} / {nf(eb)}</Row>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginTop:7,paddingTop:8,borderTop:`2px solid ${T.border}`}}>
+                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Uitslag":"Result"}</span>
+                  <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{sA}–{sB}</span>
+                </div>
+                <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginTop:7}}>
+                  {lang==="nl"
+                    ?`Verschil ${nf(Math.abs(gap))} valt in 20–35 → winst met ${margin}. xGc rondt de verliezer af op ${sB}, winnaar = ${sB}+${margin} = ${sA}.`
+                    :`Gap ${nf(Math.abs(gap))} falls in 20–35 → win by ${margin}. xGc rounds the loser to ${sB}, winner = ${sB}+${margin} = ${sA}.`}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* STEP 5 — TITLE ODDS */}
