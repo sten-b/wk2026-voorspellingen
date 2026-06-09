@@ -1326,25 +1326,43 @@ function ThemeToggle({theme,setTheme}){
   );
 }
 
+// Footer "data" icon button → opens the Model tab. Per-theme colored, with a click animation.
+function DataTabButton({onOpen,active}){
+  const T=useTheme();
+  const lang=useLang();
+  const [anim,setAnim]=React.useState(false);
+  // Per-theme colors for the icon + frame.
+  const iconCol=T.id==="orangeLion"?"#0D0D0D":(T.id==="dark"?"#FF5500":"#E07000");
+  const frameBorder=active?iconCol:(T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#0D0D0D":"#E4E4E4"));
+  const bg=active?(T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)")):"transparent";
+  const handle=(e)=>{e.stopPropagation();setAnim(true);setTimeout(()=>setAnim(false),520);onOpen&&onOpen();};
+  // three analytics bars that bounce on click
+  const bars=[{x:5,h:8,d:0},{x:10.5,h:13,d:0.06},{x:16,h:5,d:0.12}];
+  return(
+    <button onClick={handle} aria-label={lang==="nl"?"Model":"Model"}
+      title={lang==="nl"?"Bekijk het model":"View the model"}
+      style={{width:34,height:34,flexShrink:0,cursor:"pointer",
+        border:`1px solid ${frameBorder}`,borderRadius:6,background:bg,
+        display:"flex",alignItems:"center",justifyContent:"center",padding:0,
+        transform:anim?"scale(0.9)":"scale(1)",
+        transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1), background 0.25s ease, border-color 0.25s ease"}}>
+      <style>{`@keyframes dataBar{0%{transform:scaleY(1)}30%{transform:scaleY(0.45)}70%{transform:scaleY(1.18)}100%{transform:scaleY(1)}}`}</style>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
+        <path d="M3 21h18" stroke={iconCol} strokeWidth="2" strokeLinecap="round"/>
+        {bars.map((b,i)=>(
+          <rect key={i} x={b.x} y={20-b.h} width="3" height={b.h} rx="1" fill={iconCol}
+            style={{transformOrigin:`${b.x+1.5}px 20px`,
+              animation:anim?`dataBar 0.5s ${b.d}s ease`:"none"}}/>
+        ))}
+      </svg>
+    </button>
+  );
+}
+
 // Clickable team name — navigates to Nations tab and opens that nation's card
 function TeamLink({team,style={},children}){
-  const {setTab,setNationsOpen}=useNav();
-  const lang=useLang();
-  // Lazy check: NATIONS_DATA defined later in module, but at call time it's available
-  const hasProfile=NATIONS_DATA.some(n=>n.team===team);
-  if(!hasProfile) return <span style={style}>{children}</span>;
-  return(
-    <span
-      role="button"
-      aria-label={(lang==="nl"?"Bekijk profiel: ":"View profile: ")+team}
-      style={{...style,cursor:"pointer",display:"inline-flex",alignItems:"center",
-        justifyContent:"center",minWidth:26,minHeight:26,padding:"2px",margin:"-2px",
-        borderRadius:6,flexShrink:0,WebkitTapHighlightColor:"transparent",touchAction:"manipulation"}}
-      onClick={e=>{e.stopPropagation();e.preventDefault();setNationsOpen(team);setTab("nations");}}
-      onPointerDown={e=>e.stopPropagation()}
-      title={lang==="nl"?"Bekijk landenprofiel":"View nation profile"}
-    >{children}</span>
-  );
+  // Nations tab was merged into Players; flags are no longer interactive links.
+  return <span style={style}>{children}</span>;
 }
 
 // ── NAV ──────────────────────────────────────────────────────────────────────
@@ -1355,9 +1373,7 @@ function Nav({tab,setTab}){
   const tabs=[
     {id:"bracket",label:tr.tabs.bracket},
     {id:"knockout",label:tr.tabs.knockout},
-    {id:"nations",label:tr.tabs.nations},
     {id:"players",label:tr.tabs.players},
-    {id:"model",label:tr.tabs.model},
   ];
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
@@ -3737,6 +3753,12 @@ function PlayersTab(){
         ))}
       <FBrefStatsSection/>
       </div>
+
+      {/* ── LANDEN (merged from former Nations tab) ── */}
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:28,marginBottom:12,paddingLeft:13}}>
+        {lang==="nl"?"Landen":"Nations"}
+      </div>
+      <NationsTab/>
     </div>
   );
 }
@@ -4137,10 +4159,7 @@ export default function App(){
             </React.Fragment>
           )}
 
-          {/* NATIONS */}
-          {tab==="nations"&&<NationsTab preOpen={nationsOpen}/>}
-
-          {/* PLAYERS */}
+          {/* PLAYERS (now also contains the Nations section) */}
           {tab==="players"&&<PlayersTab/>}
         </div>
 
@@ -4150,6 +4169,9 @@ export default function App(){
             <div style={{fontSize:FS.small,fontWeight:600,color:T.text}}>Sten Bossong</div>
             <div style={{fontSize:FS.caption,color:T.textSub}}>{tr.footerSub}</div>
           </div>
+
+          {/* Model tab (data icon) */}
+          <DataTabButton active={tab==="model"} onOpen={()=>setTab("model")}/>
 
           {/* Theme toggle */}
           <ThemeToggle theme={theme} setTheme={setTheme}/>
