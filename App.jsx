@@ -34,7 +34,7 @@ const THEMES = {
     id:"dark",
     bg:"#0D0D0D", card:"#1A1A1A", nav:"#111111",
     border:"#2A2A2A", borderStrong:"#FF5500",
-    text:"#F0F0F0", textSub:"#999999", textFaint:"#555555",
+    text:"#F5F5F5", textSub:"#B0B0B0", textFaint:"#7A7A7A",
     orange:"#FF5500", blue:"#909090",   // section titles in dark mode: neutral grey
     gold:"#FFAA00",
     orangeFaint:"rgba(255,85,0,0.08)", blueFaint:"rgba(255,85,0,0.04)",
@@ -1520,8 +1520,8 @@ function Nav({tab,setTab}){
   ];
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
-      {T.id==="orangeLion"
-        ? <div style={{height:8,display:"flex"}} aria-hidden="true">
+      {(T.id==="orangeLion"||T.id==="dark")
+        ? <div style={{height:T.id==="orangeLion"?8:5,display:"flex"}} aria-hidden="true">
             <div style={{flex:1,background:"#AE1C28"}}/>
             <div style={{flex:1,background:"#FFFFFF"}}/>
             <div style={{flex:1,background:"#21468B"}}/>
@@ -1533,12 +1533,13 @@ function Nav({tab,setTab}){
             ? <NavLion themeId="dark"/>
             : T.id==="orangeLion"
             ? <NavLion themeId="orangeLion"/>
-            : <svg width="28" height="28" viewBox="0 0 40 40" aria-label="SB" style={{display:"block"}}>
+            : <svg width="26" height="29" viewBox="0 0 40 44" aria-label="SB" style={{display:"block"}}>
                 <defs><linearGradient id="sbLogo" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#FF8A3D"/><stop offset="1" stopColor="#D95E00"/>
+                  <stop offset="0" stopColor="#FF8A3D"/><stop offset="1" stopColor="#D14E00"/>
                 </linearGradient></defs>
-                <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#sbLogo)"/>
-                <text x="20" y="27" fontFamily="Arial,Helvetica,sans-serif" fontWeight="800" fontSize="18" fill="#FFFFFF" textAnchor="middle" letterSpacing="-1">SB</text>
+                <path d="M20 1.5 L37.5 7.2 V22 C37.5 32.8 29.8 39.8 20 42.6 C10.2 39.8 2.5 32.8 2.5 22 V7.2 Z" fill="url(#sbLogo)"/>
+                <path d="M20 1.5 L37.5 7.2 V22 C37.5 32.8 29.8 39.8 20 42.6 C10.2 39.8 2.5 32.8 2.5 22 V7.2 Z" fill="none" stroke="#FFFFFF" strokeWidth="1" opacity="0.35"/>
+                <text x="20" y="27" fontFamily="'Helvetica Neue',Arial,sans-serif" fontWeight="800" fontSize="16" fill="#FFFFFF" textAnchor="middle" letterSpacing="-1">SB</text>
               </svg>
           }
         </div>
@@ -1986,25 +1987,30 @@ function KnockoutBracket({scrollToMatch}){
           style={{background:T.card,border:`2px solid ${T.orange}`,borderRadius:4,
             padding:"7px 10px",cursor:"pointer",userSelect:"none",
             WebkitTapHighlightColor:"transparent"}}>
-          {[{team:FINAL_TEAMS[0],s:fsA,w:fsA>fsB},{team:FINAL_TEAMS[1],s:fsB,w:fsB>fsA}].map(({team,s,w},i)=>(
+          {[{team:FINAL_TEAMS[0],s:fsA,w:fsA>fsB},{team:FINAL_TEAMS[1],s:fsB,w:fsB>fsA}].map(({team,s,w},i)=>{
+            const OL=T.id==="orangeLion";
+            const winCol=OL?"#0D0D0D":T.orange;
+            const loseCol=OL?"rgba(13,13,13,0.6)":(T.id==="dark"?"#C8C8C8":"#555555");
+            return(
             <div key={team} style={{display:"flex",alignItems:"center",gap:5,
               marginTop:i?4:0,paddingTop:i?4:0,
               borderTop:i?`1px solid ${T.border}`:"none"}}>
               <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[team]}</span>
-              <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:400,
-                color:w?(T.id==="orangeLion"?"#FFFFFF":T.orange):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),
+              <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:500,
+                color:w?winCol:loseCol,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                 {tName(team,lang)}
               </span>
-              <span style={{fontSize:FS.small,fontWeight:700,color:w?(T.id==="orangeLion"?"#FFFFFF":T.orange):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),flexShrink:0}}>
+              <span style={{fontSize:FS.small,fontWeight:700,color:w?winCol:loseCol,flexShrink:0,minWidth:12,textAlign:"right"}}>
                 {s}
               </span>
             </div>
-          ))}
+            );
+          })}
           <div style={{marginTop:6,paddingTop:5,borderTop:`1px solid ${T.border}`,
             display:"flex",alignItems:"center",gap:5}}>
             <span style={{fontSize:12}}>🏆</span>
-            <span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
+            <span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="orangeLion"?"#0D0D0D":T.orange}}>
               {tName(fWin,lang)}
             </span>
           </div>
@@ -3899,7 +3905,11 @@ function PlayersTab(){
     <div>
       {/* Welcome + tournament intro — first thing on the WK2026 tab */}
       <div style={{marginBottom:20}}>
-        <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,letterSpacing:-0.5,margin:"2px 0 8px",lineHeight:1.1}}>
+        <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",
+          color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>
+          {lang==="nl"?"Sten's model":"Sten's model"}
+        </div>
+        <h2 style={{fontSize:FS.display,fontWeight:800,color:T.text,letterSpacing:-0.5,margin:"0 0 8px",lineHeight:1.1}}>
           {lang==="nl"?"Het WK, doorgerekend":"The World Cup, computed"}
         </h2>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.65,margin:"0 0 12px"}}>
@@ -4154,16 +4164,18 @@ function AppLoader({onDone}){
         transition:"opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.34,1.2,.5,1)",willChange:"transform,opacity"}}>
         <span style={{fontSize:FS.small,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-6,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
         <span style={{fontSize:FS.display,fontWeight:900,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
-        <div style={{perspective:"600px"}}>
+        <div style={{perspective:"900px"}}>
+          <style>{`@keyframes lionFlip{0%{transform:rotateY(0deg) scale(1)}45%{transform:rotateY(90deg) scale(0.86)}55%{transform:rotateY(90deg) scale(0.86)}100%{transform:rotateY(180deg) scale(1)}}`}</style>
           <div style={{position:"relative",width:96,height:96,
             transformStyle:"preserve-3d",
             transform:flipped?"rotateY(180deg)":"rotateY(0deg)",
-            transition:"transform 0.85s cubic-bezier(.45,.05,.25,1)",willChange:"transform"}}>
-            <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
+            animation:flipped?"lionFlip 0.95s cubic-bezier(.45,.05,.25,1) both":"none",
+            willChange:"transform"}}>
+            <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",WebkitBackfaceVisibility:"hidden",
               display:"flex",alignItems:"center",justifyContent:"center"}}>
               <LionEmoji color="#FFFFFF" size={96}/>
             </div>
-            <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
+            <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",WebkitBackfaceVisibility:"hidden",
               transform:"rotateY(180deg)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <LionEmoji color="#0D0D0D" size={96}/>
             </div>
