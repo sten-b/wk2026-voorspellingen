@@ -1304,7 +1304,7 @@ function ThemeToggle({theme,setTheme}){
     (col)=><FooterLionIcon color={col} size={16}/>,
   ];
   const T=useTheme();
-  const frameBorder=T.id==="default"?"#E07000":T.border;
+  const frameBorder=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
   return(
     <div style={{position:"relative",display:"flex",width:SEG*3,height:H,
       border:`1px solid ${frameBorder}`,borderRadius:6,overflow:"hidden",
@@ -1334,7 +1334,7 @@ function DataTabButton({onOpen,active}){
   const [anim,setAnim]=React.useState(false);
   // Per-theme colors for the icon + frame.
   const iconCol=T.id==="orangeLion"?"#0D0D0D":(T.id==="dark"?"#FF5500":"#E07000");
-  const frameBorder=T.id==="default"?"#E07000":T.border;
+  const frameBorder=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
   const bg=active?(T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)")):"transparent";
   const handle=(e)=>{e.stopPropagation();setAnim(true);setTimeout(()=>setAnim(false),520);onOpen&&onOpen();};
   // three analytics bars that bounce on click
@@ -1379,7 +1379,7 @@ function Nav({tab,setTab}){
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
       {T.id==="orangeLion"
-        ? <div style={{height:3,display:"flex"}} aria-hidden="true">
+        ? <div style={{height:8,display:"flex"}} aria-hidden="true">
             <div style={{flex:1,background:"#AE1C28"}}/>
             <div style={{flex:1,background:"#FFFFFF"}}/>
             <div style={{flex:1,background:"#21468B"}}/>
@@ -1438,9 +1438,9 @@ function MatchRow({t1,s1,t2,s2,matchKey,open,onToggle}){
         <TeamLink team={t1}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t1]||"🏳"}</span></TeamLink>
         <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t1?600:400,color:winner===t1||draw?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t1,lang)}</span>
         <div style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
-          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t1?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?T.blue:T.textSub,minWidth:14,textAlign:"right"}}>{s1}</span>
+          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t1?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?(T.id==="orangeLion"?"#FFFFFF":T.blue):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),minWidth:14,textAlign:"right"}}>{s1}</span>
           <span style={{fontSize:FS.caption,color:T.textFaint}}>-</span>
-          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t2?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?T.blue:T.textSub,minWidth:14,textAlign:"left"}}>{s2}</span>
+          <span style={{fontSize:FS.body,fontWeight:700,color:winner===t2?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?(T.id==="orangeLion"?"#FFFFFF":T.blue):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),minWidth:14,textAlign:"left"}}>{s2}</span>
         </div>
         <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t2?600:400,color:winner===t2||draw?T.text:T.textSub,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t2,lang)}</span>
         <TeamLink team={t2}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t2]||"🏳"}</span></TeamLink>
@@ -1526,7 +1526,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           const OL=T.id==="orangeLion";
           const fc=dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):(OL?"#FFEEE2":T.textFaint);
           const mr=adjRank(team);
-          const rc=mr<=8?(OL?"#BFF5CE":"#1E7A40"):mr<=24?(OL?"#FFFFFF":"#E07000"):(OL?"#FFD0C7":"#C0392B");
+          const rc=mr<=8?(OL?"#BFF5CE":"#1E7A40"):mr<=24?(OL?"#FFC861":"#E07000"):(OL?"#FFD0C7":"#C0392B");
           return(
             <div key={team} style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?(OL?"rgba(255,255,255,0.10)":"rgba(224,112,0,0.05)"):"transparent"}}>
               <span style={{fontSize:FS.small,fontWeight:700,color:pass?(OL?"#FFFFFF":"#E07000"):T.textFaint,textAlign:"center"}}>{i+1}</span>
@@ -1584,7 +1584,7 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
             <span style={{width:14,fontSize:FS.small,fontWeight:700,color:i===0?(T.id==="orangeLion"?"#FFFFFF":"#E07000"):i===1?(T.id==="orangeLion"?"#FFD9BF":"#1A5296"):T.textFaint,flexShrink:0,textAlign:"center"}}>{i+1}</span>
             <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]||"🏳"}</span></TeamLink>
             <span style={{flex:1,fontSize:FS.body,color:pass?T.text:T.textSub,fontWeight:pass?500:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
-            {(()=>{const mr=adjRank(team);const rc=mr<=8?(T.id==="orangeLion"?"#5BE08A":"#1E7A40"):mr<=24?(T.id==="orangeLion"?"#FFFFFF":"#E07000"):(T.id==="orangeLion"?"#FFB0A6":"#C0392B");return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
+            {(()=>{const mr=adjRank(team);const rc=mr<=8?(T.id==="orangeLion"?"#5BE08A":"#1E7A40"):mr<=24?(T.id==="orangeLion"?"#FFC861":"#E07000"):(T.id==="orangeLion"?"#FFB0A6":"#C0392B");return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:700,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
             <span style={{fontSize:FS.small,fontWeight:700,color:pass?T.text:T.textSub,flexShrink:0}}>{pts[team]}</span>
           </div>
         );
@@ -2428,7 +2428,9 @@ function ChampionCard({p,label,icon}){
   const showPhoto=photo&&!imgFail;
   return(
     <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
-      borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",borderLeft:`4px solid ${T.orange}`,
+      borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",
+      border:T.id==="orangeLion"?"1px solid rgba(255,255,255,0.55)":undefined,
+      borderLeft:`4px solid ${T.orange}`,
       position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
         background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
@@ -2514,7 +2516,11 @@ function PlayerCard({p,open,onToggle}){
           <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.orange,background:T.orangeFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.orange}22`}}>{p.club}</span>}
+            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,
+              color:T.id==="orangeLion"?"#0D0D0D":T.orange,
+              background:T.id==="orangeLion"?"#FFFFFF":T.orangeFaint,
+              padding:"1px 6px",borderRadius:10,
+              border:T.id==="orangeLion"?"1px solid #0D0D0D33":`1px solid ${T.orange}22`}}>{p.club}</span>}
             {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>💰 {p.value}</span>}
           </div>}
         </div>
@@ -2542,7 +2548,11 @@ function DarkHorseCard({p,open,onToggle}){
           <div style={{fontSize:FS.body,fontWeight:600,color:T.text}}>{p.name}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?T.orange:T.blue,background:T.blueFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
+            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,
+              color:T.id==="orangeLion"?"#0D0D0D":(T.id==="dark"?T.orange:T.blue),
+              background:T.id==="orangeLion"?"#FFFFFF":T.blueFaint,
+              padding:"1px 6px",borderRadius:10,
+              border:T.id==="orangeLion"?"1px solid #0D0D0D33":`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
             {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>💰 {p.value}</span>}
           </div>}
         </div>
@@ -3017,7 +3027,9 @@ function NationChampionCard({n}){
   const lang=useLang();
   return(
     <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
-      borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",borderLeft:`4px solid ${T.orange}`,
+      borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",
+      border:T.id==="orangeLion"?"1px solid rgba(255,255,255,0.55)":undefined,
+      borderLeft:`4px solid ${T.orange}`,
       position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
         background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
@@ -3825,6 +3837,7 @@ function AppLoader({onDone}){
       {/* Stage: title, flipping lion, subtitle */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
         opacity:stageOpacity,transition:"opacity 0.5s ease"}}>
+        <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(255,255,255,0.8)",marginBottom:-6}}>Sten's</span>
         <span style={{fontSize:FS.h2,fontWeight:800,letterSpacing:3,color:"#FFFFFF"}}>WK2026</span>
         <div style={{perspective:"600px"}}>
           <div style={{position:"relative",width:96,height:96,
@@ -3887,7 +3900,11 @@ export default function App(){
     <LangCtx.Provider value={lang}>
     <NavCtx.Provider value={{setTab,setNationsOpen}}>
       {loading&&<AppLoader onDone={()=>setLoading(false)}/>}
-      <div style={{minHeight:"100vh",background:T.bg,fontSize:FS.body,color:T.text,overflowX:"hidden"}}>
+      <div style={{minHeight:"100vh",
+        background:T.id==="orangeLion"
+          ? "radial-gradient(120% 80% at 50% 0%, #FF7A2E 0%, #E85100 45%, #D94800 100%)"
+          : T.bg,
+        fontSize:FS.body,color:T.text,overflowX:"hidden"}}>
         <style>{`*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}button{font-family:inherit;cursor:pointer;}`}</style>
         <Nav tab={tab} setTab={setTab}/>
 
@@ -4203,14 +4220,14 @@ export default function App(){
           <ThemeToggle theme={theme} setTheme={setTheme}/>
 
           {/* Language toggle */}
-          <div style={{display:"flex",border:`1px solid ${T.id==="default"?"#E07000":T.border}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
+          <div style={{display:"flex",border:`1px solid ${T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
             {["nl","en"].map((l,i)=>(
               <button key={l} onClick={()=>setLang(l)} style={{
                 width:34,height:34,fontSize:FS.small,fontWeight:lang===l?700:400,
                 background:lang===l?(T.id==="default"?"#E07000":T.orange):"transparent",
                 color:lang===l?"#fff":(T.id==="default"?"#E07000":T.textSub),
                 border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-                borderLeft:i>0?`1px solid ${T.id==="default"?"#E07000":T.border}`:"none",
+                borderLeft:i>0?`1px solid ${T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`:"none",
               }}>{l.toUpperCase()}</button>
             ))}
           </div>
