@@ -1,0 +1,179 @@
+{
+  "_meta": {
+    "description": "Players valued >= EUR 60m per nation, used for the squad-quality top-player bonus in the model.",
+    "source": "Transfermarkt / CIES Football Observatory market values, Dec 2025 - Jun 2026 snapshot",
+    "value_unit": "EUR million",
+    "bonus_formula": "squad_quality = svN + (#players 60-99m)*1 + (#players >=100m)*2, capped at 100",
+    "note": "Nations without a >=60m player receive no bonus."
+  },
+  "players": {
+    "Spain": [
+      {
+        "name": "Lamine Yamal",
+        "value_m": 200
+      },
+      {
+        "name": "Pedri",
+        "value_m": 140
+      },
+      {
+        "name": "Rodri",
+        "value_m": 100
+      },
+      {
+        "name": "Cubarsi",
+        "value_m": 80
+      },
+      {
+        "name": "Nico Williams",
+        "value_m": 70
+      }
+    ],
+    "France": [
+      {
+        "name": "Kylian Mbappe",
+        "value_m": 180
+      },
+      {
+        "name": "Michael Olise",
+        "value_m": 150
+      },
+      {
+        "name": "Saliba",
+        "value_m": 90
+      },
+      {
+        "name": "Desire Doue",
+        "value_m": 80
+      },
+      {
+        "name": "Tchouameni",
+        "value_m": 75
+      },
+      {
+        "name": "Camavinga",
+        "value_m": 60
+      }
+    ],
+    "England": [
+      {
+        "name": "Jude Bellingham",
+        "value_m": 180
+      },
+      {
+        "name": "Bukayo Saka",
+        "value_m": 130
+      },
+      {
+        "name": "Declan Rice",
+        "value_m": 110
+      },
+      {
+        "name": "Cole Palmer",
+        "value_m": 110
+      },
+      {
+        "name": "Phil Foden",
+        "value_m": 90
+      }
+    ],
+    "Brazil": [
+      {
+        "name": "Vinicius Jr",
+        "value_m": 150
+      },
+      {
+        "name": "Rodrygo",
+        "value_m": 90
+      },
+      {
+        "name": "Estevao",
+        "value_m": 80
+      },
+      {
+        "name": "Savinho",
+        "value_m": 70
+      }
+    ],
+    "Argentina": [
+      {
+        "name": "Julian Alvarez",
+        "value_m": 100
+      },
+      {
+        "name": "Alexis Mac Allister",
+        "value_m": 90
+      },
+      {
+        "name": "Enzo Fernandez",
+        "value_m": 75
+      },
+      {
+        "name": "Nico Paz",
+        "value_m": 65
+      }
+    ],
+    "Portugal": [
+      {
+        "name": "Vitinha",
+        "value_m": 100
+      },
+      {
+        "name": "Rafael Leao",
+        "value_m": 75
+      },
+      {
+        "name": "Bernardo Silva",
+        "value_m": 60
+      }
+    ],
+    "Germany": [
+      {
+        "name": "Florian Wirtz",
+        "value_m": 140
+      },
+      {
+        "name": "Jamal Musiala",
+        "value_m": 140
+      },
+      {
+        "name": "Joshua Kimmich",
+        "value_m": 60
+      }
+    ],
+    "Netherlands": [
+      {
+        "name": "Cody Gakpo",
+        "value_m": 70
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value_m": 70
+      }
+    ],
+    "Norway": [
+      {
+        "name": "Erling Haaland",
+        "value_m": 180
+      },
+      {
+        "name": "Martin Odegaard",
+        "value_m": 90
+      }
+    ],
+    "Uruguay": [
+      {
+        "name": "Federico Valverde",
+        "value_m": 130
+      },
+      {
+        "name": "Ronald Araujo",
+        "value_m": 70
+      },
+      {
+        "name": "Darwin Nunez",
+        "value_m": 60
+      }
+    ]
+  }
+}
