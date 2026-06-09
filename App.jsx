@@ -703,6 +703,36 @@ const GROUPS = [
 // (after model2Score/knockoutScore are defined) — single source of truth.
 let MATCHES = {};
 
+// ── REAL WC 2026 SCHEDULE DATES ───────────────────────────────────────────────
+// Group stage Jun 11–27. Each group has three matchdays; the six fixtures are
+// generated in PAIR_IDX order [MD1,MD1,MD2,MD2,MD3,MD3], so the dates map 1:1.
+const GROUP_MATCHDAYS={
+  A:["2026-06-11","2026-06-18","2026-06-24"],
+  B:["2026-06-12","2026-06-18","2026-06-24"],
+  C:["2026-06-13","2026-06-19","2026-06-25"],
+  D:["2026-06-12","2026-06-19","2026-06-25"],
+  E:["2026-06-13","2026-06-20","2026-06-26"],
+  F:["2026-06-14","2026-06-20","2026-06-26"],
+  G:["2026-06-15","2026-06-21","2026-06-26"],
+  H:["2026-06-14","2026-06-21","2026-06-25"],
+  I:["2026-06-13","2026-06-19","2026-06-24"],
+  J:["2026-06-16","2026-06-22","2026-06-27"],
+  K:["2026-06-17","2026-06-22","2026-06-27"],
+  L:["2026-06-16","2026-06-23","2026-06-27"],
+};
+const FIXTURE_MD=[0,0,1,1,2,2];   // six PAIR_IDX fixtures → matchday index
+const MATCH_DATE={};              // "Team1-Team2" → ISO date, filled when MATCHES is built
+const DAY_NL=["zo","ma","di","wo","do","vr","za"], DAY_EN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MON_NL=["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+const MON_EN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtDate(iso,lang){
+  if(!iso) return "";
+  const d=new Date(iso+"T12:00:00");
+  const dn=(lang==="nl"?DAY_NL:DAY_EN)[d.getDay()];
+  const mn=(lang==="nl"?MON_NL:MON_EN)[d.getMonth()];
+  return `${dn} ${d.getDate()} ${mn}`;
+}
+
 const OUTLOOK = {
   over:[
     {team:"Norway",rank:41,adj:-18,projection:{nl:"Achtste finale / Kwartfinale",en:"Round of 16 / QF"},group:"I",
@@ -968,10 +998,12 @@ function calcStandings(gid,teams){
   const PAIR_IDX=[[0,2],[1,3],[0,1],[2,3],[0,3],[1,2]];
   GROUPS.forEach(g=>{
     const seeded=[...g.teams].sort((a,b)=>(COMPOSITE[b]??0)-(COMPOSITE[a]??0));
-    MATCHES[g.id]=PAIR_IDX.map(([i,j])=>{
+    MATCHES[g.id]=PAIR_IDX.map(([i,j],idx)=>{
       const t1=seeded[i],t2=seeded[j];
       const [s1,s2]=model2Score(t1,t2);
-      return {t1,t2,s1,s2};
+      const date=(GROUP_MATCHDAYS[g.id]||[])[FIXTURE_MD[idx]]||"";
+      MATCH_DATE[`${t1}-${t2}`]=date;
+      return {t1,t2,s1,s2,date};
     });
   });
   // Group standings → winners, runners-up, and best four third-placed teams
@@ -1502,13 +1534,14 @@ function Tag({children,color}){
 }
 
 // ── MATCH ROW (expandable, used in all tabs) ──────────────────────────────────
-function MatchRow({t1,s1,t2,s2,matchKey,open,onToggle}){
+function MatchRow({t1,s1,t2,s2,matchKey,date,open,onToggle}){
   const T=useTheme();
   const lang=useLang();
   const tr=useT();
   const winner=s1>s2?t1:s2>s1?t2:null;
   const draw=s1===s2;
   const expl=mExpl(matchKey,lang);
+  const dateLabel=fmtDate(date||MATCH_DATE[matchKey],lang);
   return(
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 10px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
@@ -1525,6 +1558,7 @@ function MatchRow({t1,s1,t2,s2,matchKey,open,onToggle}){
       </div>
       {open&&expl&&(
         <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
+          {dateLabel&&<div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>{dateLabel}</div>}
           <span style={{fontWeight:600,color:T.text}}>
             {tName(t1,lang)} {s1}–{s2} {tName(t2,lang)}.{" "}
           </span>
@@ -1542,7 +1576,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
   const lang=useLang();
   const tr=useT();
   const {setTab}=useNav();
-  const showMatches=openGroup===g.id;   // now only controls the prognoses block
+  const expanded=openGroup===g.id;   // controls the WHOLE group body (standings + matches)
   const pts={},gf={},ga={};
   g.teams.forEach(t=>{pts[t]=0;gf[t]=0;ga[t]=0;});
   g.matches.forEach(({t1,t2,s1,s2})=>{
@@ -1550,45 +1584,58 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
     if(s1>s2)pts[t1]+=3;else if(s2>s1)pts[t2]+=3;else{pts[t1]+=1;pts[t2]+=1;}
   });
   const sorted=[...g.teams].sort((a,b)=>pts[b]-pts[a]||(gf[b]-ga[b])-(gf[a]-ga[a]));
+  const bestForm=g.teams.filter(t=>formDev(t)!==undefined).sort((a,b)=>formDev(b)-formDev(a))[0];
+  const OL=T.id==="orangeLion";
   return(
-    <div style={{background:T.card,border:`1px solid ${showMatches?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
-      {/* Header — static (not a toggle) */}
-      <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:T.card,borderBottom:`1px solid ${T.border}`}}>
-        {/* Group letter — rounded square */}
-        <div style={{width:26,height:26,borderRadius:4,background:T.id==="orangeLion"?"#F0EDE9":T.blue,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-          <span style={{color:T.id==="orangeLion"?"#1A1208":"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
+    <div style={{background:T.card,border:`1px solid ${expanded?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
+      {/* Header — toggles the whole group */}
+      <div onClick={()=>setOpenGroup(expanded?null:g.id)}
+        style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:expanded?T.orangeFaint:T.card,cursor:"pointer"}}>
+        <div style={{width:26,height:26,borderRadius:4,background:OL?"#F0EDE9":T.blue,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+          <span style={{color:OL?"#1A1208":"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
         </div>
-        {/* Group label + two-column indicator row */}
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:4,minWidth:0}}>
-          <div style={{fontSize:FS.small,fontWeight:700,color:T.text,lineHeight:1,whiteSpace:"nowrap"}}>
-            {lang==="nl"?"Groep":"Group"} {g.id}
-          </div>
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
-            {/* Left column: in-form team */}
-            <div style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:4,overflow:"hidden"}}>
-              {(()=>{
-                const bestForm=g.teams.filter(t=>formDev(t)!==undefined).sort((a,b)=>formDev(b)-formDev(a))[0];
-                if(!bestForm) return null;
-                const dev=formDev(bestForm);
-                return <React.Fragment>
-                  <span style={{fontSize:FS.caption,color:T.textFaint,flexShrink:0,whiteSpace:"nowrap"}}>{lang==="nl"?"In vorm:":"In form:"}</span>
-                  <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{FLAGS[bestForm]}</span>
-                  <span style={{fontSize:FS.caption,fontWeight:700,lineHeight:1,flexShrink:0,color:dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint}}>{dev>0?"+":""}{dev}</span>
-                </React.Fragment>;
-              })()}
-            </div>
-            {/* Right column: QF qualifiers (flags only) */}
-            <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
-              <svg width="7" height="9" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill="#1E7A40"/></svg>
-              {sorted.slice(0,2).map((t,i)=>(
-                <span key={t} style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
-              ))}
-            </div>
-          </div>
+        <div style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text,lineHeight:1,whiteSpace:"nowrap"}}>
+          {lang==="nl"?"Groep":"Group"} {g.id}
         </div>
+        <Chevron open={expanded} color={T.textSub}/>
       </div>
-      {/* Standings — always visible */}
-      <div style={{borderBottom:`1px solid ${T.border}`}}>
+
+      {/* Summary bottom bar — shown when COLLAPSED: qualifiers + in-form + see-matches */}
+      {!expanded&&(
+        <div onClick={()=>setOpenGroup(g.id)}
+          style={{display:"flex",alignItems:"center",gap:8,padding:"9px 13px",
+            borderTop:`1px solid ${T.border}`,cursor:"pointer",background:T.bg,flexWrap:"nowrap",overflow:"hidden"}}>
+          {/* Qualifiers (flag + name) */}
+          <div style={{display:"flex",alignItems:"center",gap:6,flexShrink:1,minWidth:0,overflow:"hidden"}}>
+            <svg width="8" height="10" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
+            {sorted.slice(0,2).map(t=>(
+              <span key={t} style={{display:"inline-flex",alignItems:"center",gap:3,minWidth:0}}>
+                <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
+                <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{tName(t,lang)}</span>
+              </span>
+            ))}
+          </div>
+          {/* In-form */}
+          {bestForm&&(()=>{
+            const dev=formDev(bestForm);
+            return(
+              <div style={{display:"flex",alignItems:"center",gap:3,flexShrink:0,marginLeft:"auto"}}>
+                <span style={{fontSize:14,lineHeight:1}}>{FLAGS[bestForm]}</span>
+                <span style={{fontSize:FS.caption,fontWeight:700,color:dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):T.textFaint}}>{dev>0?"+":""}{dev}</span>
+              </div>
+            );
+          })()}
+          {/* See matches affordance */}
+          <span style={{display:"flex",alignItems:"center",gap:2,flexShrink:0,paddingLeft:8,borderLeft:`1px solid ${T.border}`}}>
+            <span style={{fontSize:FS.caption,fontWeight:700,color:OL?"#FFFFFF":T.orange,whiteSpace:"nowrap"}}>{lang==="nl"?"Bekijk":"View"}</span>
+            <Chevron open={false} color={OL?"#FFFFFF":T.orange}/>
+          </span>
+        </div>
+      )}
+
+      {/* Standings + matches — only when expanded */}
+      {expanded&&(<React.Fragment>
+      <div style={{borderBottom:`1px solid ${T.border}`,borderTop:`1px solid ${T.border}`}}>
         <div style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"5px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
           <span/>
           <span/>
@@ -1600,7 +1647,6 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         {sorted.map((team,i)=>{
           const pass=i<2;
           const dev=formDev(team);
-          const OL=T.id==="orangeLion";
           const fc=dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):(OL?"#FFEEE2":T.textFaint);
           const mr=adjRank(team);
           const rc=mr<=8?(OL?"#BFF5CE":"#1E7A40"):mr<=24?(OL?"#FFC861":"#E07000"):(OL?"#FFD0C7":"#C0392B");
@@ -1616,21 +1662,17 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           );
         })}
       </div>
-      {/* Prognoses — collapsible */}
-      <div onClick={()=>setOpenGroup(showMatches?null:g.id)}
-        style={{display:"flex",alignItems:"center",justifyContent:"space-between",
-          padding:"8px 12px",cursor:"pointer",background:showMatches?T.orangeFaint:T.card}}>
+      {/* Prognoses */}
+      <div style={{padding:"8px 12px 4px",background:T.card}}>
         <span style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textFaint}}>{tr.matchPredictions}</span>
-        <Chevron open={showMatches} color={T.textSub}/>
       </div>
-      {showMatches&&(
-        <div style={{borderTop:`1px solid ${T.border}`}}>
-          {g.matches.map(({t1,t2,s1,s2})=>{
-            const k=`${t1}-${t2}`;
-            return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} open={openMatches[k]} onToggle={e=>{e.stopPropagation();toggleMatch(k);}}/>;
-          })}
-        </div>
-      )}
+      <div style={{borderTop:`1px solid ${T.border}`}}>
+        {g.matches.map(({t1,t2,s1,s2,date})=>{
+          const k=`${t1}-${t2}`;
+          return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} date={date} open={openMatches[k]} onToggle={e=>{e.stopPropagation();toggleMatch(k);}}/>;
+        })}
+      </div>
+      </React.Fragment>)}
     </div>
   );
 }
@@ -1669,9 +1711,9 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
       {open&&(
         <div style={{borderTop:`1px solid ${T.border}`,background:T.bg}} onClick={e=>e.stopPropagation()}>
           <div style={{padding:"5px 10px 1px",fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?"#909090":T.blue,letterSpacing:0.8,textTransform:"uppercase"}}>{tr.matchPredictions}</div>
-          {g.matches.map(({t1,t2,s1,s2})=>{
+          {g.matches.map(({t1,t2,s1,s2,date})=>{
             const k=`${t1}-${t2}`;
-            return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} open={openMatches[k]} onToggle={()=>toggleMatch(k)}/>;
+            return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} date={date} open={openMatches[k]} onToggle={()=>toggleMatch(k)}/>;
           })}
         </div>
       )}
@@ -1861,7 +1903,7 @@ function KnockoutBracket({scrollToMatch}){
       </div>
 
       {/* QUARTER FINALS row */}
-      <RoundLabel>{tr.qf}</RoundLabel>
+      <RoundLabel>{tr.qf} · {lang==="nl"?"9–11 jul":"9–11 Jul"}</RoundLabel>
       <div style={{display:"flex",gap:10,marginBottom:0}}>
         {/* Left half: QF0 and QF1 */}
         <div style={{flex:1,display:"flex",flexDirection:"column",gap:4}}>
@@ -1882,7 +1924,7 @@ function KnockoutBracket({scrollToMatch}){
       </div>
 
       {/* SEMI FINALS row */}
-      <RoundLabel>{tr.sf}</RoundLabel>
+      <RoundLabel>{tr.sf} · {lang==="nl"?"14–15 jul":"14–15 Jul"}</RoundLabel>
       <div style={{display:"flex",gap:10,marginBottom:0}}>
         <Tile a={SF[0][0]} b={SF[0][1]} mk={`${SF[0][0]}-${SF[0][1]}`} accent/>
         <Tile a={SF[1][0]} b={SF[1][1]} mk={`${SF[1][0]}-${SF[1][1]}`} accent/>
@@ -1892,7 +1934,7 @@ function KnockoutBracket({scrollToMatch}){
       <MergeConnector/>
 
       {/* FINAL */}
-      <RoundLabel center>{lang==="nl"?"FINALE":"FINAL"}</RoundLabel>
+      <RoundLabel center>{lang==="nl"?"FINALE · 19 jul":"FINAL · 19 Jul"}</RoundLabel>
       <div style={{maxWidth:260,margin:"0 auto"}}>
         <div onClick={()=>scrollToMatch&&scrollToMatch(finalKey)}
           style={{background:T.card,border:`2px solid ${T.orange}`,borderRadius:4,
