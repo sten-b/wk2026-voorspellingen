@@ -2401,6 +2401,56 @@ function usePlayerPhoto(name) {
   return url;
 }
 
+// Featured hero card for the #1 spotlight player.
+function ChampionCard({p}){
+  const T=useTheme();
+  const lang=useLang();
+  const photo=usePlayerPhoto(p.name);
+  const [imgFail,setImgFail]=useState(false);
+  const showPhoto=photo&&!imgFail;
+  return(
+    <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
+      borderRadius:8,padding:"16px",marginBottom:14,borderLeft:`4px solid ${T.orange}`,
+      position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
+        background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
+      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:2,color:T.orange,
+        textTransform:"uppercase",marginBottom:10}}>{lang==="nl"?"⭐ Uitgelichte Ster":"⭐ Featured Star"}</div>
+      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
+        <div style={{position:"relative",width:64,height:64,flexShrink:0}}>
+          {showPhoto?(
+            <img src={photo} alt="" onError={()=>setImgFail(true)}
+              style={{width:64,height:64,borderRadius:"50%",objectFit:"cover",
+                border:`2.5px solid ${T.orange}`,display:"block"}}/>
+          ):(
+            <div style={{width:64,height:64,borderRadius:"50%",background:"rgba(255,255,255,0.12)",
+              border:`2.5px solid ${T.orange}`,display:"flex",alignItems:"center",
+              justifyContent:"center",fontSize:32}}>{p.flag}</div>
+          )}
+          {showPhoto&&(
+            <div style={{position:"absolute",bottom:-2,right:-2,width:22,height:22,borderRadius:"50%",
+              background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",
+              fontSize:13,boxShadow:"0 1px 3px rgba(0,0,0,.4)"}}>{p.flag}</div>
+          )}
+        </div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:FS.h1,fontWeight:700,color:"#fff",lineHeight:1.15}}>{p.name}</div>
+          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",marginTop:3}}>
+            {p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
+          <div style={{marginTop:6,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#fff",
+              background:"rgba(255,255,255,0.14)",padding:"2px 8px",borderRadius:10,
+              border:`1px solid ${T.orange}66`}}>{p.club}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.orange,
+              background:"rgba(224,112,0,0.16)",padding:"2px 8px",borderRadius:10}}>{p.value}</span>}
+          </div>
+        </div>
+      </div>
+      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.6}}>{p.bio[lang]}</div>
+    </div>
+  );
+}
+
 // Round player photo with flag badge; falls back to flag-only avatar on load error or no photo.
 function PlayerAvatar({photo,flag,open,activeColor="#E07000"}){
   const T=useTheme();
@@ -3394,9 +3444,9 @@ function FBrefStatsSection(){
   return(
     <React.Fragment>
       {/* WC Players table */}
-      <div style={{marginTop:20}}>
-        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
-          {lang==="nl"?"Doelpunten + Assists per 90":"Goals + Assists per 90"}
+      <div style={{marginTop:28}}>
+        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12}}>
+          {lang==="nl"?"xGA per 90":"xGA per 90"}
         </div>
         {/* Nation filter */}
         <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap"}}>
@@ -3413,7 +3463,7 @@ function FBrefStatsSection(){
         </div>
         {/* Table */}
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:8}}>
-          <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"6px 10px",
+          <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"8px 12px",
             borderBottom:`2px solid ${T.border}`,background:T.id==="dark"?"#161616":T.bg}}>
             {HDR.map((h,i)=>{
               const sortable=i>=5;
@@ -3445,9 +3495,9 @@ function FBrefStatsSection(){
         </div>
       </div>
       {/* Missed out */}
-      <div style={{marginTop:8}}>
-        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
-          {lang==="nl"?"Sterren die het toernooi missen":"Stars missing the tournament"}
+      <div style={{marginTop:28}}>
+        <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12}}>
+          {lang==="nl"?"Grote afwezigen":"Notable absentees"}
         </div>
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
           {FBREF_NONWC.map((p,i,arr)=>(
@@ -3476,6 +3526,7 @@ function PlayersTab(){
   const T=useTheme();
   const lang=useLang();
   const [openSpotlight,setOpenSpotlight]=useState({});
+  const [spotlightMore,setSpotlightMore]=useState(false);
   const [openDark,setOpenDark]=useState({});
   const [openXI,setOpenXI]=useState({});
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
@@ -3485,9 +3536,23 @@ function PlayersTab(){
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
         {lang==="nl"?"In de Schijnwerpers":"In the Spotlight"}
       </div>
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:24}}>
-        {SPOTLIGHT.map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
+      <ChampionCard p={SPOTLIGHT[0]}/>
+      <div onClick={()=>setSpotlightMore(o=>!o)}
+        style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
+          background:spotlightMore?T.orangeFaint:T.bg,
+          border:`1px solid ${spotlightMore?T.orange+"55":T.border}`,
+          borderRadius:6,padding:"10px 12px",marginBottom:spotlightMore?10:24}}>
+        <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.1,
+          textTransform:"uppercase",color:T.orange}}>
+          {lang==="nl"?`Overige Sterren (${SPOTLIGHT.length-1})`:`Other Stars (${SPOTLIGHT.length-1})`}
+        </span>
+        <Chevron open={spotlightMore} color={T.textSub}/>
       </div>
+      {spotlightMore&&(
+        <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:24}}>
+          {SPOTLIGHT.slice(1).map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
+        </div>
+      )}
 
       {/* Dark horses */}
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
@@ -3609,13 +3674,13 @@ export default function App(){
           {tab==="bracket"&&(
             <React.Fragment>
               {T.id==="default"
-                ? <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",borderRadius:6,padding:"14px",marginBottom:12,borderLeft:`4px solid #E8192C`,position:"relative",overflow:"hidden"}}>
+                ? <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",borderRadius:6,padding:"14px",marginBottom:12,borderLeft:`4px solid ${T.orange}`,position:"relative",overflow:"hidden"}}>
                     {/* WK2026 decorative stripes */}
-                    <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(232,25,44,0.08))",pointerEvents:"none"}}/>
-                    <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:2,color:"#E8192C",textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
+                    <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.10))",pointerEvents:"none"}}/>
+                    <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
                     <div style={{fontSize:FS.micro,fontWeight:600,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
                     <div style={{fontSize:FS.h1,fontWeight:700,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
-                    <div onClick={()=>setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(232,25,44,0.5)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
+                    <div onClick={()=>setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
                       <span style={{fontSize:20}}>🏆</span>
                       <div>
                         <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
@@ -3640,8 +3705,8 @@ export default function App(){
               <div style={{marginBottom:14}}>
                 <div onClick={()=>setNewsOpen(o=>!o)}
                   style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(newsOpen?"#fff5ea":"#fafbfd"),
-                    border:`1px solid ${T.id==="dark"?"#3a2e18":(newsOpen?"#ffd9b8":T.border)}`,
+                    background:T.id==="dark"?"#1a1408":(newsOpen?T.orangeFaint:T.bg),
+                    border:`1px solid ${T.id==="dark"?"#3a2e18":(newsOpen?T.orange+"55":T.border)}`,
                     borderRadius:6,
                     padding:"10px 12px"}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -3660,8 +3725,8 @@ export default function App(){
               <div style={{marginBottom:14}}>
                 <div onClick={()=>setInjuriesOpen(o=>!o)}
                   style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(injuriesOpen?"#fff5ea":"#fafbfd"),
-                    border:`1px solid ${T.id==="dark"?"#3a2e18":(injuriesOpen?"#ffd9b8":T.border)}`,
+                    background:T.id==="dark"?"#1a1408":(injuriesOpen?T.orangeFaint:T.bg),
+                    border:`1px solid ${T.id==="dark"?"#3a2e18":(injuriesOpen?T.orange+"55":T.border)}`,
                     borderRadius:6,
                     padding:"10px 12px"}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -3836,8 +3901,8 @@ export default function App(){
               <div style={{marginBottom:20}}>
                 <div onClick={()=>setSrcOpen(o=>!o)}
                   style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(srcOpen?"#fff5ea":"#fafbfd"),
-                    border:`1px solid ${T.id==="dark"?"#3a2e18":(srcOpen?"#ffd9b8":T.border)}`,
+                    background:T.id==="dark"?"#1a1408":(srcOpen?T.orangeFaint:T.bg),
+                    border:`1px solid ${T.id==="dark"?"#3a2e18":(srcOpen?T.orange+"55":T.border)}`,
                     borderRadius:6,padding:"10px 12px"}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
