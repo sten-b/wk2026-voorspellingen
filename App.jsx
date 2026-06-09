@@ -1487,15 +1487,16 @@ function DataTabButton({onOpen,active}){
         display:"flex",alignItems:"center",justifyContent:"center",padding:0,
         transform:anim?"scale(0.9)":"scale(1)",
         transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1), background 0.25s ease, border-color 0.25s ease"}}>
-      <style>{`@keyframes dataPulse{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}`}</style>
+      <style>{`@keyframes dataPulse{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}`}</style>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
-        {/* connections */}
-        <path d="M6.6 7 10.4 11M6.6 17 10.4 13M13.6 11 17.4 7M13.6 13 17.4 17" stroke={iconCol} strokeWidth="1.6" strokeLinecap="round"/>
+        {/* connectors: parent down to the two children */}
+        <path d="M12 7v4M5.5 17v-2.5h13V17M12 11v3.5" stroke={iconCol} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
         {/* nodes (pulse on click) */}
-        {[{x:5,y:6},{x:5,y:18},{x:12,y:12,r:2.3},{x:19,y:6},{x:19,y:18}].map((n,i)=>(
-          <circle key={i} cx={n.x} cy={n.y} r={n.r||1.9} fill={iconCol}
-            style={{transformOrigin:`${n.x}px ${n.y}px`,
-              animation:anim?`dataPulse 0.5s ${i*0.05}s ease`:"none"}}/>
+        {[{x:9,y:2,w:6,h:5},{x:2.5,y:17,w:6,h:5},{x:15.5,y:17,w:6,h:5}].map((n,i)=>(
+          <rect key={i} x={n.x} y={n.y} width={n.w} height={n.h} rx="1.4"
+            fill="none" stroke={iconCol} strokeWidth="1.7"
+            style={{transformOrigin:`${n.x+n.w/2}px ${n.y+n.h/2}px`,
+              animation:anim?`dataPulse 0.5s ${i*0.06}s ease`:"none"}}/>
         ))}
       </svg>
     </button>
@@ -1529,18 +1530,16 @@ function Nav({tab,setTab}){
         : <div style={{height:4,background:"#E07000"}}/>}
       <div style={{display:"flex",alignItems:"stretch",padding:"0 10px",width:"100%",boxSizing:"border-box"}}>
         <div style={{display:"flex",alignItems:"center",marginRight:10,flexShrink:0}}>
-          {T.id==="dark"
-            ? <NavLion themeId="dark"/>
-            : T.id==="orangeLion"
-            ? <NavLion themeId="orangeLion"/>
-            : <svg width="28" height="28" viewBox="0 0 48 48" aria-label="SB" style={{display:"block"}}>
-                <defs><linearGradient id="sbLogo" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#FF8A3D"/><stop offset="1" stopColor="#D14E00"/>
-                </linearGradient></defs>
-                <rect x="2" y="2" width="44" height="44" rx="15" fill="url(#sbLogo)"/>
-                <text x="24" y="34" fontFamily="'Helvetica Neue',Arial,sans-serif" fontWeight="800" fontStyle="italic" fontSize="26" fill="#FFFFFF" textAnchor="middle" letterSpacing="-3">SB</text>
-              </svg>
-          }
+          {(()=>{
+            const col=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
+            return(
+              <div aria-label="SB" style={{width:28,height:28,flexShrink:0,
+                border:`1px solid ${col}`,borderRadius:6,background:"transparent",
+                display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:13,fontWeight:800,letterSpacing:-0.5,color:col,lineHeight:1}}>SB</span>
+              </div>
+            );
+          })()}
         </div>
         <div style={{width:1,background:T.border,flexShrink:0,marginRight:2}}/>
         {tabs.map(t=>{
