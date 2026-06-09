@@ -4316,84 +4316,67 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // One continuous lion is the hero of the whole intro (shared-element handoff).
-    // Phases overlap deliberately; total ≈ 3.2s (modern app-intro standard).
+    // One continuous WHITE lion is the hero. Starts inside the WC2026 ring,
+    // grows out to the title stage, then zooms straight toward the viewer. All on black.
     const t=[];
-    t.push(setTimeout(()=>setPhase(1),60));     // WC roundel + lion-core ease in
+    t.push(setTimeout(()=>setPhase(1),60));     // WC roundel + lion-core ease in (lion sits in the ring's hole)
     t.push(setTimeout(()=>setPhase(2),760));    // RWB sweep across
-    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows out of roundel; title resolves
-    t.push(setTimeout(()=>setPhase(4),1900));   // ROAR punch: anticipation crimp + colour shift to orange
-    t.push(setTimeout(()=>setPhase(5),2480));   // CHARGE: lion surges at the camera, mouth opening
-    t.push(setTimeout(()=>setPhase(6),3120));   // open mouth engulfs the screen → cut to app
-    t.push(setTimeout(()=>onDone&&onDone(),3380));
+    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows out of the ring; title resolves
+    t.push(setTimeout(()=>setPhase(4),2050));   // ZOOM: lion comes toward the viewer
+    t.push(setTimeout(()=>setPhase(5),2750));   // lion fills the frame → cut to app
+    t.push(setTimeout(()=>onDone&&onDone(),3050));
     return()=>t.forEach(clearTimeout);
   },[]);
 
-  // Haptic on the roar beat (phase 4) — one physical accent.
+  // Haptic on the zoom beat — one physical accent.
   React.useEffect(()=>{
-    if(phase===4&&typeof navigator!=="undefined"&&navigator.vibrate){try{navigator.vibrate(18);}catch(e){}}
+    if(phase===4&&typeof navigator!=="undefined"&&navigator.vibrate){try{navigator.vibrate(16);}catch(e){}}
   },[phase]);
 
-  // ── Background: black through the WC intro, warms to orange at the roar, back to black on the charge.
-  const bg=phase>=5?"#0D0D0D":(phase>=4?"#E85100":"#0D0D0D");
+  // ── Background: black throughout. Clean white-on-black.
+  const bg="#0D0D0D";
 
-  // ── Shared lion: scale + colour + depth evolve across phases (never unmounts). No spinning.
-  const orangeOpacity=phase>=4?1:0;                   // white → orange crossfade over the roar
-  // Scale: tiny core → stage → roar crimp → CHARGE (surges at camera, head stays readable).
+  // ── Shared white lion: scale + depth evolve across phases (never unmounts).
+  // Scale: tiny core inside the ring → stage size → zooms huge toward the viewer.
   const lionScale=
-    phase>=6?9:           // head pushes past as the mouth-hole takes over
-    phase>=5?3.6:         // charging — large but head still legible
-    phase>=4?0.96:        // roar anticipation crimp
+    phase>=5?11:          // fills the frame
+    phase>=4?4.4:         // coming at the viewer
     phase>=3?1:           // settled at stage size
-    phase>=1?0.34:0.18;   // tiny core inside the roundel
-  const lionZ=phase>=5?360:0;                         // surge toward the viewer
-  const lionLift=phase>=5?0:(phase>=3?-58:(phase>=1?-2:6));
-  const lionBlur=phase>=6?7:(phase===5?2:0);          // motion blur builds as it rushes in
-  const lionOpacity=phase>=6?0:(phase>=1?1:0);
-
-  // ── Mouth-hole: a black void that opens at the lion's mouth on the charge and swallows the screen.
-  const mouthOpacity=phase>=5?1:0;
-  const mouthScale=phase>=6?30:(phase>=5?1:0.15);
-  const mouthLift=phase>=5?14:0;                       // sits over the muzzle/mouth area
+    phase>=1?0.3:0.16;    // tiny core inside the ring's hole
+  const lionZ=phase>=4?420:0;                          // surge toward the viewer (z-depth)
+  // Lift: phase 1-2 the lion sits in the RING's hole (ring centre is well above column centre),
+  // phase 3 it rests above the title, phase 4+ it centres for the zoom.
+  const lionLift=phase>=4?0:(phase>=3?-58:(phase>=1?-24:6));
+  const lionBlur=phase>=5?5:(phase===4?2:0);           // subtle motion blur as it rushes in
+  const lionOpacity=phase>=5?0:(phase>=1?1:0);
 
   // ── WC roundel ring + "26" + RWB bars: present in the intro, dissolve as the lion grows out.
   const ringOpacity=phase>=3?0:(phase>=1?1:0);
   const ringScale=phase>=3?1.25:(phase>=1?1:0.8);
   const sweepOpacity=phase===2?1:0;
 
-  // ── Title stage: resolves under the lion as the roundel dissolves; clears on the charge.
+  // ── Title stage: resolves under the lion as the ring dissolves; clears on the zoom.
   const titleOpacity=phase>=4?0:(phase>=3?1:0);
   const titleLift=phase>=3?0:14;
 
-  // ── Glow beat at the roar / charge.
-  const glowOpacity=(phase===4||phase===5)?1:0;
-  const overlayOpacity=phase>=6?0:1;
+  const overlayOpacity=phase>=5?0:1;
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:bg,opacity:overlayOpacity,
-      transition:phase>=6
-        ? "opacity 0.5s cubic-bezier(.4,0,.2,1)"
-        : "background 0.9s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
       perspective:"1100px"}}>
 
-      {/* Radial vignette — deepens slightly on launch for cinematic depth */}
+      {/* Subtle radial vignette for depth (black) */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase>=5?1:0.5,transition:"opacity 0.8s ease",
-        background:"radial-gradient(120% 120% at 50% 50%, transparent 38%, rgba(0,0,0,0.55) 100%)"}}/>
+        opacity:phase>=4?0.85:0.45,transition:"opacity 0.7s ease",
+        background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.6) 100%)"}}/>
 
       {/* RWB accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
         transition:"opacity 0.6s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
-
-      {/* Glow bloom on the flip beat */}
-      <div style={{position:"absolute",width:240,height:240,borderRadius:"50%",pointerEvents:"none",
-        opacity:glowOpacity,transform:`scale(${glowOpacity?1.1:0.6})`,
-        transition:"opacity 0.45s ease, transform 0.55s cubic-bezier(.34,1.2,.5,1)",
-        background:"radial-gradient(circle, rgba(255,180,90,0.55) 0%, rgba(255,120,40,0.18) 45%, transparent 70%)",
-        filter:"blur(4px)"}}/>
 
       {/* WC roundel ring + 26 + RWB bars (the lion lives in its heart) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
@@ -4409,8 +4392,6 @@ function AppLoader({onDone}){
           <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
           <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
         </svg>
-        <span style={{fontSize:48,fontWeight:WEIGHT.bold,letterSpacing:0,lineHeight:0.78,color:"#FFFFFF",
-          textShadow:"0 0 18px rgba(255,255,255,0.35), 0 2px 10px rgba(0,0,0,0.5)"}}>26</span>
         <div style={{display:"flex",gap:4}}>
           <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
           <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
@@ -4433,40 +4414,19 @@ function AppLoader({onDone}){
         </div>
       </div>
 
-      {/* THE HERO LION — one node: roundel-core → stage → roar → charges at the viewer, mouth opening */}
-      <div style={{position:"absolute",perspective:"900px",pointerEvents:"none",
-        opacity:lionOpacity,transition:"opacity 0.3s cubic-bezier(.4,0,.2,1)"}}>
-        <style>{`
-          @keyframes lionRoar{0%{transform:scale(1)}22%{transform:scale(0.9)}46%{transform:scale(1.14)}60%{transform:scale(1.04) translateX(-2px)}72%{transform:scale(1.07) translateX(2px)}100%{transform:scale(1.05)}}
-        `}</style>
+      {/* THE HERO LION — one white node: ring's hole → stage → zooms toward the viewer */}
+      <div style={{position:"absolute",perspective:"1100px",pointerEvents:"none",
+        opacity:lionOpacity,transition:"opacity 0.4s cubic-bezier(.4,0,.2,1)"}}>
         <div style={{position:"relative",width:108,height:108,
           transform:`translateZ(${lionZ}px) translateY(${lionLift}px) scale(${lionScale})`,
           filter:lionBlur?`blur(${lionBlur}px)`:"none",
-          transition:phase>=6
-            ? "transform 0.36s cubic-bezier(.6,0,.9,.35), filter 0.34s ease"   // engulf: accelerate in
-            : phase>=5
-              ? "transform 0.64s cubic-bezier(.42,0,.7,.6), filter 0.5s ease"  // charge surge
-              : "transform 0.7s cubic-bezier(.34,1.2,.5,1), filter 0.3s ease", // settle / roar
-          animation:phase===4?"lionRoar 0.6s cubic-bezier(.4,0,.3,1) both":"none",
+          transition:phase>=4
+            ? "transform 0.62s cubic-bezier(.45,0,.7,.55), filter 0.5s ease"  // zoom toward viewer
+            : "transform 0.7s cubic-bezier(.34,1.2,.5,1), filter 0.3s ease",  // settle into place
           willChange:"transform,filter"}}>
-          {/* white base lion */}
           <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
             <LionEmoji color="#FFFFFF" size={108}/>
           </div>
-          {/* orange lion crossfades in over the roar (no spin) */}
-          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",
-            opacity:orangeOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)"}}>
-            <LionEmoji color="#FF5500" size={108}/>
-          </div>
-          {/* MOUTH-HOLE — black void opens at the muzzle and grows to swallow the screen */}
-          <div style={{position:"absolute",left:"50%",top:`calc(50% + ${mouthLift}px)`,
-            width:34,height:26,marginLeft:-17,marginTop:-13,borderRadius:"50%",
-            opacity:mouthOpacity,transform:`scale(${mouthScale})`,transformOrigin:"center",
-            transition:phase>=6
-              ? "transform 0.36s cubic-bezier(.62,0,.9,.4), opacity 0.18s ease"
-              : "transform 0.5s cubic-bezier(.5,0,.75,.5), opacity 0.3s ease",
-            background:"radial-gradient(ellipse at center, #000 0%, #050505 55%, rgba(5,5,5,0) 78%)",
-            willChange:"transform,opacity"}}/>
         </div>
       </div>
     </div>
