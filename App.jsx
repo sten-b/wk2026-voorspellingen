@@ -1876,32 +1876,32 @@ function KnockoutBracket({scrollToMatch}){
   const tr=useT();
   const fWin=fsA>fsB?FINAL_TEAMS[0]:FINAL_TEAMS[1];
   const finalKey=`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`;
+  const OL=T.id==="orangeLion";
 
-  // Compact match tile: two teams, flag + short name + score
+  // Match tile: two teams, flag + name + score. accent = highlighted (SF).
   const Tile=({a,b,mk,accent=false})=>{
     const[sA,sB]=KO_SCORES[mk]||[1,0];
     const aW=sA>sB;
-    const OL=T.id==="orangeLion";
     const winCol=OL?"#0D0D0D":T.orange;
-    const loseCol=OL?"rgba(13,13,13,0.55)":T.textSub;
+    const loseCol=OL?"rgba(13,13,13,0.55)":(T.id==="dark"?"#C8C8C8":"#555555");
     return(
       <div onClick={()=>scrollToMatch&&scrollToMatch(mk)}
         style={{background:T.card,
           border:`1px solid ${accent?T.orange:T.border}`,
           borderLeft:`3px solid ${accent?T.orange:T.blue}`,
-          borderRadius:3,padding:"5px 7px",cursor:"pointer",
+          borderRadius:6,padding:"7px 9px",cursor:"pointer",
           WebkitTapHighlightColor:"transparent",userSelect:"none",flex:1,minWidth:0}}>
         {[{team:a,s:sA,w:aW},{team:b,s:sB,w:!aW}].map(({team,s,w},i)=>(
-          <div key={team} style={{display:"flex",alignItems:"center",gap:4,
-            marginTop:i?3:0,paddingTop:i?3:0,
+          <div key={team} style={{display:"flex",alignItems:"center",gap:6,
+            marginTop:i?5:0,paddingTop:i?5:0,
             borderTop:i?`1px solid ${T.border}`:"none"}}>
-            <span style={{fontSize:12,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
-            <span style={{flex:1,fontSize:FS.caption,fontWeight:w?700:400,
+            <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
+            <span style={{flex:1,fontSize:FS.caption,fontWeight:w?700:500,
               color:w?winCol:loseCol,
               overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
               {tName(team,lang)}
             </span>
-            <span style={{fontSize:FS.caption,fontWeight:700,
+            <span style={{fontSize:FS.small,fontWeight:700,
               color:w?winCol:loseCol,flexShrink:0,minWidth:12,textAlign:"right"}}>
               {s}
             </span>
@@ -1911,121 +1911,91 @@ function KnockoutBracket({scrollToMatch}){
     );
   };
 
-  // Bracket "merge" connector: two feeders funnel down into one match below.
-  // Renders as an SVG that joins the centers of the two tiles above into a single stem.
-  const MergeConnector=({height=18})=>{
-    const c=T.id==="dark"?"#3a3a3a":"#cdd6e4";
-    return(
-      <div style={{height,width:"100%",flexShrink:0}}>
-        <svg width="100%" height={height} viewBox="0 0 100 18" preserveAspectRatio="none" fill="none"
-          style={{display:"block"}}>
-          {/* left feeder down, right feeder down, horizontal join, center stem down */}
-          <path d={`M25 0 V6 Q25 9 28 9 H72 Q75 9 75 6 V0`} stroke={c} strokeWidth="1.2"
-            strokeLinecap="round" fill="none" vectorEffect="non-scaling-stroke"/>
-          <path d="M50 9 V18" stroke={c} strokeWidth="1.2" strokeLinecap="round"
-            fill="none" vectorEffect="non-scaling-stroke"/>
-        </svg>
-      </div>
-    );
-  };
-  // Single straight stem (SF -> Final), centered
-  const StemConnector=({height=18})=>{
-    const c=T.id==="dark"?"#3a3a3a":"#cdd6e4";
-    return(
-      <div style={{height,display:"flex",justifyContent:"center",flexShrink:0}}>
-        <svg width="10" height={height} viewBox="0 0 10 18" fill="none" style={{display:"block"}}>
-          <path d="M5 0 V14 M2 11 L5 14.5 L8 11" stroke={c} strokeWidth="1.2"
-            strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-        </svg>
-      </div>
-    );
-  };
+  // Round header: label + subtle date chip
+  const RoundHead=({label,date})=>(
+    <div style={{display:"flex",alignItems:"center",gap:8,margin:"0 0 8px"}}>
+      <span style={{fontSize:FS.micro,fontWeight:800,letterSpacing:1.2,textTransform:"uppercase",
+        color:OL?"#FFFFFF":(T.id==="dark"?T.orange:T.blue)}}>{label}</span>
+      <div style={{flex:1,height:1,background:T.border}}/>
+      <span style={{fontSize:FS.micro,fontWeight:700,color:T.textFaint}}>{date}</span>
+    </div>
+  );
 
-  // Section label
-  const RoundLabel=({children,center=true})=>(
-    <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
-      color:T.id==="dark"?"#777":T.blue,
-      textAlign:center?"center":"left",marginBottom:4}}>
-      {children}
+  // Thin centered connector between rounds
+  const Drop=({h=14})=>(
+    <div style={{height:h,display:"flex",justifyContent:"center",alignItems:"center"}}>
+      <div style={{width:1,height:"100%",background:T.border}}/>
     </div>
   );
 
   return(
     <div style={{marginBottom:14,background:T.card,border:`1px solid ${T.border}`,
-      borderRadius:6,padding:"10px 10px 8px"}}>
+      borderRadius:8,padding:"14px 13px"}}>
       {/* Header */}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
-          color:T.id==="dark"?T.orange:T.blue}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+        <span style={{fontSize:FS.body,fontWeight:800,color:T.text,letterSpacing:-0.2}}>
           {lang==="nl"?"Voorspeld schema":"Predicted bracket"}
-        </div>
-        <div style={{fontSize:FS.micro,color:T.textFaint}}>
-          {lang==="nl"?"Tik voor details":"Tap for details"}
-        </div>
+        </span>
+        <span style={{fontSize:FS.micro,color:T.textFaint}}>
+          {lang==="nl"?"tik voor details":"tap for details"}
+        </span>
       </div>
 
-      {/* QUARTER FINALS row */}
-      <RoundLabel>{tr.qf} · {lang==="nl"?"9–11 jul":"9–11 Jul"}</RoundLabel>
-      <div style={{display:"flex",gap:10,marginBottom:0}}>
-        {/* Left half: QF0 and QF1 */}
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:4}}>
+      {/* QUARTER FINALS */}
+      <RoundHead label={tr.qf} date={lang==="nl"?"9–11 jul":"9–11 Jul"}/>
+      <div style={{display:"flex",gap:10}}>
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:7}}>
           <Tile a={QF[0][0]} b={QF[0][1]} mk={`${QF[0][0]}-${QF[0][1]}`}/>
           <Tile a={QF[1][0]} b={QF[1][1]} mk={`${QF[1][0]}-${QF[1][1]}`}/>
         </div>
-        {/* Right half: QF2 and QF3 */}
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:4}}>
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:7}}>
           <Tile a={QF[2][0]} b={QF[2][1]} mk={`${QF[2][0]}-${QF[2][1]}`}/>
           <Tile a={QF[3][0]} b={QF[3][1]} mk={`${QF[3][0]}-${QF[3][1]}`}/>
         </div>
       </div>
 
-      {/* QF -> SF merge connectors (one per half) */}
-      <div style={{display:"flex",gap:10}}>
-        <div style={{flex:1}}><MergeConnector/></div>
-        <div style={{flex:1}}><MergeConnector/></div>
-      </div>
+      <Drop h={16}/>
 
-      {/* SEMI FINALS row */}
-      <RoundLabel>{tr.sf} · {lang==="nl"?"14–15 jul":"14–15 Jul"}</RoundLabel>
-      <div style={{display:"flex",gap:10,marginBottom:0}}>
+      {/* SEMI FINALS */}
+      <RoundHead label={tr.sf} date={lang==="nl"?"14–15 jul":"14–15 Jul"}/>
+      <div style={{display:"flex",gap:10}}>
         <Tile a={SF[0][0]} b={SF[0][1]} mk={`${SF[0][0]}-${SF[0][1]}`} accent/>
         <Tile a={SF[1][0]} b={SF[1][1]} mk={`${SF[1][0]}-${SF[1][1]}`} accent/>
       </div>
 
-      {/* SF -> Final merge connector */}
-      <MergeConnector/>
+      <Drop h={16}/>
 
       {/* FINAL */}
-      <RoundLabel center>{lang==="nl"?"FINALE · 19 jul":"FINAL · 19 Jul"}</RoundLabel>
-      <div style={{maxWidth:260,margin:"0 auto"}}>
+      <RoundHead label={lang==="nl"?"Finale":"Final"} date={lang==="nl"?"19 jul":"19 Jul"}/>
+      <div style={{maxWidth:280,margin:"0 auto"}}>
         <div onClick={()=>scrollToMatch&&scrollToMatch(finalKey)}
-          style={{background:T.card,border:`2px solid ${T.orange}`,borderRadius:4,
-            padding:"7px 10px",cursor:"pointer",userSelect:"none",
+          style={{background:OL?"rgba(255,255,255,0.10)":(T.id==="dark"?"rgba(255,85,0,0.06)":T.orangeFaint),
+            border:`2px solid ${T.orange}`,borderRadius:8,
+            padding:"10px 12px",cursor:"pointer",userSelect:"none",
             WebkitTapHighlightColor:"transparent"}}>
           {[{team:FINAL_TEAMS[0],s:fsA,w:fsA>fsB},{team:FINAL_TEAMS[1],s:fsB,w:fsB>fsA}].map(({team,s,w},i)=>{
-            const OL=T.id==="orangeLion";
             const winCol=OL?"#0D0D0D":T.orange;
             const loseCol=OL?"rgba(13,13,13,0.6)":(T.id==="dark"?"#C8C8C8":"#555555");
             return(
-            <div key={team} style={{display:"flex",alignItems:"center",gap:5,
-              marginTop:i?4:0,paddingTop:i?4:0,
-              borderTop:i?`1px solid ${T.border}`:"none"}}>
-              <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[team]}</span>
-              <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:500,
+            <div key={team} style={{display:"flex",alignItems:"center",gap:7,
+              marginTop:i?6:0,paddingTop:i?6:0,
+              borderTop:i?`1px solid ${OL?"rgba(13,13,13,0.15)":T.border}`:"none"}}>
+              <span style={{fontSize:16,lineHeight:1,flexShrink:0}}>{FLAGS[team]}</span>
+              <span style={{flex:1,fontSize:FS.body,fontWeight:w?700:500,
                 color:w?winCol:loseCol,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                 {tName(team,lang)}
               </span>
-              <span style={{fontSize:FS.small,fontWeight:700,color:w?winCol:loseCol,flexShrink:0,minWidth:12,textAlign:"right"}}>
+              <span style={{fontSize:FS.body,fontWeight:800,color:w?winCol:loseCol,flexShrink:0,minWidth:14,textAlign:"right"}}>
                 {s}
               </span>
             </div>
             );
           })}
-          <div style={{marginTop:6,paddingTop:5,borderTop:`1px solid ${T.border}`,
-            display:"flex",alignItems:"center",gap:5}}>
-            <span style={{fontSize:12}}>🏆</span>
-            <span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="orangeLion"?"#0D0D0D":T.orange}}>
+          <div style={{marginTop:8,paddingTop:7,borderTop:`1px solid ${OL?"rgba(13,13,13,0.15)":T.border}`,
+            display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:14}}>🏆</span>
+            <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:0.3,color:OL?"#0D0D0D":T.orange}}>
               {tName(fWin,lang)}
             </span>
           </div>
@@ -2858,8 +2828,9 @@ function ModelViz(){
   const T=useTheme();
   const lang=useLang();
   const [openFactor,setOpenFactor]=useState(null);
-  const [openRank,setOpenRank]=useState(null);
   const [exTeam,setExTeam]=useState("Argentina");
+  const [exA,setExA]=useState("Spain");
+  const [exB,setExB]=useState("Uruguay");
   // Theme-compliant palette only: orange (primary), blue (secondary),
   // green/red reserved strictly for semantic up/down vs FIFA, greys for everything else.
   const orange=T.orange;
@@ -3112,56 +3083,23 @@ function ModelViz(){
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginBottom:10}}>
-          {lang==="nl"?"Tik een land voor de berekening van zijn score."
-            :"Tap a country to see how its score is calculated."}
+          {lang==="nl"?"Elke sterktescore uit stap 2 bepaalt de plek op de ranglijst. De top 8:"
+            :"Each strength score from step 2 sets the place in the ranking. The top 8:"}
         </div>
         {TOP8.map((t,i)=>{
           const maxSc=84;
-          const fd=MODEL_DATA[t.t];
-          const isOpen=openRank===i;
-          const rows=fd?[
-            {lab:"Elo",sc:fd.eloN,w:70},
-            {lab:lang==="nl"?"Selectie":"Squad",sc:(SQUAD_QUALITY[t.t]!==undefined?SQUAD_QUALITY[t.t]:fd.svN),w:10},
-            {lab:lang==="nl"?"Vorm":"Form",sc:(fd.formN||0),w:10},
-            {lab:lang==="nl"?"Ervaring":"Experience",sc:fd.exp,w:5},
-            {lab:"Coach",sc:(COACH_SCORE[t.t]!==undefined?COACH_SCORE[t.t]:fd.coach),w:5},
-          ].map(r=>({...r,val:+r.sc.toFixed(1),contrib:r.sc*(r.w/100)})):[];
           return(
-            <div key={t.t} style={{marginBottom:i<7?8:0}}>
-              <div onClick={()=>setOpenRank(isOpen?null:i)}
-                style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                  padding:"3px 4px",borderRadius:4,background:isOpen?T.orangeFaint:"transparent"}}>
-                <span style={{fontSize:FS.small,fontWeight:700,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
-                <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{t.f}</span>
-                <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
-                  overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(t.t)}</span>
-                <div style={{flex:1,height:8,background:T.bg,borderRadius:4,overflow:"hidden"}}>
-                  <div style={{width:`${t.sc/maxSc*100}%`,height:"100%",borderRadius:4,
-                    background:i===0?orange:blue}}/>
-                </div>
-                <span style={{fontSize:FS.small,fontWeight:700,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
-                <Chevron open={isOpen} color={T.textFaint}/>
+            <div key={t.t} style={{display:"flex",alignItems:"center",gap:8,
+              padding:"4px 4px",marginBottom:i<7?6:0}}>
+              <span style={{fontSize:FS.small,fontWeight:700,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
+              <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{t.f}</span>
+              <span style={{fontSize:FS.small,fontWeight:600,color:T.text,width:66,flexShrink:0,
+                overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(t.t)}</span>
+              <div style={{flex:1,height:8,background:T.bg,borderRadius:4,overflow:"hidden"}}>
+                <div style={{width:`${t.sc/maxSc*100}%`,height:"100%",borderRadius:4,
+                  background:i===0?orange:blue}}/>
               </div>
-              {isOpen&&fd&&(
-                <div style={{padding:"8px 4px 4px 44px"}}>
-                  {rows.map((r,j)=>(
-                    <div key={j} style={{display:"flex",alignItems:"center",gap:6,
-                      padding:"5px 0",borderTop:j>0?`1px solid ${T.border}`:"none",fontSize:FS.small}}>
-                      <span style={{flex:1,fontWeight:600,color:T.text}}>{r.lab}</span>
-                      <span style={{fontWeight:400,color:T.textSub,minWidth:30,textAlign:"right"}}>{r.val.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
-                      <span style={{color:T.textFaint,width:7,textAlign:"center"}}>×</span>
-                      <span style={{fontWeight:400,color:T.textSub,minWidth:24,textAlign:"right"}}>{r.w}%</span>
-                      <span style={{color:T.textFaint,width:7,textAlign:"center"}}>=</span>
-                      <span style={{fontWeight:700,color:T.text,minWidth:30,textAlign:"right"}}>{r.contrib.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
-                    </div>
-                  ))}
-                  <div style={{display:"flex",alignItems:"center",marginTop:5,paddingTop:6,
-                    borderTop:`2px solid ${T.border}`}}>
-                    <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Sterktescore":"Strength score"}</span>
-                    <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{rows.reduce((s,r)=>s+ +r.contrib.toFixed(1),0).toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
-                  </div>
-                </div>
-              )}
+              <span style={{fontSize:FS.small,fontWeight:700,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
             </div>
           );
         })}
@@ -3171,62 +3109,95 @@ function ModelViz(){
       {SL(lang==="nl"?"Stap 4 · De uitslag":"Step 4 · The result","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
+        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:12}}>
           {lang==="nl"
-            ?"De sterktescore bepaalt wie wint én met welke marge; xG en xGc vullen de hoogte van de uitslag in."
-            :"The strength score decides who wins and by what margin; xG and xGc fill in the height of the scoreline."}
+            ?"Voor elke wedstrijd vergelijkt het model de twee sterktescores. Het verschil bepaalt wie wint en met welke marge; de xG-cijfers bepalen hoeveel goals er binnen die marge vallen."
+            :"For every match the model compares the two strength scores. The gap decides who wins and by what margin; the xG figures set how many goals fall within that margin."}
         </div>
-        <div style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
-          padding:"9px 11px",marginBottom:11,fontSize:FS.small,color:T.text,lineHeight:1.9}}>
-          <div><span style={{color:blue,fontWeight:700}}>{lang==="nl"?"verschil":"gap"} &lt; 20</span> → {lang==="nl"?"gelijkspel":"draw"}</div>
-          <div><span style={{color:blue,fontWeight:700}}>20–35</span> → {lang==="nl"?"wint met 1":"win by 1"}</div>
-          <div><span style={{color:blue,fontWeight:700}}>35–50</span> → {lang==="nl"?"wint met 2":"win by 2"}</div>
-          <div><span style={{color:blue,fontWeight:700}}>&gt; 50</span> → {lang==="nl"?"wint met 3":"win by 3"}</div>
+        {/* compact margin rule */}
+        <div style={{display:"flex",gap:6,marginBottom:13,flexWrap:"wrap"}}>
+          {[
+            {g:lang==="nl"?"<20":"<20",r:lang==="nl"?"gelijk":"draw"},
+            {g:"20–35",r:"+1"},{g:"35–50",r:"+2"},{g:">50",r:"+3"},
+          ].map((c,i)=>(
+            <div key={i} style={{flex:"1 1 0",minWidth:52,textAlign:"center",
+              border:`1px solid ${T.border}`,borderRadius:5,padding:"5px 2px",background:T.bg}}>
+              <div style={{fontSize:FS.caption,fontWeight:700,color:blue,lineHeight:1.2}}>{c.g}</div>
+              <div style={{fontSize:FS.micro,color:T.textSub,marginTop:1}}>{c.r}</div>
+            </div>
+          ))}
         </div>
-        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-          {lang==="nl"
-            ?"De marge volgt uit het verschil in sterktescore. De xG/xGc bepalen het exacte aantal doelpunten binnen die marge: een aanvallend duel wordt 3-1, een defensief duel 1-0."
-            :"The margin follows from the strength-score gap. xG/xGc set the exact number of goals within that margin: an attacking match becomes 3-1, a defensive one 1-0."}
+        {/* interactive: pick two teams */}
+        <div style={{display:"flex",gap:8,marginBottom:12,alignItems:"center"}}>
+          {[[exA,setExA],[exB,setExB]].map(([val,set],idx)=>(
+            <React.Fragment key={idx}>
+              <div style={{position:"relative",flex:1}}>
+                <select value={val} onChange={e=>set(e.target.value)}
+                  style={{width:"100%",appearance:"none",WebkitAppearance:"none",
+                    background:T.bg,border:`1px solid ${T.border}`,borderRadius:5,
+                    padding:"7px 22px 7px 9px",fontSize:FS.caption,fontWeight:700,color:T.text,
+                    cursor:"pointer",fontFamily:"inherit"}}>
+                  {MODEL_ORDER.map(t=>(<option key={t} value={t}>{tName(t,lang)}</option>))}
+                </select>
+                <span style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",
+                  pointerEvents:"none",color:T.textSub,fontSize:FS.caption}}>▾</span>
+              </div>
+              {idx===0&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.textFaint,flexShrink:0}}>vs</span>}
+            </React.Fragment>
+          ))}
         </div>
-        {/* Worked example — live computation of one real match */}
+        {/* computation visualisation */}
         {(()=>{
-          const A="Spain",B="Uruguay";
-          if(COMPOSITE[A]===undefined||COMPOSITE[B]===undefined) return null;
+          const A=exA,B=exB;
+          if(A===B||COMPOSITE[A]===undefined||COMPOSITE[B]===undefined)
+            return <div style={{fontSize:FS.caption,color:T.textFaint,textAlign:"center",padding:"8px 0"}}>{lang==="nl"?"Kies twee verschillende landen.":"Pick two different countries."}</div>;
           const gap=COMPOSITE[A]-COMPOSITE[B];
-          const margin=marginFromGap(gap);
+          const winner=gap>=0?A:B, margin=marginFromGap(gap);
           const [ea,eb]=expectedGoals(A,B);
           const [sA,sB]=model2Score(A,B);
           const nf=(x)=>x.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1});
-          const Row=({label,children})=>(
-            <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderTop:`1px solid ${T.border}`}}>
-              <span style={{flex:1,fontSize:FS.caption,color:T.textSub}}>{label}</span>
-              <span style={{fontSize:FS.small,fontWeight:700,color:T.text,textAlign:"right"}}>{children}</span>
+          const maxC=Math.max(COMPOSITE[A],COMPOSITE[B],1);
+          const Bar=({team,sc,win})=>(
+            <div style={{marginBottom:8}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+                <span style={{fontSize:13,lineHeight:1}}>{FLAGS[team]}</span>
+                <span style={{flex:1,fontSize:FS.caption,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
+                <span style={{fontSize:FS.caption,fontWeight:700,color:win?orange:T.textSub}}>{nf(sc)}</span>
+              </div>
+              <div style={{height:7,background:T.bg,borderRadius:4,overflow:"hidden"}}>
+                <div style={{width:`${sc/maxC*100}%`,height:"100%",borderRadius:4,background:win?orange:blue}}/>
+              </div>
+            </div>
+          );
+          const Chip=({label,value,strong})=>(
+            <div style={{flex:1,textAlign:"center",border:`1px solid ${T.border}`,borderRadius:6,
+              padding:"7px 4px",background:T.bg}}>
+              <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.4,textTransform:"uppercase",color:T.textFaint,marginBottom:2}}>{label}</div>
+              <div style={{fontSize:strong?FS.body:FS.small,fontWeight:800,color:strong?orange:T.text}}>{value}</div>
             </div>
           );
           return(
-            <div style={{marginTop:13,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden"}}>
-              <div style={{padding:"8px 11px",background:T.bg,borderBottom:`1px solid ${T.border}`,
-                fontSize:FS.micro,fontWeight:800,letterSpacing:1,textTransform:"uppercase",color:orange}}>
-                {lang==="nl"?"Voorbeeld":"Worked example"}
+            <div style={{border:`1px solid ${T.border}`,borderRadius:6,padding:"11px",background:T.card}}>
+              {/* strength bars */}
+              <Bar team={A} sc={COMPOSITE[A]} win={winner===A}/>
+              <Bar team={B} sc={COMPOSITE[B]} win={winner===B}/>
+              {/* chain: gap -> margin -> xG */}
+              <div style={{display:"flex",gap:6,alignItems:"stretch",marginTop:11}}>
+                <Chip label={lang==="nl"?"Verschil":"Gap"} value={nf(Math.abs(gap))}/>
+                <Chip label={lang==="nl"?"Marge":"Margin"} value={margin===0?(lang==="nl"?"gelijk":"draw"):`+${margin}`}/>
+                <Chip label="xG" value={`${nf(ea)}/${nf(eb)}`}/>
               </div>
-              <div style={{padding:"4px 11px 9px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:8,padding:"9px 0 4px"}}>
-                  <span style={{fontSize:15}}>{FLAGS[A]}</span>
-                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{tName(A,lang)} – {tName(B,lang)} {FLAGS[B]}</span>
-                </div>
-                <Row label={lang==="nl"?"Sterktescores":"Strength scores"}>{nf(COMPOSITE[A])} vs {nf(COMPOSITE[B])}</Row>
-                <Row label={lang==="nl"?"Verschil":"Gap"}>{nf(Math.abs(gap))}</Row>
-                <Row label={lang==="nl"?"→ marge":"→ margin"}>{margin===0?(lang==="nl"?"gelijkspel":"draw"):`+${margin}`}</Row>
-                <Row label={lang==="nl"?"xG (verwachte goals)":"xG (expected goals)"}>{nf(ea)} / {nf(eb)}</Row>
-                <div style={{display:"flex",alignItems:"center",gap:8,marginTop:7,paddingTop:8,borderTop:`2px solid ${T.border}`}}>
-                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,color:T.text}}>{lang==="nl"?"Uitslag":"Result"}</span>
-                  <span style={{fontSize:FS.body,fontWeight:800,color:orange}}>{sA}–{sB}</span>
-                </div>
-                <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginTop:7}}>
-                  {lang==="nl"
-                    ?`Verschil ${nf(Math.abs(gap))} valt in 20–35 → winst met ${margin}. xGc rondt de verliezer af op ${sB}, winnaar = ${sB}+${margin} = ${sA}.`
-                    :`Gap ${nf(Math.abs(gap))} falls in 20–35 → win by ${margin}. xGc rounds the loser to ${sB}, winner = ${sB}+${margin} = ${sA}.`}
-                </div>
+              {/* result */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,
+                marginTop:12,paddingTop:11,borderTop:`2px solid ${T.border}`}}>
+                <span style={{fontSize:15}}>{FLAGS[A]}</span>
+                <span style={{fontSize:FS.h1,fontWeight:800,color:orange,letterSpacing:1}}>{sA}–{sB}</span>
+                <span style={{fontSize:15}}>{FLAGS[B]}</span>
+              </div>
+              <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginTop:8,textAlign:"center"}}>
+                {margin===0
+                  ?(lang==="nl"?`Verschil ${nf(Math.abs(gap))} < 20 → gelijkspel. xG bepaalt ${sA}–${sB}.`:`Gap ${nf(Math.abs(gap))} < 20 → draw. xG sets ${sA}–${sB}.`)
+                  :(lang==="nl"?`${tName(winner,lang)} wint met ${margin}; xG bepaalt de hoogte: ${sA}–${sB}.`:`${tName(winner,lang)} wins by ${margin}; xG sets the height: ${sA}–${sB}.`)}
               </div>
             </div>
           );
@@ -3483,256 +3454,253 @@ function NationsTab({preOpen=null}){
 // Metric: G+A per 90 minutes (min 4×90min played). WC-qualified nations only.
 // Note: uses actual goals/assists per90, not xG/xA (standard stats table).
 const FBREF_WC=[
-{"r":1,"name":"Harry Kane","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Bayern Munich","g90":1.36,"a90":0.19,"ga90":1.55,"goals":36,"assists":5,"mins90":26.4},
-{"r":2,"name":"Ousmane Dembélé","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris Saint-Germain","g90":0.85,"a90":0.59,"ga90":1.44,"goals":10,"assists":7,"mins90":11.8},
-{"r":3,"name":"Robinio Vaz","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Marseille","g90":0.95,"a90":0.47,"ga90":1.42,"goals":4,"assists":2,"mins90":4.2},
-{"r":4,"name":"Michael Olise","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Bayern Munich","g90":0.58,"a90":0.74,"ga90":1.32,"goals":15,"assists":19,"mins90":25.7},
-{"r":5,"name":"Allan Saint-Maximin","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Lens","g90":0.66,"a90":0.66,"ga90":1.32,"goals":3,"assists":3,"mins90":4.6},
-{"r":6,"name":"Hamza Igamane","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"FW","squad":"Lille","g90":1.04,"a90":0.21,"ga90":1.25,"goals":5,"assists":1,"mins90":4.8},
-{"r":7,"name":"Emanuel Emegha","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Strasbourg","g90":0.81,"a90":0.41,"ga90":1.22,"goals":4,"assists":2,"mins90":4.9},
-{"r":8,"name":"Luca Waldschmidt","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Köln","g90":0.66,"a90":0.53,"ga90":1.2,"goals":5,"assists":4,"mins90":7.5},
-{"r":9,"name":"Cristhian Stuani","nat":"URU","flag":"🇺🇾","country":"Uruguay","pos":"FW","squad":"Girona","g90":1.09,"a90":0.0,"ga90":1.09,"goals":5,"assists":0,"mins90":4.6},
-{"r":10,"name":"Luis Díaz","nat":"COL","flag":"🇨🇴","country":"Colombia","pos":"MF","squad":"Bayern Munich","g90":0.55,"a90":0.51,"ga90":1.07,"goals":15,"assists":14,"mins90":27.2},
-{"r":11,"name":"Erling Haaland","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"FW","squad":"Manchester City","g90":0.82,"a90":0.24,"ga90":1.07,"goals":27,"assists":8,"mins90":32.8},
-{"r":12,"name":"Lamine Yamal","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","g90":0.64,"a90":0.44,"ga90":1.07,"goals":16,"assists":11,"mins90":25.1},
-{"r":13,"name":"Deniz Undav","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Stuttgart","g90":0.76,"a90":0.28,"ga90":1.04,"goals":19,"assists":7,"mins90":24.9},
-{"r":14,"name":"Raphinha","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Barcelona","g90":0.85,"a90":0.2,"ga90":1.04,"goals":13,"assists":3,"mins90":15.3},
-{"r":15,"name":"Kylian Mbappé","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Real Madrid","g90":0.87,"a90":0.17,"ga90":1.04,"goals":25,"assists":5,"mins90":28.9},
-{"r":16,"name":"Serge Gnabry","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Bayern Munich","g90":0.59,"a90":0.44,"ga90":1.03,"goals":8,"assists":6,"mins90":13.5},
-{"r":17,"name":"Donyell Malen","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Roma","g90":0.86,"a90":0.12,"ga90":0.98,"goals":14,"assists":2,"mins90":16.3},
-{"r":18,"name":"Lautaro Martínez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Inter","g90":0.71,"a90":0.25,"ga90":0.96,"goals":17,"assists":6,"mins90":24.0},
-{"r":19,"name":"Jonathan Burkardt","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Eintracht Frankfurt","g90":0.88,"a90":0.07,"ga90":0.94,"goals":13,"assists":1,"mins90":14.8},
-{"r":20,"name":"Can Uzun","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Eintracht Frankfurt","g90":0.62,"a90":0.31,"ga90":0.93,"goals":8,"assists":4,"mins90":12.8},
-{"r":21,"name":"Jamal Musiala","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Bayern Munich","g90":0.4,"a90":0.53,"ga90":0.92,"goals":3,"assists":4,"mins90":7.6},
-{"r":22,"name":"Ansu Fati","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Monaco","g90":0.91,"a90":0.0,"ga90":0.91,"goals":11,"assists":0,"mins90":12.1},
-{"r":23,"name":"Marcus Thuram","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Inter","g90":0.62,"a90":0.28,"ga90":0.9,"goals":13,"assists":6,"mins90":21.1},
-{"r":24,"name":"Ermedin Demirović","nat":"BIH","flag":"🇧🇦","country":"Bosnia-Herzegovina","pos":"FW","squad":"Stuttgart","g90":0.72,"a90":0.18,"ga90":0.9,"goals":12,"assists":3,"mins90":16.6},
-{"r":25,"name":"Esteban Lepaul","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Rennes","g90":0.72,"a90":0.18,"ga90":0.9,"goals":20,"assists":5,"mins90":27.9},
-{"r":26,"name":"Endrick","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Lyon","g90":0.37,"a90":0.52,"ga90":0.89,"goals":5,"assists":7,"mins90":13.5},
-{"r":27,"name":"Bruno Fernandes","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Manchester Utd","g90":0.26,"a90":0.62,"ga90":0.88,"goals":9,"assists":21,"mins90":34.0},
-{"r":28,"name":"Fábio Silva","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"FW","squad":"Dortmund","g90":0.22,"a90":0.66,"ga90":0.88,"goals":2,"assists":6,"mins90":9.1},
-{"r":29,"name":"Patrik Schick","nat":"CZE","flag":"🇨🇿","country":"Czechia","pos":"FW","squad":"Leverkusen","g90":0.72,"a90":0.14,"ga90":0.86,"goals":16,"assists":3,"mins90":22.1},
-{"r":30,"name":"Mason Greenwood","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Marseille","g90":0.58,"a90":0.26,"ga90":0.84,"goals":16,"assists":7,"mins90":27.4},
-{"r":31,"name":"Kader Meïté","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Rennes","g90":0.5,"a90":0.34,"ga90":0.84,"goals":3,"assists":2,"mins90":5.9},
-{"r":32,"name":"Karim Adeyemi","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Dortmund","g90":0.53,"a90":0.3,"ga90":0.83,"goals":7,"assists":4,"mins90":13.3},
-{"r":33,"name":"Ferrán Torres","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Barcelona","g90":0.73,"a90":0.09,"ga90":0.82,"goals":16,"assists":2,"mins90":21.8},
-{"r":34,"name":"Bamba Dieng","nat":"SEN","flag":"🇸🇳","country":"Senegal","pos":"FW","squad":"Lorient","g90":0.74,"a90":0.07,"ga90":0.82,"goals":10,"assists":1,"mins90":13.5},
-{"r":35,"name":"Andrej Kramarić","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"MF","squad":"Hoffenheim","g90":0.57,"a90":0.24,"ga90":0.82,"goals":14,"assists":6,"mins90":24.5},
-{"r":36,"name":"Rayan Cherki","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Manchester City","g90":0.2,"a90":0.6,"ga90":0.81,"goals":4,"assists":12,"mins90":19.8},
-{"r":37,"name":"Kike Barja","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Osasuna","g90":0.4,"a90":0.4,"ga90":0.81,"goals":2,"assists":2,"mins90":5.0},
-{"r":38,"name":"Pavel Šulc","nat":"CZE","flag":"🇨🇿","country":"Czechia","pos":"FW","squad":"Lyon","g90":0.63,"a90":0.17,"ga90":0.8,"goals":11,"assists":3,"mins90":17.4},
-{"r":39,"name":"Raphaël Guerreiro","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Bayern Munich","g90":0.57,"a90":0.23,"ga90":0.8,"goals":5,"assists":2,"mins90":8.7},
-{"r":40,"name":"Nicolas Jackson","nat":"SEN","flag":"🇸🇳","country":"Senegal","pos":"FW","squad":"Bayern Munich","g90":0.71,"a90":0.09,"ga90":0.8,"goals":8,"assists":1,"mins90":11.2},
-{"r":41,"name":"Michael Gregoritsch","nat":"AUT","flag":"🇦🇹","country":"Austria","pos":"FW","squad":"Augsburg","g90":0.59,"a90":0.2,"ga90":0.79,"goals":6,"assists":2,"mins90":10.1},
-{"r":42,"name":"Said El Mala","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Köln","g90":0.6,"a90":0.18,"ga90":0.78,"goals":13,"assists":4,"mins90":21.7},
-{"r":43,"name":"Marcus Rashford","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Barcelona","g90":0.41,"a90":0.36,"ga90":0.77,"goals":8,"assists":7,"mins90":19.6},
-{"r":44,"name":"Pablo Pagis","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Lorient","g90":0.51,"a90":0.26,"ga90":0.77,"goals":10,"assists":5,"mins90":19.5},
-{"r":45,"name":"Ayoube Amaimouni","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Eintracht Frankfurt","g90":0.31,"a90":0.46,"ga90":0.77,"goals":2,"assists":3,"mins90":6.5},
-{"r":46,"name":"Kai Havertz","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Arsenal","g90":0.31,"a90":0.46,"ga90":0.77,"goals":2,"assists":3,"mins90":6.5},
-{"r":47,"name":"Omar Marmoush","nat":"EGY","flag":"🇪🇬","country":"Egypt","pos":"FW","squad":"Manchester City","g90":0.39,"a90":0.39,"ga90":0.77,"goals":3,"assists":3,"mins90":7.8},
-{"r":48,"name":"Sebastian Nanasi","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"MF","squad":"Strasbourg","g90":0.6,"a90":0.17,"ga90":0.77,"goals":7,"assists":2,"mins90":11.7},
-{"r":49,"name":"Borja Iglesias","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Celta Vigo","g90":0.66,"a90":0.09,"ga90":0.76,"goals":14,"assists":2,"mins90":21.1},
-{"r":50,"name":"Hugo Ekitike","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Liverpool","g90":0.55,"a90":0.2,"ga90":0.75,"goals":11,"assists":4,"mins90":20.0},
-{"r":51,"name":"Amine Gouiri","nat":"ALG","flag":"🇩🇿","country":"Algeria","pos":"FW","squad":"Marseille","g90":0.54,"a90":0.2,"ga90":0.75,"goals":8,"assists":3,"mins90":14.7},
-{"r":52,"name":"Fermin López","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","g90":0.3,"a90":0.45,"ga90":0.75,"goals":6,"assists":9,"mins90":20.0},
-{"r":53,"name":"Odsonne Édouard","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Lens","g90":0.6,"a90":0.15,"ga90":0.75,"goals":12,"assists":3,"mins90":20.0},
-{"r":54,"name":"Héctor Fort","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"DF","squad":"Elche","g90":0.37,"a90":0.37,"ga90":0.75,"goals":2,"assists":2,"mins90":5.4},
-{"r":55,"name":"Carlos Espí","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Levante","g90":0.74,"a90":0.0,"ga90":0.74,"goals":11,"assists":0,"mins90":14.9},
-{"r":56,"name":"Chris Führich","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Stuttgart","g90":0.37,"a90":0.37,"ga90":0.74,"goals":7,"assists":7,"mins90":18.9},
-{"r":57,"name":"Igor Matanović","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"FW","squad":"Freiburg","g90":0.63,"a90":0.11,"ga90":0.74,"goals":11,"assists":2,"mins90":17.5},
-{"r":58,"name":"Robert Glatzel","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Hamburger SV","g90":0.44,"a90":0.29,"ga90":0.74,"goals":3,"assists":2,"mins90":6.8},
-{"r":59,"name":"Yan Diomandé","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"FW","squad":"RB Leipzig","g90":0.44,"a90":0.29,"ga90":0.73,"goals":12,"assists":8,"mins90":27.5},
-{"r":60,"name":"Désiré Doué","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris Saint-Germain","g90":0.47,"a90":0.27,"ga90":0.73,"goals":7,"assists":4,"mins90":15.0},
-{"r":61,"name":"Abde Ezzalzouli","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Real Betis","g90":0.4,"a90":0.32,"ga90":0.72,"goals":10,"assists":8,"mins90":25.0},
-{"r":62,"name":"Ayoze Pérez","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Villarreal","g90":0.4,"a90":0.32,"ga90":0.72,"goals":5,"assists":4,"mins90":12.5},
-{"r":63,"name":"Brajan Gruda","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"RB Leipzig","g90":0.36,"a90":0.36,"ga90":0.72,"goals":3,"assists":3,"mins90":8.4},
-{"r":64,"name":"Ange-Yoan Bonny","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"FW","squad":"Inter","g90":0.39,"a90":0.32,"ga90":0.71,"goals":5,"assists":4,"mins90":12.7},
-{"r":65,"name":"Williot Swedberg","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Celta Vigo","g90":0.35,"a90":0.35,"ga90":0.71,"goals":5,"assists":5,"mins90":14.1},
-{"r":66,"name":"Hakan Çalhanoğlu","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Inter","g90":0.49,"a90":0.22,"ga90":0.71,"goals":9,"assists":4,"mins90":18.2},
-{"r":67,"name":"Tiago Tomás","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Stuttgart","g90":0.44,"a90":0.26,"ga90":0.71,"goals":5,"assists":3,"mins90":11.3},
-{"r":68,"name":"Lennart Karl","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Bayern Munich","g90":0.35,"a90":0.35,"ga90":0.7,"goals":5,"assists":5,"mins90":14.2},
-{"r":69,"name":"Eli Junior Kroupi","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Bournemouth","g90":0.7,"a90":0.0,"ga90":0.7,"goals":13,"assists":0,"mins90":18.6},
-{"r":70,"name":"Joaquín Panichelli","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Strasbourg","g90":0.66,"a90":0.04,"ga90":0.7,"goals":16,"assists":1,"mins90":24.4},
-{"r":71,"name":"Richarlison","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Tottenham Hotspur","g90":0.5,"a90":0.18,"ga90":0.69,"goals":11,"assists":4,"mins90":21.8},
-{"r":72,"name":"Folarin Balogun","nat":"USA","flag":"🇺🇸","country":"United States","pos":"FW","squad":"Monaco","g90":0.52,"a90":0.16,"ga90":0.69,"goals":13,"assists":4,"mins90":24.8},
-{"r":73,"name":"Alphonso Davies","nat":"CAN","flag":"🇨🇦","country":"Canada","pos":"DF","squad":"Bayern Munich","g90":0.17,"a90":0.51,"ga90":0.69,"goals":1,"assists":3,"mins90":5.8},
-{"r":74,"name":"Emil Holm","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"DF","squad":"Bologna","g90":0.14,"a90":0.55,"ga90":0.69,"goals":1,"assists":4,"mins90":7.3},
-{"r":75,"name":"Donyell Malen","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Aston Villa","g90":0.55,"a90":0.14,"ga90":0.69,"goals":4,"assists":1,"mins90":7.3},
-{"r":76,"name":"Raúl","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Osasuna","g90":0.61,"a90":0.09,"ga90":0.69,"goals":7,"assists":1,"mins90":11.6},
-{"r":77,"name":"Christoph Baumgartner","nat":"AUT","flag":"🇦🇹","country":"Austria","pos":"MF","squad":"RB Leipzig","g90":0.42,"a90":0.26,"ga90":0.68,"goals":13,"assists":8,"mins90":30.9},
-{"r":78,"name":"João Pedro","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","g90":0.51,"a90":0.17,"ga90":0.68,"goals":15,"assists":5,"mins90":29.6},
-{"r":79,"name":"Maximilian Beier","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Dortmund","g90":0.4,"a90":0.27,"ga90":0.67,"goals":9,"assists":6,"mins90":22.5},
-{"r":80,"name":"Antoine Griezmann","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Atlético Madrid","g90":0.43,"a90":0.24,"ga90":0.67,"goals":7,"assists":4,"mins90":16.5},
-{"r":81,"name":"Christian Pulisic","nat":"USA","flag":"🇺🇸","country":"United States","pos":"FW","squad":"Milan","g90":0.45,"a90":0.22,"ga90":0.67,"goals":8,"assists":4,"mins90":17.9},
-{"r":82,"name":"Vinicius Júnior","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Real Madrid","g90":0.51,"a90":0.16,"ga90":0.67,"goals":16,"assists":5,"mins90":31.3},
-{"r":83,"name":"Gerard Moreno","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Villarreal","g90":0.67,"a90":0.0,"ga90":0.67,"goals":10,"assists":0,"mins90":14.9},
-{"r":84,"name":"Martin Terrier","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Leverkusen","g90":0.53,"a90":0.13,"ga90":0.67,"goals":4,"assists":1,"mins90":7.5},
-{"r":85,"name":"Christopher Nkunku","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Milan","g90":0.46,"a90":0.2,"ga90":0.66,"goals":7,"assists":3,"mins90":15.1},
-{"r":86,"name":"Sergio Camello","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Rayo Vallecano","g90":0.55,"a90":0.11,"ga90":0.66,"goals":5,"assists":1,"mins90":9.1},
-{"r":87,"name":"Assan Ouedraogo","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"RB Leipzig","g90":0.38,"a90":0.28,"ga90":0.66,"goals":4,"assists":3,"mins90":10.5},
-{"r":88,"name":"Stefan Schimmer","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Heidenheim","g90":0.55,"a90":0.11,"ga90":0.66,"goals":5,"assists":1,"mins90":9.1},
-{"r":89,"name":"Ferran Jutglà","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Celta Vigo","g90":0.49,"a90":0.16,"ga90":0.65,"goals":9,"assists":3,"mins90":18.4},
-{"r":90,"name":"Dani Olmo","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","g90":0.3,"a90":0.35,"ga90":0.65,"goals":7,"assists":8,"mins90":23.0},
-{"r":91,"name":"Antoine Semenyo","nat":"GHA","flag":"🇬🇭","country":"Ghana","pos":"MF","squad":"Bournemouth","g90":0.5,"a90":0.15,"ga90":0.65,"goals":10,"assists":3,"mins90":20.0},
-{"r":92,"name":"Valentín Castellanos","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Lazio","g90":0.26,"a90":0.39,"ga90":0.65,"goals":2,"assists":3,"mins90":7.7},
-{"r":93,"name":"Gonzalo García","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Real Madrid","g90":0.56,"a90":0.09,"ga90":0.65,"goals":6,"assists":1,"mins90":10.7},
-{"r":94,"name":"Santiago Hidalgo","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Toulouse","g90":0.26,"a90":0.39,"ga90":0.64,"goals":4,"assists":6,"mins90":15.5},
-{"r":95,"name":"Nuno Mendes","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"DF","squad":"Paris Saint-Germain","g90":0.29,"a90":0.36,"ga90":0.64,"goals":4,"assists":5,"mins90":14.0},
-{"r":96,"name":"Pedro","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Lazio","g90":0.46,"a90":0.18,"ga90":0.64,"goals":5,"assists":2,"mins90":10.9},
-{"r":97,"name":"Wesley Saïd","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Lens","g90":0.54,"a90":0.09,"ga90":0.63,"goals":12,"assists":2,"mins90":22.1},
-{"r":98,"name":"Florian Thauvin","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Lens","g90":0.41,"a90":0.22,"ga90":0.63,"goals":11,"assists":6,"mins90":27.1},
-{"r":99,"name":"Iago Aspas","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Celta Vigo","g90":0.39,"a90":0.24,"ga90":0.63,"goals":5,"assists":3,"mins90":12.7},
-{"r":100,"name":"Igor Thiago","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Brentford","g90":0.6,"a90":0.03,"ga90":0.63,"goals":22,"assists":1,"mins90":36.5},
-{"r":101,"name":"Mikel Oyarzabal","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Real Sociedad","g90":0.5,"a90":0.13,"ga90":0.63,"goals":15,"assists":4,"mins90":30.1},
-{"r":102,"name":"Mahmoud Dahoud","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Eintracht Frankfurt","g90":0.25,"a90":0.38,"ga90":0.63,"goals":2,"assists":3,"mins90":8.0},
-{"r":103,"name":"Gabriel Jesus","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Arsenal","g90":0.63,"a90":0.0,"ga90":0.63,"goals":3,"assists":0,"mins90":4.8},
-{"r":104,"name":"Ethan Mbappé","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Lille","g90":0.48,"a90":0.16,"ga90":0.63,"goals":3,"assists":1,"mins90":6.3},
-{"r":105,"name":"Arnaud Nordin","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Rennes","g90":0.16,"a90":0.47,"ga90":0.63,"goals":1,"assists":3,"mins90":6.3},
-{"r":106,"name":"Bradley Barcola","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris Saint-Germain","g90":0.57,"a90":0.05,"ga90":0.62,"goals":11,"assists":1,"mins90":19.4},
-{"r":107,"name":"Julian Brandt","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Dortmund","g90":0.39,"a90":0.22,"ga90":0.62,"goals":7,"assists":4,"mins90":17.8},
-{"r":108,"name":"Martial Godo","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Strasbourg","g90":0.57,"a90":0.06,"ga90":0.62,"goals":10,"assists":1,"mins90":17.6},
-{"r":109,"name":"Jamie Leweling","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Stuttgart","g90":0.27,"a90":0.34,"ga90":0.61,"goals":7,"assists":9,"mins90":26.3},
-{"r":110,"name":"Ernest Poku","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"MF","squad":"Leverkusen","g90":0.3,"a90":0.3,"ga90":0.61,"goals":5,"assists":5,"mins90":16.5},
-{"r":111,"name":"Viktor Gyökeres","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Arsenal","g90":0.57,"a90":0.04,"ga90":0.61,"goals":14,"assists":1,"mins90":24.7},
-{"r":112,"name":"Keinan Davis","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Udinese","g90":0.44,"a90":0.17,"ga90":0.61,"goals":10,"assists":4,"mins90":22.9},
-{"r":113,"name":"Mikel Merino","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Arsenal","g90":0.35,"a90":0.26,"ga90":0.61,"goals":4,"assists":3,"mins90":11.5},
-{"r":114,"name":"Julian Ryerson","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"MF","squad":"Dortmund","g90":0.0,"a90":0.6,"ga90":0.6,"goals":0,"assists":15,"mins90":25.2},
-{"r":115,"name":"Haris Tabaković","nat":"BIH","flag":"🇧🇦","country":"Bosnia-Herzegovina","pos":"FW","squad":"Gladbach","g90":0.49,"a90":0.11,"ga90":0.6,"goals":13,"assists":3,"mins90":26.5},
-{"r":116,"name":"Ollie Watkins","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Aston Villa","g90":0.51,"a90":0.1,"ga90":0.6,"goals":16,"assists":3,"mins90":31.5},
-{"r":117,"name":"Nicolas Pépé","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Villarreal","g90":0.3,"a90":0.3,"ga90":0.6,"goals":8,"assists":8,"mins90":26.6},
-{"r":118,"name":"Nadiem Amiri","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Mainz 05","g90":0.52,"a90":0.09,"ga90":0.6,"goals":12,"assists":2,"mins90":23.1},
-{"r":119,"name":"Bilal Nadir","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Marseille","g90":0.0,"a90":0.6,"ga90":0.6,"goals":0,"assists":4,"mins90":6.6},
-{"r":120,"name":"Gonçalo Guedes","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Real Sociedad","g90":0.39,"a90":0.2,"ga90":0.59,"goals":8,"assists":4,"mins90":20.3},
-{"r":121,"name":"Alexander Sørloth","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"FW","squad":"Atlético Madrid","g90":0.59,"a90":0.0,"ga90":0.59,"goals":13,"assists":0,"mins90":22.0},
-{"r":122,"name":"Mohamed Salah","nat":"EGY","flag":"🇪🇬","country":"Egypt","pos":"MF","squad":"Liverpool","g90":0.29,"a90":0.29,"ga90":0.59,"goals":7,"assists":7,"mins90":23.8},
-{"r":123,"name":"Corentin Tolisso","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Lyon","g90":0.43,"a90":0.16,"ga90":0.59,"goals":11,"assists":4,"mins90":25.6},
-{"r":124,"name":"David Neres","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Napoli","g90":0.29,"a90":0.29,"ga90":0.59,"goals":3,"assists":3,"mins90":10.2},
-{"r":125,"name":"Elye Wahi","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"FW","squad":"Nice","g90":0.49,"a90":0.1,"ga90":0.59,"goals":5,"assists":1,"mins90":10.2},
-{"r":126,"name":"Ragnar Ache","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Köln","g90":0.37,"a90":0.21,"ga90":0.58,"goals":7,"assists":4,"mins90":19.1},
-{"r":127,"name":"Breel Embolo","nat":"SUI","flag":"🇨🇭","country":"Switzerland","pos":"FW","squad":"Rennes","g90":0.43,"a90":0.14,"ga90":0.58,"goals":9,"assists":3,"mins90":20.8},
-{"r":128,"name":"Arda Güler","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Real Madrid","g90":0.18,"a90":0.4,"ga90":0.58,"goals":4,"assists":9,"mins90":22.4},
-{"r":129,"name":"Callum Wilson","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"West Ham United","g90":0.5,"a90":0.07,"ga90":0.58,"goals":7,"assists":1,"mins90":13.9},
-{"r":130,"name":"Rafael Leão","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"FW","squad":"Milan","g90":0.44,"a90":0.15,"ga90":0.58,"goals":9,"assists":3,"mins90":20.6},
-{"r":131,"name":"Lukas Nmecha","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Leeds United","g90":0.5,"a90":0.08,"ga90":0.58,"goals":6,"assists":1,"mins90":12.0},
-{"r":132,"name":"Afonso Moreira","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Lyon","g90":0.21,"a90":0.37,"ga90":0.57,"goals":4,"assists":7,"mins90":19.1},
-{"r":133,"name":"Rayan","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Bournemouth","g90":0.41,"a90":0.16,"ga90":0.57,"goals":5,"assists":2,"mins90":12.3},
-{"r":134,"name":"Jesus Rodríguez","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Como","g90":0.1,"a90":0.47,"ga90":0.57,"goals":2,"assists":9,"mins90":19.2},
-{"r":135,"name":"Julián Álvarez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Atlético Madrid","g90":0.38,"a90":0.19,"ga90":0.57,"goals":8,"assists":4,"mins90":21.1},
-{"r":136,"name":"Gauthier Hein","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Metz","g90":0.31,"a90":0.27,"ga90":0.57,"goals":8,"assists":7,"mins90":26.1},
-{"r":137,"name":"Sambou Soumano","nat":"SEN","flag":"🇸🇳","country":"Senegal","pos":"FW","squad":"Lorient","g90":0.38,"a90":0.19,"ga90":0.57,"goals":4,"assists":2,"mins90":10.5},
-{"r":138,"name":"Armand Lauriente","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Sassuolo","g90":0.24,"a90":0.31,"ga90":0.56,"goals":7,"assists":9,"mins90":28.8},
-{"r":139,"name":"Nicolás Paz","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Como","g90":0.38,"a90":0.19,"ga90":0.56,"goals":12,"assists":6,"mins90":32.0},
-{"r":140,"name":"Toni Martínez","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Alavés","g90":0.46,"a90":0.1,"ga90":0.56,"goals":14,"assists":3,"mins90":30.2},
-{"r":141,"name":"Danny Welbeck","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Brighton","g90":0.52,"a90":0.04,"ga90":0.56,"goals":13,"assists":1,"mins90":25.1},
-{"r":142,"name":"Zian Flemming","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Burnley","g90":0.56,"a90":0.0,"ga90":0.56,"goals":11,"assists":0,"mins90":19.6},
-{"r":143,"name":"Jeremie Boga","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Nice","g90":0.28,"a90":0.28,"ga90":0.56,"goals":2,"assists":2,"mins90":7.2},
-{"r":144,"name":"Rayan Fofana","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Lens","g90":0.56,"a90":0.0,"ga90":0.56,"goals":5,"assists":0,"mins90":8.9},
-{"r":145,"name":"Lucas Vázquez","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Leverkusen","g90":0.19,"a90":0.37,"ga90":0.56,"goals":1,"assists":2,"mins90":5.3},
-{"r":146,"name":"Fares Chaïbi","nat":"ALG","flag":"🇩🇿","country":"Algeria","pos":"MF","squad":"Eintracht Frankfurt","g90":0.1,"a90":0.45,"ga90":0.55,"goals":2,"assists":9,"mins90":19.9},
-{"r":147,"name":"Bazoumana Touré","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Hoffenheim","g90":0.19,"a90":0.35,"ga90":0.55,"goals":5,"assists":9,"mins90":25.6},
-{"r":148,"name":"Morgan Gibbs-White","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Nottingham Forest","g90":0.44,"a90":0.12,"ga90":0.55,"goals":15,"assists":4,"mins90":34.4},
-{"r":149,"name":"Lucas Boyé","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Alavés","g90":0.51,"a90":0.05,"ga90":0.55,"goals":11,"assists":1,"mins90":21.8},
-{"r":150,"name":"Ludovic Ajorque","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Brest","g90":0.26,"a90":0.29,"ga90":0.54,"goals":8,"assists":9,"mins90":31.3},
-{"r":151,"name":"Konrad Laimer","nat":"AUT","flag":"🇦🇹","country":"Austria","pos":"DF","squad":"Bayern Munich","g90":0.14,"a90":0.41,"ga90":0.54,"goals":3,"assists":9,"mins90":22.2},
-{"r":152,"name":"Alberto Moleiro","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Villarreal","g90":0.36,"a90":0.18,"ga90":0.54,"goals":10,"assists":5,"mins90":27.5},
-{"r":153,"name":"Leandro Trossard","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"FW","squad":"Arsenal","g90":0.27,"a90":0.27,"ga90":0.54,"goals":6,"assists":6,"mins90":22.2},
-{"r":154,"name":"Álex Grimaldo","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Leverkusen","g90":0.29,"a90":0.25,"ga90":0.54,"goals":8,"assists":7,"mins90":28.0},
-{"r":155,"name":"Kevin De Bruyne","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"MF","squad":"Napoli","g90":0.39,"a90":0.15,"ga90":0.54,"goals":5,"assists":2,"mins90":12.9},
-{"r":156,"name":"Alessio Castro-Montes","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"MF","squad":"Köln","g90":0.13,"a90":0.4,"ga90":0.54,"goals":1,"assists":3,"mins90":7.5},
-{"r":157,"name":"Paulo Dybala","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Roma","g90":0.13,"a90":0.4,"ga90":0.53,"goals":2,"assists":6,"mins90":15.0},
-{"r":158,"name":"Rômulo","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"RB Leipzig","g90":0.37,"a90":0.16,"ga90":0.53,"goals":9,"assists":4,"mins90":24.3},
-{"r":159,"name":"Jarrod Bowen","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"West Ham United","g90":0.24,"a90":0.29,"ga90":0.53,"goals":9,"assists":11,"mins90":37.8},
-{"r":160,"name":"Ilan Kebbal","nat":"ALG","flag":"🇩🇿","country":"Algeria","pos":"MF","squad":"Paris FC","g90":0.36,"a90":0.16,"ga90":0.53,"goals":9,"assists":4,"mins90":24.7},
-{"r":161,"name":"Simon Adingra","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Monaco","g90":0.32,"a90":0.21,"ga90":0.53,"goals":3,"assists":2,"mins90":9.5},
-{"r":162,"name":"Jeremie Boga","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Juventus","g90":0.53,"a90":0.0,"ga90":0.53,"goals":4,"assists":0,"mins90":7.5},
-{"r":163,"name":"Rodrygo","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Real Madrid","g90":0.13,"a90":0.39,"ga90":0.53,"goals":1,"assists":3,"mins90":7.6},
-{"r":164,"name":"Osame Sahraoui","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Lille","g90":0.18,"a90":0.36,"ga90":0.53,"goals":1,"assists":2,"mins90":5.6},
-{"r":165,"name":"Junior Messias","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Genoa","g90":0.39,"a90":0.13,"ga90":0.53,"goals":3,"assists":1,"mins90":7.6},
-{"r":166,"name":"Martin Baturina","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"MF","squad":"Como","g90":0.34,"a90":0.17,"ga90":0.52,"goals":6,"assists":3,"mins90":17.4},
-{"r":167,"name":"Phil Foden","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Manchester City","g90":0.3,"a90":0.22,"ga90":0.52,"goals":7,"assists":5,"mins90":23.2},
-{"r":168,"name":"Noah Okafor","nat":"SUI","flag":"🇨🇭","country":"Switzerland","pos":"FW","squad":"Leeds United","g90":0.46,"a90":0.06,"ga90":0.52,"goals":8,"assists":1,"mins90":17.3},
-{"r":169,"name":"Antoine Semenyo","nat":"GHA","flag":"🇬🇭","country":"Ghana","pos":"MF","squad":"Manchester City","g90":0.45,"a90":0.06,"ga90":0.52,"goals":7,"assists":1,"mins90":15.5},
-{"r":170,"name":"Mohamed Amoura","nat":"ALG","flag":"🇩🇿","country":"Algeria","pos":"FW","squad":"Wolfsburg","g90":0.38,"a90":0.14,"ga90":0.52,"goals":8,"assists":3,"mins90":21.3},
-{"r":171,"name":"Nick Woltemade","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Newcastle United","g90":0.38,"a90":0.14,"ga90":0.52,"goals":8,"assists":3,"mins90":21.1},
-{"r":172,"name":"Ludovic Blas","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Rennes","g90":0.29,"a90":0.23,"ga90":0.52,"goals":5,"assists":4,"mins90":17.2},
-{"r":173,"name":"Ante Budimir","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"FW","squad":"Osasuna","g90":0.52,"a90":0.0,"ga90":0.52,"goals":17,"assists":0,"mins90":32.6},
-{"r":174,"name":"Alexander Isak","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Liverpool","g90":0.39,"a90":0.13,"ga90":0.52,"goals":3,"assists":1,"mins90":7.8},
-{"r":175,"name":"Antony","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Real Betis","g90":0.29,"a90":0.22,"ga90":0.51,"goals":8,"assists":6,"mins90":27.2},
-{"r":176,"name":"Marius Bülter","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Köln","g90":0.28,"a90":0.23,"ga90":0.51,"goals":5,"assists":4,"mins90":17.7},
-{"r":177,"name":"Jonathan David","nat":"CAN","flag":"🇨🇦","country":"Canada","pos":"FW","squad":"Juventus","g90":0.3,"a90":0.2,"ga90":0.51,"goals":6,"assists":4,"mins90":19.8},
-{"r":178,"name":"Javi Rueda","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Celta Vigo","g90":0.13,"a90":0.38,"ga90":0.51,"goals":2,"assists":6,"mins90":15.6},
-{"r":179,"name":"Kenan Yıldız","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Juventus","g90":0.32,"a90":0.19,"ga90":0.51,"goals":10,"assists":6,"mins90":31.4},
-{"r":180,"name":"Ruben Vargas","nat":"SUI","flag":"🇨🇭","country":"Switzerland","pos":"MF","squad":"Sevilla","g90":0.17,"a90":0.34,"ga90":0.51,"goals":3,"assists":6,"mins90":17.7},
-{"r":181,"name":"Bruno Guimarães","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Newcastle United","g90":0.33,"a90":0.18,"ga90":0.51,"goals":9,"assists":5,"mins90":27.3},
-{"r":182,"name":"Largie Ramazani","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"MF","squad":"Valencia","g90":0.44,"a90":0.07,"ga90":0.51,"goals":6,"assists":1,"mins90":13.7},
-{"r":183,"name":"Cole Palmer","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Chelsea","g90":0.46,"a90":0.05,"ga90":0.51,"goals":10,"assists":1,"mins90":21.7},
-{"r":184,"name":"Cristian Volpato","nat":"AUS","flag":"🇦🇺","country":"Australia","pos":"FW","squad":"Sassuolo","g90":0.17,"a90":0.34,"ga90":0.51,"goals":2,"assists":4,"mins90":11.8},
-{"r":185,"name":"Brahim Díaz","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Real Madrid","g90":0.07,"a90":0.43,"ga90":0.5,"goals":1,"assists":6,"mins90":14.0},
-{"r":186,"name":"Jeremy Doku","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"MF","squad":"Manchester City","g90":0.25,"a90":0.25,"ga90":0.5,"goals":5,"assists":5,"mins90":19.8},
-{"r":187,"name":"Bilal El Khannouss","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Stuttgart","g90":0.22,"a90":0.28,"ga90":0.5,"goals":4,"assists":5,"mins90":18.1},
-{"r":188,"name":"Igor Paixão","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Marseille","g90":0.27,"a90":0.23,"ga90":0.5,"goals":6,"assists":5,"mins90":21.9},
-{"r":189,"name":"Gorka Guruzeta","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Athletic Club","g90":0.38,"a90":0.11,"ga90":0.5,"goals":10,"assists":3,"mins90":26.3},
-{"r":190,"name":"Dominic Calvert-Lewin","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Leeds United","g90":0.46,"a90":0.03,"ga90":0.5,"goals":14,"assists":1,"mins90":30.2},
-{"r":191,"name":"Quentin Ndjantou Mbitcha","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Paris Saint-Germain","g90":0.25,"a90":0.25,"ga90":0.5,"goals":1,"assists":1,"mins90":4.0},
-{"r":192,"name":"Abdallah Sima","nat":"SEN","flag":"🇸🇳","country":"Senegal","pos":"MF","squad":"Lens","g90":0.25,"a90":0.25,"ga90":0.5,"goals":2,"assists":2,"mins90":8.0},
-{"r":193,"name":"José Luis Morales","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Levante","g90":0.25,"a90":0.25,"ga90":0.5,"goals":1,"assists":1,"mins90":4.0},
-{"r":194,"name":"Dženan Pejčinović","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Wolfsburg","g90":0.49,"a90":0.0,"ga90":0.49,"goals":8,"assists":0,"mins90":16.2},
-{"r":195,"name":"Álvaro Rodríguez","nat":"URU","flag":"🇺🇾","country":"Uruguay","pos":"FW","squad":"Elche","g90":0.29,"a90":0.2,"ga90":0.49,"goals":7,"assists":5,"mins90":24.5},
-{"r":196,"name":"Musa Al-Taamari","nat":"JOR","flag":"🇯🇴","country":"Jordan","pos":"MF","squad":"Rennes","g90":0.24,"a90":0.24,"ga90":0.49,"goals":6,"assists":6,"mins90":24.6},
-{"r":197,"name":"Cucho","nat":"COL","flag":"🇨🇴","country":"Colombia","pos":"FW","squad":"Real Betis","g90":0.38,"a90":0.1,"ga90":0.49,"goals":11,"assists":3,"mins90":28.7},
-{"r":198,"name":"Bukayo Saka","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"FW","squad":"Arsenal","g90":0.28,"a90":0.2,"ga90":0.49,"goals":7,"assists":5,"mins90":24.7},
-{"r":199,"name":"Fabio Vieira","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Hamburger SV","g90":0.29,"a90":0.2,"ga90":0.49,"goals":7,"assists":5,"mins90":24.5},
-{"r":200,"name":"Matias Fernandez-Pardo","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"FW","squad":"Lille","g90":0.3,"a90":0.19,"ga90":0.49,"goals":8,"assists":5,"mins90":26.3},
-{"r":201,"name":"André Silva","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"FW","squad":"Elche","g90":0.49,"a90":0.0,"ga90":0.49,"goals":10,"assists":0,"mins90":20.5},
-{"r":202,"name":"Raúl Jiménez","nat":"MEX","flag":"🇲🇽","country":"Mexico","pos":"FW","squad":"Fulham","g90":0.37,"a90":0.12,"ga90":0.49,"goals":9,"assists":3,"mins90":24.3},
-{"r":203,"name":"Jean-Philippe Mateta","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Crystal Palace","g90":0.49,"a90":0.0,"ga90":0.49,"goals":12,"assists":0,"mins90":24.6},
-{"r":204,"name":"Benjamín Domínguez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Bologna","g90":0.0,"a90":0.49,"ga90":0.49,"goals":0,"assists":3,"mins90":6.1},
-{"r":205,"name":"Wael Mohya","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Gladbach","g90":0.33,"a90":0.16,"ga90":0.49,"goals":2,"assists":1,"mins90":6.1},
-{"r":206,"name":"Maxence Caqueret","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Como","g90":0.12,"a90":0.36,"ga90":0.48,"goals":2,"assists":6,"mins90":16.5},
-{"r":207,"name":"Roberto Navarro","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Athletic Club","g90":0.41,"a90":0.07,"ga90":0.48,"goals":6,"assists":1,"mins90":14.5},
-{"r":208,"name":"Nico Williams","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Athletic Club","g90":0.32,"a90":0.16,"ga90":0.48,"goals":6,"assists":3,"mins90":18.6},
-{"r":209,"name":"Gonçalo Ramos","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"FW","squad":"Paris Saint-Germain","g90":0.41,"a90":0.07,"ga90":0.48,"goals":6,"assists":1,"mins90":14.6},
-{"r":210,"name":"Josan","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Elche","g90":0.0,"a90":0.48,"ga90":0.48,"goals":0,"assists":3,"mins90":6.3},
-{"r":211,"name":"Takumi Minamino","nat":"JPN","flag":"🇯🇵","country":"Japan","pos":"MF","squad":"Monaco","g90":0.29,"a90":0.19,"ga90":0.48,"goals":3,"assists":2,"mins90":10.5},
-{"r":212,"name":"Rio Ngumoha","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Liverpool","g90":0.32,"a90":0.16,"ga90":0.48,"goals":2,"assists":1,"mins90":6.2},
-{"r":213,"name":"Jude Bellingham","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Real Madrid","g90":0.28,"a90":0.19,"ga90":0.47,"goals":6,"assists":4,"mins90":21.3},
-{"r":214,"name":"Pablo Fornals","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Real Betis","g90":0.28,"a90":0.19,"ga90":0.47,"goals":9,"assists":6,"mins90":31.6},
-{"r":215,"name":"Jean Mattéo Bahoya","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Eintracht Frankfurt","g90":0.2,"a90":0.27,"ga90":0.47,"goals":3,"assists":4,"mins90":14.8},
-{"r":216,"name":"Martim Neto","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Elche","g90":0.13,"a90":0.33,"ga90":0.47,"goals":2,"assists":5,"mins90":15.0},
-{"r":217,"name":"Tijjani Noslin","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Lazio","g90":0.31,"a90":0.16,"ga90":0.47,"goals":4,"assists":2,"mins90":12.8},
-{"r":218,"name":"Pedri","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","g90":0.09,"a90":0.38,"ga90":0.47,"goals":2,"assists":9,"mins90":23.4},
-{"r":219,"name":"Kiké","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Espanyol","g90":0.42,"a90":0.05,"ga90":0.47,"goals":8,"assists":1,"mins90":19.3},
-{"r":220,"name":"Godson Kyeremeh","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Le Havre","g90":0.24,"a90":0.24,"ga90":0.47,"goals":1,"assists":1,"mins90":4.2},
-{"r":221,"name":"Wilson Isidor","nat":"HAI","flag":"🇭🇹","country":"Haiti","pos":"FW","squad":"Sunderland","g90":0.46,"a90":0.0,"ga90":0.46,"goals":6,"assists":0,"mins90":12.9},
-{"r":222,"name":"Grischa Prömel","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Hoffenheim","g90":0.36,"a90":0.1,"ga90":0.46,"goals":7,"assists":2,"mins90":19.5},
-{"r":223,"name":"Matìas Soulé","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Roma","g90":0.25,"a90":0.21,"ga90":0.46,"goals":6,"assists":5,"mins90":23.8},
-{"r":224,"name":"Martin Ødegaard","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"MF","squad":"Arsenal","g90":0.07,"a90":0.39,"ga90":0.46,"goals":1,"assists":6,"mins90":15.2},
-{"r":225,"name":"Tim Lemperle","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Hoffenheim","g90":0.37,"a90":0.09,"ga90":0.46,"goals":8,"assists":2,"mins90":21.6},
-{"r":226,"name":"Dennis Johnsen","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"MF","squad":"Cremonese","g90":0.23,"a90":0.23,"ga90":0.46,"goals":1,"assists":1,"mins90":4.3},
-{"r":227,"name":"Maghnes Akliouche","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Monaco","g90":0.23,"a90":0.23,"ga90":0.45,"goals":6,"assists":6,"mins90":26.7},
-{"r":228,"name":"Emersonn","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Toulouse","g90":0.34,"a90":0.11,"ga90":0.45,"goals":6,"assists":2,"mins90":17.7},
-{"r":229,"name":"Eberechi Eze","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Arsenal","g90":0.35,"a90":0.1,"ga90":0.45,"goals":7,"assists":2,"mins90":20.1},
-{"r":230,"name":"Pablo Torre","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Mallorca","g90":0.23,"a90":0.23,"ga90":0.45,"goals":4,"assists":4,"mins90":17.8},
-{"r":231,"name":"Hugo Duro","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Valencia","g90":0.45,"a90":0.0,"ga90":0.45,"goals":10,"assists":0,"mins90":22.0},
-{"r":232,"name":"Olivier Giroud","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Lille","g90":0.39,"a90":0.06,"ga90":0.45,"goals":7,"assists":1,"mins90":17.9},
-{"r":233,"name":"Caleb Ekuban","nat":"GHA","flag":"🇬🇭","country":"Ghana","pos":"FW","squad":"Genoa","g90":0.36,"a90":0.09,"ga90":0.45,"goals":4,"assists":1,"mins90":11.0},
-{"r":234,"name":"Ibrahim Mbaye","nat":"SEN","flag":"🇸🇳","country":"Senegal","pos":"FW","squad":"Paris Saint-Germain","g90":0.27,"a90":0.18,"ga90":0.45,"goals":3,"assists":2,"mins90":11.2},
-{"r":235,"name":"Jack Grealish","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Everton","g90":0.11,"a90":0.33,"ga90":0.44,"goals":2,"assists":6,"mins90":18.1},
-{"r":236,"name":"Javier Guerra","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Valencia","g90":0.17,"a90":0.26,"ga90":0.44,"goals":4,"assists":6,"mins90":22.9},
-{"r":237,"name":"Arnaud Kalimuendo","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Eintracht Frankfurt","g90":0.38,"a90":0.06,"ga90":0.44,"goals":6,"assists":1,"mins90":15.7},
-{"r":238,"name":"Diego Moreira","nat":"BEL","flag":"🇧🇪","country":"Belgium","pos":"MF","squad":"Strasbourg","g90":0.18,"a90":0.27,"ga90":0.44,"goals":4,"assists":6,"mins90":22.6},
-{"r":239,"name":"Morgan Rogers","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Aston Villa","g90":0.27,"a90":0.16,"ga90":0.44,"goals":10,"assists":6,"mins90":36.4},
-{"r":240,"name":"Giovanni Simeone","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Torino","g90":0.44,"a90":0.0,"ga90":0.44,"goals":11,"assists":0,"mins90":24.8},
-{"r":241,"name":"Sofiane Boufal","nat":"MAR","flag":"🇲🇦","country":"Morocco","pos":"MF","squad":"Le Havre","g90":0.09,"a90":0.35,"ga90":0.44,"goals":1,"assists":4,"mins90":11.3},
-{"r":242,"name":"Thijs Dallinga","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Bologna","g90":0.22,"a90":0.22,"ga90":0.44,"goals":2,"assists":2,"mins90":9.0},
-{"r":243,"name":"Thiago Fernández","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Oviedo","g90":0.0,"a90":0.44,"ga90":0.44,"goals":0,"assists":4,"mins90":9.1},
-{"r":244,"name":"Hamed Junior Traorè","nat":"CIV","flag":"🇨🇮","country":"Ivory Coast","pos":"MF","squad":"Marseille","g90":0.29,"a90":0.15,"ga90":0.44,"goals":2,"assists":1,"mins90":6.9},
-{"r":245,"name":"Willem Geubbels","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris FC","g90":0.44,"a90":0.0,"ga90":0.44,"goals":5,"assists":0,"mins90":11.3},
-{"r":246,"name":"Oliver Burke","nat":"SCO","flag":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","country":"Scotland","pos":"FW","squad":"Union Berlin","g90":0.32,"a90":0.11,"ga90":0.43,"goals":6,"assists":2,"mins90":18.5},
-{"r":247,"name":"Matheus Cunha","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"MF","squad":"Manchester Utd","g90":0.36,"a90":0.07,"ga90":0.43,"goals":10,"assists":2,"mins90":27.7},
-{"r":248,"name":"Senny Mayulu","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Paris Saint-Germain","g90":0.22,"a90":0.22,"ga90":0.43,"goals":4,"assists":4,"mins90":18.6},
-{"r":249,"name":"Giuliano Simeone","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Atlético Madrid","g90":0.17,"a90":0.26,"ga90":0.43,"goals":4,"assists":6,"mins90":23.3},
-{"r":250,"name":"Federico Valverde","nat":"URU","flag":"🇺🇾","country":"Uruguay","pos":"MF","squad":"Real Madrid","g90":0.16,"a90":0.26,"ga90":0.43,"goals":5,"assists":8,"mins90":30.4}
+{"r": 1, "name": "Harry Kane", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "Bayern Munich", "g90": 1.36, "a90": 0.19, "ga90": 1.55, "goals": 36, "assists": 5, "mins90": 26.4},
+{"r": 2, "name": "Ousmane Dembélé", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Paris Saint-Germain", "g90": 0.85, "a90": 0.59, "ga90": 1.44, "goals": 10, "assists": 7, "mins90": 11.8},
+{"r": 3, "name": "Robinio Vaz", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Marseille", "g90": 0.95, "a90": 0.47, "ga90": 1.42, "goals": 4, "assists": 2, "mins90": 4.2},
+{"r": 4, "name": "Michael Olise", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Bayern Munich", "g90": 0.58, "a90": 0.74, "ga90": 1.32, "goals": 15, "assists": 19, "mins90": 25.7},
+{"r": 5, "name": "Allan Saint-Maximin", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Lens", "g90": 0.66, "a90": 0.66, "ga90": 1.32, "goals": 3, "assists": 3, "mins90": 4.6},
+{"r": 6, "name": "Hamza Igamane", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "FW", "squad": "Lille", "g90": 1.04, "a90": 0.21, "ga90": 1.25, "goals": 5, "assists": 1, "mins90": 4.8},
+{"r": 7, "name": "Emanuel Emegha", "nat": "NED", "flag": "🇳🇱", "country": "Netherlands", "pos": "FW", "squad": "Strasbourg", "g90": 0.81, "a90": 0.41, "ga90": 1.22, "goals": 4, "assists": 2, "mins90": 4.9},
+{"r": 8, "name": "Luca Waldschmidt", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Köln", "g90": 0.66, "a90": 0.53, "ga90": 1.2, "goals": 5, "assists": 4, "mins90": 7.5},
+{"r": 9, "name": "Cristhian Stuani", "nat": "URU", "flag": "🇺🇾", "country": "Uruguay", "pos": "FW", "squad": "Girona", "g90": 1.09, "a90": 0.0, "ga90": 1.09, "goals": 5, "assists": 0, "mins90": 4.6},
+{"r": 10, "name": "Luis Díaz", "nat": "COL", "flag": "🇨🇴", "country": "Colombia", "pos": "MF", "squad": "Bayern Munich", "g90": 0.55, "a90": 0.51, "ga90": 1.07, "goals": 15, "assists": 14, "mins90": 27.2},
+{"r": 11, "name": "Erling Haaland", "nat": "NOR", "flag": "🇳🇴", "country": "Norway", "pos": "FW", "squad": "Manchester City", "g90": 0.82, "a90": 0.24, "ga90": 1.07, "goals": 27, "assists": 8, "mins90": 32.8},
+{"r": 12, "name": "Lamine Yamal", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Barcelona", "g90": 0.64, "a90": 0.44, "ga90": 1.07, "goals": 16, "assists": 11, "mins90": 25.1},
+{"r": 13, "name": "Deniz Undav", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Stuttgart", "g90": 0.76, "a90": 0.28, "ga90": 1.04, "goals": 19, "assists": 7, "mins90": 24.9},
+{"r": 14, "name": "Raphinha", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Barcelona", "g90": 0.85, "a90": 0.2, "ga90": 1.04, "goals": 13, "assists": 3, "mins90": 15.3},
+{"r": 15, "name": "Kylian Mbappé", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Real Madrid", "g90": 0.87, "a90": 0.17, "ga90": 1.04, "goals": 25, "assists": 5, "mins90": 28.9},
+{"r": 16, "name": "Serge Gnabry", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Bayern Munich", "g90": 0.59, "a90": 0.44, "ga90": 1.03, "goals": 8, "assists": 6, "mins90": 13.5},
+{"r": 17, "name": "Donyell Malen", "nat": "NED", "flag": "🇳🇱", "country": "Netherlands", "pos": "FW", "squad": "Roma", "g90": 0.86, "a90": 0.12, "ga90": 0.98, "goals": 14, "assists": 2, "mins90": 16.3},
+{"r": 18, "name": "Lautaro Martínez", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "FW", "squad": "Inter", "g90": 0.71, "a90": 0.25, "ga90": 0.96, "goals": 17, "assists": 6, "mins90": 24.0},
+{"r": 19, "name": "Jonathan Burkardt", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Eintracht Frankfurt", "g90": 0.88, "a90": 0.07, "ga90": 0.94, "goals": 13, "assists": 1, "mins90": 14.8},
+{"r": 20, "name": "Can Uzun", "nat": "TUR", "flag": "🇹🇷", "country": "Turkey", "pos": "MF", "squad": "Eintracht Frankfurt", "g90": 0.62, "a90": 0.31, "ga90": 0.93, "goals": 8, "assists": 4, "mins90": 12.8},
+{"r": 21, "name": "Jamal Musiala", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Bayern Munich", "g90": 0.4, "a90": 0.53, "ga90": 0.92, "goals": 3, "assists": 4, "mins90": 7.6},
+{"r": 22, "name": "Ansu Fati", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Monaco", "g90": 0.91, "a90": 0.0, "ga90": 0.91, "goals": 11, "assists": 0, "mins90": 12.1},
+{"r": 23, "name": "Marcus Thuram", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Inter", "g90": 0.62, "a90": 0.28, "ga90": 0.9, "goals": 13, "assists": 6, "mins90": 21.1},
+{"r": 24, "name": "Ermedin Demirović", "nat": "BIH", "flag": "🇧🇦", "country": "Bosnia-Herzegovina", "pos": "FW", "squad": "Stuttgart", "g90": 0.72, "a90": 0.18, "ga90": 0.9, "goals": 12, "assists": 3, "mins90": 16.6},
+{"r": 25, "name": "Esteban Lepaul", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Rennes", "g90": 0.72, "a90": 0.18, "ga90": 0.9, "goals": 20, "assists": 5, "mins90": 27.9},
+{"r": 26, "name": "Endrick", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Lyon", "g90": 0.37, "a90": 0.52, "ga90": 0.89, "goals": 5, "assists": 7, "mins90": 13.5},
+{"r": 27, "name": "Bruno Fernandes", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Manchester Utd", "g90": 0.26, "a90": 0.62, "ga90": 0.88, "goals": 9, "assists": 21, "mins90": 34.0},
+{"r": 28, "name": "Fábio Silva", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "FW", "squad": "Dortmund", "g90": 0.22, "a90": 0.66, "ga90": 0.88, "goals": 2, "assists": 6, "mins90": 9.1},
+{"r": 29, "name": "Patrik Schick", "nat": "CZE", "flag": "🇨🇿", "country": "Czechia", "pos": "FW", "squad": "Leverkusen", "g90": 0.72, "a90": 0.14, "ga90": 0.86, "goals": 16, "assists": 3, "mins90": 22.1},
+{"r": 30, "name": "Mason Greenwood", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Marseille", "g90": 0.58, "a90": 0.26, "ga90": 0.84, "goals": 16, "assists": 7, "mins90": 27.4},
+{"r": 31, "name": "Kader Meïté", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Rennes", "g90": 0.5, "a90": 0.34, "ga90": 0.84, "goals": 3, "assists": 2, "mins90": 5.9},
+{"r": 32, "name": "Karim Adeyemi", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Dortmund", "g90": 0.53, "a90": 0.3, "ga90": 0.83, "goals": 7, "assists": 4, "mins90": 13.3},
+{"r": 33, "name": "Ferrán Torres", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Barcelona", "g90": 0.73, "a90": 0.09, "ga90": 0.82, "goals": 16, "assists": 2, "mins90": 21.8},
+{"r": 34, "name": "Bamba Dieng", "nat": "SEN", "flag": "🇸🇳", "country": "Senegal", "pos": "FW", "squad": "Lorient", "g90": 0.74, "a90": 0.07, "ga90": 0.82, "goals": 10, "assists": 1, "mins90": 13.5},
+{"r": 35, "name": "Andrej Kramarić", "nat": "CRO", "flag": "🇭🇷", "country": "Croatia", "pos": "MF", "squad": "Hoffenheim", "g90": 0.57, "a90": 0.24, "ga90": 0.82, "goals": 14, "assists": 6, "mins90": 24.5},
+{"r": 36, "name": "Rayan Cherki", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Manchester City", "g90": 0.2, "a90": 0.6, "ga90": 0.81, "goals": 4, "assists": 12, "mins90": 19.8},
+{"r": 37, "name": "Kike Barja", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Osasuna", "g90": 0.4, "a90": 0.4, "ga90": 0.81, "goals": 2, "assists": 2, "mins90": 5.0},
+{"r": 38, "name": "Pavel Šulc", "nat": "CZE", "flag": "🇨🇿", "country": "Czechia", "pos": "FW", "squad": "Lyon", "g90": 0.63, "a90": 0.17, "ga90": 0.8, "goals": 11, "assists": 3, "mins90": 17.4},
+{"r": 39, "name": "Raphaël Guerreiro", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Bayern Munich", "g90": 0.57, "a90": 0.23, "ga90": 0.8, "goals": 5, "assists": 2, "mins90": 8.7},
+{"r": 40, "name": "Nicolas Jackson", "nat": "SEN", "flag": "🇸🇳", "country": "Senegal", "pos": "FW", "squad": "Bayern Munich", "g90": 0.71, "a90": 0.09, "ga90": 0.8, "goals": 8, "assists": 1, "mins90": 11.2},
+{"r": 41, "name": "Michael Gregoritsch", "nat": "AUT", "flag": "🇦🇹", "country": "Austria", "pos": "FW", "squad": "Augsburg", "g90": 0.59, "a90": 0.2, "ga90": 0.79, "goals": 6, "assists": 2, "mins90": 10.1},
+{"r": 42, "name": "Said El Mala", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Köln", "g90": 0.6, "a90": 0.18, "ga90": 0.78, "goals": 13, "assists": 4, "mins90": 21.7},
+{"r": 43, "name": "Marcus Rashford", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Barcelona", "g90": 0.41, "a90": 0.36, "ga90": 0.77, "goals": 8, "assists": 7, "mins90": 19.6},
+{"r": 44, "name": "Pablo Pagis", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Lorient", "g90": 0.51, "a90": 0.26, "ga90": 0.77, "goals": 10, "assists": 5, "mins90": 19.5},
+{"r": 45, "name": "Ayoube Amaimouni", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Eintracht Frankfurt", "g90": 0.31, "a90": 0.46, "ga90": 0.77, "goals": 2, "assists": 3, "mins90": 6.5},
+{"r": 46, "name": "Kai Havertz", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Arsenal", "g90": 0.31, "a90": 0.46, "ga90": 0.77, "goals": 2, "assists": 3, "mins90": 6.5},
+{"r": 47, "name": "Omar Marmoush", "nat": "EGY", "flag": "🇪🇬", "country": "Egypt", "pos": "FW", "squad": "Manchester City", "g90": 0.39, "a90": 0.39, "ga90": 0.77, "goals": 3, "assists": 3, "mins90": 7.8},
+{"r": 48, "name": "Sebastian Nanasi", "nat": "SWE", "flag": "🇸🇪", "country": "Sweden", "pos": "MF", "squad": "Strasbourg", "g90": 0.6, "a90": 0.17, "ga90": 0.77, "goals": 7, "assists": 2, "mins90": 11.7},
+{"r": 49, "name": "Borja Iglesias", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Celta Vigo", "g90": 0.66, "a90": 0.09, "ga90": 0.76, "goals": 14, "assists": 2, "mins90": 21.1},
+{"r": 50, "name": "Hugo Ekitike", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Liverpool", "g90": 0.55, "a90": 0.2, "ga90": 0.75, "goals": 11, "assists": 4, "mins90": 20.0},
+{"r": 51, "name": "Amine Gouiri", "nat": "ALG", "flag": "🇩🇿", "country": "Algeria", "pos": "FW", "squad": "Marseille", "g90": 0.54, "a90": 0.2, "ga90": 0.75, "goals": 8, "assists": 3, "mins90": 14.7},
+{"r": 52, "name": "Fermin López", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Barcelona", "g90": 0.3, "a90": 0.45, "ga90": 0.75, "goals": 6, "assists": 9, "mins90": 20.0},
+{"r": 53, "name": "Odsonne Édouard", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Lens", "g90": 0.6, "a90": 0.15, "ga90": 0.75, "goals": 12, "assists": 3, "mins90": 20.0},
+{"r": 54, "name": "Héctor Fort", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "DF", "squad": "Elche", "g90": 0.37, "a90": 0.37, "ga90": 0.75, "goals": 2, "assists": 2, "mins90": 5.4},
+{"r": 55, "name": "Carlos Espí", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Levante", "g90": 0.74, "a90": 0.0, "ga90": 0.74, "goals": 11, "assists": 0, "mins90": 14.9},
+{"r": 56, "name": "Chris Führich", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Stuttgart", "g90": 0.37, "a90": 0.37, "ga90": 0.74, "goals": 7, "assists": 7, "mins90": 18.9},
+{"r": 57, "name": "Igor Matanović", "nat": "CRO", "flag": "🇭🇷", "country": "Croatia", "pos": "FW", "squad": "Freiburg", "g90": 0.63, "a90": 0.11, "ga90": 0.74, "goals": 11, "assists": 2, "mins90": 17.5},
+{"r": 58, "name": "Robert Glatzel", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Hamburger SV", "g90": 0.44, "a90": 0.29, "ga90": 0.74, "goals": 3, "assists": 2, "mins90": 6.8},
+{"r": 59, "name": "Yan Diomandé", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "FW", "squad": "RB Leipzig", "g90": 0.44, "a90": 0.29, "ga90": 0.73, "goals": 12, "assists": 8, "mins90": 27.5},
+{"r": 60, "name": "Désiré Doué", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Paris Saint-Germain", "g90": 0.47, "a90": 0.27, "ga90": 0.73, "goals": 7, "assists": 4, "mins90": 15.0},
+{"r": 61, "name": "Abde Ezzalzouli", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Real Betis", "g90": 0.4, "a90": 0.32, "ga90": 0.72, "goals": 10, "assists": 8, "mins90": 25.0},
+{"r": 62, "name": "Ayoze Pérez", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Villarreal", "g90": 0.4, "a90": 0.32, "ga90": 0.72, "goals": 5, "assists": 4, "mins90": 12.5},
+{"r": 63, "name": "Brajan Gruda", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "RB Leipzig", "g90": 0.36, "a90": 0.36, "ga90": 0.72, "goals": 3, "assists": 3, "mins90": 8.4},
+{"r": 64, "name": "Ange-Yoan Bonny", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "FW", "squad": "Inter", "g90": 0.39, "a90": 0.32, "ga90": 0.71, "goals": 5, "assists": 4, "mins90": 12.7},
+{"r": 65, "name": "Williot Swedberg", "nat": "SWE", "flag": "🇸🇪", "country": "Sweden", "pos": "FW", "squad": "Celta Vigo", "g90": 0.35, "a90": 0.35, "ga90": 0.71, "goals": 5, "assists": 5, "mins90": 14.1},
+{"r": 66, "name": "Hakan Çalhanoğlu", "nat": "TUR", "flag": "🇹🇷", "country": "Turkey", "pos": "MF", "squad": "Inter", "g90": 0.49, "a90": 0.22, "ga90": 0.71, "goals": 9, "assists": 4, "mins90": 18.2},
+{"r": 67, "name": "Tiago Tomás", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Stuttgart", "g90": 0.44, "a90": 0.26, "ga90": 0.71, "goals": 5, "assists": 3, "mins90": 11.3},
+{"r": 68, "name": "Lennart Karl", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Bayern Munich", "g90": 0.35, "a90": 0.35, "ga90": 0.7, "goals": 5, "assists": 5, "mins90": 14.2},
+{"r": 69, "name": "Eli Junior Kroupi", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Bournemouth", "g90": 0.7, "a90": 0.0, "ga90": 0.7, "goals": 13, "assists": 0, "mins90": 18.6},
+{"r": 70, "name": "Joaquín Panichelli", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "FW", "squad": "Strasbourg", "g90": 0.66, "a90": 0.04, "ga90": 0.7, "goals": 16, "assists": 1, "mins90": 24.4},
+{"r": 71, "name": "Richarlison", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Tottenham Hotspur", "g90": 0.5, "a90": 0.18, "ga90": 0.69, "goals": 11, "assists": 4, "mins90": 21.8},
+{"r": 72, "name": "Folarin Balogun", "nat": "USA", "flag": "🇺🇸", "country": "United States", "pos": "FW", "squad": "Monaco", "g90": 0.52, "a90": 0.16, "ga90": 0.69, "goals": 13, "assists": 4, "mins90": 24.8},
+{"r": 73, "name": "Alphonso Davies", "nat": "CAN", "flag": "🇨🇦", "country": "Canada", "pos": "DF", "squad": "Bayern Munich", "g90": 0.17, "a90": 0.51, "ga90": 0.69, "goals": 1, "assists": 3, "mins90": 5.8},
+{"r": 74, "name": "Emil Holm", "nat": "SWE", "flag": "🇸🇪", "country": "Sweden", "pos": "DF", "squad": "Bologna", "g90": 0.14, "a90": 0.55, "ga90": 0.69, "goals": 1, "assists": 4, "mins90": 7.3},
+{"r": 75, "name": "Raúl", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Osasuna", "g90": 0.61, "a90": 0.09, "ga90": 0.69, "goals": 7, "assists": 1, "mins90": 11.6},
+{"r": 76, "name": "Christoph Baumgartner", "nat": "AUT", "flag": "🇦🇹", "country": "Austria", "pos": "MF", "squad": "RB Leipzig", "g90": 0.42, "a90": 0.26, "ga90": 0.68, "goals": 13, "assists": 8, "mins90": 30.9},
+{"r": 77, "name": "João Pedro", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Chelsea", "g90": 0.51, "a90": 0.17, "ga90": 0.68, "goals": 15, "assists": 5, "mins90": 29.6},
+{"r": 78, "name": "Maximilian Beier", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Dortmund", "g90": 0.4, "a90": 0.27, "ga90": 0.67, "goals": 9, "assists": 6, "mins90": 22.5},
+{"r": 79, "name": "Antoine Griezmann", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Atlético Madrid", "g90": 0.43, "a90": 0.24, "ga90": 0.67, "goals": 7, "assists": 4, "mins90": 16.5},
+{"r": 80, "name": "Christian Pulisic", "nat": "USA", "flag": "🇺🇸", "country": "United States", "pos": "FW", "squad": "Milan", "g90": 0.45, "a90": 0.22, "ga90": 0.67, "goals": 8, "assists": 4, "mins90": 17.9},
+{"r": 81, "name": "Vinicius Júnior", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Real Madrid", "g90": 0.51, "a90": 0.16, "ga90": 0.67, "goals": 16, "assists": 5, "mins90": 31.3},
+{"r": 82, "name": "Gerard Moreno", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Villarreal", "g90": 0.67, "a90": 0.0, "ga90": 0.67, "goals": 10, "assists": 0, "mins90": 14.9},
+{"r": 83, "name": "Martin Terrier", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Leverkusen", "g90": 0.53, "a90": 0.13, "ga90": 0.67, "goals": 4, "assists": 1, "mins90": 7.5},
+{"r": 84, "name": "Christopher Nkunku", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Milan", "g90": 0.46, "a90": 0.2, "ga90": 0.66, "goals": 7, "assists": 3, "mins90": 15.1},
+{"r": 85, "name": "Sergio Camello", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Rayo Vallecano", "g90": 0.55, "a90": 0.11, "ga90": 0.66, "goals": 5, "assists": 1, "mins90": 9.1},
+{"r": 86, "name": "Assan Ouedraogo", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "RB Leipzig", "g90": 0.38, "a90": 0.28, "ga90": 0.66, "goals": 4, "assists": 3, "mins90": 10.5},
+{"r": 87, "name": "Stefan Schimmer", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Heidenheim", "g90": 0.55, "a90": 0.11, "ga90": 0.66, "goals": 5, "assists": 1, "mins90": 9.1},
+{"r": 88, "name": "Ferran Jutglà", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Celta Vigo", "g90": 0.49, "a90": 0.16, "ga90": 0.65, "goals": 9, "assists": 3, "mins90": 18.4},
+{"r": 89, "name": "Dani Olmo", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Barcelona", "g90": 0.3, "a90": 0.35, "ga90": 0.65, "goals": 7, "assists": 8, "mins90": 23.0},
+{"r": 90, "name": "Antoine Semenyo", "nat": "GHA", "flag": "🇬🇭", "country": "Ghana", "pos": "MF", "squad": "Bournemouth", "g90": 0.5, "a90": 0.15, "ga90": 0.65, "goals": 10, "assists": 3, "mins90": 20.0},
+{"r": 91, "name": "Valentín Castellanos", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "FW", "squad": "Lazio", "g90": 0.26, "a90": 0.39, "ga90": 0.65, "goals": 2, "assists": 3, "mins90": 7.7},
+{"r": 92, "name": "Gonzalo García", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Real Madrid", "g90": 0.56, "a90": 0.09, "ga90": 0.65, "goals": 6, "assists": 1, "mins90": 10.7},
+{"r": 93, "name": "Santiago Hidalgo", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Toulouse", "g90": 0.26, "a90": 0.39, "ga90": 0.64, "goals": 4, "assists": 6, "mins90": 15.5},
+{"r": 94, "name": "Nuno Mendes", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "DF", "squad": "Paris Saint-Germain", "g90": 0.29, "a90": 0.36, "ga90": 0.64, "goals": 4, "assists": 5, "mins90": 14.0},
+{"r": 95, "name": "Pedro", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Lazio", "g90": 0.46, "a90": 0.18, "ga90": 0.64, "goals": 5, "assists": 2, "mins90": 10.9},
+{"r": 96, "name": "Wesley Saïd", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Lens", "g90": 0.54, "a90": 0.09, "ga90": 0.63, "goals": 12, "assists": 2, "mins90": 22.1},
+{"r": 97, "name": "Florian Thauvin", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Lens", "g90": 0.41, "a90": 0.22, "ga90": 0.63, "goals": 11, "assists": 6, "mins90": 27.1},
+{"r": 98, "name": "Iago Aspas", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Celta Vigo", "g90": 0.39, "a90": 0.24, "ga90": 0.63, "goals": 5, "assists": 3, "mins90": 12.7},
+{"r": 99, "name": "Igor Thiago", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Brentford", "g90": 0.6, "a90": 0.03, "ga90": 0.63, "goals": 22, "assists": 1, "mins90": 36.5},
+{"r": 100, "name": "Mikel Oyarzabal", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Real Sociedad", "g90": 0.5, "a90": 0.13, "ga90": 0.63, "goals": 15, "assists": 4, "mins90": 30.1},
+{"r": 101, "name": "Mahmoud Dahoud", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Eintracht Frankfurt", "g90": 0.25, "a90": 0.38, "ga90": 0.63, "goals": 2, "assists": 3, "mins90": 8.0},
+{"r": 102, "name": "Gabriel Jesus", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Arsenal", "g90": 0.63, "a90": 0.0, "ga90": 0.63, "goals": 3, "assists": 0, "mins90": 4.8},
+{"r": 103, "name": "Ethan Mbappé", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Lille", "g90": 0.48, "a90": 0.16, "ga90": 0.63, "goals": 3, "assists": 1, "mins90": 6.3},
+{"r": 104, "name": "Arnaud Nordin", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Rennes", "g90": 0.16, "a90": 0.47, "ga90": 0.63, "goals": 1, "assists": 3, "mins90": 6.3},
+{"r": 105, "name": "Bradley Barcola", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Paris Saint-Germain", "g90": 0.57, "a90": 0.05, "ga90": 0.62, "goals": 11, "assists": 1, "mins90": 19.4},
+{"r": 106, "name": "Julian Brandt", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Dortmund", "g90": 0.39, "a90": 0.22, "ga90": 0.62, "goals": 7, "assists": 4, "mins90": 17.8},
+{"r": 107, "name": "Martial Godo", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "MF", "squad": "Strasbourg", "g90": 0.57, "a90": 0.06, "ga90": 0.62, "goals": 10, "assists": 1, "mins90": 17.6},
+{"r": 108, "name": "Jamie Leweling", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Stuttgart", "g90": 0.27, "a90": 0.34, "ga90": 0.61, "goals": 7, "assists": 9, "mins90": 26.3},
+{"r": 109, "name": "Ernest Poku", "nat": "NED", "flag": "🇳🇱", "country": "Netherlands", "pos": "MF", "squad": "Leverkusen", "g90": 0.3, "a90": 0.3, "ga90": 0.61, "goals": 5, "assists": 5, "mins90": 16.5},
+{"r": 110, "name": "Viktor Gyökeres", "nat": "SWE", "flag": "🇸🇪", "country": "Sweden", "pos": "FW", "squad": "Arsenal", "g90": 0.57, "a90": 0.04, "ga90": 0.61, "goals": 14, "assists": 1, "mins90": 24.7},
+{"r": 111, "name": "Keinan Davis", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "Udinese", "g90": 0.44, "a90": 0.17, "ga90": 0.61, "goals": 10, "assists": 4, "mins90": 22.9},
+{"r": 112, "name": "Mikel Merino", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Arsenal", "g90": 0.35, "a90": 0.26, "ga90": 0.61, "goals": 4, "assists": 3, "mins90": 11.5},
+{"r": 113, "name": "Julian Ryerson", "nat": "NOR", "flag": "🇳🇴", "country": "Norway", "pos": "MF", "squad": "Dortmund", "g90": 0.0, "a90": 0.6, "ga90": 0.6, "goals": 0, "assists": 15, "mins90": 25.2},
+{"r": 114, "name": "Haris Tabaković", "nat": "BIH", "flag": "🇧🇦", "country": "Bosnia-Herzegovina", "pos": "FW", "squad": "Gladbach", "g90": 0.49, "a90": 0.11, "ga90": 0.6, "goals": 13, "assists": 3, "mins90": 26.5},
+{"r": 115, "name": "Ollie Watkins", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "Aston Villa", "g90": 0.51, "a90": 0.1, "ga90": 0.6, "goals": 16, "assists": 3, "mins90": 31.5},
+{"r": 116, "name": "Nicolas Pépé", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "MF", "squad": "Villarreal", "g90": 0.3, "a90": 0.3, "ga90": 0.6, "goals": 8, "assists": 8, "mins90": 26.6},
+{"r": 117, "name": "Nadiem Amiri", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Mainz 05", "g90": 0.52, "a90": 0.09, "ga90": 0.6, "goals": 12, "assists": 2, "mins90": 23.1},
+{"r": 118, "name": "Bilal Nadir", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Marseille", "g90": 0.0, "a90": 0.6, "ga90": 0.6, "goals": 0, "assists": 4, "mins90": 6.6},
+{"r": 119, "name": "Gonçalo Guedes", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Real Sociedad", "g90": 0.39, "a90": 0.2, "ga90": 0.59, "goals": 8, "assists": 4, "mins90": 20.3},
+{"r": 120, "name": "Alexander Sørloth", "nat": "NOR", "flag": "🇳🇴", "country": "Norway", "pos": "FW", "squad": "Atlético Madrid", "g90": 0.59, "a90": 0.0, "ga90": 0.59, "goals": 13, "assists": 0, "mins90": 22.0},
+{"r": 121, "name": "Mohamed Salah", "nat": "EGY", "flag": "🇪🇬", "country": "Egypt", "pos": "MF", "squad": "Liverpool", "g90": 0.29, "a90": 0.29, "ga90": 0.59, "goals": 7, "assists": 7, "mins90": 23.8},
+{"r": 122, "name": "Corentin Tolisso", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Lyon", "g90": 0.43, "a90": 0.16, "ga90": 0.59, "goals": 11, "assists": 4, "mins90": 25.6},
+{"r": 123, "name": "David Neres", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Napoli", "g90": 0.29, "a90": 0.29, "ga90": 0.59, "goals": 3, "assists": 3, "mins90": 10.2},
+{"r": 124, "name": "Elye Wahi", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "FW", "squad": "Nice", "g90": 0.49, "a90": 0.1, "ga90": 0.59, "goals": 5, "assists": 1, "mins90": 10.2},
+{"r": 125, "name": "Ragnar Ache", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Köln", "g90": 0.37, "a90": 0.21, "ga90": 0.58, "goals": 7, "assists": 4, "mins90": 19.1},
+{"r": 126, "name": "Breel Embolo", "nat": "SUI", "flag": "🇨🇭", "country": "Switzerland", "pos": "FW", "squad": "Rennes", "g90": 0.43, "a90": 0.14, "ga90": 0.58, "goals": 9, "assists": 3, "mins90": 20.8},
+{"r": 127, "name": "Arda Güler", "nat": "TUR", "flag": "🇹🇷", "country": "Turkey", "pos": "MF", "squad": "Real Madrid", "g90": 0.18, "a90": 0.4, "ga90": 0.58, "goals": 4, "assists": 9, "mins90": 22.4},
+{"r": 128, "name": "Callum Wilson", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "West Ham United", "g90": 0.5, "a90": 0.07, "ga90": 0.58, "goals": 7, "assists": 1, "mins90": 13.9},
+{"r": 129, "name": "Rafael Leão", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "FW", "squad": "Milan", "g90": 0.44, "a90": 0.15, "ga90": 0.58, "goals": 9, "assists": 3, "mins90": 20.6},
+{"r": 130, "name": "Lukas Nmecha", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Leeds United", "g90": 0.5, "a90": 0.08, "ga90": 0.58, "goals": 6, "assists": 1, "mins90": 12.0},
+{"r": 131, "name": "Afonso Moreira", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Lyon", "g90": 0.21, "a90": 0.37, "ga90": 0.57, "goals": 4, "assists": 7, "mins90": 19.1},
+{"r": 132, "name": "Rayan", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Bournemouth", "g90": 0.41, "a90": 0.16, "ga90": 0.57, "goals": 5, "assists": 2, "mins90": 12.3},
+{"r": 133, "name": "Jesus Rodríguez", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Como", "g90": 0.1, "a90": 0.47, "ga90": 0.57, "goals": 2, "assists": 9, "mins90": 19.2},
+{"r": 134, "name": "Julián Álvarez", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "FW", "squad": "Atlético Madrid", "g90": 0.38, "a90": 0.19, "ga90": 0.57, "goals": 8, "assists": 4, "mins90": 21.1},
+{"r": 135, "name": "Gauthier Hein", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Metz", "g90": 0.31, "a90": 0.27, "ga90": 0.57, "goals": 8, "assists": 7, "mins90": 26.1},
+{"r": 136, "name": "Sambou Soumano", "nat": "SEN", "flag": "🇸🇳", "country": "Senegal", "pos": "FW", "squad": "Lorient", "g90": 0.38, "a90": 0.19, "ga90": 0.57, "goals": 4, "assists": 2, "mins90": 10.5},
+{"r": 137, "name": "Armand Lauriente", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Sassuolo", "g90": 0.24, "a90": 0.31, "ga90": 0.56, "goals": 7, "assists": 9, "mins90": 28.8},
+{"r": 138, "name": "Nicolás Paz", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Como", "g90": 0.38, "a90": 0.19, "ga90": 0.56, "goals": 12, "assists": 6, "mins90": 32.0},
+{"r": 139, "name": "Toni Martínez", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Alavés", "g90": 0.46, "a90": 0.1, "ga90": 0.56, "goals": 14, "assists": 3, "mins90": 30.2},
+{"r": 140, "name": "Danny Welbeck", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "Brighton", "g90": 0.52, "a90": 0.04, "ga90": 0.56, "goals": 13, "assists": 1, "mins90": 25.1},
+{"r": 141, "name": "Zian Flemming", "nat": "NED", "flag": "🇳🇱", "country": "Netherlands", "pos": "FW", "squad": "Burnley", "g90": 0.56, "a90": 0.0, "ga90": 0.56, "goals": 11, "assists": 0, "mins90": 19.6},
+{"r": 142, "name": "Jeremie Boga", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "MF", "squad": "Juventus", "g90": 0.53, "a90": 0.0, "ga90": 0.53, "goals": 4, "assists": 0, "mins90": 7.5},
+{"r": 143, "name": "Rayan Fofana", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Lens", "g90": 0.56, "a90": 0.0, "ga90": 0.56, "goals": 5, "assists": 0, "mins90": 8.9},
+{"r": 144, "name": "Lucas Vázquez", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Leverkusen", "g90": 0.19, "a90": 0.37, "ga90": 0.56, "goals": 1, "assists": 2, "mins90": 5.3},
+{"r": 145, "name": "Fares Chaïbi", "nat": "ALG", "flag": "🇩🇿", "country": "Algeria", "pos": "MF", "squad": "Eintracht Frankfurt", "g90": 0.1, "a90": 0.45, "ga90": 0.55, "goals": 2, "assists": 9, "mins90": 19.9},
+{"r": 146, "name": "Bazoumana Touré", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "MF", "squad": "Hoffenheim", "g90": 0.19, "a90": 0.35, "ga90": 0.55, "goals": 5, "assists": 9, "mins90": 25.6},
+{"r": 147, "name": "Morgan Gibbs-White", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Nottingham Forest", "g90": 0.44, "a90": 0.12, "ga90": 0.55, "goals": 15, "assists": 4, "mins90": 34.4},
+{"r": 148, "name": "Lucas Boyé", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "FW", "squad": "Alavés", "g90": 0.51, "a90": 0.05, "ga90": 0.55, "goals": 11, "assists": 1, "mins90": 21.8},
+{"r": 149, "name": "Ludovic Ajorque", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Brest", "g90": 0.26, "a90": 0.29, "ga90": 0.54, "goals": 8, "assists": 9, "mins90": 31.3},
+{"r": 150, "name": "Konrad Laimer", "nat": "AUT", "flag": "🇦🇹", "country": "Austria", "pos": "DF", "squad": "Bayern Munich", "g90": 0.14, "a90": 0.41, "ga90": 0.54, "goals": 3, "assists": 9, "mins90": 22.2},
+{"r": 151, "name": "Alberto Moleiro", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Villarreal", "g90": 0.36, "a90": 0.18, "ga90": 0.54, "goals": 10, "assists": 5, "mins90": 27.5},
+{"r": 152, "name": "Leandro Trossard", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "FW", "squad": "Arsenal", "g90": 0.27, "a90": 0.27, "ga90": 0.54, "goals": 6, "assists": 6, "mins90": 22.2},
+{"r": 153, "name": "Álex Grimaldo", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Leverkusen", "g90": 0.29, "a90": 0.25, "ga90": 0.54, "goals": 8, "assists": 7, "mins90": 28.0},
+{"r": 154, "name": "Kevin De Bruyne", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "MF", "squad": "Napoli", "g90": 0.39, "a90": 0.15, "ga90": 0.54, "goals": 5, "assists": 2, "mins90": 12.9},
+{"r": 155, "name": "Alessio Castro-Montes", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "MF", "squad": "Köln", "g90": 0.13, "a90": 0.4, "ga90": 0.54, "goals": 1, "assists": 3, "mins90": 7.5},
+{"r": 156, "name": "Paulo Dybala", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Roma", "g90": 0.13, "a90": 0.4, "ga90": 0.53, "goals": 2, "assists": 6, "mins90": 15.0},
+{"r": 157, "name": "Rômulo", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "RB Leipzig", "g90": 0.37, "a90": 0.16, "ga90": 0.53, "goals": 9, "assists": 4, "mins90": 24.3},
+{"r": 158, "name": "Jarrod Bowen", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "West Ham United", "g90": 0.24, "a90": 0.29, "ga90": 0.53, "goals": 9, "assists": 11, "mins90": 37.8},
+{"r": 159, "name": "Ilan Kebbal", "nat": "ALG", "flag": "🇩🇿", "country": "Algeria", "pos": "MF", "squad": "Paris FC", "g90": 0.36, "a90": 0.16, "ga90": 0.53, "goals": 9, "assists": 4, "mins90": 24.7},
+{"r": 160, "name": "Simon Adingra", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "MF", "squad": "Monaco", "g90": 0.32, "a90": 0.21, "ga90": 0.53, "goals": 3, "assists": 2, "mins90": 9.5},
+{"r": 161, "name": "Rodrygo", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Real Madrid", "g90": 0.13, "a90": 0.39, "ga90": 0.53, "goals": 1, "assists": 3, "mins90": 7.6},
+{"r": 162, "name": "Osame Sahraoui", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Lille", "g90": 0.18, "a90": 0.36, "ga90": 0.53, "goals": 1, "assists": 2, "mins90": 5.6},
+{"r": 163, "name": "Junior Messias", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Genoa", "g90": 0.39, "a90": 0.13, "ga90": 0.53, "goals": 3, "assists": 1, "mins90": 7.6},
+{"r": 164, "name": "Martin Baturina", "nat": "CRO", "flag": "🇭🇷", "country": "Croatia", "pos": "MF", "squad": "Como", "g90": 0.34, "a90": 0.17, "ga90": 0.52, "goals": 6, "assists": 3, "mins90": 17.4},
+{"r": 165, "name": "Phil Foden", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Manchester City", "g90": 0.3, "a90": 0.22, "ga90": 0.52, "goals": 7, "assists": 5, "mins90": 23.2},
+{"r": 166, "name": "Noah Okafor", "nat": "SUI", "flag": "🇨🇭", "country": "Switzerland", "pos": "FW", "squad": "Leeds United", "g90": 0.46, "a90": 0.06, "ga90": 0.52, "goals": 8, "assists": 1, "mins90": 17.3},
+{"r": 167, "name": "Mohamed Amoura", "nat": "ALG", "flag": "🇩🇿", "country": "Algeria", "pos": "FW", "squad": "Wolfsburg", "g90": 0.38, "a90": 0.14, "ga90": 0.52, "goals": 8, "assists": 3, "mins90": 21.3},
+{"r": 168, "name": "Nick Woltemade", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Newcastle United", "g90": 0.38, "a90": 0.14, "ga90": 0.52, "goals": 8, "assists": 3, "mins90": 21.1},
+{"r": 169, "name": "Ludovic Blas", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Rennes", "g90": 0.29, "a90": 0.23, "ga90": 0.52, "goals": 5, "assists": 4, "mins90": 17.2},
+{"r": 170, "name": "Ante Budimir", "nat": "CRO", "flag": "🇭🇷", "country": "Croatia", "pos": "FW", "squad": "Osasuna", "g90": 0.52, "a90": 0.0, "ga90": 0.52, "goals": 17, "assists": 0, "mins90": 32.6},
+{"r": 171, "name": "Alexander Isak", "nat": "SWE", "flag": "🇸🇪", "country": "Sweden", "pos": "FW", "squad": "Liverpool", "g90": 0.39, "a90": 0.13, "ga90": 0.52, "goals": 3, "assists": 1, "mins90": 7.8},
+{"r": 172, "name": "Antony", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Real Betis", "g90": 0.29, "a90": 0.22, "ga90": 0.51, "goals": 8, "assists": 6, "mins90": 27.2},
+{"r": 173, "name": "Marius Bülter", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Köln", "g90": 0.28, "a90": 0.23, "ga90": 0.51, "goals": 5, "assists": 4, "mins90": 17.7},
+{"r": 174, "name": "Jonathan David", "nat": "CAN", "flag": "🇨🇦", "country": "Canada", "pos": "FW", "squad": "Juventus", "g90": 0.3, "a90": 0.2, "ga90": 0.51, "goals": 6, "assists": 4, "mins90": 19.8},
+{"r": 175, "name": "Javi Rueda", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Celta Vigo", "g90": 0.13, "a90": 0.38, "ga90": 0.51, "goals": 2, "assists": 6, "mins90": 15.6},
+{"r": 176, "name": "Kenan Yıldız", "nat": "TUR", "flag": "🇹🇷", "country": "Turkey", "pos": "MF", "squad": "Juventus", "g90": 0.32, "a90": 0.19, "ga90": 0.51, "goals": 10, "assists": 6, "mins90": 31.4},
+{"r": 177, "name": "Ruben Vargas", "nat": "SUI", "flag": "🇨🇭", "country": "Switzerland", "pos": "MF", "squad": "Sevilla", "g90": 0.17, "a90": 0.34, "ga90": 0.51, "goals": 3, "assists": 6, "mins90": 17.7},
+{"r": 178, "name": "Bruno Guimarães", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Newcastle United", "g90": 0.33, "a90": 0.18, "ga90": 0.51, "goals": 9, "assists": 5, "mins90": 27.3},
+{"r": 179, "name": "Largie Ramazani", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "MF", "squad": "Valencia", "g90": 0.44, "a90": 0.07, "ga90": 0.51, "goals": 6, "assists": 1, "mins90": 13.7},
+{"r": 180, "name": "Cole Palmer", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Chelsea", "g90": 0.46, "a90": 0.05, "ga90": 0.51, "goals": 10, "assists": 1, "mins90": 21.7},
+{"r": 181, "name": "Cristian Volpato", "nat": "AUS", "flag": "🇦🇺", "country": "Australia", "pos": "FW", "squad": "Sassuolo", "g90": 0.17, "a90": 0.34, "ga90": 0.51, "goals": 2, "assists": 4, "mins90": 11.8},
+{"r": 182, "name": "Brahim Díaz", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Real Madrid", "g90": 0.07, "a90": 0.43, "ga90": 0.5, "goals": 1, "assists": 6, "mins90": 14.0},
+{"r": 183, "name": "Jeremy Doku", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "MF", "squad": "Manchester City", "g90": 0.25, "a90": 0.25, "ga90": 0.5, "goals": 5, "assists": 5, "mins90": 19.8},
+{"r": 184, "name": "Bilal El Khannouss", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Stuttgart", "g90": 0.22, "a90": 0.28, "ga90": 0.5, "goals": 4, "assists": 5, "mins90": 18.1},
+{"r": 185, "name": "Igor Paixão", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Marseille", "g90": 0.27, "a90": 0.23, "ga90": 0.5, "goals": 6, "assists": 5, "mins90": 21.9},
+{"r": 186, "name": "Gorka Guruzeta", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Athletic Club", "g90": 0.38, "a90": 0.11, "ga90": 0.5, "goals": 10, "assists": 3, "mins90": 26.3},
+{"r": 187, "name": "Dominic Calvert-Lewin", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "Leeds United", "g90": 0.46, "a90": 0.03, "ga90": 0.5, "goals": 14, "assists": 1, "mins90": 30.2},
+{"r": 188, "name": "Quentin Ndjantou Mbitcha", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Paris Saint-Germain", "g90": 0.25, "a90": 0.25, "ga90": 0.5, "goals": 1, "assists": 1, "mins90": 4.0},
+{"r": 189, "name": "Abdallah Sima", "nat": "SEN", "flag": "🇸🇳", "country": "Senegal", "pos": "MF", "squad": "Lens", "g90": 0.25, "a90": 0.25, "ga90": 0.5, "goals": 2, "assists": 2, "mins90": 8.0},
+{"r": 190, "name": "José Luis Morales", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Levante", "g90": 0.25, "a90": 0.25, "ga90": 0.5, "goals": 1, "assists": 1, "mins90": 4.0},
+{"r": 191, "name": "Dženan Pejčinović", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Wolfsburg", "g90": 0.49, "a90": 0.0, "ga90": 0.49, "goals": 8, "assists": 0, "mins90": 16.2},
+{"r": 192, "name": "Álvaro Rodríguez", "nat": "URU", "flag": "🇺🇾", "country": "Uruguay", "pos": "FW", "squad": "Elche", "g90": 0.29, "a90": 0.2, "ga90": 0.49, "goals": 7, "assists": 5, "mins90": 24.5},
+{"r": 193, "name": "Musa Al-Taamari", "nat": "JOR", "flag": "🇯🇴", "country": "Jordan", "pos": "MF", "squad": "Rennes", "g90": 0.24, "a90": 0.24, "ga90": 0.49, "goals": 6, "assists": 6, "mins90": 24.6},
+{"r": 194, "name": "Cucho", "nat": "COL", "flag": "🇨🇴", "country": "Colombia", "pos": "FW", "squad": "Real Betis", "g90": 0.38, "a90": 0.1, "ga90": 0.49, "goals": 11, "assists": 3, "mins90": 28.7},
+{"r": 195, "name": "Bukayo Saka", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "FW", "squad": "Arsenal", "g90": 0.28, "a90": 0.2, "ga90": 0.49, "goals": 7, "assists": 5, "mins90": 24.7},
+{"r": 196, "name": "Fabio Vieira", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Hamburger SV", "g90": 0.29, "a90": 0.2, "ga90": 0.49, "goals": 7, "assists": 5, "mins90": 24.5},
+{"r": 197, "name": "Matias Fernandez-Pardo", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "FW", "squad": "Lille", "g90": 0.3, "a90": 0.19, "ga90": 0.49, "goals": 8, "assists": 5, "mins90": 26.3},
+{"r": 198, "name": "André Silva", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "FW", "squad": "Elche", "g90": 0.49, "a90": 0.0, "ga90": 0.49, "goals": 10, "assists": 0, "mins90": 20.5},
+{"r": 199, "name": "Raúl Jiménez", "nat": "MEX", "flag": "🇲🇽", "country": "Mexico", "pos": "FW", "squad": "Fulham", "g90": 0.37, "a90": 0.12, "ga90": 0.49, "goals": 9, "assists": 3, "mins90": 24.3},
+{"r": 200, "name": "Jean-Philippe Mateta", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Crystal Palace", "g90": 0.49, "a90": 0.0, "ga90": 0.49, "goals": 12, "assists": 0, "mins90": 24.6},
+{"r": 201, "name": "Benjamín Domínguez", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Bologna", "g90": 0.0, "a90": 0.49, "ga90": 0.49, "goals": 0, "assists": 3, "mins90": 6.1},
+{"r": 202, "name": "Wael Mohya", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Gladbach", "g90": 0.33, "a90": 0.16, "ga90": 0.49, "goals": 2, "assists": 1, "mins90": 6.1},
+{"r": 203, "name": "Maxence Caqueret", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Como", "g90": 0.12, "a90": 0.36, "ga90": 0.48, "goals": 2, "assists": 6, "mins90": 16.5},
+{"r": 204, "name": "Roberto Navarro", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Athletic Club", "g90": 0.41, "a90": 0.07, "ga90": 0.48, "goals": 6, "assists": 1, "mins90": 14.5},
+{"r": 205, "name": "Nico Williams", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Athletic Club", "g90": 0.32, "a90": 0.16, "ga90": 0.48, "goals": 6, "assists": 3, "mins90": 18.6},
+{"r": 206, "name": "Gonçalo Ramos", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "FW", "squad": "Paris Saint-Germain", "g90": 0.41, "a90": 0.07, "ga90": 0.48, "goals": 6, "assists": 1, "mins90": 14.6},
+{"r": 207, "name": "Josan", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Elche", "g90": 0.0, "a90": 0.48, "ga90": 0.48, "goals": 0, "assists": 3, "mins90": 6.3},
+{"r": 208, "name": "Takumi Minamino", "nat": "JPN", "flag": "🇯🇵", "country": "Japan", "pos": "MF", "squad": "Monaco", "g90": 0.29, "a90": 0.19, "ga90": 0.48, "goals": 3, "assists": 2, "mins90": 10.5},
+{"r": 209, "name": "Rio Ngumoha", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Liverpool", "g90": 0.32, "a90": 0.16, "ga90": 0.48, "goals": 2, "assists": 1, "mins90": 6.2},
+{"r": 210, "name": "Jude Bellingham", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Real Madrid", "g90": 0.28, "a90": 0.19, "ga90": 0.47, "goals": 6, "assists": 4, "mins90": 21.3},
+{"r": 211, "name": "Pablo Fornals", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Real Betis", "g90": 0.28, "a90": 0.19, "ga90": 0.47, "goals": 9, "assists": 6, "mins90": 31.6},
+{"r": 212, "name": "Jean Mattéo Bahoya", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Eintracht Frankfurt", "g90": 0.2, "a90": 0.27, "ga90": 0.47, "goals": 3, "assists": 4, "mins90": 14.8},
+{"r": 213, "name": "Martim Neto", "nat": "POR", "flag": "🇵🇹", "country": "Portugal", "pos": "MF", "squad": "Elche", "g90": 0.13, "a90": 0.33, "ga90": 0.47, "goals": 2, "assists": 5, "mins90": 15.0},
+{"r": 214, "name": "Tijjani Noslin", "nat": "NED", "flag": "🇳🇱", "country": "Netherlands", "pos": "FW", "squad": "Lazio", "g90": 0.31, "a90": 0.16, "ga90": 0.47, "goals": 4, "assists": 2, "mins90": 12.8},
+{"r": 215, "name": "Pedri", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Barcelona", "g90": 0.09, "a90": 0.38, "ga90": 0.47, "goals": 2, "assists": 9, "mins90": 23.4},
+{"r": 216, "name": "Kiké", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Espanyol", "g90": 0.42, "a90": 0.05, "ga90": 0.47, "goals": 8, "assists": 1, "mins90": 19.3},
+{"r": 217, "name": "Godson Kyeremeh", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Le Havre", "g90": 0.24, "a90": 0.24, "ga90": 0.47, "goals": 1, "assists": 1, "mins90": 4.2},
+{"r": 218, "name": "Wilson Isidor", "nat": "HAI", "flag": "🇭🇹", "country": "Haiti", "pos": "FW", "squad": "Sunderland", "g90": 0.46, "a90": 0.0, "ga90": 0.46, "goals": 6, "assists": 0, "mins90": 12.9},
+{"r": 219, "name": "Grischa Prömel", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "MF", "squad": "Hoffenheim", "g90": 0.36, "a90": 0.1, "ga90": 0.46, "goals": 7, "assists": 2, "mins90": 19.5},
+{"r": 220, "name": "Matìas Soulé", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Roma", "g90": 0.25, "a90": 0.21, "ga90": 0.46, "goals": 6, "assists": 5, "mins90": 23.8},
+{"r": 221, "name": "Martin Ødegaard", "nat": "NOR", "flag": "🇳🇴", "country": "Norway", "pos": "MF", "squad": "Arsenal", "g90": 0.07, "a90": 0.39, "ga90": 0.46, "goals": 1, "assists": 6, "mins90": 15.2},
+{"r": 222, "name": "Tim Lemperle", "nat": "GER", "flag": "🇩🇪", "country": "Germany", "pos": "FW", "squad": "Hoffenheim", "g90": 0.37, "a90": 0.09, "ga90": 0.46, "goals": 8, "assists": 2, "mins90": 21.6},
+{"r": 223, "name": "Dennis Johnsen", "nat": "NOR", "flag": "🇳🇴", "country": "Norway", "pos": "MF", "squad": "Cremonese", "g90": 0.23, "a90": 0.23, "ga90": 0.46, "goals": 1, "assists": 1, "mins90": 4.3},
+{"r": 224, "name": "Maghnes Akliouche", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Monaco", "g90": 0.23, "a90": 0.23, "ga90": 0.45, "goals": 6, "assists": 6, "mins90": 26.7},
+{"r": 225, "name": "Emersonn", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "FW", "squad": "Toulouse", "g90": 0.34, "a90": 0.11, "ga90": 0.45, "goals": 6, "assists": 2, "mins90": 17.7},
+{"r": 226, "name": "Eberechi Eze", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Arsenal", "g90": 0.35, "a90": 0.1, "ga90": 0.45, "goals": 7, "assists": 2, "mins90": 20.1},
+{"r": 227, "name": "Pablo Torre", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Mallorca", "g90": 0.23, "a90": 0.23, "ga90": 0.45, "goals": 4, "assists": 4, "mins90": 17.8},
+{"r": 228, "name": "Hugo Duro", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "FW", "squad": "Valencia", "g90": 0.45, "a90": 0.0, "ga90": 0.45, "goals": 10, "assists": 0, "mins90": 22.0},
+{"r": 229, "name": "Olivier Giroud", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Lille", "g90": 0.39, "a90": 0.06, "ga90": 0.45, "goals": 7, "assists": 1, "mins90": 17.9},
+{"r": 230, "name": "Caleb Ekuban", "nat": "GHA", "flag": "🇬🇭", "country": "Ghana", "pos": "FW", "squad": "Genoa", "g90": 0.36, "a90": 0.09, "ga90": 0.45, "goals": 4, "assists": 1, "mins90": 11.0},
+{"r": 231, "name": "Ibrahim Mbaye", "nat": "SEN", "flag": "🇸🇳", "country": "Senegal", "pos": "FW", "squad": "Paris Saint-Germain", "g90": 0.27, "a90": 0.18, "ga90": 0.45, "goals": 3, "assists": 2, "mins90": 11.2},
+{"r": 232, "name": "Jack Grealish", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Everton", "g90": 0.11, "a90": 0.33, "ga90": 0.44, "goals": 2, "assists": 6, "mins90": 18.1},
+{"r": 233, "name": "Javier Guerra", "nat": "ESP", "flag": "🇪🇸", "country": "Spain", "pos": "MF", "squad": "Valencia", "g90": 0.17, "a90": 0.26, "ga90": 0.44, "goals": 4, "assists": 6, "mins90": 22.9},
+{"r": 234, "name": "Arnaud Kalimuendo", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Eintracht Frankfurt", "g90": 0.38, "a90": 0.06, "ga90": 0.44, "goals": 6, "assists": 1, "mins90": 15.7},
+{"r": 235, "name": "Diego Moreira", "nat": "BEL", "flag": "🇧🇪", "country": "Belgium", "pos": "MF", "squad": "Strasbourg", "g90": 0.18, "a90": 0.27, "ga90": 0.44, "goals": 4, "assists": 6, "mins90": 22.6},
+{"r": 236, "name": "Morgan Rogers", "nat": "ENG", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "country": "England", "pos": "MF", "squad": "Aston Villa", "g90": 0.27, "a90": 0.16, "ga90": 0.44, "goals": 10, "assists": 6, "mins90": 36.4},
+{"r": 237, "name": "Giovanni Simeone", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "FW", "squad": "Torino", "g90": 0.44, "a90": 0.0, "ga90": 0.44, "goals": 11, "assists": 0, "mins90": 24.8},
+{"r": 238, "name": "Sofiane Boufal", "nat": "MAR", "flag": "🇲🇦", "country": "Morocco", "pos": "MF", "squad": "Le Havre", "g90": 0.09, "a90": 0.35, "ga90": 0.44, "goals": 1, "assists": 4, "mins90": 11.3},
+{"r": 239, "name": "Thijs Dallinga", "nat": "NED", "flag": "🇳🇱", "country": "Netherlands", "pos": "FW", "squad": "Bologna", "g90": 0.22, "a90": 0.22, "ga90": 0.44, "goals": 2, "assists": 2, "mins90": 9.0},
+{"r": 240, "name": "Thiago Fernández", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Oviedo", "g90": 0.0, "a90": 0.44, "ga90": 0.44, "goals": 0, "assists": 4, "mins90": 9.1},
+{"r": 241, "name": "Hamed Junior Traorè", "nat": "CIV", "flag": "🇨🇮", "country": "Ivory Coast", "pos": "MF", "squad": "Marseille", "g90": 0.29, "a90": 0.15, "ga90": 0.44, "goals": 2, "assists": 1, "mins90": 6.9},
+{"r": 242, "name": "Willem Geubbels", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "FW", "squad": "Paris FC", "g90": 0.44, "a90": 0.0, "ga90": 0.44, "goals": 5, "assists": 0, "mins90": 11.3},
+{"r": 243, "name": "Oliver Burke", "nat": "SCO", "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "country": "Scotland", "pos": "FW", "squad": "Union Berlin", "g90": 0.32, "a90": 0.11, "ga90": 0.43, "goals": 6, "assists": 2, "mins90": 18.5},
+{"r": 244, "name": "Matheus Cunha", "nat": "BRA", "flag": "🇧🇷", "country": "Brazil", "pos": "MF", "squad": "Manchester Utd", "g90": 0.36, "a90": 0.07, "ga90": 0.43, "goals": 10, "assists": 2, "mins90": 27.7},
+{"r": 245, "name": "Senny Mayulu", "nat": "FRA", "flag": "🇫🇷", "country": "France", "pos": "MF", "squad": "Paris Saint-Germain", "g90": 0.22, "a90": 0.22, "ga90": 0.43, "goals": 4, "assists": 4, "mins90": 18.6},
+{"r": 246, "name": "Giuliano Simeone", "nat": "ARG", "flag": "🇦🇷", "country": "Argentina", "pos": "MF", "squad": "Atlético Madrid", "g90": 0.17, "a90": 0.26, "ga90": 0.43, "goals": 4, "assists": 6, "mins90": 23.3},
+{"r": 247, "name": "Federico Valverde", "nat": "URU", "flag": "🇺🇾", "country": "Uruguay", "pos": "MF", "squad": "Real Madrid", "g90": 0.16, "a90": 0.26, "ga90": 0.43, "goals": 5, "assists": 8, "mins90": 30.4}
 ];
 
 const FBREF_NONWC=[
@@ -4454,10 +4422,6 @@ export default function App(){
           {/* MODEL */}
                     {tab==="model"&&(
             <React.Fragment>
-              <div style={{marginBottom:14}}>
-                <div style={{fontSize:FS.h2,fontWeight:700,color:T.text}}>{tr.modelTitle}</div>
-              </div>
-
               {/* ── MODEL EXPLANATION + VISUALISATIONS (sections 1-4) ── */}
               <ModelViz/>
 
