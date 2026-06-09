@@ -4316,67 +4316,96 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // One continuous WHITE lion is the hero. Starts inside the WC2026 ring,
-    // grows out to the title stage, then zooms straight toward the viewer. All on black.
+    // Orange-staged intro: white lion in the WC ring → grows on orange while turning black and
+    // PUSHING the orange away into black → anticipation crimp → explosive charge → fade to black.
     const t=[];
-    t.push(setTimeout(()=>setPhase(1),60));     // WC roundel + lion-core ease in (lion sits in the ring's hole)
+    t.push(setTimeout(()=>setPhase(1),60));     // ring + white lion ease in (on orange)
     t.push(setTimeout(()=>setPhase(2),760));    // RWB sweep across
-    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows out of the ring; title resolves
-    t.push(setTimeout(()=>setPhase(4),2050));   // ZOOM: lion comes toward the viewer
-    t.push(setTimeout(()=>setPhase(5),2750));   // lion fills the frame → cut to app
-    t.push(setTimeout(()=>onDone&&onDone(),3050));
+    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows + turns black; orange pushed away to black; title
+    t.push(setTimeout(()=>setPhase(4),1980));   // anticipation crimp + glow (the "inhale")
+    t.push(setTimeout(()=>setPhase(5),2300));   // CHARGE: black lion surges at the viewer, glow blooms
+    t.push(setTimeout(()=>setPhase(6),2980));   // fade to black — lion dissolves at the peak
+    t.push(setTimeout(()=>onDone&&onDone(),3300));
     return()=>t.forEach(clearTimeout);
   },[]);
 
-  // Haptic on the zoom beat — one physical accent.
+  // Haptic on the anticipation beat — one physical accent before the charge.
   React.useEffect(()=>{
-    if(phase===4&&typeof navigator!=="undefined"&&navigator.vibrate){try{navigator.vibrate(16);}catch(e){}}
+    if(phase===4&&typeof navigator!=="undefined"&&navigator.vibrate){try{navigator.vibrate(18);}catch(e){}}
   },[phase]);
 
-  // ── Background: black throughout. Clean white-on-black.
-  const bg="#0D0D0D";
+  // ── Background: warm orange through the intro; the push-away disc turns it black at phase 3.
+  const bg=phase>=3?"#0D0D0D":"#E85100";
 
-  // ── Shared white lion: scale + depth evolve across phases (never unmounts).
-  // Scale: tiny core inside the ring → stage size → zooms huge toward the viewer.
+  // ── Lion colour: white → orange crossfade as it grows on orange (the "cool" turn). Orange stays
+  // visible against the black background during the charge.
+  const orangeOpacity=phase>=3?1:0;
+
+  // ── Lion scale: tiny core in the ring → stage → anticipation crimp → charges huge at the viewer.
   const lionScale=
-    phase>=5?11:          // fills the frame
-    phase>=4?4.4:         // coming at the viewer
+    phase>=6?12:          // dissolving as it fills
+    phase>=5?4.6:         // exploding toward the viewer
+    phase>=4?0.92:        // anticipation crimp (pull back before the surge)
     phase>=3?1:           // settled at stage size
     phase>=1?0.3:0.16;    // tiny core inside the ring's hole
-  const lionZ=phase>=4?420:0;                          // surge toward the viewer (z-depth)
-  // Lift: phase 1-2 the lion sits in the RING's hole (ring centre is well above column centre),
-  // phase 3 it rests above the title, phase 4+ it centres for the zoom.
+  const lionZ=phase>=5?440:0;                          // surge toward the viewer (z-depth)
   const lionLift=phase>=4?0:(phase>=3?-58:(phase>=1?-24:6));
-  const lionBlur=phase>=5?5:(phase===4?2:0);           // subtle motion blur as it rushes in
-  const lionOpacity=phase>=5?0:(phase>=1?1:0);
+  const lionBlur=phase>=6?7:(phase===5?3:0);           // motion blur builds as it rushes in
+  const lionOpacity=phase>=6?0:(phase>=1?1:0);
 
-  // ── WC roundel ring + "26" + RWB bars: present in the intro, dissolve as the lion grows out.
+  // ── Push-away disc: black circle expands from the lion's centre, shoving the orange off-screen.
+  const pushScale=phase>=3?42:0;
+  const pushOpacity=phase>=3?1:0;
+
+  // ── WC roundel ring + RWB bars: present in the intro, dissolve as the lion grows out.
   const ringOpacity=phase>=3?0:(phase>=1?1:0);
   const ringScale=phase>=3?1.25:(phase>=1?1:0.8);
   const sweepOpacity=phase===2?1:0;
 
-  // ── Title stage: resolves under the lion as the ring dissolves; clears on the zoom.
+  // ── Title stage: resolves under the lion as the ring dissolves; clears on the charge.
   const titleOpacity=phase>=4?0:(phase>=3?1:0);
   const titleLift=phase>=3?0:14;
 
-  const overlayOpacity=phase>=5?0:1;
+  // ── Glow bloom behind the lion at the anticipation + charge beats.
+  const glowOpacity=(phase===4||phase===5)?1:0;
+
+  const overlayOpacity=phase>=6?0:1;
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:bg,opacity:overlayOpacity,
-      transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      transition:"background 0.5s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
       perspective:"1100px"}}>
 
-      {/* Subtle radial vignette for depth (black) */}
+      {/* Warm orange radial wash (visible during the intro) */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase>=4?0.85:0.45,transition:"opacity 0.7s ease",
+        opacity:phase>=3?0:1,transition:"opacity 0.5s ease",
+        background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)"}}/>
+
+      {/* Push-away disc — black circle expands from the lion's centre, shoving the orange off-screen */}
+      <div style={{position:"absolute",width:120,height:120,borderRadius:"50%",pointerEvents:"none",
+        top:"50%",left:"50%",marginTop:-118,marginLeft:-60,
+        opacity:pushOpacity,transform:`scale(${pushScale})`,
+        transition:"transform 0.8s cubic-bezier(.5,0,.6,1), opacity 0.3s ease",
+        background:"#0D0D0D",willChange:"transform,opacity"}}/>
+
+      {/* Subtle radial vignette for depth */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:phase>=4?0.85:0.4,transition:"opacity 0.7s ease",
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.6) 100%)"}}/>
+
+      {/* Glow bloom behind the lion at the anticipation + charge beats */}
+      <div style={{position:"absolute",width:260,height:260,borderRadius:"50%",pointerEvents:"none",
+        opacity:glowOpacity,transform:`scale(${glowOpacity?1.15:0.6})`,
+        transition:"opacity 0.4s ease, transform 0.55s cubic-bezier(.34,1.2,.5,1)",
+        background:"radial-gradient(circle, rgba(255,150,70,0.5) 0%, rgba(255,110,40,0.16) 45%, transparent 70%)",
+        filter:"blur(4px)"}}/>
 
       {/* RWB accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
         transition:"opacity 0.6s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
-        background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
+        background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
 
       {/* WC roundel ring + 26 + RWB bars (the lion lives in its heart) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
@@ -4414,18 +4443,26 @@ function AppLoader({onDone}){
         </div>
       </div>
 
-      {/* THE HERO LION — one white node: ring's hole → stage → zooms toward the viewer */}
+      {/* THE HERO LION — one node: white in the ring → turns black as it grows on orange → charges */}
       <div style={{position:"absolute",perspective:"1100px",pointerEvents:"none",
         opacity:lionOpacity,transition:"opacity 0.4s cubic-bezier(.4,0,.2,1)"}}>
         <div style={{position:"relative",width:108,height:108,
           transform:`translateZ(${lionZ}px) translateY(${lionLift}px) scale(${lionScale})`,
           filter:lionBlur?`blur(${lionBlur}px)`:"none",
-          transition:phase>=4
-            ? "transform 0.62s cubic-bezier(.45,0,.7,.55), filter 0.5s ease"  // zoom toward viewer
-            : "transform 0.7s cubic-bezier(.34,1.2,.5,1), filter 0.3s ease",  // settle into place
+          transition:phase>=5
+            ? "transform 0.66s cubic-bezier(.42,0,.7,.6), filter 0.5s ease"   // explosive charge
+            : phase>=4
+              ? "transform 0.3s cubic-bezier(.4,0,.6,1), filter 0.3s ease"    // anticipation crimp (snappy)
+              : "transform 0.7s cubic-bezier(.34,1.2,.5,1), filter 0.3s ease",// settle into place
           willChange:"transform,filter"}}>
+          {/* white lion (in the ring + early growth) */}
           <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
             <LionEmoji color="#FFFFFF" size={108}/>
+          </div>
+          {/* orange lion crossfades in as it grows and the orange bg is pushed away to black */}
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",
+            opacity:orangeOpacity,transition:"opacity 0.55s cubic-bezier(.4,0,.2,1)"}}>
+            <LionEmoji color="#FF5500" size={108}/>
           </div>
         </div>
       </div>
