@@ -43,6 +43,20 @@ const THEMES = {
     tabInactive: t => ({ color:"#AAAAAA" }),
     pill: (active,t) => active ? { background:"#FF5500", color:"#000000", fontWeight:700 } : { background:"#1A1A1A", color:"#777777" },
   },
+  // Orange Lion = AWAY kit: bold orange canvas, white cards, black highlights, warm orange shades
+  orangeLion: {
+    id:"orangeLion",
+    bg:"#E35A00", card:"#FFFFFF", nav:"#C94E00",
+    border:"#F2935033", borderStrong:"#0D0D0D",
+    text:"#1A1207", textSub:"#7A4A1E", textFaint:"#B98A5E",
+    orange:"#E35A00", blue:"#0D0D0D",   // "secondary"/section accent = black highlight
+    gold:"#FFB300",
+    orangeFaint:"#FFEDDC", blueFaint:"#F7F2EE",
+    green:"#1E7A40", red:"#B5231B",
+    activeTab: t => ({ color:"#0D0D0D", borderBottom:"3px solid #0D0D0D", fontWeight:700 }),
+    tabInactive: t => ({ color:"#FFE7D2" }),
+    pill: (active,t) => active ? { background:"#0D0D0D", color:"#FF7A1A", fontWeight:700 } : { background:"#FFFFFF", color:"#9A5A22" },
+  },
 
 }
 
@@ -1304,41 +1318,51 @@ function SoccerIcon({color}){
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
   const T=useTheme();
-  const accent=T.id==="dark"?T.orange:"#E07000";
-  const isDark=theme==="dark";
-  // Two segments: index 0 = default (ball), index 1 = dark (lion).
-  const activeIdx=isDark?1:0;
-  const SEG=34;                       // segment width = height (square cells)
+  const accent=T.orange;
+  // Three segments: 0 = default (ball, white), 1 = dark Lion (black cell), 2 = orange Lion (orange cell).
+  const order=["default","dark","orangeLion"];
+  const activeIdx=Math.max(0,order.indexOf(theme));
+  const next=()=>setTheme(order[(activeIdx+1)%order.length]);
+  const SEG=30;
   return(
     <div
-      onClick={()=>setTheme(isDark?"default":"dark")}
-      style={{position:"relative",display:"flex",width:SEG*2,height:34,
+      onClick={next}
+      style={{position:"relative",display:"flex",width:SEG*3,height:30,
         border:`1px solid ${accent}`,borderRadius:4,overflow:"hidden",
         flexShrink:0,cursor:"pointer",background:"transparent"}}>
-      {/* Lion's home cell always has a black backdrop (right segment) */}
-      <div style={{position:"absolute",top:0,right:0,width:SEG,height:"100%",background:"#000"}}/>
-      {/* Sliding orange puck behind the active icon — no inner radius so it fills the rounded corners */}
+      {/* Home cells backdrops: dark Lion (middle) black, orange Lion (right) orange */}
+      <div style={{position:"absolute",top:0,left:SEG,width:SEG,height:"100%",background:"#000"}}/>
+      <div style={{position:"absolute",top:0,left:SEG*2,width:SEG,height:"100%",background:"#E35A00"}}/>
+      {/* Sliding puck behind active icon */}
       <div style={{position:"absolute",top:0,left:0,width:SEG,height:"100%",
-        background:accent,
+        background:activeIdx===2?"#0D0D0D":accent,
         transform:`translateX(${activeIdx*SEG}px)`,
-        transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}/>
-      {/* Divider line */}
-      <div style={{position:"absolute",top:0,bottom:0,left:SEG,width:1,
-        background:accent,opacity:0.5,zIndex:2}}/>
-      {/* Ball segment */}
+        transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1),background 0.3s ease"}}/>
+      {/* Dividers */}
+      <div style={{position:"absolute",top:0,bottom:0,left:SEG,width:1,background:accent,opacity:0.5,zIndex:2}}/>
+      <div style={{position:"absolute",top:0,bottom:0,left:SEG*2,width:1,background:accent,opacity:0.5,zIndex:2}}/>
+      {/* Ball segment (default) */}
       <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
         display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <div style={{display:"flex",transform:isDark?"rotate(-360deg)":"rotate(0deg)",
+        <div style={{display:"flex",transform:activeIdx===0?"rotate(0deg)":"rotate(-360deg)",
           transition:"transform 0.45s cubic-bezier(.4,0,.2,1)"}}>
           <SoccerIcon color={activeIdx===0?"#fff":accent}/>
         </div>
       </div>
-      {/* Lion segment */}
+      {/* Dark Lion segment */}
       <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
         display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <div style={{display:"flex",transform:isDark?"scale(1)":"scale(0.82)",
-          opacity:isDark?1:0.95,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
-          <FooterLionIcon color={activeIdx===1?"#fff":accent} size={18}/>
+        <div style={{display:"flex",transform:activeIdx===1?"scale(1)":"scale(0.82)",
+          opacity:activeIdx===1?1:0.95,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
+          <FooterLionIcon color={activeIdx===1?"#FF5500":"#fff"} size={16}/>
+        </div>
+      </div>
+      {/* Orange Lion segment */}
+      <div style={{position:"relative",zIndex:1,width:SEG,height:"100%",
+        display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <div style={{display:"flex",transform:activeIdx===2?"scale(1)":"scale(0.82)",
+          opacity:activeIdx===2?1:0.95,transition:"transform 0.32s cubic-bezier(.34,1.4,.5,1)"}}>
+          <FooterLionIcon color={activeIdx===2?"#fff":"#0D0D0D"} size={16}/>
         </div>
       </div>
     </div>
@@ -1472,7 +1496,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       {/* Header — static (not a toggle) */}
       <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:T.card,borderBottom:`1px solid ${T.border}`}}>
         {/* Group letter — rounded square */}
-        <div style={{width:26,height:26,borderRadius:4,background:"#1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+        <div style={{width:26,height:26,borderRadius:4,background:T.blue,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
           <span style={{color:"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
         </div>
         {/* Group label + two-column indicator row */}
@@ -1564,7 +1588,7 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
     if(s1>s2)pts[t1]+=3;else if(s2>s1)pts[t2]+=3;else{pts[t1]+=1;pts[t2]+=1;}
   });
   return(
-    <div style={{background:T.card,border:`1px solid ${open?"#E07000":T.border}`,borderTop:`2px solid ${open?"#E07000":"#1A5296"}`,borderRadius:4,overflow:"hidden",cursor:"pointer"}} onClick={onToggle}>
+    <div style={{background:T.card,border:`1px solid ${open?"#E07000":T.border}`,borderTop:`2px solid ${open?T.orange:T.blue}`,borderRadius:4,overflow:"hidden",cursor:"pointer"}} onClick={onToggle}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 10px",background:open?"rgba(224,112,0,0.08)":T.bg,borderBottom:`1px solid ${T.border}`}}>
         <span style={{fontSize:FS.small,fontWeight:700,color:T.text}}>{tr.group} {g.id}</span>
         <Chevron open={open} color={T.textSub}/>
@@ -1584,7 +1608,7 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
       })}
       {open&&(
         <div style={{borderTop:`1px solid ${T.border}`,background:T.bg}} onClick={e=>e.stopPropagation()}>
-          <div style={{padding:"5px 10px 1px",fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?"#909090":"#1A5296",letterSpacing:0.8,textTransform:"uppercase"}}>{tr.matchPredictions}</div>
+          <div style={{padding:"5px 10px 1px",fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?"#909090":T.blue,letterSpacing:0.8,textTransform:"uppercase"}}>{tr.matchPredictions}</div>
           {g.matches.map(({t1,t2,s1,s2})=>{
             const k=`${t1}-${t2}`;
             return <MatchRow key={k} t1={t1} s1={s1} t2={t2} s2={s2} matchKey={k} open={openMatches[k]} onToggle={()=>toggleMatch(k)}/>;
@@ -1750,7 +1774,7 @@ function KnockoutBracket({scrollToMatch}){
   // Section label
   const RoundLabel=({children,center=true})=>(
     <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
-      color:T.id==="dark"?"#777":"#1A5296",
+      color:T.id==="dark"?"#777":T.blue,
       textAlign:center?"center":"left",marginBottom:4}}>
       {children}
     </div>
@@ -1762,7 +1786,7 @@ function KnockoutBracket({scrollToMatch}){
       {/* Header */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
         <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",
-          color:T.id==="dark"?T.orange:"#1A5296"}}>
+          color:T.id==="dark"?T.orange:T.blue}}>
           {lang==="nl"?"Voorspeld schema":"Predicted bracket"}
         </div>
         <div style={{fontSize:FS.micro,color:T.textFaint}}>
@@ -2225,69 +2249,69 @@ const PLAYER_WIKI = {
 };
 
 const SPOTLIGHT = [
-  { name:"Kylian Mbappe", value:"€150m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
+  { name:"Kylian Mbappe", st:{G:25,A:5,M:32,note:"La Liga top scorer"}, value:"€150m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
     team:"France", pos:{nl:"Aanvaller",en:"Forward"}, age:27, flag:"🇫🇷",
     bio:{nl:"Aanvoerder van het best georganiseerde elftal van het toernooi, op 27 in zijn absolute piekjaren bij Real Madrid. Mbappe scoorde zijn 50e interland in de Nations League. Zijn combinatie van snelheid, afronding en leiderschapskwaliteiten is zonder gelijke op dit toernooi. Groep I plaatst hem direct tegenover Haaland: twee van de vijf beste spelers ter wereld in dezelfde poule. Als hij het openingsduel wint, trekt Deschamps de selectie gecontroleerd door naar de knockouts. Topscorer van La Liga 2025/26 met 25 goals voor Real Madrid (5 assists), maar zag Barcelona er met de titel vandoor gaan.",en:"Captain of the best-organised squad at the tournament, at 27 in his absolute peak years at Real Madrid. Scored his 50th international in the Nations League. His combination of pace, finishing and leadership is unmatched. Group I places him directly against Haaland: two of the top-five players in the world in the same group. La Liga top scorer with 25 goals for Real Madrid (5 assists), though Barcelona took the title."} },
 
-  { name:"Lamine Yamal", value:"€200m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
+  { name:"Lamine Yamal", st:{G:16,A:11,M:35,T:"La Liga"}, value:"€200m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
     team:"Spain", pos:{nl:"Rechtsbuiten",en:"Right winger"}, age:18, flag:"🇪🇸",
     bio:{nl:"18 jaar, Europees kampioen van 2024, en de gevaarlijkste rechtsbuiten van het toernooi. Yamal speelde door een hamstringkwetsuur heen in de aanloop naar het WK: De la Fuente behoedde hem voor risico's. Merino (voetblessure) was aanvankelijk twijfelachtig maar is geselecteerd. Yamal trekt verdedigingen scheef waardoor Pedri, Williams en Olmo ruimte vinden. Als Spanje ver gaat, is hij de reden. Spil in Barcelona's kampioensseizoen: 16 goals en 11 assists in een jaar waarin de Catalanen hun 29e La Liga-titel pakten.",en:"18 years old, Euro 2024 champion, the most dangerous right winger at the tournament. Yamal played through a hamstring issue: De la Fuente carefully managed his minutes. Merino (foot stress fracture) is selected. Yamal pulls defences apart creating space for Pedri, Williams and Olmo. If Spain go deep, he is the reason. Pivotal in Barcelona's title win: 16 goals and 11 assists as they claimed their 29th La Liga crown."} },
 
-  { name:"Erling Haaland", value:"€180m", club:"Manchester City", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/manchester-city.png",
+  { name:"Erling Haaland", st:{G:27,A:8,M:35}, value:"€180m", club:"Manchester City", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/manchester-city.png",
     team:"Norway", pos:{nl:"Spits",en:"Striker"}, age:25, flag:"🇳🇴",
     bio:{nl:"Zijn eerste WK, aangekomen als de meest productieve striker op de planeet. 55 interlanddoelpunten, 16 in de WK-kwalificatie alleen. Odegaard leidde Arsenal naar de Premier League-titel dit seizoen: samen vormen ze het gevaarlijkste aanvalsduo in de groepsfase. Noorwegen verloor geen kwalificatiewedstrijd. Het duel met Van Dijk in Groep F is de meest geanticipeerde individuele confrontatie van de groepsfase. Andermaal moordend efficiënt voor Manchester City met 27 goals en 8 assists, ook al bleef grote clubeer uit.",en:"His first World Cup, arriving as the most prolific striker on the planet. 55 international goals, 16 in World Cup qualifying alone. Odegaard led Arsenal to the Premier League title this season. Together they form the most dangerous attacking duo in the group stage. His duel with Van Dijk in Group F is the defining individual confrontation of the group stage. Ruthlessly efficient again for Manchester City with 27 goals and 8 assists."} },
 
-  { name:"Jude Bellingham", value:"€130m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
+  { name:"Jude Bellingham", st:{G:6,A:4,M:30}, value:"€130m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
     team:"England", pos:{nl:"Middenvelder",en:"Midfielder"}, age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     bio:{nl:"Als Engeland ooit het WK wint, is Bellingham de reden. De 22-jarige arriveert na een uitstekend seizoen bij Real Madrid. Tuchel's systeem draait om zijn vermogen om laat op te komen: Declan Rice beschermt, Bellingham beslist in het strafschopgebied. Engeland scoort het hoogst op onze formranglijst van alle 48 landen. De druk van een halve eeuw gemiste titels weegt, maar Bellingham lijkt de schouders breed genoeg. Een wisselvalliger seizoen bij Real Madrid (6 goals, 4 assists), deels door een schouderoperatie eerder in het jaar.",en:"If England ever win a World Cup, Bellingham is the reason. The 22-year-old arrives after an outstanding season at Real Madrid. Tuchel's system revolves around his ability to arrive late: Declan Rice screens, Bellingham decides in the box. England top our form model rankings of all 48 nations. A more uneven season at Real Madrid (6 goals, 4 assists), partly after shoulder surgery earlier in the year."} },
 
-  { name:"Vinicius Jr", value:"€140m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
+  { name:"Vinicius Jr", st:{G:16,A:5,M:32}, value:"€140m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
     team:"Brazil", pos:{nl:"Linksbuiten",en:"Left winger"}, age:24, flag:"🇧🇷",
     bio:{nl:"De beste winger ter wereld op dit moment, maar met één uitdaging: zijn toernooirecord is zwakker dan zijn clubrecord. Ancelotti kent hem beter dan wie ook: dat werkt in twee richtingen. Brazilië mist Neymar (twijfelachtig, kuit), Rodrygo (ACL) en Estêvão (hamstring). Vinicius moet meer leveren dan ooit tevoren, in het enige grote toernooi dat hij nog niet gedomineerd heeft. 16 goals en 5 assists in 32 La Liga-duels voor Real Madrid, al eindigde de ploeg achter kampioen Barcelona.",en:"The best winger in the world right now, with one challenge: his tournament record is weaker than his club record. Ancelotti knows him better than anyone: that cuts both ways. Brazil miss Neymar (doubtful, calf), Rodrygo (ACL) and Estêvão (hamstring). Vinicius must deliver more than ever before. 16 goals and 5 assists in 32 La Liga games for Real Madrid, who finished behind champions Barcelona."} },
 
-  { name:"Lionel Messi", value:"€18m", club:"Inter Miami", clubLogo:"https://assets.football-logos.cc/logos/usa/700x700/inter-miami.png",
+  { name:"Lionel Messi", st:{T:"MLS Cup",note:"MLS MVP"}, value:"€18m", club:"Inter Miami", clubLogo:"https://assets.football-logos.cc/logos/usa/700x700/inter-miami.png",
     team:"Argentina", pos:{nl:"Aanvaller",en:"Forward"}, age:38, flag:"🇦🇷",
     bio:{nl:"Zijn zesde en vrijwel zeker laatste WK op 38. Scaloni beheert voorzichtig een hamstringblessure die hij opliep op 26 mei bij Inter Miami: hij traint gedeeltelijk mee en kan minuten pakken in oefenwedstrijden voor de opener. Balerdi is definitief afwezig (kuit). Molina, Paredes, Paz en Montiel trainen apart. Als Messi fit is en scoort, is Argentinië een andere ploeg. Als hij beperkt blijft, valt hun plafond dramatisch. Tweevoudig MLS-MVP die Inter Miami naar hun eerste MLS Cup leidde; verlengde tot 2028 maar kreeg vlak voor het WK last van een hamstring.",en:"His sixth and almost certainly last World Cup at 38. Scaloni is carefully managing a hamstring injury sustained May 26 at Inter Miami: training partially, may feature before the opener. Balerdi definitively out (calf). Molina, Paredes, Paz and Montiel all training separately. If Messi is fit and scoring, Argentina are a different team. Two-time MLS MVP who led Inter Miami to their first MLS Cup; extended to 2028 but picked up a hamstring issue just before the World Cup."} },
 
-  { name:"Cristiano Ronaldo", value:"€12m", club:"Al-Nassr", clubLogo:"https://assets.football-logos.cc/logos/saudi-arabia/700x700/al-nassr.png",
+  { name:"Cristiano Ronaldo", st:{note:"Saudi PL titelstrijd"}, value:"€12m", club:"Al-Nassr", clubLogo:"https://assets.football-logos.cc/logos/saudi-arabia/700x700/al-nassr.png",
     team:"Portugal", pos:{nl:"Aanvaller",en:"Forward"}, age:41, flag:"🇵🇹",
     bio:{nl:"Op 41 speelt Ronaldo zijn definitief laatste WK. Martinez bouwt het systeem niet meer volledig om hem heen: Vitinha, Bruno Fernandes en Bernardo Silva dragen het middenveld; PSG's Champions League-winnaars vormen de ruggengraat. Ronaldo's waarde zit in zijn aanwezigheid bij standaardsituaties, zijn vrije trappen en zijn vermogen om in de zestien te beslissen. Hij gaat scoren. De vraag is of Portugal ver genoeg komt. Op zijn 41e nog altijd trefzeker; leidde Al-Nassr naar de titelstrijd bovenaan de Saudi Pro League.",en:"At 41 Ronaldo plays his definitively last World Cup. Martinez no longer builds the system around him: Vitinha, Bruno Fernandes and Bernardo Silva carry the midfield; PSG's Champions League winners provide the backbone. Ronaldo's value lies in set pieces, free kicks and box presence. He will score. The question is whether Portugal go deep enough. Still prolific at 41, leading Al-Nassr in the fight for the Saudi Pro League title."} },
 
-  { name:"Frenkie de Jong", value:"€45m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
+  { name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, value:"€45m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
     team:"Netherlands", pos:{nl:"Middenvelder",en:"Midfielder"}, age:29, flag:"🇳🇱",
     bio:{nl:"De dirigent van het Nederlandse middenveld, hersteld van een hamstringblessure bij Barcelona. Xavi Simons (ACL, april) is afwezig: een significant verlies voor de creatieve diepte. Koeman's systeem is pragmatisch maar Van Dijk, Dumfries en Gakpo zijn allemaal fit. Als De Jong zijn niveau vindt, heeft Nederland de structuur om iedereen op een goede dag te verslaan. Het openingsduel met Japan bepaalt de dynamiek in Groep F. Kwam na een blessure terug in de Barcelona-ploeg en droeg met zijn balbeheersing bij aan het kampioensseizoen.",en:"The conductor of the Dutch midfield, recovered from a hamstring injury at Barcelona. Xavi Simons (ACL, April) is absent: a significant creative loss. Koeman's system is pragmatic but Van Dijk, Dumfries and Gakpo are all fit. If De Jong finds his level, Netherlands can beat anyone on their day. The Japan opener defines Group F. Returned from injury to the Barcelona side and helped steer the title-winning campaign."} },
 
-  { name:"Memphis Depay", value:"€8m", club:"Corinthians", clubLogo:"https://assets.football-logos.cc/logos/brazil/700x700/corinthians.png",
+  { name:"Memphis Depay", st:{}, value:"€8m", club:"Corinthians", clubLogo:"https://assets.football-logos.cc/logos/brazil/700x700/corinthians.png",
     team:"Netherlands", pos:{nl:"Aanvaller",en:"Forward"}, age:31, flag:"🇳🇱",
     bio:{nl:"Topscorer aller tijden van Oranje met 44 doelpunten, maar de context is veranderd. Memphis speelt bij Corinthians in Brazilië: fit, maar minder explosief dan in zijn topjaren bij Lyon of Atletico. Zijn waarde zit in zijn vrijesparkwaliteit, zijn ervaring in grote wedstrijden en het vermogen om een wedstrijd individueel te openen. Als invaller met specifieke rol is hij waardevol. Als starter over zes wedstrijden zijn er vragen. Als aanvoerder van Oranje bleef hij bij Corinthians in Brazilië scoren en richtte zich op een laatste groot toernooi.",en:"Netherlands all-time top scorer with 44 goals, but the context has changed. Memphis plays for Corinthians in Brazil: fit but less explosive than his peak years at Lyon or Atletico. His value lies in dead-ball quality, big-match experience and the ability to unlock a game individually. Valuable as a substitute; questions as a consistent starter. As Netherlands captain he kept scoring for Corinthians in Brazil ahead of one last major tournament."} },
 
-  { name:"Mohamed Salah", value:"€30m", club:"Liverpool", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/liverpool.png",
+  { name:"Mohamed Salah", st:{G:7,A:7}, value:"€30m", club:"Liverpool", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/liverpool.png",
     team:"Egypt", pos:{nl:"Rechtsbuiten",en:"Right winger"}, age:33, flag:"🇪🇬",
     bio:{nl:"Zijn allereerste WK op 33, een podium dat hem jarenlang ontging. Liverpool's all-time topscorer en aanvoerder arriveert als een van de gevaarlijkste rechtsbuitens die ooit aan een WK deelneemt. De vraag is niet zijn kwaliteit maar of Egypte collectief sterk genoeg is om zijn impact te benutten. Marmoush (Manchester City) is zijn aanvalsparter. Groep G heeft België, Iran en Nieuw-Zeeland: voor het eerst in decennia heeft Egypte een reëel pad naar de achtste finale. Op zijn 33e nog altijd bepalend voor Liverpool met 7 goals en 7 assists in de Premier League.",en:"His very first World Cup at 33, a stage that eluded him for years. Liverpool's all-time top scorer and captain arrives as one of the most dangerous right wingers to ever appear at a World Cup. The question is not his quality but whether Egypt are collectively strong enough to maximise his impact. Marmoush (Man City) is his partner. Group G has Belgium, Iran and New Zealand: Egypt have a realistic last-16 path. Still decisive for Liverpool at 33 with 7 goals and 7 assists in the league."} },
 ];
 
 const DARK_HORSES = [
-  { name:"Ritsu Doan", value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/eintracht-frankfurt.png",
+  { name:"Ritsu Doan", st:{G:10,A:6}, value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/eintracht-frankfurt.png",
     team:"Japan", pos:{nl:"Middenvelder/Vleugelspeler",en:"Midfielder/Winger"}, age:26, flag:"🇯🇵",
     club:"Eintracht Frankfurt",
     why:{nl:"Met Mitoma buiten de selectie door een hamstringblessure draagt Doan (26) het aanvallende gewicht van Japan. Bij Eintracht Frankfurt leverde hij zijn beste Europese seizoen: 10 goals, 6 assists, consistent sterk in grote wedstrijden. Zijn langafstandsschoten, directe dribbelstijl en capaciteit om grote ploegen te bestraffen (scoorde bij de 2-1 zege op Duitsland in 2022) maken hem de gevaarlijkste speler van Japan die je niet ziet aankomen. Beleefde bij Eintracht Frankfurt zijn beste Europese seizoen met dubbele cijfers in goals en assists.",en:"With Mitoma out through injury, Doan carries Japan's attacking weight on the right. At Eintracht Frankfurt he delivered his best European season: 10 goals, 6 assists. His long-range shooting and capacity to punish major nations (scored in Japan's 2022 win over Germany) make him the most dangerous player on Japan you don't see coming. Enjoyed his best European season at Eintracht Frankfurt with double figures in goals and assists."} },
 
-  { name:"Kendry Paez", value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/chelsea.png",
+  { name:"Kendry Paez", st:{}, value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/chelsea.png",
     team:"Ecuador", pos:{nl:"Aanvallende middenvelder",en:"Attacking midfielder"}, age:19, flag:"🇪🇨",
     club:"Chelsea (loan: River Plate)",
     why:{nl:"19 jaar, op uitleenbasis bij River Plate vanuit Chelsea. Paez is de meest opwindende tiener van het toernooi: elegant aan de bal, angstloos in 1-tegen-1-situaties, capabel om momenten te creëren die wedstrijden kantelen. Zijn samenwerking met Caicedo in het middenveld geeft Ecuador een technische, creatieve speler die ook druk weerstaat. Als hij dit toernooi pakt, is Chelsea een fortuin rijker. Het 19-jarige Ecuadoraanse talent maakte zijn opwachting na zijn overgang naar Chelsea, met speeltijd op huurbasis.",en:"19 years old, on loan at River Plate from Chelsea. Paez is the most exciting teenager at the tournament: elegant in possession, fearless in one-on-one situations, capable of creating the moments that change matches. His partnership with Caicedo gives Ecuador a technical, creative player who also handles pressure. The 19-year-old Ecuadorian made his move to Chelsea, gaining minutes out on loan."} },
 
-  { name:"Takefusa Kubo", value:"€31m", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-sociedad.png",
+  { name:"Takefusa Kubo", st:{T:"Copa del Rey"}, value:"€31m", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-sociedad.png",
     team:"Japan", pos:{nl:"Rechtsmiddenvelder",en:"Right midfielder"}, age:23, flag:"🇯🇵",
     club:"Real Sociedad",
     why:{nl:"Japan's meest technisch begaafde speler en nu, met Mitoma afwezig, de creatieve aanvoerder van de aanval. Bij Real Sociedad heeft Kubo (23) bewezen consistent te zijn in La Liga: zijn dribbelstatistieken, schoten van buiten de zestien en bijdrage in nauwe ruimtes zijn allemaal elite. Als Japan Duitsland of Nederland verslaat, is Kubo waarschijnlijk de man die het verschil maakt. Kroonde zijn seizoen bij Real Sociedad met winst van de Copa del Rey 2026, na strafschoppen tegen Atlético.",en:"Japan's most technically gifted player and now, with Mitoma absent, the creative leader of their attack. At Real Sociedad, Kubo (23) has proven consistent in La Liga: dribbling stats, long-range shooting and tight-space contributions all elite. If Japan beat Germany or Netherlands, Kubo will almost certainly be the difference-maker. Capped his Real Sociedad season by winning the 2026 Copa del Rey on penalties against Atlético."} },
 
-  { name:"Lautaro Martinez", value:"€87m", clubLogo:"https://assets.football-logos.cc/logos/italy/700x700/inter-milan.png",
+  { name:"Lautaro Martinez", st:{G:17,A:6}, value:"€87m", clubLogo:"https://assets.football-logos.cc/logos/italy/700x700/inter-milan.png",
     team:"Argentina", pos:{nl:"Spits",en:"Striker"}, age:27, flag:"🇦🇷",
     club:"Inter Milan",
     why:{nl:"Als Messi (hamstring) beperkt blijft, is Lautaro Martinez de man die Argentinië draagt. De Inter Milan-spits scoorde dit seizoen indrukwekkende totalen in de Serie A en is de complete centrumspits: sterk in de lucht, gevaarlijk met beide voeten, capabel om te scoren en assists te leveren. Bij een titelhouder die blessuregevoelig aankomt, is hij de stille ster die het verschil bepaalt als het erop aankomt. Aanvoerder en topschutter van Inter met 17 goals en 6 assists in Serie A.",en:"If Messi (hamstring) is limited, Lautaro Martinez is the man who carries Argentina. The Inter Milan striker put up impressive numbers in Serie A this season and is a complete centre-forward: strong in the air, dangerous with both feet, capable of both scoring and assisting. With the defending champions arriving injury-hit, he is the quiet star who decides when it matters most. Captain and top scorer for Inter with 17 goals and 6 assists in Serie A."} },
 
-  { name:"Yan Diomande", value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/rb-leipzig.png",
+  { name:"Yan Diomande", st:{G:12,A:8}, value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/rb-leipzig.png",
     team:"Ivory Coast", pos:{nl:"Middenvelder",en:"Midfielder"}, age:22, flag:"🇨🇮",
     club:"RB Leipzig",
     why:{nl:"De meest consistente uitbreker van het toernooi die niemand verwacht. Diomande (22) domineerde voor RB Leipzig: zijn atletisme, zijn interceptievermogen en zijn doelgevaar vanuit de tweede lijn zijn het type combinatie dat ploegen op hoog niveau vernietigt. Ivoorkust is AFCON-kampioen van 2024 en met Haller en Adingra beschikt Diomande over buitenspelers die zijn runs belonen. Brak door bij RB Leipzig met 12 goals en 8 assists — een doorbraakseizoen voor de jonge Ivoriaan.",en:"The most consistently identified breakout pick that nobody expects. Diomande (22) dominated for RB Leipzig: athleticism, interception ability and late runs into the box: the type of combination that destroys sides at the highest level. Ivory Coast are AFCON 2024 champions and with Haller and Adingra, Diomande has wide players who reward his runs. Broke through at RB Leipzig with 12 goals and 8 assists."} },
@@ -2304,51 +2328,51 @@ const DARK_HORSES = [
 const BEST_XI = {
   formation: "4-3-3",
   players: [
-    { pos:"GK",  name:"Bart Verbruggen", value:"€28m",  team:"Netherlands", age:22, flag:"🇳🇱",
+    { pos:"GK",  name:"Bart Verbruggen", st:{CS:10,SAVES:106}, value:"€28m",  team:"Netherlands", age:22, flag:"🇳🇱",
       xG:0.1, xA:0.1,
       note:{nl:"Verbruggen (Brighton) is de best presterende jonge keeper op het toernooi. Zijn voetwerk en reflexen zijn uitzonderlijk voor 22 jaar. Nederland heeft een haalbaar knockoutpad wat clean sheets waarschijnlijk maakt. Hoog forum-consensus voor de keepersrol. Tweede volledige seizoen als Brighton-keeper: 106 reddingen en 10 clean sheets, en gaat als Oranje's eerste keuze naar zijn eerste WK.",en:"Verbruggen (Brighton) is the best-performing young goalkeeper at the tournament. Footwork and reflexes exceptional for 22. Netherlands have an achievable knockout path making clean sheets likely. High forum consensus for the goalkeeper slot. Second full season as Brighton keeper (106 saves, 10 clean sheets), heading to his first World Cup as the Netherlands' first choice."} },
-    { pos:"RB",  name:"Denzel Dumfries", value:"€22m",  team:"Netherlands", age:28, flag:"🇳🇱",
+    { pos:"RB",  name:"Denzel Dumfries", st:{G:3,A:1,M:20,CS:8}, value:"€22m",  team:"Netherlands", age:28, flag:"🇳🇱",
       xG:0.6, xA:1.4,
       note:{nl:"Dumfries (Inter Milan) leverde dit seizoen 4 goals en 7 assists in de Serie A als rechtsback. Zijn overlappende runs in Nederland's 4-3-3 zijn gevaarlijker dan welke andere rechtsback op dit toernooi. Forum #1 verdediger voor assists. Productief vanaf rechts voor Inter met 3 goals, 1 assist en 8 clean sheets in 20 Serie A-duels.",en:"Dumfries (Inter Milan) delivered 4 goals and 7 Serie A assists this season as a right-back. His overlapping runs in Netherlands' 4-3-3 are more dangerous than any other right-back at this tournament. Forum #1 defender for assists. Productive from the right for Inter with 3 goals, 1 assist and 8 clean sheets in 20 Serie A games."} },
-    { pos:"CB1", name:"Virgil van Dijk", value:"€15m",  team:"Netherlands", age:33, flag:"🇳🇱",
+    { pos:"CB1", name:"Virgil van Dijk", st:{G:5}, value:"€15m",  team:"Netherlands", age:33, flag:"🇳🇱",
       xG:0.4, xA:0.2,
       note:{nl:"Kapitein van Oranje en de meest gezaghebbende centrale verdediger van het toernooi. Van Dijk scoort ook kopballen bij standaardsituaties: 3 goals dit seizoen voor Liverpool. Clean sheet bonus + set piece xG maakt hem de #1 verdediger qua fantasy waarde. Onverwoestbare aanvoerder van Liverpool: voltooide meer passes dan elke andere Premier League-speler en bleef op zijn 34e een bepalende verdediger.",en:"Dutch captain and the most authoritative centre-back at the tournament. Van Dijk also scores headers at set pieces: 3 goals this season for Liverpool. Clean sheet bonus + set piece xG makes him the #1 defender in fantasy value. Unbreakable Liverpool captain who completed more passes than any other Premier League player at 34."} },
-    { pos:"CB2", name:"Manuel Akanji", value:"€28m",    team:"Switzerland", age:29, flag:"🇨🇭",
+    { pos:"CB2", name:"Manuel Akanji", st:{}, value:"€28m",    team:"Switzerland", age:29, flag:"🇨🇭",
       xG:0.3, xA:0.1,
       note:{nl:"Akanji (Man City) was Europa's best presterende centrale verdediger in 2025-26 en is de perfecte tweede CB vanuit een fantasy perspectief. Zwitserland heeft een comfortabel pad en is structureel goed voor clean sheets. Forum-consensus 2e CB naast Van Dijk. Stapte over van Manchester City naar Inter (huur) om Champions League te blijven spelen en groeide uit tot vaste waarde in de Italiaanse defensie.",en:"Akanji (Man City) was Europe's best-performing centre-back in 2025-26 and is the ideal second CB from a fantasy perspective. Switzerland have a comfortable path and are structurally clean-sheet reliable. Forum consensus 2nd CB alongside Van Dijk. Moved from Manchester City to Inter on loan to keep playing Champions League football and became a defensive mainstay."} },
-    { pos:"LB",  name:"Theo Hernandez", value:"€29m",  team:"France",      age:27, flag:"🇫🇷",
+    { pos:"LB",  name:"Theo Hernandez", st:{}, value:"€29m",  team:"France",      age:27, flag:"🇫🇷",
       xG:0.5, xA:1.2,
       note:{nl:"De meest aanvallende linksback op het toernooi. Hernandez (AC Milan) leverde 3 goals en 8 assists dit seizoen en zijn overlappende runs in Deschamps' systeem leveren regelmatig beslissende momenten op. Frank koploper in forums voor linksbacks. Verruilde de Serie A voor Al Hilal in Saudi-Arabië, waar hij zich als aanvallende linksback opnieuw bewees richting het WK.",en:"The most attacking left-back at the tournament. Hernandez (AC Milan) delivered 3 goals and 8 assists this season and his overlapping runs in Deschamps' system regularly produce decisive moments. Clear leader in forums for left-back. Swapped Serie A for Al Hilal in Saudi Arabia, reasserting himself as an attacking left-back."} },
-    { pos:"CDM", name:"Rodri", value:"€130m",            team:"Spain",       age:28, flag:"🇪🇸",
+    { pos:"CDM", name:"Rodri", st:{G:1,A:0}, value:"€130m",            team:"Spain",       age:28, flag:"🇪🇸",
       xG:0.4, xA:1.1,
       note:{nl:"Rodri (Man City) aanvoerder van Spanje na ACL-revalidatie. Als defensief anker orkestreert hij Spanje's pressing: zijn passnauwkeurigheid en balverovering zijn de hoogste van het toernooi. Scoort ook vanuit standaardsituaties. Spanje's pad is het comfortabelste van alle favorieten. Keerde bij Manchester City terug van zijn zware knieblessure (ACL) — de Ballon d'Or-winnaar van 2024 bouwde zijn minuten geleidelijk weer op.",en:"Rodri (Man City) captain of Spain after ACL rehabilitation. As defensive anchor he orchestrates Spain's press: his pass accuracy and ball recovery are the highest in the tournament. Also scores from set pieces. Spain's path is the most comfortable of all favourites. Returned at Manchester City from his serious ACL injury — the 2024 Ballon d'Or winner gradually rebuilt his minutes."} },
-    { pos:"CM",  name:"Frenkie de Jong", value:"€45m", team:"Netherlands", age:29, flag:"🇳🇱",
+    { pos:"CM",  name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, value:"€45m", team:"Netherlands", age:29, flag:"🇳🇱",
       xG:0.5, xA:1.5,
       note:{nl:"De Jong (Barcelona) hersteld van hamstringproblemen en terug op zijn beste niveau. Zijn box-to-box bijdrage, progressieve carries en vermogen om goals te scoren vanuit het middenveld zijn uniek. Zonder Simons is hij nog meer centraal in het Nederlandse spel. Forum top-5 middenvelder. Kwam na een blessure terug in de Barcelona-ploeg en droeg met zijn balbeheersing bij aan het kampioensseizoen.",en:"De Jong (Barcelona) recovered from hamstring issues and back at his best. His box-to-box contribution, progressive carries and ability to score from midfield are unique. Without Simons he is even more central to Dutch play. Forum top-5 midfielder. Returned from injury to the Barcelona side and helped steer the title-winning campaign."} },
-    { pos:"CAM", name:"Jude Bellingham", value:"€130m", team:"England",     age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    { pos:"CAM", name:"Jude Bellingham", st:{G:6,A:4,M:30}, value:"€130m", team:"England",     age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       xG:3.2, xA:2.1,
       note:{nl:"Bellingham (Real Madrid) is de meest consistente fantasykeuze in het middenveld. Zijn late loopbewegingen in de zestien leverden 12 competitiedoelpunten en 6 assists op dit seizoen. Tuchel's systeem geeft hem maximale vrijheid om te scoren. Engeland haalt minimaal de kwartfinale per model. Forum #1 middenvelder universeel. Een wisselvalliger seizoen bij Real Madrid (6 goals, 4 assists), deels door een schouderoperatie eerder in het jaar.",en:"Bellingham (Real Madrid) is the most consistent fantasy pick in midfield. His late runs into the box produced 12 league goals and 6 assists this season. Tuchel's system gives him maximum freedom to score. England reach at minimum the quarter-final per model. Universal forum #1 midfielder. A more uneven season at Real Madrid (6 goals, 4 assists), partly after shoulder surgery earlier in the year."} },
-    { pos:"RW",  name:"Lamine Yamal", value:"€200m",    team:"Spain",       age:18, flag:"🇪🇸",
+    { pos:"RW",  name:"Lamine Yamal", st:{G:16,A:11,M:35,T:"La Liga"}, value:"€200m",    team:"Spain",       age:18, flag:"🇪🇸",
       xG:2.4, xA:3.1,
       note:{nl:"Yamal (FC Barcelona) is de meest gevreesde rechtsbuiten van het toernooi. Zijn 12 La Liga-goals en 16 assists dit seizoen als 18-jarige zijn historisch. Spanje verwacht 7 wedstrijden te spelen wat zijn totale punten exponentieel verhoogt. Forum #1 verdediger in assists; #1 aanvaller qua totale waarde. Spil in Barcelona's kampioensseizoen: 16 goals en 11 assists in een jaar waarin de Catalanen hun 29e La Liga-titel pakten.",en:"Yamal (FC Barcelona) is the most feared right winger at the tournament. His 12 La Liga goals and 16 assists this season as an 18-year-old are historic. Spain expect to play 7 matches, exponentially boosting his total points. Forum #1 in assists; #1 attacker for total fantasy value. Pivotal in Barcelona's title win: 16 goals and 11 assists as they claimed their 29th La Liga crown."} },
-    { pos:"ST",  name:"Erling Haaland", value:"€180m",  team:"Norway",      age:25, flag:"🇳🇴",
+    { pos:"ST",  name:"Erling Haaland", st:{G:27,A:8,M:35}, value:"€180m",  team:"Norway",      age:25, flag:"🇳🇴",
       xG:6.1, xA:1.2,
       note:{nl:"Haaland (Man City) is de universele #1 pick in elk WK-fantasysysteem. 16 doelpunten in de kwalificatie, 36 PL-goals dit seizoen. Noorwegen opent vs Irak, daarna Senegal en France. Zelfs bij uitschakeling in de groepsfase haalt hij 3+ goals. Als Noorwegen de R16 haalt (realistisch), loopt zijn totaal richting 7-8 doelpunten. Ondefendeerbaar in de zestien. Andermaal moordend efficiënt voor Manchester City met 27 goals en 8 assists, ook al bleef grote clubeer uit.",en:"Haaland (Man City) is the universal #1 pick in any World Cup fantasy system. 16 qualifying goals, 36 PL goals this season. Norway open vs Iraq, then Senegal and France. Even if eliminated in the group stage he collects 3+ goals. If Norway reach R16 (realistic), his total approaches 7-8. Undefendable in the box. Ruthlessly efficient again for Manchester City with 27 goals and 8 assists."} },
-    { pos:"LW",  name:"Kylian Mbappe", value:"€150m",   team:"France",      age:27, flag:"🇫🇷",
+    { pos:"LW",  name:"Kylian Mbappe", st:{G:25,A:5,M:32,note:"La Liga top scorer"}, value:"€150m",   team:"France",      age:27, flag:"🇫🇷",
       xG:5.4, xA:2.3,
       note:{nl:"Mbappe (Real Madrid) is de #2 pick in de aanval na Haaland in vrijwel elk forum. 50+ interlands, 36 goals voor Real Madrid dit seizoen. Frankrijk's pad bevat Irak, Senegal en Noorwegen in de groep: relatief beheersbaar. Als France de finale halen (model: 42.9% kans), noteert Mbappe 7 games en richting 8+ betrokken doelpunten. Topscorer van La Liga 2025/26 met 25 goals voor Real Madrid (5 assists), maar zag Barcelona er met de titel vandoor gaan.",en:"Mbappe (Real Madrid) is the #2 pick in attack after Haaland in virtually every forum. 50+ international caps, 36 Real Madrid goals this season. France's path contains Iraq, Senegal and Norway in the group: relatively manageable. If France reach the final (model: 42.9% chance), Mbappe plays 7 games approaching 8+ goal involvements. La Liga top scorer with 25 goals for Real Madrid (5 assists), though Barcelona took the title."} },
   ],
   subs: [
-    { pos:"GK",  name:"David Raya", value:"€35m",       team:"Spain",   age:29, flag:"🇪🇸",
+    { pos:"GK",  name:"David Raya", st:{M:37,CS:19,T:"Premier League",note:"Golden Glove"}, value:"€35m",       team:"Spain",   age:29, flag:"🇪🇸",
       xG:0.0, xA:0.0,
       note:{nl:"Betrouwbare reserve. Arsenal-keeper in topvorm, sleutele clean sheets in Spanje's pad naar de finale. Won zijn derde Golden Glove op rij met 19 clean sheets en was de defensieve hoeksteen van Arsenals titel.",en:"Reliable backup. Arsenal's first-choice keeper in top form, key for clean sheets on Spain's path. Won his third straight Golden Glove with 19 clean sheets, the cornerstone of Arsenal's title."} },
-    { pos:"DEF", name:"Jules Kounde", value:"€60m",     team:"France",  age:26, flag:"🇫🇷",
+    { pos:"DEF", name:"Jules Kounde", st:{G:1,A:3,T:"La Liga"}, value:"€60m",     team:"France",  age:26, flag:"🇫🇷",
       xG:0.2, xA:0.5,
       note:{nl:"Veelzijdig, kan rechts en centraal. Elite passing voor een verdediger. Speelt elk WK-duel voor Frankrijk. Vaste rechtsback in Barcelona's kampioensjaar (1 goal, 3 assists) en verlengde zijn contract tot 2030 ondanks Premier League-interesse.",en:"Versatile, plays right or central. Elite passing for a defender. Plays every France match. Regular right-back in Barcelona's title year (1 goal, 3 assists) and extended his deal to 2030."} },
-    { pos:"MID", name:"Martin Odegaard", value:"€90m",  team:"Norway",  age:27, flag:"🇳🇴",
+    { pos:"MID", name:"Martin Odegaard", st:{G:1,A:6,M:24,T:"Premier League"}, value:"€90m",  team:"Norway",  age:27, flag:"🇳🇴",
       xG:0.8, xA:1.6,
       note:{nl:"Arsenal-aanvoerder en Premier League-kampioen 2025-26. Haaland's creatieve partner: zijn assists naar de spits zijn de beste op het toernooi. Als Noorwegen ver komt, is Odegaard een elitekeuze. Een door blessures onderbroken seizoen als Arsenal-aanvoerder (1 goal, 6 assists in 24 duels), maar wel met de eerste Premier League-titel sinds 2004 als kroon.",en:"Arsenal captain and Premier League champion 2025-26. Haaland's creative partner: his through balls to the striker are the best at the tournament. If Norway go deep, Odegaard is an elite pick. An injury-disrupted season as Arsenal captain (1 goal, 6 assists), crowned with the first league title since 2004."} },
-    { pos:"FWD", name:"Mohamed Salah", value:"€30m",    team:"Egypt",   age:33, flag:"🇪🇬",
+    { pos:"FWD", name:"Mohamed Salah", st:{G:7,A:7}, value:"€30m",    team:"Egypt",   age:33, flag:"🇪🇬",
       xG:1.8, xA:0.9,
       note:{nl:"Liverpool's all-time topscorer op zijn eerste WK. Als Egypte de R16 haalt (realistisch in Groep G), levert Salah 4+ doelpunten en meerdere assists. Het risico: Egypte kan al in de groepsfase uitvallen. Hoog plafond, middelhoog risico. Op zijn 33e nog altijd bepalend voor Liverpool met 7 goals en 7 assists in de Premier League.",en:"Liverpool's all-time top scorer at his first World Cup. If Egypt reach the R16 (realistic in Group G), Salah delivers 4+ goals and multiple assists. The risk: Egypt could exit in the group stage. High ceiling, medium risk. Still decisive for Liverpool at 33 with 7 goals and 7 assists in the league."} },
   ],
@@ -2375,6 +2399,38 @@ function usePlayerPhoto(name) {
   return url;
 }
 
+// Compact season-stats bar shown at the bottom of player cards. Renders only known values.
+function StatBar({st,dark}){
+  const T=useTheme();
+  const lang=useLang();
+  if(!st) return null;
+  const items=[];
+  if(st.G!==undefined) items.push([lang==="nl"?"Goals":"Goals",st.G]);
+  if(st.A!==undefined) items.push([lang==="nl"?"Assists":"Assists",st.A]);
+  if(st.CS!==undefined) items.push([lang==="nl"?"Clean sheets":"Clean sheets",st.CS]);
+  if(st.SAVES!==undefined) items.push([lang==="nl"?"Reddingen":"Saves",st.SAVES]);
+  if(st.M!==undefined) items.push([lang==="nl"?"Duels":"Games",st.M]);
+  if(st.T) items.push([lang==="nl"?"Prijs":"Trophy",st.T]);
+  if(!items.length) return null;
+  const labelCol=dark?"rgba(255,255,255,0.5)":T.textFaint;
+  const valCol=dark?"#fff":T.text;
+  const div=dark?"rgba(255,255,255,0.15)":T.border;
+  return(
+    <div style={{display:"flex",flexWrap:"wrap",gap:0,marginTop:10,
+      borderTop:`1px solid ${div}`,paddingTop:8}}>
+      {items.map(([lab,val],i)=>(
+        <div key={lab} style={{display:"flex",flexDirection:"column",alignItems:"center",
+          flex:"1 1 auto",minWidth:54,padding:"0 6px",
+          borderRight:i<items.length-1?`1px solid ${div}`:"none"}}>
+          <span style={{fontSize:FS.body,fontWeight:800,color:valCol,lineHeight:1.1}}>{val}</span>
+          <span style={{fontSize:FS.micro,fontWeight:600,letterSpacing:0.4,textTransform:"uppercase",
+            color:labelCol,marginTop:2,textAlign:"center"}}>{lab}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // Featured hero card for the #1 spotlight player.
 function ChampionCard({p}){
   const T=useTheme();
@@ -2384,34 +2440,32 @@ function ChampionCard({p}){
   const showPhoto=photo&&!imgFail;
   return(
     <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
-      borderRadius:8,padding:"16px",marginBottom:14,borderLeft:`4px solid ${T.orange}`,
+      borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",borderLeft:`4px solid ${T.orange}`,
       position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
         background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
-      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:2,color:T.orange,
-        textTransform:"uppercase",marginBottom:10}}>{lang==="nl"?"⭐ Uitgelichte Ster":"⭐ Featured Star"}</div>
-      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
-        <div style={{position:"relative",width:64,height:64,flexShrink:0}}>
+      <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:10}}>
+        <div style={{position:"relative",width:56,height:56,flexShrink:0}}>
           {showPhoto?(
             <img src={photo} alt="" onError={()=>setImgFail(true)}
-              style={{width:64,height:64,borderRadius:"50%",objectFit:"cover",
+              style={{width:56,height:56,borderRadius:"50%",objectFit:"cover",
                 border:`2.5px solid ${T.orange}`,display:"block"}}/>
           ):(
-            <div style={{width:64,height:64,borderRadius:"50%",background:"rgba(255,255,255,0.12)",
+            <div style={{width:56,height:56,borderRadius:"50%",background:"rgba(255,255,255,0.12)",
               border:`2.5px solid ${T.orange}`,display:"flex",alignItems:"center",
-              justifyContent:"center",fontSize:32}}>{p.flag}</div>
+              justifyContent:"center",fontSize:28}}>{p.flag}</div>
           )}
           {showPhoto&&(
-            <div style={{position:"absolute",bottom:-2,right:-2,width:22,height:22,borderRadius:"50%",
+            <div style={{position:"absolute",bottom:-2,right:-2,width:20,height:20,borderRadius:"50%",
               background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",
-              fontSize:13,boxShadow:"0 1px 3px rgba(0,0,0,.4)"}}>{p.flag}</div>
+              fontSize:12,boxShadow:"0 1px 3px rgba(0,0,0,.4)"}}>{p.flag}</div>
           )}
         </div>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:FS.h1,fontWeight:700,color:"#fff",lineHeight:1.15}}>{p.name}</div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",marginTop:3}}>
+          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",marginTop:2}}>
             {p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
-          <div style={{marginTop:6,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+          <div style={{marginTop:5,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
             {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#fff",
               background:"rgba(255,255,255,0.14)",padding:"2px 8px",borderRadius:10,
               border:`1px solid ${T.orange}66`}}>{p.club}</span>}
@@ -2420,7 +2474,9 @@ function ChampionCard({p}){
           </div>
         </div>
       </div>
-      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.6}}>{p.bio[lang]}</div>
+      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55,
+        display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{(p.bio||p.why)[lang]}</div>
+      <StatBar st={p.st} dark/>
     </div>
   );
 }
@@ -2474,6 +2530,7 @@ function PlayerCard({p,open,onToggle}){
       {open&&(
         <div style={{padding:"10px 12px",background:T.orangeFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.bio[lang]}
+          <StatBar st={p.st}/>
         </div>
       )}
     </div>
@@ -2487,20 +2544,21 @@ function DarkHorseCard({p,open,onToggle}){
   return(
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",cursor:"pointer",background:open?T.blueFaint:T.card}}>
-        <PlayerAvatar photo={photo} flag={p.flag} open={open} activeColor="#1A5296"/>
+        <PlayerAvatar photo={photo} flag={p.flag} open={open} activeColor={T.blue}/>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:FS.body,fontWeight:600,color:T.text}}>{p.name}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?T.orange:"#1A5296",background:T.blueFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
+            {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?T.orange:T.blue,background:T.blueFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
             {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
           </div>}
         </div>
-        <Chevron open={open} color={"#1A5296"}/>
+        <Chevron open={open} color={T.blue}/>
       </div>
       {open&&(
-        <div style={{padding:"10px 12px",background:T.blueFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.id==="dark"?T.orange:"#1A5296"}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
+        <div style={{padding:"10px 12px",background:T.blueFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.id==="dark"?T.orange:T.blue}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.why[lang]}
+          <StatBar st={p.st}/>
         </div>
       )}
     </div>
@@ -2948,7 +3006,7 @@ function NationCard({n,open,onToggle}){
           const badges=[
             dev!==undefined&&{lab:lang==="nl"?"VORM":"FORM",val:`${dev>0?"+":""}${dev}`,col:fc},
             SQUAD_VAL[n.team]&&{lab:lang==="nl"?"WAARDE":"VALUE",val:SQUAD_VAL[n.team].s,col:T.id==="dark"?"#3DBE6E":"#1E7A40"},
-            {lab:"MODEL",val:`#${MODEL_RANK[n.team]}`,col:T.id==="dark"?T.orange:"#1A5296"},
+            {lab:"MODEL",val:`#${MODEL_RANK[n.team]}`,col:T.id==="dark"?T.orange:T.blue},
           ].filter(Boolean);
           return(
             <div style={{display:"flex",alignItems:"stretch",gap:3,flexShrink:0}}>
@@ -3381,7 +3439,7 @@ function FBrefStatsSection(){
   const [natFilter,setNatFilter]=React.useState("");
   const [sortKey,setSortKey]=React.useState("ga90");  // ga90 | g90 | a90
   const orange=T.id==="dark"?"#FF5500":"#E07000";
-  const blue=T.id==="dark"?"#909090":"#1A5296";
+  const blue=T.id==="dark"?"#909090":T.blue;
   const green=T.id==="dark"?"#3DBE6E":"#1E7A40";
   const posColor=(pos)=>{
     if(!pos) return T.textFaint;
@@ -3501,53 +3559,65 @@ function PlayersTab(){
   const lang=useLang();
   const [openSpotlight,setOpenSpotlight]=useState({});
   const [spotlightMore,setSpotlightMore]=useState(false);
+  const [darkMore,setDarkMore]=useState(false);
   const [openDark,setOpenDark]=useState({});
   const [openXI,setOpenXI]=useState({});
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   return(
     <div>
-      {/* Spotlight */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
-        {lang==="nl"?"In de Schijnwerpers":"In the Spotlight"}
-      </div>
+      {/* Featured star — champion card attached to a subtle foldout */}
       <ChampionCard p={SPOTLIGHT[0]}/>
       <div onClick={()=>setSpotlightMore(o=>!o)}
-        style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-          background:spotlightMore?T.orangeFaint:T.bg,
-          border:`1px solid ${spotlightMore?T.orange+"55":T.border}`,
-          borderRadius:6,padding:"10px 12px",marginBottom:spotlightMore?10:24}}>
-        <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.1,
-          textTransform:"uppercase",color:T.orange}}>
-          {lang==="nl"?`Overige Sterren (${SPOTLIGHT.length-1})`:`Other Stars (${SPOTLIGHT.length-1})`}
-        </span>
+        style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
+          background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:spotlightMore?0:8,borderBottomRightRadius:spotlightMore?0:8,
+          padding:"9px 13px",marginBottom:spotlightMore?0:24}}>
         <Chevron open={spotlightMore} color={T.textSub}/>
+        <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
+          {lang==="nl"?"Bekijk top 10":"View top 10"}
+        </span>
       </div>
       {spotlightMore&&(
-        <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:24}}>
+        <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
           {SPOTLIGHT.slice(1).map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
         </div>
       )}
 
-      {/* Dark horses */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:8}}>
-        {lang==="nl"?"Verrassende Uitblinkers":"Unexpected Stars"}
+      {/* Talents */}
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:10}}>
+        {lang==="nl"?"Talenten":"Talents"}
       </div>
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:24}}>
-        {DARK_HORSES.map(p=><DarkHorseCard key={p.name} p={p} open={openDark[p.name]} onToggle={()=>toggle(setOpenDark,p.name)}/>)}
+      <ChampionCard p={DARK_HORSES[0]}/>
+      <div onClick={()=>setDarkMore(o=>!o)}
+        style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
+          background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:darkMore?0:8,borderBottomRightRadius:darkMore?0:8,
+          padding:"9px 13px",marginBottom:darkMore?0:24}}>
+        <Chevron open={darkMore} color={T.textSub}/>
+        <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
+          {lang==="nl"?`Bekijk overige talenten (${DARK_HORSES.length-1})`:`View other talents (${DARK_HORSES.length-1})`}
+        </span>
       </div>
+      {darkMore&&(
+        <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
+          {DARK_HORSES.slice(1).map(p=><DarkHorseCard key={p.name} p={p} open={openDark[p.name]} onToggle={()=>toggle(setOpenDark,p.name)}/>)}
+        </div>
+      )}
 
       {/* Best XI */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:6}}>
+      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10}}>
         {lang==="nl"?"Beste Elftal van het Toernooi":"Tournament Best XI"}
       </div>
       <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
-        <span style={{fontSize:FS.caption,fontWeight:700,color:"#1E7A40"}}>{lang==="nl"?"xG = verwachte doelpunten":"xG = expected goals"}</span>
-        <span style={{fontSize:FS.caption,fontWeight:700,color:"#1A5296"}}>{lang==="nl"?"xA = verwachte assists":"xA = expected assists"}</span>
+        <span style={{fontSize:FS.caption,fontWeight:700,color:T.green}}>{lang==="nl"?"xG = verwachte doelpunten":"xG = expected goals"}</span>
+        <span style={{fontSize:FS.caption,fontWeight:700,color:T.blue}}>{lang==="nl"?"xA = verwachte assists":"xA = expected assists"}</span>
       </div>
       <PitchViz/>
       {/* Player list */}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden",marginBottom:10}}>
-        <div style={{padding:"6px 12px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.orange}}>
+      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden",marginBottom:10}}>
+        <div style={{padding:"8px 13px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.orange}}>
           {lang==="nl"?"Basiselftal":"Starting XI"} · {BEST_XI.formation}
         </div>
         {BEST_XI.players.map(p=>(
@@ -3560,45 +3630,46 @@ function PlayersTab(){
                 <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2,flexWrap:"wrap"}}>
                   {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
-                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1E7A40",background:"rgba(30,122,64,0.1)",border:"1px solid rgba(30,122,64,0.3)",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xG} xG</span>}
-                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1A5296",background:"rgba(26,82,150,0.1)",border:"1px solid rgba(26,82,150,0.3)",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xA} xA</span>}
+                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xG} xG</span>}
+                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xA} xA</span>}
                 </div>
               </div>
               <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
               <Chevron open={openXI[p.name]} color={T.orange}/>
             </div>
             {openXI[p.name]&&(
-              <div style={{padding:"6px 12px 8px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
+              <div style={{padding:"8px 13px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
                 {p.note[lang]}
+                <StatBar st={p.st}/>
               </div>
             )}
           </div>
         ))}
       </div>
       {/* Subs */}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:4,overflow:"hidden"}}>
-        <div style={{padding:"6px 12px",background:T.blueFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.id==="dark"?"#909090":"#1A5296"}}>
+      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
+        <div style={{padding:"8px 13px",background:T.blueFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.id==="dark"?"#909090":T.blue}}>
           {lang==="nl"?"Wissels":"Substitutes"}
         </div>
         {BEST_XI.subs.map(p=>(
           <div key={p.name} style={{borderBottom:`1px solid ${T.border}`}}>
             <div onClick={()=>toggle(setOpenXI,"sub_"+p.name)} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",cursor:"pointer",background:openXI["sub_"+p.name]?T.blueFaint:T.card}}>
               <div style={{width:28,height:28,borderRadius:"50%",background:T.blueFaint,border:"1px solid #1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{color:T.id==="dark"?"#909090":"#1A5296",fontSize:FS.micro,fontWeight:700}}>{p.pos}</span>
+                <span style={{color:T.id==="dark"?"#909090":T.blue,fontSize:FS.micro,fontWeight:700}}>{p.pos}</span>
               </div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.body,fontWeight:500,color:T.text}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2}}>
                   {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
-                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1E7A40",background:"rgba(30,122,64,0.1)",border:"1px solid rgba(30,122,64,0.3)",borderRadius:4,padding:"1px 5px"}}>~{p.xG} xG</span>}
-                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#1A5296",background:"rgba(26,82,150,0.1)",border:"1px solid rgba(26,82,150,0.3)",borderRadius:4,padding:"1px 5px"}}>~{p.xA} xA</span>}
+                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px"}}>~{p.xG} xG</span>}
+                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px"}}>~{p.xA} xA</span>}
                 </div>
               </div>
               <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
-              <Chevron open={openXI["sub_"+p.name]} color={T.id==="dark"?T.orange:"#1A5296"}/>
+              <Chevron open={openXI["sub_"+p.name]} color={T.id==="dark"?T.orange:T.blue}/>
             </div>
             {openXI["sub_"+p.name]&&p.note&&(
-              <div style={{padding:"6px 12px 8px",background:T.blueFaint,borderLeft:`3px solid ${T.id==="dark"?T.orange:"#1A5296"}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
+              <div style={{padding:"6px 12px 8px",background:T.blueFaint,borderLeft:`3px solid ${T.id==="dark"?T.orange:T.blue}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
                 {p.note[lang]}
               </div>
             )}
@@ -3684,12 +3755,12 @@ export default function App(){
                     borderRadius:6,
                     padding:"10px 12px"}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
+                    stroke={T.id==="dark"?T.orange:T.blue} strokeWidth="2.2"
                     strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                     <path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z"/>
                   </svg>
                   <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
-                    textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
+                    textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue}}>
                     {lang==="nl"?"Nieuws":"News"}
                   </span>
                   <Chevron open={newsOpen} color={T.textSub}/>
@@ -3704,12 +3775,12 @@ export default function App(){
                     borderRadius:6,
                     padding:"10px 12px"}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
+                    stroke={T.id==="dark"?T.orange:T.blue} strokeWidth="2.2"
                     strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                   </svg>
                   <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
-                    textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
+                    textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue}}>
                     {lang==="nl"?"Blessures":"Injuries"}
                   </span>
                   <Chevron open={injuriesOpen} color={T.textSub}/>
@@ -3736,7 +3807,7 @@ export default function App(){
                     <KnockoutBracket scrollToMatch={scrollToMatch}/>
                     {[{label:tr.qf,rounds:QF},{label:tr.sf,rounds:SF}].map(({label,rounds})=>(
                       <div key={label} style={{marginBottom:14}}>
-                        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296",marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label}</div>
+                        <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label}</div>
                         <div style={{display:"flex",flexDirection:"column",gap:8}}>
                           {rounds.map(([a,b])=>(
                             <div key={`${a}-${b}`} ref={el=>koCardRefs.current[`${a}-${b}`]=el}>
@@ -3747,7 +3818,7 @@ export default function App(){
                       </div>
                     ))}
                     <div ref={el=>koCardRefs.current[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]=el}>
-                      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296",marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{tr.final}</div>
+                      <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{tr.final}</div>
                 <div style={{background:T.card,border:`1px solid ${T.orange}`,borderTop:`3px solid ${T.orange}`,borderRadius:4,overflow:"hidden"}}>
                   <div style={{padding:14}}>
                     {[{team:FINAL_TEAMS[0],score:fsA,win:fsA>fsB},{team:FINAL_TEAMS[1],score:fsB,win:fsB>fsA}].map(({team,score,win},i)=>(
@@ -3764,7 +3835,7 @@ export default function App(){
                       <span style={{fontSize:16}}>🏆</span>
                       <div>
                         <div style={{fontSize:FS.caption,fontWeight:600,letterSpacing:0.8,textTransform:"uppercase",color:T.textSub}}>{tr.predictedChampionLabel}</div>
-                        <div style={{fontSize:14,fontWeight:700,color:T.id==="dark"?"#909090":"#1A5296"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+                        <div style={{fontSize:14,fontWeight:700,color:T.id==="dark"?"#909090":T.blue}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
                       </div>
                     </div>
                   </div>
@@ -3860,7 +3931,7 @@ export default function App(){
                   ].map((l,i)=>(
                     <a key={i} href={l.u} target="_blank" rel="noopener noreferrer"
                       style={{display:"flex",alignItems:"center",gap:6,fontSize:FS.caption,fontWeight:600,
-                        color:T.id==="dark"?T.orange:"#1A5296",textDecoration:"none",padding:"3px 0"}}>
+                        color:T.id==="dark"?T.orange:T.blue,textDecoration:"none",padding:"3px 0"}}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                         <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
@@ -3879,12 +3950,12 @@ export default function App(){
                     border:`1px solid ${T.id==="dark"?"#3a2e18":(srcOpen?T.orange+"55":T.border)}`,
                     borderRadius:6,padding:"10px 12px"}}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke={T.id==="dark"?T.orange:"#1A5296"} strokeWidth="2.2"
+                    stroke={T.id==="dark"?T.orange:T.blue} strokeWidth="2.2"
                     strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                     <path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/>
                   </svg>
                   <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
-                    textTransform:"uppercase",color:T.id==="dark"?T.orange:"#1A5296"}}>
+                    textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue}}>
                     {lang==="nl"?"Brondata per land":"Source data per country"}
                   </span>
                   <Chevron open={srcOpen} color={T.textSub}/>
