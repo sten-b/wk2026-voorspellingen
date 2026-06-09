@@ -4057,25 +4057,27 @@ function AppLoader({onDone}){
     // Phase 0.5 : red-white-blue accent sweep
     // Phase 1   : weave — black→orange, WC logo scales/fades out, the "Sten's/WK2026/lion" stage fades in
     // Phases 2-6: the existing loader sequence (flip → engulf → whoosh)
-    const tA=setTimeout(()=>setPhase(0.3),60);   // WC trophy + 26 in
-    const tB=setTimeout(()=>setPhase(0.6),420);  // accent sweep
-    const t1=setTimeout(()=>setPhase(1),1150);   // weave into orange stage
-    const t2=setTimeout(()=>setPhase(2),1750);   // 3D flip: white lion -> black lion
-    const t3=setTimeout(()=>setPhase(3),2250);   // bg fades to black, stage fades out
-    const t4=setTimeout(()=>setPhase(4),2650);   // orange lion grows from tiny
-    const t5=setTimeout(()=>setPhase(5),3350);   // whole loader fades to transparent
-    const t6=setTimeout(()=>onDone&&onDone(),3900); // unmount after fade
+    const tA=setTimeout(()=>setPhase(0.3),60);   // WC roundel + 26 in
+    const tB=setTimeout(()=>setPhase(0.6),460);  // accent sweep
+    const t1=setTimeout(()=>setPhase(1),1200);   // weave begins: WC drifts out, stage eases in
+    const t2=setTimeout(()=>setPhase(2),2150);   // 3D flip: white lion -> black lion
+    const t3=setTimeout(()=>setPhase(3),2650);   // bg fades to black, stage fades out
+    const t4=setTimeout(()=>setPhase(4),3050);   // orange lion grows from tiny
+    const t5=setTimeout(()=>setPhase(5),3750);   // whole loader fades to transparent
+    const t6=setTimeout(()=>onDone&&onDone(),4300); // unmount after fade
     return()=>{[tA,tB,t1,t2,t3,t4,t5,t6].forEach(clearTimeout);};
   },[]);
   // Background: black during the WC intro (phase<1), orange through the main stage, black from phase 3.
   const bg=phase>=3?"#0D0D0D":(phase<1?"#0D0D0D":"#E85100");
   const flipped=phase>=2;
-  // WC2026 intro visible only during phase 0–0.6, fades out as the weave begins.
+  // WC2026 intro visible only during phase 0–0.6, drifts out gently as the weave begins.
   const wcOpacity=phase===0?0:(phase>=1?0:1);
-  const wcScale=phase>=1?1.45:(phase>=0.3?1:0.72);
+  const wcScale=phase>=1?1.18:(phase>=0.3?1.04:0.72);
+  const wcLift=phase>=1?-26:0;   // subtle upward drift as it hands off
   const sweepOpacity=(phase>=0.6&&phase<1)?1:0;
-  // Stage = Sten's + WK2026 + lion + Voorspelling. Fades in at the weave (phase 1), out at phase 3.
+  // Stage = Sten's + WK2026 + lion + Voorspelling. Eases in (up) at the weave, out at phase 3.
   const stageOpacity=phase<1?0:(phase>=3?0:1);
+  const stageLift=phase<1?16:0;  // slides up into place
   // Engulf lion: grows from tiny to fill screen, keeps growing through the whoosh.
   const engulfScale=phase>=5?16:(phase>=4?12:0.08);
   const engulfOpacity=phase>=4?1:0;
@@ -4085,7 +4087,7 @@ function AppLoader({onDone}){
       background:bg,opacity:overlayOpacity,
       transition:phase>=5
         ? "opacity 0.5s cubic-bezier(.4,0,.2,1) 0.15s"
-        : "background 0.6s ease, opacity 0.55s ease",
+        : "background 0.9s cubic-bezier(.4,0,.2,1), opacity 0.55s ease",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
       {/* WC2026-themed intro: red-white-blue accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
@@ -4093,9 +4095,11 @@ function AppLoader({onDone}){
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
       {/* WC2026-themed intro: original World Cup 2026 mark (roundel badge + 26 + RWB bars) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:wcOpacity,transform:`scale(${wcScale})`,
-        transition:"opacity 0.5s ease, transform 0.6s cubic-bezier(.34,1.56,.64,1)",pointerEvents:"none"}}>
-        <svg width="100" height="100" viewBox="0 0 100 100" aria-hidden="true">
+        opacity:wcOpacity,transform:`translateY(${wcLift}px) scale(${wcScale})`,
+        transition:"opacity 0.85s cubic-bezier(.4,0,.2,1), transform 0.95s cubic-bezier(.34,1.2,.5,1)",
+        pointerEvents:"none"}}>
+        <svg width="100" height="100" viewBox="0 0 100 100" aria-hidden="true"
+          style={{filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))"}}>
           <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
           </linearGradient></defs>
@@ -4105,19 +4109,22 @@ function AppLoader({onDone}){
           <path d="M50 31 L62 40 L69 34 M62 40 L57 54 L67 59 M43 54 L33 59 M38 40 L31 34" stroke="#FFFFFF" strokeWidth="1.6" fill="none" opacity="0.5"/>
           <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
         </svg>
-        <span style={{fontSize:46,fontWeight:900,letterSpacing:0,lineHeight:0.78,color:"#FFFFFF"}}>26</span>
+        <span style={{fontSize:48,fontWeight:900,letterSpacing:0,lineHeight:0.78,color:"#FFFFFF",
+          textShadow:"0 0 18px rgba(255,255,255,0.35), 0 2px 10px rgba(0,0,0,0.5)"}}>26</span>
         <div style={{display:"flex",gap:4}}>
           <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
           <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
           <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
         </div>
-        <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,color:"rgba(255,255,255,0.85)"}}>WORLD CUP 2026</span>
+        <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:3,color:"#FFFFFF",
+          textShadow:"0 1px 8px rgba(0,0,0,0.5)"}}>WORLD CUP 2026</span>
       </div>
       {/* Stage: title, flipping lion, subtitle (existing loader) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
-        opacity:stageOpacity,transition:"opacity 0.55s ease"}}>
-        <span style={{fontSize:FS.small,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-6}}>Sten's</span>
-        <span style={{fontSize:FS.display,fontWeight:900,letterSpacing:2,color:"#FFFFFF"}}>WK2026</span>
+        opacity:stageOpacity,transform:`translateY(${stageLift}px)`,
+        transition:"opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.34,1.2,.5,1)"}}>
+        <span style={{fontSize:FS.small,fontWeight:800,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-6,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
+        <span style={{fontSize:FS.display,fontWeight:900,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
         <div style={{perspective:"600px"}}>
           <div style={{position:"relative",width:96,height:96,
             transformStyle:"preserve-3d",
@@ -4133,7 +4140,7 @@ function AppLoader({onDone}){
             </div>
           </div>
         </div>
-        <span style={{fontSize:FS.body,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)"}}>
+        <span style={{fontSize:FS.body,fontWeight:800,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>
           Voorspelling
         </span>
       </div>
