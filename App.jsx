@@ -1478,13 +1478,13 @@ function DataTabButton({onOpen,active}){
   return(
     <button onClick={handle} aria-label={lang==="nl"?"Model":"Model"}
       title={lang==="nl"?"Bekijk het model":"View the model"}
-      style={{width:34,height:34,flexShrink:0,cursor:"pointer",
+      style={{width:28,height:28,flexShrink:0,cursor:"pointer",
         border:`1px solid ${frameBorder}`,borderRadius:6,background:bg,
         display:"flex",alignItems:"center",justifyContent:"center",padding:0,
         transform:anim?"scale(0.9)":"scale(1)",
         transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1), background 0.25s ease, border-color 0.25s ease"}}>
       <style>{`@keyframes dataBar{0%{transform:scaleY(1)}30%{transform:scaleY(0.45)}70%{transform:scaleY(1.18)}100%{transform:scaleY(1)}}`}</style>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
         <path d="M3 21h18" stroke={iconCol} strokeWidth="2" strokeLinecap="round"/>
         {bars.map((b,i)=>(
           <rect key={i} x={b.x} y={20-b.h} width="3" height={b.h} rx="1" fill={iconCol}
