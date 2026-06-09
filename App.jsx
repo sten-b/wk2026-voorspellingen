@@ -1780,7 +1780,7 @@ function FinalExplainer({openMatches,toggleMatch}){
         <Chevron open={fo} color={T.orange}/>
       </div>
       {fo&&<div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:5,marginBottom:7,
+        <div style={{display:"flex",width:"fit-content",alignItems:"center",gap:5,marginBottom:7,
           padding:"3px 9px",borderRadius:20,
           background:T.id==="orangeLion"?"rgba(13,13,13,0.12)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)"),
           border:`1px solid ${T.id==="orangeLion"?"rgba(13,13,13,0.25)":T.orange+"44"}`}}>
@@ -1830,7 +1830,7 @@ function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
       )}
       {isOpen&&expl&&(
         <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-          {dateLabel&&<div style={{display:"inline-flex",alignItems:"center",gap:5,marginBottom:7,
+          {dateLabel&&<div style={{display:"flex",width:"fit-content",alignItems:"center",gap:5,marginBottom:7,
             padding:"3px 9px",borderRadius:20,
             background:T.id==="orangeLion"?"rgba(13,13,13,0.12)":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)"),
             border:`1px solid ${T.id==="orangeLion"?"rgba(13,13,13,0.25)":T.orange+"44"}`}}>
@@ -3921,6 +3921,7 @@ function PlayersTab(){
   const [darkMore,setDarkMore]=useState(false);
   const [openDark,setOpenDark]=useState({});
   const [openXI,setOpenXI]=useState({});
+  const [infoPanel,setInfoPanel]=useState(null); // "news" | "injuries" | null
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   const OL=T.id==="orangeLion";
   const views=[
@@ -3983,6 +3984,39 @@ function PlayersTab(){
             ?"Voor het eerst met 48 landen, verdeeld over drie gastlanden — het grootste WK ooit. Spanje arriveert als Europees kampioen en favoriet, terwijl Argentinië de titel verdedigt met Messi in vermoedelijk zijn laatste WK. Frankrijk, Engeland, Brazilië en Noorwegen wachten, en outsiders als Marokko en gastland Mexico kunnen verrassen. De nieuwe opzet kent extra knock-outrondes en weinig marge: één slechte avond en de grootste naam ligt eruit."
             :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain arrive as European champions and favourites, while Argentina defend the title with Messi in what is likely his last World Cup. France, England, Brazil and Norway lie in wait, and outsiders like Morocco and hosts Mexico could surprise. The new format brings extra knockout rounds and little margin: one bad night and the biggest name is out."}
         </p>
+      </div>
+
+      {/* News / Injuries — compact segmented control, under the intro */}
+      <div style={{marginBottom:18}}>
+        <div style={{display:"flex",gap:0,
+          border:`1px solid ${OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,
+          borderRadius:8,overflow:"hidden"}}>
+          {[
+            {id:"news",label:lang==="nl"?"Nieuws":"News",
+             icon:"M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z"},
+            {id:"injuries",label:lang==="nl"?"Blessures":"Injuries",
+             icon:"M22 12h-4l-3 9L9 3l-3 9H2"},
+          ].map((b,i)=>{
+            const active=infoPanel===b.id;
+            return(
+              <button key={b.id} onClick={()=>setInfoPanel(active?null:b.id)}
+                style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,
+                  padding:"9px 4px",fontSize:FS.small,fontWeight:active?800:600,cursor:"pointer",border:"none",
+                  borderLeft:i>0?`1px solid ${OL?"rgba(255,255,255,0.5)":(T.id==="dark"?"#FF5500":"#E07000")}`:"none",
+                  background:active?(OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")):"transparent",
+                  color:active?(OL?"#0D0D0D":"#FFFFFF"):(OL?"#FFFFFF":T.textSub),
+                  transition:"background 0.2s ease, color 0.2s ease"}}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                  <path d={b.icon}/>
+                </svg>
+                {b.label}
+              </button>
+            );
+          })}
+        </div>
+        {infoPanel==="news"&&<div style={{marginTop:10}}><NewsSection/></div>}
+        {infoPanel==="injuries"&&<div style={{marginTop:10}}><InjuriesSection/></div>}
       </div>
 
       {/* View switcher: Nations / Players / FPL team */}
@@ -4263,7 +4297,6 @@ export default function App(){
   const [lang,setLang]=useState("nl");
   const [theme,setTheme]=useState("default");
   const [tab,setTab]=useState("players");
-  const [infoPanel,setInfoPanel]=useState(null); // "news" | "injuries" | null
   const [srcOpen,setSrcOpen]=useState(false);
   const [openGroup,setOpenGroup]=useState(null);
   const [nationsOpen,setNationsOpen]=useState(null);
@@ -4328,39 +4361,6 @@ export default function App(){
                     </div>
                   </div>
               }
-              {/* News / Injuries — compact segmented control, matches the app style */}
-              <div style={{marginBottom:14}}>
-                <div style={{display:"flex",gap:0,
-                  border:`1px solid ${T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,
-                  borderRadius:8,overflow:"hidden"}}>
-                  {[
-                    {id:"news",label:lang==="nl"?"Nieuws":"News",
-                     icon:"M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z"},
-                    {id:"injuries",label:lang==="nl"?"Blessures":"Injuries",
-                     icon:"M22 12h-4l-3 9L9 3l-3 9H2"},
-                  ].map((b,i)=>{
-                    const active=infoPanel===b.id;
-                    const OL=T.id==="orangeLion";
-                    return(
-                      <button key={b.id} onClick={()=>setInfoPanel(active?null:b.id)}
-                        style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,
-                          padding:"9px 4px",fontSize:FS.small,fontWeight:active?800:600,cursor:"pointer",border:"none",
-                          borderLeft:i>0?`1px solid ${OL?"rgba(255,255,255,0.5)":(T.id==="dark"?"#FF5500":"#E07000")}`:"none",
-                          background:active?(OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")):"transparent",
-                          color:active?(OL?"#0D0D0D":"#FFFFFF"):(OL?"#FFFFFF":T.textSub),
-                          transition:"background 0.2s ease, color 0.2s ease"}}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-                          <path d={b.icon}/>
-                        </svg>
-                        {b.label}
-                      </button>
-                    );
-                  })}
-                </div>
-                {infoPanel==="news"&&<div style={{marginTop:10}}><NewsSection/></div>}
-                {infoPanel==="injuries"&&<div style={{marginTop:10}}><InjuriesSection/></div>}
-              </div>
               <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
                 {lang==="nl"?"Groepsfase":"Group Stage"}
               </div>
