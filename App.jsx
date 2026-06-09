@@ -43,19 +43,20 @@ const THEMES = {
     tabInactive: t => ({ color:"#AAAAAA" }),
     pill: (active,t) => active ? { background:"#FF5500", color:"#000000", fontWeight:700 } : { background:"#1A1A1A", color:"#777777" },
   },
-  // Orange Lion = 2004 away kit: clean bright orange, generous white structure, soft warm accents
+  // Orange Lion = AWAY kit: orange dominant (same orange as dark mode), white as structure,
+  // subtle lighter-orange hints, black used sparingly as the sharp accent.
   orangeLion: {
     id:"orangeLion",
-    bg:"#F26212", card:"#FFFFFF", nav:"#FFFFFF",
-    border:"#FFFFFF", borderStrong:"#FFFFFF",
-    text:"#1F1206", textSub:"#8A4A1E", textFaint:"#B07A4A",
-    orange:"#E35A00", blue:"#C44A00",
-    gold:"#E8A33D",
-    orangeFaint:"#FFF1E6", blueFaint:"#FFF7F0",
+    bg:"#FF5500", card:"#FFFFFF", nav:"#FF5500",
+    border:"#FF7A33", borderStrong:"#FFFFFF",
+    text:"#1A1208", textSub:"#5A3318", textFaint:"#9A6A45",
+    orange:"#FF5500", blue:"#0D0D0D",       // "secondary"/accent = black, used sparingly
+    gold:"#FFAA00",
+    orangeFaint:"#FFF1E9", blueFaint:"#FFF6F0",
     green:"#1E7A40", red:"#C0392B",
-    activeTab: t => ({ color:"#fff", borderBottom:"3px solid #fff", fontWeight:700 }),
-    tabInactive: t => ({ color:"rgba(255,255,255,0.7)" }),
-    pill: (active,t) => active ? { background:"#fff", color:"#E35A00", fontWeight:700 } : { background:"rgba(255,255,255,0.18)", color:"#fff" },
+    activeTab: t => ({ color:"#0D0D0D", borderBottom:"3px solid #0D0D0D", fontWeight:700 }),
+    tabInactive: t => ({ color:"rgba(13,13,13,0.55)" }),
+    pill: (active,t) => active ? { background:"#0D0D0D", color:"#FF5500", fontWeight:700 } : { background:"rgba(255,255,255,0.85)", color:"#B23C00" },
   },
 
 }
@@ -1264,9 +1265,10 @@ function Chevron({open=false, color="currentColor", size=10}){
 // Colors: Dark Lion = orange lion on black bg; Lion/Away = orange lion on cream bg
 function NavLion({themeId}){
   const isDark = themeId === "dark";
-  const lionColor = isDark ? "#FF5500" : "#E07000";
-  if(isDark){
-    // No circle, no border — just the orange lion icon
+  const isOrange = themeId === "orangeLion";
+  if(isDark || isOrange){
+    // No circle, no border — just the lion icon (orange on black in dark, white on orange in orange mode)
+    const lionColor = isDark ? "#FF5500" : "#FFFFFF";
     return(
       <div style={{width:34,height:34,display:"flex",alignItems:"center",
         justifyContent:"center",flexShrink:0}}>
@@ -1274,6 +1276,7 @@ function NavLion({themeId}){
       </div>
     );
   }
+  const lionColor = "#E07000";
   return(
     <div style={{width:34,height:34,borderRadius:"50%",background:"#FFF5EA",border:`1.5px solid ${lionColor}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
       <LionEmoji color={lionColor} size={16}/>
@@ -1404,11 +1407,13 @@ function Nav({tab,setTab}){
   ];
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
-      <div style={{height:4,background:"#E07000"}}/>
+      <div style={{height:4,background:T.id==="orangeLion"?"#0D0D0D":"#E07000"}}/>
       <div style={{display:"flex",alignItems:"stretch",padding:"0 10px",width:"100%",boxSizing:"border-box"}}>
         <div style={{display:"flex",alignItems:"center",marginRight:10,flexShrink:0}}>
           {T.id==="dark"
             ? <NavLion themeId="dark"/>
+            : T.id==="orangeLion"
+            ? <NavLion themeId="orangeLion"/>
             : <div style={{width:26,height:26,borderRadius:"50%",background:"#E07000",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <span style={{color:"#fff",fontSize:FS.caption,fontWeight:700}}>SB</span>
               </div>
