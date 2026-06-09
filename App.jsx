@@ -445,8 +445,9 @@ const FORM_ADJ = {
 //           matches (computed from 49k-match dataset, martj42/international_results)
 //   exp   = major-tournament achievement 2018-2026 (WC/Euro/Copa/AFCON/Asian/Gold),
 //           weighted by tournament strength x round depth
-//   coach = head-coach honours weighted by trophy prestige
-// Weights (sum to 1): elo .80, form .10, experience .05, coach .05
+//   coach = head-coach score: 65% recent points-per-game track record + 35% honours
+//           bonus weighted by trophy prestige, then min-max normalised 0-100 (computed live below)
+// Weights (sum to 1): elo .70, squadQuality .10, recentForm .10, experience .05, coach .05
 const WEIGHTS = { elo:0.70, squadQuality:0.10, experience:0.05, coach:0.05, recentForm:0.10 };
 
 // eloN = Elo normalised to 0-100 via (elo - 1400) / 800 * 100, clamped.
@@ -557,6 +558,67 @@ const SOURCE_INPUTS={
 const SQUAD_VAL={"England":{m:1345,s:"€1.34bn"},"France":{m:1240,s:"€1.24bn"},"Brazil":{m:1135,s:"€1.14bn"},"Portugal":{m:1000,s:"€1bn"},"Spain":{m:861,s:"€861m"},"Argentina":{m:820,s:"€820m"},"Germany":{m:850,s:"€850m"},"Netherlands":{m:700,s:"€700m"},"Belgium":{m:549,s:"€549m"},"Uruguay":{m:424,s:"€424m"},"Norway":{m:580,s:"€580m"},"Croatia":{m:326,s:"€326m"},"Morocco":{m:460,s:"€460m"},"Japan":{m:285,s:"€285m"},"Switzerland":{m:282,s:"€282m"},"United States":{m:270,s:"€270m"},"Ghana":{m:242,s:"€242m"},"Ecuador":{m:236,s:"€236m"},"Senegal":{m:470,s:"€470m"},"Canada":{m:185,s:"€185m"},"South Korea":{m:184,s:"€184m"},"Turkey":{m:520,s:"€520m"},"Mexico":{m:165,s:"€165m"},"Colombia":{m:430,s:"€430m"},"Austria":{m:340,s:"€340m"},"Ivory Coast":{m:410,s:"€410m"},"Sweden":{m:430,s:"€430m"},"Egypt":{m:120,s:"€120m"},"Scotland":{m:210,s:"€210m"},"Australia":{m:41,s:"€41m"},"Iran":{m:51,s:"€51m"},"Tunisia":{m:54,s:"€54m"},"Algeria":{m:260,s:"€260m"},"Paraguay":{m:95,s:"€95m"},"Panama":{m:40,s:"€40m"},"Uzbekistan":{m:70,s:"€70m"},"Jordan":{m:35,s:"€35m"},"DR Congo":{m:150,s:"€150m"},"Iraq":{m:35,s:"€35m"},"Bosnia-Herzegovina":{m:180,s:"€180m"},"Cape Verde":{m:90,s:"€90m"},"Saudi Arabia":{m:15,s:"€15m"},"Qatar":{m:14,s:"€14m"},"South Africa":{m:60,s:"€60m"},"Haiti":{m:40,s:"€40m"},"New Zealand":{m:35,s:"€35m"},"Curacao":{m:45,s:"€45m"},"Czechia":{m:280,s:"€280m"}};
 
 
+// ── COACH SCORE (computed live from the documented formula + data/coach_final.json) ──
+// Source data per coach: trackN = recent points-per-game track record with this nation
+// (18-month half-life, from results.csv); prize = honours bonus weighted by trophy
+// prestige (WC 40, CL 18, continental-national 16, top-5 league 12, ...). Both 0-100.
+const COACH_DATA={
+  "Algeria":{coach:"Vladimir Petković",track:86.7,prize:0.0,raw:0,ppg:2.32,basis:"geen grote prijzen"},
+  "Argentina":{coach:"Lionel Scaloni",track:95.2,prize:40.7,raw:72,ppg:2.46,basis:"WK 2022 + Copa América 2021 & 2024 + Finalissima 2022"},
+  "Australia":{coach:"Tony Popovic",track:61.4,prize:0.0,raw:0,ppg:1.9,basis:"geen grote prijzen"},
+  "Austria":{coach:"Ralf Rangnick",track:73.5,prize:0.0,raw:0,ppg:2.1,basis:"geen grote prijzen"},
+  "Belgium":{coach:"Rudi Garcia",track:83.7,prize:6.8,raw:12,ppg:2.27,basis:"Ligue 1 2011 (Lille) + Coupe de France 2011; later Roma/OM/Napoli zonder titel — te bevestigen"},
+  "Bosnia-Herzegovina":{coach:"Sergej Barbarez",track:22.3,prize:0.0,raw:0,ppg:1.25,basis:"geen grote prijzen"},
+  "Brazil":{coach:"Carlo Ancelotti",track:62.0,prize:100.0,raw:177,ppg:1.91,basis:"5x CL (Milan 03,07; Real 14,22,24); titels in alle top-5 competities; 3x Club WK"},
+  "Canada":{coach:"Jesse Marsch",track:51.8,prize:0.0,raw:0,ppg:1.74,basis:"geen grote prijzen"},
+  "Cape Verde":{coach:"Bubista",track:42.2,prize:0.0,raw:0,ppg:1.58,basis:"geen grote prijzen"},
+  "Colombia":{coach:"Néstor Lorenzo",track:62.0,prize:0.0,raw:0,ppg:1.91,basis:"geen grote prijzen"},
+  "Croatia":{coach:"Zlatko Dalić",track:58.4,prize:0.0,raw:0,ppg:1.85,basis:"geen grote prijzen"},
+  "Curacao":{coach:"Dick Advocaat",track:45.2,prize:0.0,raw:0,ppg:1.63,basis:"geen grote prijzen"},
+  "Czechia":{coach:"Miroslav Koubek",track:63.9,prize:0.0,raw:0,ppg:1.94,basis:"geen grote prijzen"},
+  "DR Congo":{coach:"Sébastien Desabre",track:62.0,prize:0.0,raw:0,ppg:1.91,basis:"geen grote prijzen"},
+  "Ecuador":{coach:"Sebastián Beccacece",track:46.4,prize:0.0,raw:0,ppg:1.65,basis:"geen grote prijzen"},
+  "Egypt":{coach:"Hossam Hassan",track:56.0,prize:0.0,raw:0,ppg:1.81,basis:"geen grote prijzen"},
+  "England":{coach:"Thomas Tuchel",track:87.3,prize:31.1,raw:55,ppg:2.33,basis:"CL 2021 (Chelsea)+Club WK+Super Cup; Ligue 1 2019,2020 (PSG); Bundesliga 2023 (Bayern); DFB-Pokal 2017 (Dortmund)"},
+  "France":{coach:"Didier Deschamps",track:72.9,prize:44.6,raw:79,ppg:2.09,basis:"WK 2018, WK-finale 2022, Nations League 2021, Ligue 1 (Marseille 2010); CL 2004-finale (verloren)"},
+  "Germany":{coach:"Julian Nagelsmann",track:74.1,prize:0.0,raw:0,ppg:2.11,basis:"geen grote prijzen"},
+  "Ghana":{coach:"Otto Addo",track:16.3,prize:0.0,raw:0,ppg:1.15,basis:"geen grote prijzen"},
+  "Haiti":{coach:"Sébastien Migné",track:51.8,prize:0.0,raw:0,ppg:1.74,basis:"geen grote prijzen"},
+  "Iran":{coach:"Amir Ghalenoei",track:77.1,prize:0.0,raw:0,ppg:2.16,basis:"geen grote prijzen"},
+  "Iraq":{coach:"Graham Arnold",track:59.6,prize:0.0,raw:0,ppg:1.87,basis:"geen grote prijzen"},
+  "Ivory Coast":{coach:"Emerse Faé",track:75.3,prize:9.0,raw:16,ppg:2.13,basis:"AFCON 2023 (interim, Ivoorkust)"},
+  "Japan":{coach:"Hajime Moriyasu",track:83.1,prize:0.0,raw:0,ppg:2.26,basis:"geen grote prijzen"},
+  "Jordan":{coach:"Jamal Sellami",track:40.4,prize:0.0,raw:0,ppg:1.55,basis:"geen grote prijzen"},
+  "South Korea":{coach:"Hong Myung-bo",track:68.7,prize:0.0,raw:0,ppg:2.02,basis:"geen grote prijzen"},
+  "Mexico":{coach:"Javier Aguirre",track:63.3,prize:0.0,raw:0,ppg:1.93,basis:"geen grote prijzen"},
+  "Morocco":{coach:"Walid Regragui",track:100.0,prize:6.8,raw:12,ppg:2.54,basis:"CAF Champions League 2022 (Wydad) + Botola-titel"},
+  "Netherlands":{coach:"Ronald Koeman",track:59.6,prize:11.9,raw:21,ppg:1.87,basis:"Copa del Rey 2021 (Barcelona); Eredivisie 2x Ajax + 1x PSV; jeugd/overige"},
+  "New Zealand":{coach:"Darren Bazeley",track:21.1,prize:0.0,raw:0,ppg:1.23,basis:"geen grote prijzen"},
+  "Norway":{coach:"Ståle Solbakken",track:71.1,prize:0.0,raw:0,ppg:2.06,basis:"geen grote prijzen"},
+  "Panama":{coach:"Thomas Christiansen",track:49.4,prize:0.0,raw:0,ppg:1.7,basis:"geen grote prijzen"},
+  "Paraguay":{coach:"Gustavo Alfaro",track:39.8,prize:0.0,raw:0,ppg:1.54,basis:"geen grote prijzen"},
+  "Portugal":{coach:"Roberto Martínez",track:78.3,prize:3.4,raw:6,ppg:2.18,basis:"FA Cup 2013 (Wigan); League One 2008 (Swansea); geen grote titel met België/Portugal"},
+  "Qatar":{coach:"Julen Lopetegui",track:0.0,prize:4.5,raw:8,ppg:0.88,basis:"Europa League 2020 (Sevilla); jeugd-EK met Spanje niet meegeteld; geen top-5 titel"},
+  "Saudi Arabia":{coach:"Giorgos Donis",track:37.3,prize:0.0,raw:0,ppg:1.5,basis:"geen grote prijzen"},
+  "Scotland":{coach:"Steve Clarke",track:40.4,prize:0.0,raw:0,ppg:1.55,basis:"geen grote prijzen"},
+  "Senegal":{coach:"Pape Thiaw",track:88.0,prize:0.0,raw:0,ppg:2.34,basis:"geen grote prijzen"},
+  "South Africa":{coach:"Hugo Broos",track:52.4,prize:14.7,raw:26,ppg:1.75,basis:"AFCON 2017 (Kameroen); 2x Belgisch kampioen (Club Brugge)"},
+  "Spain":{coach:"Luis de la Fuente",track:85.5,prize:13.0,raw:23,ppg:2.3,basis:"EK 2024 + Nations League 2023 (senior); jeugd-EK U21 2019/U19 2015 niet meegeteld"},
+  "Sweden":{coach:"Graham Potter",track:22.9,prize:0.0,raw:0,ppg:1.26,basis:"geen grote prijzen"},
+  "Switzerland":{coach:"Murat Yakin",track:48.2,prize:0.0,raw:0,ppg:1.68,basis:"geen grote prijzen"},
+  "Tunisia":{coach:"Sami Trabelsi",track:48.2,prize:0.0,raw:0,ppg:1.68,basis:"geen grote prijzen"},
+  "Turkey":{coach:"Vincenzo Montella",track:72.3,prize:0.0,raw:0,ppg:2.08,basis:"geen grote prijzen"},
+  "Uruguay":{coach:"Marcelo Bielsa",track:40.4,prize:8.5,raw:15,ppg:1.55,basis:"Olympisch goud 2004 + 3x Argentijnse Primera + Championship-promotie 2020; geen top-5/continentale titel"},
+  "United States":{coach:"Mauricio Pochettino",track:39.2,prize:10.2,raw:18,ppg:1.53,basis:"Ligue 1 2021/22 (PSG) + Coupe de France + Trophée des Champions"},
+  "Uzbekistan":{coach:"Fabio Cannavaro",track:41.6,prize:2.8,raw:5,ppg:1.57,basis:"Chinese Super League 2019 (Guangzhou); WK2006 was als speler — telt niet"}
+};
+// Live blend: 65% track + 35% prize, then min-max normalised across all teams to 0-100.
+const _coachBlend=Object.fromEntries(Object.entries(COACH_DATA).map(([t,d])=>[t,0.65*d.track+0.35*d.prize]));
+const _cbVals=Object.values(_coachBlend);
+const _cbLo=Math.min(..._cbVals), _cbHi=Math.max(..._cbVals);
+const COACH_SCORE=Object.fromEntries(Object.entries(_coachBlend).map(([t,b])=>[t,+(((b-_cbLo)/(_cbHi-_cbLo))*100).toFixed(1)]));
+
+
 
 // Recent-form deviation (Option A: competitive 3x, opponent-quality weighted), for the VORM display badge
 const FORM_DEV={"Spain":19,"Argentina":14,"France":16,"England":14,"Brazil":7,"Portugal":12,"Colombia":1,"Netherlands":10,"Ecuador":6,"Germany":0,"Norway":17,"Croatia":4,"Turkey":6,"Japan":5,"Belgium":15,"Uruguay":-17,"Switzerland":14,"Mexico":4,"Senegal":2,"Paraguay":-9,"Austria":9,"Morocco":22,"Canada":2,"Scotland":0,"Australia":12,"Iran":-3,"Algeria":13,"South Korea":6,"Czechia":-6,"Panama":-1,"United States":-14,"Uzbekistan":2,"Sweden":-24,"Egypt":-6,"Ivory Coast":10,"Jordan":-1,"DR Congo":-1,"Tunisia":-15,"Iraq":-3,"Bosnia-Herzegovina":-7,"Cape Verde":-4,"Saudi Arabia":-20,"New Zealand":-35,"Haiti":-9,"South Africa":-9,"Ghana":-15,"Curacao":-15,"Qatar":-28};
@@ -565,8 +627,9 @@ const FORM_DEV={"Spain":19,"Argentina":14,"France":16,"England":14,"Brazil":7,"P
 function composite(team){
   const f=MODEL_DATA[team];
   if(!f) return 50;
+  const coachScore=(COACH_SCORE[team]!==undefined)?COACH_SCORE[team]:f.coach;
   return +(f.eloN*WEIGHTS.elo + f.svN*WEIGHTS.squadQuality +
-           f.exp*WEIGHTS.experience + f.coach*WEIGHTS.coach +
+           f.exp*WEIGHTS.experience + coachScore*WEIGHTS.coach +
            (f.formN||0)*WEIGHTS.recentForm).toFixed(1);
 }
 
@@ -2838,12 +2901,13 @@ function ModelViz(){
         {(()=>{
           const fd=MODEL_DATA[exTeam];
           if(!fd) return null;
+          const coachSc=(COACH_SCORE[exTeam]!==undefined)?COACH_SCORE[exTeam]:fd.coach;
           const rows=[
             {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
             {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.squadQuality},
             {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
-            {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
+            {lab:"Coach",val:Math.round(coachSc),w:5,contrib:coachSc*WEIGHTS.coach},
           ];
           const total=COMPOSITE[exTeam];
           return(
@@ -2871,6 +2935,17 @@ function ModelViz(){
                   <span style={{fontWeight:700,color:T.text,textAlign:"right"}}>{r.contrib.toFixed(1)}</span>
                 </div>
               ))}
+              {/* Coach provenance — makes the 5% coach factor traceable */}
+              {COACH_DATA[exTeam]&&(
+                <div style={{padding:"7px 10px",borderTop:`1px solid ${T.border}`,background:T.bg}}>
+                  <div style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,marginBottom:2}}>
+                    {lang==="nl"?"Coach":"Coach"}: {COACH_DATA[exTeam].coach}
+                  </div>
+                  <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.4}}>
+                    {lang==="nl"?"Erelijst":"Honours"}: {COACH_DATA[exTeam].basis}
+                  </div>
+                </div>
+              )}
               {/* total */}
               <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
                 borderTop:`2px solid ${T.border}`,background:T.bg}}>
