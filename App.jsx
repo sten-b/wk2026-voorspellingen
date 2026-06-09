@@ -618,6 +618,32 @@ const _cbVals=Object.values(_coachBlend);
 const _cbLo=Math.min(..._cbVals), _cbHi=Math.max(..._cbVals);
 const COACH_SCORE=Object.fromEntries(Object.entries(_coachBlend).map(([t,b])=>[t,+(((b-_cbLo)/(_cbHi-_cbLo))*100).toFixed(1)]));
 
+// ── SQUAD-QUALITY STAR BONUS ──────────────────────────────────────────────────
+// Top-player modifier: squads with genuine superstars get a bonus on top of the
+// log-scaled total squad value (svN). Players valued >= EUR 60m add to it, with extra
+// weight >= EUR 100m. Values in EUR m (Transfermarkt/CIES, Dec 2025-Jun 2026 snapshot).
+// Nations without a >=60m player get no bonus (most of the field).
+const STAR_PLAYERS={
+  "Spain":[["Lamine Yamal",200],["Pedri",140],["Rodri",100],["Cubarsi",80],["Nico Williams",70]],
+  "France":[["Kylian Mbappe",180],["Michael Olise",150],["Saliba",90],["Desire Doue",80],["Tchouameni",75],["Camavinga",60]],
+  "England":[["Jude Bellingham",180],["Bukayo Saka",130],["Declan Rice",110],["Cole Palmer",110],["Phil Foden",90]],
+  "Brazil":[["Vinicius Jr",150],["Rodrygo",90],["Estevao",80],["Savinho",70]],
+  "Argentina":[["Julian Alvarez",100],["Alexis Mac Allister",90],["Enzo Fernandez",75],["Nico Paz",65]],
+  "Portugal":[["Vitinha",100],["Rafael Leao",75],["Bernardo Silva",60]],
+  "Germany":[["Florian Wirtz",140],["Jamal Musiala",140],["Joshua Kimmich",60]],
+  "Netherlands":[["Cody Gakpo",70],["Tijjani Reijnders",70]],
+  "Norway":[["Erling Haaland",180],["Martin Odegaard",90]],
+  "Uruguay":[["Federico Valverde",130],["Ronald Araujo",70],["Darwin Nunez",60]]
+};
+// bonus = (# players 60-99m) x1 + (# players >=100m) x2; squad quality capped at 100.
+const SQUAD_QUALITY=Object.fromEntries(Object.keys(MODEL_DATA).map(t=>{
+  const base=MODEL_DATA[t].svN;
+  const ps=STAR_PLAYERS[t]||[];
+  const n100=ps.filter(([,v])=>v>=100).length;
+  const n60=ps.filter(([,v])=>v>=60&&v<100).length;
+  return [t, Math.min(100, +(base + n60*1 + n100*2).toFixed(1))];
+}));
+
 
 
 // Recent-form deviation (Option A: competitive 3x, opponent-quality weighted), for the VORM display badge
@@ -628,7 +654,8 @@ function composite(team){
   const f=MODEL_DATA[team];
   if(!f) return 50;
   const coachScore=(COACH_SCORE[team]!==undefined)?COACH_SCORE[team]:f.coach;
-  return +(f.eloN*WEIGHTS.elo + f.svN*WEIGHTS.squadQuality +
+  const squadQ=(SQUAD_QUALITY[team]!==undefined)?SQUAD_QUALITY[team]:f.svN;
+  return +(f.eloN*WEIGHTS.elo + squadQ*WEIGHTS.squadQuality +
            f.exp*WEIGHTS.experience + coachScore*WEIGHTS.coach +
            (f.formN||0)*WEIGHTS.recentForm).toFixed(1);
 }
@@ -2809,11 +2836,11 @@ function ModelViz(){
        :"A points system updated after every match: beating a strong side counts most. Official values from eloratings.net."},
     {key:"users",pct:10,
      label:lang==="nl"?"Selectiekwaliteit":"Squad quality",
-     formula:lang==="nl"?"log(marktwaarde selectie), geschaald 0–100":"log(squad market value), scaled 0–100",
+     formula:lang==="nl"?"log(marktwaarde) + topspeler-bonus, geschaald 0–100":"log(squad value) + star bonus, scaled 0–100",
      intro:lang==="nl"?"Individueel talent, los van resultaten.":"Individual talent, independent of results.",
      detail:lang==="nl"
-       ?"Totale Transfermarkt-waarde van de selectie, logaritmisch geschaald. Vangt clubniveau dat Elo niet ziet — Ghana scoort hier hoger dan Panama dankzij spelers als Kudus en Partey."
-       :"Total Transfermarkt squad value, log-scaled. Captures club level Elo misses — Ghana scores higher than Panama thanks to players like Kudus and Partey."},
+       ?"Totale Transfermarkt-waarde van de selectie, logaritmisch geschaald, plus een topspeler-bonus: spelers boven €60m tellen extra mee, spelers boven €100m nog zwaarder (×1 per speler ≥€60m, ×2 per speler ≥€100m). Zo wordt superster-dichtheid beloond, niet alleen totale diepte. Vangt clubniveau dat Elo niet ziet — Ghana scoort hier hoger dan Panama dankzij spelers als Kudus en Partey."
+       :"Total Transfermarkt squad value, log-scaled, plus a star-player bonus: players above €60m add extra weight, players above €100m more still (×1 per player ≥€60m, ×2 per player ≥€100m). This rewards superstar density, not just total depth. Captures club level Elo misses — Ghana scores higher than Panama thanks to players like Kudus and Partey."},
     {key:"trophy",pct:5,
      label:lang==="nl"?"Toernooi-ervaring":"Tournament experience",
      formula:lang==="nl"?"Σ(toernooizwaarte × rondediepte × recentheid), 10 jaar":"Σ(tournament weight × round depth × recency), 10 yrs",
@@ -2940,7 +2967,7 @@ function ModelViz(){
           const coachSc=(COACH_SCORE[exTeam]!==undefined)?COACH_SCORE[exTeam]:fd.coach;
           const rows=[
             {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.squadQuality},
+            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round((SQUAD_QUALITY[exTeam]!==undefined?SQUAD_QUALITY[exTeam]:fd.svN)),w:10,contrib:(SQUAD_QUALITY[exTeam]!==undefined?SQUAD_QUALITY[exTeam]:fd.svN)*WEIGHTS.squadQuality},
             {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(coachSc),w:5,contrib:coachSc*WEIGHTS.coach},
@@ -3009,7 +3036,7 @@ function ModelViz(){
           const isOpen=openRank===i;
           const rows=fd?[
             {lab:"Elo",val:Math.round(fd.eloN),w:70,contrib:fd.eloN*WEIGHTS.elo},
-            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round(fd.svN),w:10,contrib:fd.svN*WEIGHTS.squadQuality},
+            {lab:lang==="nl"?"Selectie":"Squad",val:Math.round((SQUAD_QUALITY[t.t]!==undefined?SQUAD_QUALITY[t.t]:fd.svN)),w:10,contrib:(SQUAD_QUALITY[t.t]!==undefined?SQUAD_QUALITY[t.t]:fd.svN)*WEIGHTS.squadQuality},
             {lab:lang==="nl"?"Vorm":"Form",val:Math.round(fd.formN||0),w:10,contrib:(fd.formN||0)*WEIGHTS.recentForm},
             {lab:lang==="nl"?"Ervaring":"Experience",val:Math.round(fd.exp),w:5,contrib:fd.exp*WEIGHTS.experience},
             {lab:"Coach",val:Math.round(fd.coach),w:5,contrib:fd.coach*WEIGHTS.coach},
