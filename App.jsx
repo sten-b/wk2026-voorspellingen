@@ -2377,11 +2377,10 @@ function StatBar({st,dark}){
   const lang=useLang();
   if(!st) return null;
   const items=[];
+  // Consistent fields only: Goals, Assists, Clean sheets (GK/DEF), and Prize/Trophy.
   if(st.G!==undefined) items.push([lang==="nl"?"Goals":"Goals",st.G]);
   if(st.A!==undefined) items.push([lang==="nl"?"Assists":"Assists",st.A]);
   if(st.CS!==undefined) items.push([lang==="nl"?"Clean sheets":"Clean sheets",st.CS]);
-  if(st.SAVES!==undefined) items.push([lang==="nl"?"Reddingen":"Saves",st.SAVES]);
-  if(st.M!==undefined) items.push([lang==="nl"?"Duels":"Games",st.M]);
   if(st.T) items.push([lang==="nl"?"Prijs":"Trophy",st.T]);
   if(!items.length) return null;
   const labelCol=dark?"rgba(255,255,255,0.5)":T.textFaint;
@@ -2448,7 +2447,7 @@ function ChampionCard({p,label,icon}){
               background:"rgba(255,255,255,0.14)",padding:"2px 8px",borderRadius:10,
               border:`1px solid ${T.orange}66`}}>{p.club}</span>}
             {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.orange,
-              background:"rgba(224,112,0,0.16)",padding:"2px 8px",borderRadius:10}}>{p.value}</span>}
+              background:"rgba(224,112,0,0.16)",padding:"2px 8px",borderRadius:10}}>💰 {p.value}</span>}
           </div>
         </div>
       </div>
@@ -2499,7 +2498,7 @@ function PlayerCard({p,open,onToggle}){
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
             {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.orange,background:T.orangeFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.orange}22`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>💰 {p.value}</span>}
           </div>}
         </div>
         <Chevron open={open} color={T.orange}/>
@@ -2527,7 +2526,7 @@ function DarkHorseCard({p,open,onToggle}){
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
             {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?T.orange:T.blue,background:T.blueFaint,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>{p.value}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>💰 {p.value}</span>}
           </div>}
         </div>
         <Chevron open={open} color={T.blue}/>
@@ -3579,13 +3578,13 @@ function FBrefStatsSection(){
         </div>
         {/* Expand */}
         <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap"}}>
-          {[10,100,250].map(n=>(
-            <button key={n} onClick={()=>setLimit(n)}
+          {[{n:10,lab:"Top 10"},{n:50,lab:"Top 50"},{n:FBREF_WC.length,lab:lang==="nl"?"Alle":"All"}].map(({n,lab})=>(
+            <button key={lab} onClick={()=>setLimit(n)}
               style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:4,cursor:"pointer",
                 border:`1px solid ${limit===n?orange:T.border}`,
                 background:limit===n?orange:"transparent",
                 color:limit===n?"#fff":T.textSub}}>
-              Top {n}
+              {lab}
             </button>
           ))}
         </div>
@@ -3629,10 +3628,31 @@ function PlayersTab(){
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   return(
     <div>
-      {/* Onder de radar — label sits inside the champion card */}
+      {/* Spotlight — star champion card on top */}
+      <ChampionCard p={SPOTLIGHT[0]}
+        label={lang==="nl"?"Sterspelers":"Spotlight"}
+        icon={<svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}><path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/></svg>}/>
+      <div onClick={()=>setSpotlightMore(o=>!o)}
+        style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
+          background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:spotlightMore?0:8,borderBottomRightRadius:spotlightMore?0:8,
+          padding:"9px 13px",marginBottom:spotlightMore?0:24}}>
+        <Chevron open={spotlightMore} color={T.textSub}/>
+        <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
+          {lang==="nl"?`Bekijk overige sterspelers (${SPOTLIGHT.length-1})`:`View other stars (${SPOTLIGHT.length-1})`}
+        </span>
+      </div>
+      {spotlightMore&&(
+        <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+          borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
+          {SPOTLIGHT.slice(1).map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
+        </div>
+      )}
+
+      {/* Onder de radar — radar icon, below the spotlight */}
       <ChampionCard p={DARK_HORSES[0]}
         label={lang==="nl"?"Onder de Radar":"Under the Radar"}
-        icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>}/>
+        icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill={T.orange}/><path d="M12 12 19 6"/></svg>}/>
       <div onClick={()=>setDarkMore(o=>!o)}
         style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
           background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
@@ -3647,27 +3667,6 @@ function PlayersTab(){
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
           borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
           {DARK_HORSES.slice(1).map(p=><DarkHorseCard key={p.name} p={p} open={openDark[p.name]} onToggle={()=>toggle(setOpenDark,p.name)}/>)}
-        </div>
-      )}
-
-      {/* Spotlight — label sits inside the champion card */}
-      <ChampionCard p={SPOTLIGHT[0]}
-        label={lang==="nl"?"Sterspelers":"Spotlight"}
-        icon={<svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}><path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/></svg>}/>
-      <div onClick={()=>setSpotlightMore(o=>!o)}
-        style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
-          background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
-          borderBottomLeftRadius:spotlightMore?0:8,borderBottomRightRadius:spotlightMore?0:8,
-          padding:"9px 13px",marginBottom:spotlightMore?0:24}}>
-        <Chevron open={spotlightMore} color={T.textSub}/>
-        <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
-          {lang==="nl"?"Bekijk top 10":"View top 10"}
-        </span>
-      </div>
-      {spotlightMore&&(
-        <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
-          borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden",marginBottom:24}}>
-          {SPOTLIGHT.slice(1).map(p=><PlayerCard key={p.name} p={p} open={openSpotlight[p.name]} onToggle={()=>toggle(setOpenSpotlight,p.name)}/>)}
         </div>
       )}
 
