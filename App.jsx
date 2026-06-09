@@ -2444,7 +2444,7 @@ function StatBar({st,dark}){
 }
 
 // Featured hero card for the #1 spotlight player.
-function ChampionCard({p}){
+function ChampionCard({p,label,icon}){
   const T=useTheme();
   const lang=useLang();
   const photo=usePlayerPhoto(p.name);
@@ -2456,6 +2456,12 @@ function ChampionCard({p}){
       position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
         background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
+      {label&&(
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:11}}>
+          {icon}
+          <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:1.4,textTransform:"uppercase",color:T.orange}}>{label}</span>
+        </div>
+      )}
       <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:10}}>
         <div style={{position:"relative",width:56,height:56,flexShrink:0}}>
           {showPhoto?(
@@ -2587,64 +2593,63 @@ function PitchViz(){
   ];
   const byPos={};
   BEST_XI.players.forEach(p=>{byPos[p.pos]=p;});
-  const rowLabels=["Keeper","Verdedigers","Middenvelders","Aanvallers"];
   const posLabel=(pos)=>pos==="CB1"||pos==="CB2"?"CB":pos;
   return(
-    <div style={{background:T.card,borderRadius:8,padding:8,marginBottom:12,border:`1px solid ${T.border}`}}>
-    <div style={{background:"#1a4a1a",borderRadius:5,padding:"16px 8px",position:"relative",overflow:"hidden"}}>
-      {/* Pitch lines */}
+    <div style={{background:"linear-gradient(160deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",
+      borderRadius:8,padding:"18px 10px 14px",marginBottom:12,position:"relative",overflow:"hidden",
+      borderLeft:`4px solid ${T.orange}`}}>
+      {/* subtle pitch markings in brand tone */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none"}}>
-        <div style={{position:"absolute",top:"50%",left:0,right:0,height:1,background:"rgba(255,255,255,0.15)"}}/>
-        <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,border:"1px solid rgba(255,255,255,0.12)",margin:8,borderRadius:4}}/>
-        <div style={{position:"absolute",top:"30%",bottom:"30%",left:"20%",right:"20%",border:"1px solid rgba(255,255,255,0.08)",borderRadius:4}}/>
+        <div style={{position:"absolute",top:"50%",left:12,right:12,height:1,background:"rgba(255,255,255,0.10)"}}/>
+        <div style={{position:"absolute",inset:10,border:"1px solid rgba(255,255,255,0.08)",borderRadius:6}}/>
+        <div style={{position:"absolute",top:"50%",left:"50%",width:54,height:54,transform:"translate(-50%,-50%)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"50%"}}/>
+        <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.10))"}}/>
       </div>
-      {/* Players (attacking top) */}
+      {/* Players (attacking row on top) */}
       {[...rows].reverse().map((row,ri)=>(
-        <div key={ri} style={{display:"flex",justifyContent:"center",gap:6,marginBottom:ri<rows.length-1?10:0}}>
+        <div key={ri} style={{display:"flex",justifyContent:"center",gap:8,marginBottom:ri<rows.length-1?14:0,position:"relative",zIndex:1}}>
           {row.map(pos=>{
             const p=byPos[pos];
             if(!p) return null;
             return(
-              <div key={pos} style={{display:"flex",flexDirection:"column",alignItems:"center",width:62}}>
-                <div style={{
-                  width:36,height:36,borderRadius:"50%",
-                  background:"#E07000",
-                  border:"2px solid rgba(255,255,255,0.7)",
-                  display:"flex",alignItems:"center",justifyContent:"center",
-                  fontSize:FS.caption,fontWeight:700,color:"#fff",
-                  boxShadow:"0 2px 6px rgba(0,0,0,0.4)",
-                  marginBottom:3,
-                }}>
-                  <span>{posLabel(pos)}</span>
+              <div key={pos} style={{display:"flex",flexDirection:"column",alignItems:"center",width:64}}>
+                <div style={{position:"relative",width:38,height:38,marginBottom:5}}>
+                  <div style={{width:38,height:38,borderRadius:"50%",
+                    background:"linear-gradient(135deg,#FF7A33,#E07000)",
+                    border:"2px solid rgba(255,255,255,0.85)",
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    fontSize:FS.micro,fontWeight:800,color:"#fff",
+                    boxShadow:"0 2px 6px rgba(0,0,0,0.35)"}}>{posLabel(pos)}</div>
+                  <div style={{position:"absolute",bottom:-3,right:-3,fontSize:11,lineHeight:1,
+                    filter:"drop-shadow(0 1px 2px rgba(0,0,0,.5))"}}>{p.flag}</div>
                 </div>
-                <div style={{fontSize:FS.caption,color:"#fff",textAlign:"center",fontWeight:600,lineHeight:1.2,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{p.name.split(" ").slice(-1)[0]}</div>
-                <div style={{fontSize:8,color:"rgba(255,255,255,0.6)",textAlign:"center"}}>{p.flag}</div>
+                <div style={{fontSize:FS.caption,color:"#fff",textAlign:"center",fontWeight:600,lineHeight:1.15}}>{p.name.split(" ").slice(-1)[0]}</div>
               </div>
             );
           })}
         </div>
       ))}
       {/* Bench */}
-      <div style={{marginTop:14,paddingTop:10,borderTop:"1px dashed rgba(255,255,255,0.2)"}}>
-        <div style={{fontSize:FS.micro,color:"rgba(255,255,255,0.5)",textAlign:"center",marginBottom:8,letterSpacing:1,textTransform:"uppercase"}}>Bank</div>
-        <div style={{display:"flex",justifyContent:"center",gap:8}}>
+      <div style={{marginTop:16,paddingTop:12,borderTop:"1px solid rgba(255,255,255,0.14)",position:"relative",zIndex:1}}>
+        <div style={{fontSize:FS.micro,fontWeight:700,color:T.orange,textAlign:"center",marginBottom:9,letterSpacing:1.5,textTransform:"uppercase"}}>Bank</div>
+        <div style={{display:"flex",justifyContent:"center",gap:10,flexWrap:"wrap"}}>
           {BEST_XI.subs.map(p=>(
-            <div key={p.name} style={{display:"flex",flexDirection:"column",alignItems:"center",width:56}}>
-              <div style={{
-                width:30,height:30,borderRadius:"50%",
-                background:"rgba(255,255,255,0.15)",
-                border:"1px solid rgba(255,255,255,0.35)",
-                display:"flex",alignItems:"center",justifyContent:"center",
-                fontSize:FS.micro,fontWeight:700,color:"rgba(255,255,255,0.8)",
-                marginBottom:3,
-              }}>{p.pos}</div>
-              <div style={{fontSize:FS.micro,color:"rgba(255,255,255,0.7)",textAlign:"center",fontWeight:600,lineHeight:1.2}}>{p.name.split(" ").slice(-1)[0]}</div>
-              <div style={{fontSize:7,color:"rgba(255,255,255,0.4)",textAlign:"center"}}>{p.flag}</div>
+            <div key={p.name} style={{display:"flex",flexDirection:"column",alignItems:"center",width:58}}>
+              <div style={{position:"relative",width:30,height:30,marginBottom:4}}>
+                <div style={{width:30,height:30,borderRadius:"50%",
+                  background:"rgba(255,255,255,0.12)",
+                  border:"1px solid rgba(255,255,255,0.30)",
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  fontSize:FS.micro,fontWeight:700,color:"rgba(255,255,255,0.85)"}}>{p.pos}</div>
+                <div style={{position:"absolute",bottom:-2,right:-3,fontSize:9,lineHeight:1,
+                  filter:"drop-shadow(0 1px 2px rgba(0,0,0,.5))"}}>{p.flag}</div>
+              </div>
+              <div style={{fontSize:FS.micro,color:"rgba(255,255,255,0.78)",textAlign:"center",fontWeight:600,lineHeight:1.15}}>{p.name.split(" ").slice(-1)[0]}</div>
             </div>
           ))}
         </div>
       </div>
-    </div></div>
+    </div>
   );
 }
 
@@ -2999,6 +3004,77 @@ function ModelViz(){
 }
 
 // ── NATIONS TAB ───────────────────────────────────────────────────────────────
+// Refined inline metric badges for a nation (FORM / VALUE / MODEL).
+function NationBadges({team,dark}){
+  const T=useTheme();
+  const lang=useLang();
+  if(!MODEL_RANK[team]) return null;
+  const dev=formDev(team);
+  const upCol=dark?"#7BE8A0":(T.id==="dark"?"#3DBE6E":"#1E7A40");
+  const downCol=dark?"#FF9C8E":(T.id==="dark"?"#FF5544":"#C0392B");
+  const neutral=dark?"rgba(255,255,255,0.65)":T.textSub;
+  const fc=dev>0?upCol:dev<0?downCol:neutral;
+  const valCol=dark?"#fff":T.text;
+  const modelCol=dark?T.orange:(T.id==="dark"?T.orange:T.blue);
+  const items=[
+    dev!==undefined&&{lab:lang==="nl"?"Vorm":"Form",val:`${dev>0?"+":""}${dev}`,col:fc},
+    SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s,col:valCol},
+    {lab:"Model",val:`#${MODEL_RANK[team]}`,col:modelCol},
+  ].filter(Boolean);
+  const divider=dark?"rgba(255,255,255,0.18)":T.border;
+  return(
+    <div style={{display:"flex",alignItems:"center",flexShrink:0,
+      background:dark?"rgba(255,255,255,0.08)":(T.id==="dark"?"#161616":T.bg),
+      border:`1px solid ${divider}`,borderRadius:8,overflow:"hidden"}}>
+      {items.map((b,i)=>(
+        <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",
+          justifyContent:"center",padding:"3px 8px",minWidth:34,
+          borderLeft:i>0?`1px solid ${divider}`:"none"}}>
+          <span style={{fontSize:FS.body,fontWeight:800,color:b.col,lineHeight:1.05}}>{b.val}</span>
+          <span style={{fontSize:7,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
+            color:dark?"rgba(255,255,255,0.5)":T.textFaint,lineHeight:1.2,marginTop:1}}>{b.lab}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Featured champion card for the #1 nation (mirrors player ChampionCard styling).
+function NationChampionCard({n}){
+  const T=useTheme();
+  const lang=useLang();
+  return(
+    <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 65%,#0D3060 100%)",
+      borderTopLeftRadius:8,borderTopRightRadius:8,padding:"14px",borderLeft:`4px solid ${T.orange}`,
+      position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:0,right:0,width:90,height:"100%",
+        background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.12))",pointerEvents:"none"}}/>
+      <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:11}}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}>
+          <path d="M5 4h14v3a4 4 0 01-4 4h-1.2A3 3 0 0113 13.8V16h2a1 1 0 011 1v2H8v-2a1 1 0 011-1h2v-2.2A3 3 0 019.2 11H8a4 4 0 01-4-4V4z"/>
+        </svg>
+        <span style={{fontSize:FS.caption,fontWeight:800,letterSpacing:1.4,textTransform:"uppercase",color:T.orange}}>
+          {lang==="nl"?"Topfavoriet":"Top Favourite"}
+        </span>
+      </div>
+      <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:11}}>
+        <div style={{width:54,height:54,borderRadius:"50%",background:"rgba(255,255,255,0.12)",
+          border:`2.5px solid ${T.orange}`,display:"flex",alignItems:"center",justifyContent:"center",
+          fontSize:30,flexShrink:0}}>{n.flag}</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:FS.h1,fontWeight:700,color:"#fff",lineHeight:1.15}}>{lang==="nl"?TEAM_NL[n.team]||n.team:n.team}</div>
+          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",marginTop:2}}>
+            {lang==="nl"?"Groep":"Group"} {n.group} · {n.coach}</div>
+        </div>
+      </div>
+      <div style={{marginBottom:11}}><NationBadges team={n.team} dark/></div>
+      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55,
+        display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{n.outlook[lang]}</div>
+    </div>
+  );
+}
+
+// ── NATION CARD ───────────────────────────────────────────────────────────────
 function NationCard({n,open,onToggle}){
   const T=useTheme();
   const lang=useLang();
@@ -3012,30 +3088,7 @@ function NationCard({n,open,onToggle}){
           <div style={{fontSize:FS.body,fontWeight:700,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?TEAM_NL[n.team]||n.team:n.team}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?"Groep":"Group"} {n.group} · <span style={{color:T.textFaint}}>{n.coach}</span></div>
         </div>
-        {MODEL_RANK[n.team]&&(()=>{
-          const dev=formDev(n.team);
-          const fc=dev>0?(T.id==="dark"?"#3DBE6E":"#1E7A40"):dev<0?(T.id==="dark"?"#FF5544":"#C0392B"):T.textSub;
-          const badges=[
-            dev!==undefined&&{lab:lang==="nl"?"VORM":"FORM",val:`${dev>0?"+":""}${dev}`,col:fc},
-            SQUAD_VAL[n.team]&&{lab:lang==="nl"?"WAARDE":"VALUE",val:SQUAD_VAL[n.team].s,col:T.id==="dark"?"#3DBE6E":"#1E7A40"},
-            {lab:"MODEL",val:`#${MODEL_RANK[n.team]}`,col:T.id==="dark"?T.orange:T.blue},
-          ].filter(Boolean);
-          return(
-            <div style={{display:"flex",alignItems:"stretch",gap:3,flexShrink:0}}>
-              {badges.map((b,i)=>(
-                <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",
-                  justifyContent:"center",gap:1,
-                  background:T.id==="dark"?"#161616":T.bg,
-                  border:`1px solid ${T.border}`,
-                  borderRadius:4,padding:"3px 0",width:40}}>
-                  <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.4,
-                    color:T.textFaint,textTransform:"uppercase",lineHeight:1}}>{b.lab}</span>
-                  <span style={{fontSize:FS.caption,fontWeight:800,color:b.col,lineHeight:1}}>{b.val}</span>
-                </div>
-              ))}
-            </div>
-          );
-        })()}
+        {MODEL_RANK[n.team]&&<NationBadges team={n.team}/>}
         <Chevron open={open} color={T.textSub}/>
       </div>
       {open&&(
@@ -3072,6 +3125,7 @@ function NationsTab({preOpen=null}){
   const T=useTheme();
   const lang=useLang();
   const [open,setOpen]=useState(preOpen);
+  const [listOpen,setListOpen]=useState(!!preOpen);
   const cardRefs=React.useRef({});
   const toggle=name=>{
     setOpen(p=>{
@@ -3097,14 +3151,35 @@ function NationsTab({preOpen=null}){
   },[]);
   return(
     <div>
-      <div style={{fontSize:FS.h2,fontWeight:700,color:T.text,marginBottom:14}}>
-        {lang==="nl"?"Landenprofielen":"Nation Profiles"}
-      </div>
-      {[...NATIONS_DATA].sort((a,b)=>adjRank(a.team)-adjRank(b.team)).map(n=>(
-        <div key={n.team} ref={el=>cardRefs.current[n.team]=el}>
-          <NationCard n={n} open={open===n.team} onToggle={()=>toggle(n.team)}/>
-        </div>
-      ))}
+      {(()=>{
+        const ranked=[...NATIONS_DATA].sort((a,b)=>adjRank(a.team)-adjRank(b.team));
+        const top=ranked[0];
+        const rest=ranked.slice(1);
+        return(
+          <React.Fragment>
+            <NationChampionCard n={top}/>
+            <div onClick={()=>setListOpen(o=>!o)}
+              style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
+                background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+                borderBottomLeftRadius:listOpen?0:8,borderBottomRightRadius:listOpen?0:8,
+                padding:"9px 13px",marginBottom:listOpen?0:24}}>
+              <Chevron open={listOpen} color={T.textSub}/>
+              <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub}}>
+                {lang==="nl"?`Bekijk top ${ranked.length} landen`:`View top ${ranked.length} nations`}
+              </span>
+            </div>
+            {listOpen&&(
+              <div style={{marginBottom:24}}>
+                {rest.map(n=>(
+                  <div key={n.team} ref={el=>cardRefs.current[n.team]=el}>
+                    <NationCard n={n} open={open===n.team} onToggle={()=>toggle(n.team)}/>
+                  </div>
+                ))}
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })()}
     </div>
   );
 }
@@ -3463,26 +3538,24 @@ function FBrefStatsSection(){
   const base=natFilter?FBREF_WC.filter(p=>p.country===natFilter):FBREF_WC;
   const filtered=[...base].sort((a,b)=>b[sortKey]-a[sortKey]);
   const visible=filtered.slice(0,limit);
-  const COLS="26px 1fr 30px 24px 54px 36px 36px 42px";
+  const COLS="1fr 24px 54px 38px 38px 44px";
   const HDR=lang==="nl"
-    ?["#","Speler","Nat","Pos","Club","G/90","A/90","G+A/90"]
-    :["#","Player","Nat","Pos","Club","G/90","A/90","G+A/90"];
+    ?["Speler","Pos","Club","G/90","A/90","G+A/90"]
+    :["Player","Pos","Club","G/90","A/90","G+A/90"];
   const Row=({p,rank,accentColor})=>(
-    <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"6px 10px",
-      borderBottom:`1px solid ${T.border}`}}>
-      <div style={{fontSize:FS.caption,color:accentColor||T.textFaint,textAlign:"center",alignSelf:"center",fontWeight:700}}>{rank}</div>
-      <div style={{minWidth:0,alignSelf:"center"}}>
-        <div style={{fontSize:FS.small,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
-        <div style={{fontSize:9,color:T.textFaint}}>{p.flag} {p.country}</div>
+    <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"7px 12px",
+      borderBottom:`1px solid ${T.border}`,alignItems:"center"}}>
+      <div style={{minWidth:0,display:"flex",alignItems:"center",gap:8}}>
+        <span style={{fontSize:17,lineHeight:1,flexShrink:0}}>{p.flag}</span>
+        <span style={{fontSize:FS.small,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</span>
       </div>
-      <div style={{fontSize:FS.caption,color:T.textSub,alignSelf:"center"}}>{p.nat}</div>
-      <div style={{alignSelf:"center"}}>
+      <div>
         <span style={{fontSize:FS.micro,fontWeight:700,color:posColor(p.pos),background:`${posColor(p.pos)}18`,borderRadius:3,padding:"1px 4px"}}>{p.pos}</span>
       </div>
-      <div style={{fontSize:FS.caption,color:T.textSub,alignSelf:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.squad}</div>
-      <div style={{fontSize:FS.caption,fontWeight:600,color:orange,textAlign:"right",alignSelf:"center"}}>{p.g90.toFixed(2)}</div>
-      <div style={{fontSize:FS.caption,fontWeight:600,color:blue,textAlign:"right",alignSelf:"center"}}>{p.a90.toFixed(2)}</div>
-      <div style={{fontSize:FS.small,fontWeight:800,color:accentColor||T.text,textAlign:"right",alignSelf:"center"}}>{p.ga90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,color:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.squad}</div>
+      <div style={{fontSize:FS.caption,fontWeight:600,color:orange,textAlign:"right"}}>{p.g90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,fontWeight:600,color:blue,textAlign:"right"}}>{p.a90.toFixed(2)}</div>
+      <div style={{fontSize:FS.small,fontWeight:800,color:accentColor||T.text,textAlign:"right"}}>{p.ga90.toFixed(2)}</div>
     </div>
   );
   return(
@@ -3510,13 +3583,13 @@ function FBrefStatsSection(){
           <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"8px 12px",
             borderBottom:`2px solid ${T.border}`,background:T.id==="dark"?"#161616":T.bg}}>
             {HDR.map((h,i)=>{
-              const sortable=i>=5;
-              const keyFor=["","","","","","g90","a90","ga90"][i];
+              const sortable=i>=3;
+              const keyFor=["","","","g90","a90","ga90"][i];
               const active=sortable&&sortKey===keyFor;
               return(
               <div key={h} onClick={sortable?()=>{setSortKey(keyFor);setLimit(l=>l);}:undefined}
                 style={{fontSize:FS.micro,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
-                  color:active?orange:T.textFaint,textAlign:i>=5?"right":"left",
+                  color:active?orange:T.textFaint,textAlign:i>=3?"right":"left",
                   cursor:sortable?"pointer":"default",userSelect:"none"}}>
                 {h}{active?" ↓":""}
               </div>
@@ -3577,16 +3650,10 @@ function PlayersTab(){
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   return(
     <div>
-      {/* Onder de radar (was Talenten) — placed above the spotlight */}
-      <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:10,paddingLeft:13}}>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={T.textSub} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
-        </svg>
-        <span style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub}}>
-          {lang==="nl"?"Onder de Radar":"Under the Radar"}
-        </span>
-      </div>
-      <ChampionCard p={DARK_HORSES[0]}/>
+      {/* Onder de radar — label sits inside the champion card */}
+      <ChampionCard p={DARK_HORSES[0]}
+        label={lang==="nl"?"Onder de Radar":"Under the Radar"}
+        icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>}/>
       <div onClick={()=>setDarkMore(o=>!o)}
         style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
           background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
@@ -3604,16 +3671,10 @@ function PlayersTab(){
         </div>
       )}
 
-      {/* Spotlight — featured star champion card attached to a subtle foldout */}
-      <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:10,paddingLeft:13}}>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill={T.textSub} stroke="none" style={{flexShrink:0}}>
-          <path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/>
-        </svg>
-        <span style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub}}>
-          {lang==="nl"?"Sterspelers":"Spotlight"}
-        </span>
-      </div>
-      <ChampionCard p={SPOTLIGHT[0]}/>
+      {/* Spotlight — label sits inside the champion card */}
+      <ChampionCard p={SPOTLIGHT[0]}
+        label={lang==="nl"?"Sterspelers":"Spotlight"}
+        icon={<svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}><path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/></svg>}/>
       <div onClick={()=>setSpotlightMore(o=>!o)}
         style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",
           background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
