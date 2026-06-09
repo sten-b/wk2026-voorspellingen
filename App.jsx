@@ -1122,7 +1122,7 @@ const [fsA,fsB]=KO_SCORES[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]||[2,1];
 // ── CONTEXTS ──────────────────────────────────────────────────────────────────
 const LangCtx=createContext("nl");
 const ThemeCtx=createContext(THEMES.default);
-const NavCtx=createContext({setTab:()=>{},setNationsOpen:()=>{}});
+const NavCtx=createContext({setTab:()=>{},setNationsOpen:()=>{},goToModel:()=>{}});
 const useLang=()=>useContext(LangCtx);
 const useTheme=()=>useContext(ThemeCtx);
 const useT=()=>LANG[useContext(LangCtx)];
@@ -1637,6 +1637,7 @@ function MatchRow({t1,s1,t2,s2,matchKey,date,open,onToggle}){
   const T=useTheme();
   const lang=useLang();
   const tr=useT();
+  const {goToModel}=useNav();
   const winner=s1>s2?t1:s2>s1?t2:null;
   const draw=s1===s2;
   const expl=mExpl(matchKey,lang);
@@ -1663,6 +1664,25 @@ function MatchRow({t1,s1,t2,s2,matchKey,date,open,onToggle}){
           </span>
 
           {expl}
+          {/* Links to the model sections behind this prediction */}
+          <div style={{display:"flex",gap:6,marginTop:9,flexWrap:"wrap"}}>
+            {[
+              {sec:"data",label:lang==="nl"?"Databronnen":"Data sources"},
+              {sec:"score",label:lang==="nl"?"Landscore":"Team score"},
+              {sec:"result",label:lang==="nl"?"Uitslag":"Result"},
+            ].map(l=>{
+              const m=marker(T,"orange");
+              return(
+                <button key={l.sec} onClick={e=>{e.stopPropagation();goToModel&&goToModel(l.sec);}}
+                  style={{display:"inline-flex",alignItems:"center",gap:4,padding:"4px 9px",
+                    borderRadius:20,border:`1px solid ${m.border}`,background:m.bg,color:m.fg,
+                    fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:0.3,cursor:"pointer"}}>
+                  {l.label}
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
@@ -2877,13 +2897,21 @@ function PitchViz(){
 }
 
 // ── MODEL VISUALISATION COMPONENT ────────────────────────────────────────────
-function ModelViz(){
+function ModelViz({scrollTo,onScrolled}={}){
   const T=useTheme();
   const lang=useLang();
   const [openFactor,setOpenFactor]=useState(null);
   const [exTeam,setExTeam]=useState("Argentina");
   const [exA,setExA]=useState("Spain");
   const [exB,setExB]=useState("Uruguay");
+  const stepRefs=React.useRef({});
+  React.useEffect(()=>{
+    if(scrollTo&&stepRefs.current[scrollTo]){
+      const el=stepRefs.current[scrollTo];
+      setTimeout(()=>{el.scrollIntoView({behavior:"smooth",block:"start"});},80);
+      onScrolled&&onScrolled();
+    }
+  },[scrollTo]);
   // Theme-compliant palette only: orange (primary), blue (secondary),
   // green/red reserved strictly for semantic up/down vs FIFA, greys for everything else.
   const orange=T.orange;
@@ -3017,6 +3045,7 @@ function ModelViz(){
       </div>
 
       {/* STEP 1 — FACTORS (collapsed: label + weight; tap to expand) */}
+      <div ref={el=>stepRefs.current.data=el}/>
       {SL(lang==="nl"?"Stap 1 · De vijf bouwstenen":"Step 1 · The five building blocks","layers")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         overflow:"hidden",marginBottom:16}}>
@@ -3047,6 +3076,7 @@ function ModelViz(){
       </div>
 
       {/* STEP 2 — CALCULATION BRIDGE */}
+      <div ref={el=>stepRefs.current.score=el}/>
       {SL(lang==="nl"?"Stap 2 · Naar één score":"Step 2 · Into one score","sigma")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
@@ -3159,6 +3189,7 @@ function ModelViz(){
       </div>
 
       {/* STEP 4 — MATCH RESULT (model 2) */}
+      <div ref={el=>stepRefs.current.result=el}/>
       {SL(lang==="nl"?"Stap 4 · De uitslag":"Step 4 · The result","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
@@ -3965,7 +3996,47 @@ function PSection({label,sub,accent}){
   );
 }
 
-function PlayersTab(){
+// Predicted-champion / tournament banner — shared by the Group tab and WK2026 tab.
+function TournamentBanner({setTab}){
+  const T=useTheme();
+  const lang=useLang();
+  const tr=useT();
+  const fWin=fsA>fsB?FINAL_TEAMS[0]:FINAL_TEAMS[1];
+  if(T.id==="default"){
+    return(
+      <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",borderRadius:6,padding:"14px",marginBottom:12,borderLeft:`4px solid ${T.orange}`,position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.10))",pointerEvents:"none"}}/>
+        <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
+        <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
+        <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
+        <div onClick={()=>setTab&&setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
+          <span style={{fontSize:20}}>🏆</span>
+          <div>
+            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
+            <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:"#fff"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+          </div>
+          <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:WEIGHT.medium}}>{tr.knockoutLink} →</span>
+        </div>
+      </div>
+    );
+  }
+  return(
+    <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
+      <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
+      <div onClick={()=>setTab&&setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"8px 12px",cursor:"pointer"}}>
+        <span style={{fontSize:20}}>🏆</span>
+        <div>
+          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
+          <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:"#FF5500"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+        </div>
+        <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:WEIGHT.medium}}>{tr.knockoutLink} →</span>
+      </div>
+    </div>
+  );
+}
+
+function PlayersTab({setTab}){
   const T=useTheme();
   const lang=useLang();
   const [view,setView]=useState("players");
@@ -4071,6 +4142,9 @@ function PlayersTab(){
         {infoPanel==="news"&&<div style={{marginTop:10}}><NewsSection/></div>}
         {infoPanel==="injuries"&&<div style={{marginTop:10}}><InjuriesSection/></div>}
       </div>
+
+      {/* Predicted-champion banner (shared with the Group tab) */}
+      <TournamentBanner setTab={setTab}/>
 
       {/* View switcher: Nations / Players / FPL team */}
       <div style={{display:"flex",gap:0,marginBottom:18,
@@ -4360,6 +4434,7 @@ export default function App(){
             if(el){el.scrollIntoView({behavior:"smooth",block:"start"});if(!openMatches[key])toggleMatch(key);}
           };
   const [openOutlook,setOpenOutlook]=useState({});
+  const [modelSection,setModelSection]=useState(null); // step to scroll to on Model tab
 
   const T=THEMES[theme];
   const toggleMatch=key=>setOpenMatches(p=>({...p,[key]:!p[key]}));
@@ -4370,14 +4445,14 @@ export default function App(){
   return(
     <ThemeCtx.Provider value={T}>
     <LangCtx.Provider value={lang}>
-    <NavCtx.Provider value={{setTab,setNationsOpen}}>
+    <NavCtx.Provider value={{setTab,setNationsOpen,goToModel:(sec)=>{setModelSection(sec);setTab("model");}}}>
       {loading&&<AppLoader onDone={()=>setLoading(false)}/>}
-      <div style={{minHeight:"100vh",
+      <div className={T.id==="orangeLion"?"ol-light":""} style={{minHeight:"100vh",
         background:T.id==="orangeLion"
           ? "radial-gradient(120% 80% at 50% 0%, #FF7A2E 0%, #E85100 45%, #D94800 100%)"
           : T.bg,
         fontSize:FS.body,color:T.text,overflowX:"hidden"}}>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');*{box-sizing:border-box;margin:0;padding:0;font-family:${FONT};}body{font-family:${FONT};}button,input,select,textarea{font-family:${FONT};cursor:pointer;}`}</style>
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');*{box-sizing:border-box;margin:0;padding:0;font-family:${FONT};}body{font-family:${FONT};}button,input,select,textarea{font-family:${FONT};cursor:pointer;}.ol-light{-webkit-font-smoothing:antialiased;}.ol-light [style*="font-weight:800"]{font-weight:600!important;}.ol-light [style*="font-weight:700"]{font-weight:500!important;}.ol-light [style*="font-weight:600"]{font-weight:400!important;}`}</style>
         <Nav tab={tab} setTab={setTab}/>
 
         <div style={{padding:"14px 16px 80px",width:"100%",boxSizing:"border-box"}}>
@@ -4385,35 +4460,7 @@ export default function App(){
           {/* TOURNAMENT */}
           {tab==="bracket"&&(
             <React.Fragment>
-              {T.id==="default"
-                ? <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",borderRadius:6,padding:"14px",marginBottom:12,borderLeft:`4px solid ${T.orange}`,position:"relative",overflow:"hidden"}}>
-                    {/* WK2026 decorative stripes */}
-                    <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.10))",pointerEvents:"none"}}/>
-                    <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
-                    <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
-                    <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
-                    <div onClick={()=>setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
-                      <span style={{fontSize:20}}>🏆</span>
-                      <div>
-                        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
-                        <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:"#fff"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
-                      </div>
-                      <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:WEIGHT.medium}}>{tr.knockoutLink} →</span>
-                    </div>
-                  </div>
-                : <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
-                    <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
-                    <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
-                    <div onClick={()=>setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"8px 12px",cursor:"pointer"}}>
-                      <span style={{fontSize:20}}>🏆</span>
-                      <div>
-                        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
-                        <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:"#FF5500"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
-                      </div>
-                      <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:WEIGHT.medium}}>{tr.knockoutLink} →</span>
-                    </div>
-                  </div>
-              }
+              <TournamentBanner setTab={setTab}/>
               <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
                 {lang==="nl"?"Groepsfase":"Group Stage"}
               </div>
@@ -4476,7 +4523,7 @@ export default function App(){
                     {tab==="model"&&(
             <React.Fragment>
               {/* ── MODEL EXPLANATION + VISUALISATIONS (sections 1-4) ── */}
-              <ModelViz/>
+              <ModelViz scrollTo={modelSection} onScrolled={()=>setModelSection(null)}/>
 
               {/* ── OVER / UNDERPERFORMERS (section 5) ── */}
               <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,marginTop:16,
@@ -4631,7 +4678,7 @@ export default function App(){
           )}
 
           {/* PLAYERS (now also contains the Nations section) */}
-          {tab==="players"&&<PlayersTab/>}
+          {tab==="players"&&<PlayersTab setTab={setTab}/>}
         </div>
 
         {/* FOOTER */}
