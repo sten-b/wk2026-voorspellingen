@@ -2399,69 +2399,69 @@ const PLAYER_WIKI = {
 };
 
 const SPOTLIGHT = [
-  { name:"Kylian Mbappe", st:{G:38,A:7,T:0}, value:"€150m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
+  { name:"Kylian Mbappe", st:{G:38,A:7,T:0}, stats:[{v:"25",nl:"La Liga goals",en:"La Liga goals"},{v:"Topscorer",nl:"La Liga",en:"La Liga top scorer"},{v:"5",nl:"assists",en:"assists"}], value:"€150m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
     team:"France", pos:{nl:"Aanvaller",en:"Forward"}, age:27, flag:"🇫🇷",
     bio:{nl:"Aanvoerder van het best georganiseerde elftal van het toernooi, op 27 in zijn absolute piekjaren bij Real Madrid. Mbappe scoorde zijn 50e interland in de Nations League. Zijn combinatie van snelheid, afronding en leiderschapskwaliteiten is zonder gelijke op dit toernooi. Groep I plaatst hem direct tegenover Haaland: twee van de vijf beste spelers ter wereld in dezelfde poule. Als hij het openingsduel wint, trekt Deschamps de selectie gecontroleerd door naar de knockouts. Topscorer van La Liga 2025/26 met 25 goals voor Real Madrid (5 assists), maar zag Barcelona er met de titel vandoor gaan.",en:"Captain of the best-organised squad at the tournament, at 27 in his absolute peak years at Real Madrid. Scored his 50th international in the Nations League. His combination of pace, finishing and leadership is unmatched. Group I places him directly against Haaland: two of the top-five players in the world in the same group. La Liga top scorer with 25 goals for Real Madrid (5 assists), though Barcelona took the title."} },
 
-  { name:"Lamine Yamal", st:{G:22,A:15,T:2}, value:"€200m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
+  { name:"Lamine Yamal", st:{G:22,A:15,T:2}, stats:[{v:"16",nl:"goals",en:"goals"},{v:"11",nl:"assists (#1 LaLiga)",en:"assists (#1 LaLiga)"},{v:"6+4",nl:"CL goals+assists",en:"CL goals+assists"}], value:"€200m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
     team:"Spain", pos:{nl:"Rechtsbuiten",en:"Right winger"}, age:18, flag:"🇪🇸",
     bio:{nl:"18 jaar, Europees kampioen van 2024, en de gevaarlijkste rechtsbuiten van het toernooi. Yamal speelde door een hamstringkwetsuur heen in de aanloop naar het WK: De la Fuente behoedde hem voor risico's. Merino (voetblessure) was aanvankelijk twijfelachtig maar is geselecteerd. Yamal trekt verdedigingen scheef waardoor Pedri, Williams en Olmo ruimte vinden. Als Spanje ver gaat, is hij de reden. Spil in Barcelona's kampioensseizoen: 16 goals en 11 assists in een jaar waarin de Catalanen hun 29e La Liga-titel pakten.",en:"18 years old, Euro 2024 champion, the most dangerous right winger at the tournament. Yamal played through a hamstring issue: De la Fuente carefully managed his minutes. Merino (foot stress fracture) is selected. Yamal pulls defences apart creating space for Pedri, Williams and Olmo. If Spain go deep, he is the reason. Pivotal in Barcelona's title win: 16 goals and 11 assists as they claimed their 29th La Liga crown."} },
 
-  { name:"Erling Haaland", st:{G:38,A:8,T:2}, value:"€180m", club:"Manchester City", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/manchester-city.png",
+  { name:"Erling Haaland", st:{G:38,A:8,T:2}, stats:[{v:"27",nl:"club goals",en:"club goals"},{v:"16",nl:"WK-kwal. goals",en:"WC qual. goals"},{v:"55",nl:"interlandgoals",en:"intl goals"}], value:"€180m", club:"Manchester City", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/manchester-city.png",
     team:"Norway", pos:{nl:"Spits",en:"Striker"}, age:25, flag:"🇳🇴",
     bio:{nl:"Zijn eerste WK, aangekomen als de meest productieve striker op de planeet. 55 interlanddoelpunten, 16 in de WK-kwalificatie alleen. Odegaard leidde Arsenal naar de Premier League-titel dit seizoen: samen vormen ze het gevaarlijkste aanvalsduo in de groepsfase. Noorwegen verloor geen kwalificatiewedstrijd. Het duel met Van Dijk in Groep F is de meest geanticipeerde individuele confrontatie van de groepsfase. Andermaal moordend efficiënt voor Manchester City met 27 goals en 8 assists, ook al bleef grote clubeer uit.",en:"His first World Cup, arriving as the most prolific striker on the planet. 55 international goals, 16 in World Cup qualifying alone. Odegaard led Arsenal to the Premier League title this season. Together they form the most dangerous attacking duo in the group stage. His duel with Van Dijk in Group F is the defining individual confrontation of the group stage. Ruthlessly efficient again for Manchester City with 27 goals and 8 assists."} },
 
-  { name:"Jude Bellingham", st:{G:6,A:4,M:30}, value:"€130m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
+  { name:"Jude Bellingham", st:{G:6,A:4,M:30}, stats:[{v:"6",nl:"goals",en:"goals"},{v:"4",nl:"assists",en:"assists"},{v:"#1",nl:"Engeland vorm",en:"England form"}], value:"€130m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
     team:"England", pos:{nl:"Middenvelder",en:"Midfielder"}, age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     bio:{nl:"Als Engeland ooit het WK wint, is Bellingham de reden. De 22-jarige arriveert na een uitstekend seizoen bij Real Madrid. Tuchel's systeem draait om zijn vermogen om laat op te komen: Declan Rice beschermt, Bellingham beslist in het strafschopgebied. Engeland scoort het hoogst op onze formranglijst van alle 48 landen. De druk van een halve eeuw gemiste titels weegt, maar Bellingham lijkt de schouders breed genoeg. Een wisselvalliger seizoen bij Real Madrid (6 goals, 4 assists), deels door een schouderoperatie eerder in het jaar.",en:"If England ever win a World Cup, Bellingham is the reason. The 22-year-old arrives after an outstanding season at Real Madrid. Tuchel's system revolves around his ability to arrive late: Declan Rice screens, Bellingham decides in the box. England top our form model rankings of all 48 nations. A more uneven season at Real Madrid (6 goals, 4 assists), partly after shoulder surgery earlier in the year."} },
 
-  { name:"Vinicius Jr", st:{G:16,A:5,M:32}, value:"€140m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
+  { name:"Vinicius Jr", st:{G:16,A:5,M:32}, stats:[{v:"16",nl:"goals",en:"goals"},{v:"5",nl:"assists",en:"assists"},{v:"32",nl:"duels",en:"apps"}], value:"€140m", club:"Real Madrid", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-madrid.png",
     team:"Brazil", pos:{nl:"Linksbuiten",en:"Left winger"}, age:24, flag:"🇧🇷",
     bio:{nl:"De beste winger ter wereld op dit moment, maar met één uitdaging: zijn toernooirecord is zwakker dan zijn clubrecord. Ancelotti kent hem beter dan wie ook: dat werkt in twee richtingen. Brazilië mist Neymar (twijfelachtig, kuit), Rodrygo (ACL) en Estêvão (hamstring). Vinicius moet meer leveren dan ooit tevoren, in het enige grote toernooi dat hij nog niet gedomineerd heeft. 16 goals en 5 assists in 32 La Liga-duels voor Real Madrid, al eindigde de ploeg achter kampioen Barcelona.",en:"The best winger in the world right now, with one challenge: his tournament record is weaker than his club record. Ancelotti knows him better than anyone: that cuts both ways. Brazil miss Neymar (doubtful, calf), Rodrygo (ACL) and Estêvão (hamstring). Vinicius must deliver more than ever before. 16 goals and 5 assists in 32 La Liga games for Real Madrid, who finished behind champions Barcelona."} },
 
-  { name:"Lionel Messi", st:{T:"MLS Cup",note:"MLS MVP"}, value:"€18m", club:"Inter Miami", clubLogo:"https://assets.football-logos.cc/logos/usa/700x700/inter-miami.png",
+  { name:"Lionel Messi", st:{T:"MLS Cup",note:"MLS MVP"}, stats:[{v:"MVP",nl:"MLS",en:"MLS MVP"},{v:"MLS Cup",nl:"gewonnen",en:"winner"},{v:"38",nl:"jaar",en:"years"}], value:"€18m", club:"Inter Miami", clubLogo:"https://assets.football-logos.cc/logos/usa/700x700/inter-miami.png",
     team:"Argentina", pos:{nl:"Aanvaller",en:"Forward"}, age:38, flag:"🇦🇷",
     bio:{nl:"Zijn zesde en vrijwel zeker laatste WK op 38. Scaloni beheert voorzichtig een hamstringblessure die hij opliep op 26 mei bij Inter Miami: hij traint gedeeltelijk mee en kan minuten pakken in oefenwedstrijden voor de opener. Balerdi is definitief afwezig (kuit). Molina, Paredes, Paz en Montiel trainen apart. Als Messi fit is en scoort, is Argentinië een andere ploeg. Als hij beperkt blijft, valt hun plafond dramatisch. Tweevoudig MLS-MVP die Inter Miami naar hun eerste MLS Cup leidde; verlengde tot 2028 maar kreeg vlak voor het WK last van een hamstring.",en:"His sixth and almost certainly last World Cup at 38. Scaloni is carefully managing a hamstring injury sustained May 26 at Inter Miami: training partially, may feature before the opener. Balerdi definitively out (calf). Molina, Paredes, Paz and Montiel all training separately. If Messi is fit and scoring, Argentina are a different team. Two-time MLS MVP who led Inter Miami to their first MLS Cup; extended to 2028 but picked up a hamstring issue just before the World Cup."} },
 
-  { name:"Cristiano Ronaldo", st:{note:"Saudi PL titelstrijd"}, value:"€12m", club:"Al-Nassr", clubLogo:"https://assets.football-logos.cc/logos/saudi-arabia/700x700/al-nassr.png",
+  { name:"Cristiano Ronaldo", st:{note:"Saudi PL titelstrijd"}, stats:[{v:"Titelstrijd",nl:"Saudi PL",en:"Saudi PL race"},{v:"41",nl:"jaar",en:"years"},{v:"Aanvoerder",nl:"Portugal",en:"captain"}], value:"€12m", club:"Al-Nassr", clubLogo:"https://assets.football-logos.cc/logos/saudi-arabia/700x700/al-nassr.png",
     team:"Portugal", pos:{nl:"Aanvaller",en:"Forward"}, age:41, flag:"🇵🇹",
     bio:{nl:"Op 41 speelt Ronaldo zijn definitief laatste WK. Martinez bouwt het systeem niet meer volledig om hem heen: Vitinha, Bruno Fernandes en Bernardo Silva dragen het middenveld; PSG's Champions League-winnaars vormen de ruggengraat. Ronaldo's waarde zit in zijn aanwezigheid bij standaardsituaties, zijn vrije trappen en zijn vermogen om in de zestien te beslissen. Hij gaat scoren. De vraag is of Portugal ver genoeg komt. Op zijn 41e nog altijd trefzeker; leidde Al-Nassr naar de titelstrijd bovenaan de Saudi Pro League.",en:"At 41 Ronaldo plays his definitively last World Cup. Martinez no longer builds the system around him: Vitinha, Bruno Fernandes and Bernardo Silva carry the midfield; PSG's Champions League winners provide the backbone. Ronaldo's value lies in set pieces, free kicks and box presence. He will score. The question is whether Portugal go deep enough. Still prolific at 41, leading Al-Nassr in the fight for the Saudi Pro League title."} },
 
-  { name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, value:"€45m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
+  { name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, stats:[{v:"La Liga",nl:"kampioen",en:"champion"},{v:"5",nl:"assists",en:"assists"},{v:"Dirigent",nl:"middenveld",en:"midfield hub"}], value:"€45m", club:"FC Barcelona", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/barcelona.png",
     team:"Netherlands", pos:{nl:"Middenvelder",en:"Midfielder"}, age:29, flag:"🇳🇱",
     bio:{nl:"De dirigent van het Nederlandse middenveld, hersteld van een hamstringblessure bij Barcelona. Xavi Simons (ACL, april) is afwezig: een significant verlies voor de creatieve diepte. Koeman's systeem is pragmatisch maar Van Dijk, Dumfries en Gakpo zijn allemaal fit. Als De Jong zijn niveau vindt, heeft Nederland de structuur om iedereen op een goede dag te verslaan. Het openingsduel met Japan bepaalt de dynamiek in Groep F. Kwam na een blessure terug in de Barcelona-ploeg en droeg met zijn balbeheersing bij aan het kampioensseizoen.",en:"The conductor of the Dutch midfield, recovered from a hamstring injury at Barcelona. Xavi Simons (ACL, April) is absent: a significant creative loss. Koeman's system is pragmatic but Van Dijk, Dumfries and Gakpo are all fit. If De Jong finds his level, Netherlands can beat anyone on their day. The Japan opener defines Group F. Returned from injury to the Barcelona side and helped steer the title-winning campaign."} },
 
-  { name:"Memphis Depay", st:{}, value:"€8m", club:"Corinthians", clubLogo:"https://assets.football-logos.cc/logos/brazil/700x700/corinthians.png",
+  { name:"Memphis Depay", st:{}, stats:[{v:"44",nl:"interlandgoals (#1)",en:"intl goals (#1)"},{v:"Aanvoerder",nl:"Oranje",en:"captain"},{v:"31",nl:"jaar",en:"years"}], value:"€8m", club:"Corinthians", clubLogo:"https://assets.football-logos.cc/logos/brazil/700x700/corinthians.png",
     team:"Netherlands", pos:{nl:"Aanvaller",en:"Forward"}, age:31, flag:"🇳🇱",
     bio:{nl:"Topscorer aller tijden van Oranje met 44 doelpunten, maar de context is veranderd. Memphis speelt bij Corinthians in Brazilië: fit, maar minder explosief dan in zijn topjaren bij Lyon of Atletico. Zijn waarde zit in zijn vrijesparkwaliteit, zijn ervaring in grote wedstrijden en het vermogen om een wedstrijd individueel te openen. Als invaller met specifieke rol is hij waardevol. Als starter over zes wedstrijden zijn er vragen. Als aanvoerder van Oranje bleef hij bij Corinthians in Brazilië scoren en richtte zich op een laatste groot toernooi.",en:"Netherlands all-time top scorer with 44 goals, but the context has changed. Memphis plays for Corinthians in Brazil: fit but less explosive than his peak years at Lyon or Atletico. His value lies in dead-ball quality, big-match experience and the ability to unlock a game individually. Valuable as a substitute; questions as a consistent starter. As Netherlands captain he kept scoring for Corinthians in Brazil ahead of one last major tournament."} },
 
-  { name:"Mohamed Salah", st:{G:10,A:9,T:0}, value:"€30m", club:"Liverpool", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/liverpool.png",
+  { name:"Mohamed Salah", st:{G:10,A:9,T:0}, stats:[{v:"7",nl:"goals",en:"goals"},{v:"7",nl:"assists",en:"assists"},{v:"Aanvoerder",nl:"Liverpool",en:"Liverpool captain"}], value:"€30m", club:"Liverpool", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/liverpool.png",
     team:"Egypt", pos:{nl:"Rechtsbuiten",en:"Right winger"}, age:33, flag:"🇪🇬",
     bio:{nl:"Zijn allereerste WK op 33, een podium dat hem jarenlang ontging. Liverpool's all-time topscorer en aanvoerder arriveert als een van de gevaarlijkste rechtsbuitens die ooit aan een WK deelneemt. De vraag is niet zijn kwaliteit maar of Egypte collectief sterk genoeg is om zijn impact te benutten. Marmoush (Manchester City) is zijn aanvalsparter. Groep G heeft België, Iran en Nieuw-Zeeland: voor het eerst in decennia heeft Egypte een reëel pad naar de achtste finale. Op zijn 33e nog altijd bepalend voor Liverpool met 7 goals en 7 assists in de Premier League.",en:"His very first World Cup at 33, a stage that eluded him for years. Liverpool's all-time top scorer and captain arrives as one of the most dangerous right wingers to ever appear at a World Cup. The question is not his quality but whether Egypt are collectively strong enough to maximise his impact. Marmoush (Man City) is his partner. Group G has Belgium, Iran and New Zealand: Egypt have a realistic last-16 path. Still decisive for Liverpool at 33 with 7 goals and 7 assists in the league."} },
 ];
 
 const DARK_HORSES = [
-  { name:"Ritsu Doan", st:{G:10,A:6}, value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/eintracht-frankfurt.png",
+  { name:"Ritsu Doan", st:{G:10,A:6}, stats:[{v:"10",nl:"goals",en:"goals"},{v:"6",nl:"assists",en:"assists"},{v:"Beste",nl:"Europese seizoen",en:"best Euro season"}], value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/eintracht-frankfurt.png",
     team:"Japan", pos:{nl:"Middenvelder/Vleugelspeler",en:"Midfielder/Winger"}, age:26, flag:"🇯🇵",
     club:"Eintracht Frankfurt",
     why:{nl:"Met Mitoma buiten de selectie door een hamstringblessure draagt Doan (26) het aanvallende gewicht van Japan. Bij Eintracht Frankfurt leverde hij zijn beste Europese seizoen: 10 goals, 6 assists, consistent sterk in grote wedstrijden. Zijn langafstandsschoten, directe dribbelstijl en capaciteit om grote ploegen te bestraffen (scoorde bij de 2-1 zege op Duitsland in 2022) maken hem de gevaarlijkste speler van Japan die je niet ziet aankomen. Beleefde bij Eintracht Frankfurt zijn beste Europese seizoen met dubbele cijfers in goals en assists.",en:"With Mitoma out through injury, Doan carries Japan's attacking weight on the right. At Eintracht Frankfurt he delivered his best European season: 10 goals, 6 assists. His long-range shooting and capacity to punish major nations (scored in Japan's 2022 win over Germany) make him the most dangerous player on Japan you don't see coming. Enjoyed his best European season at Eintracht Frankfurt with double figures in goals and assists."} },
 
-  { name:"Kendry Paez", st:{}, value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/chelsea.png",
+  { name:"Kendry Paez", st:{}, stats:[{v:"19",nl:"jaar",en:"years"},{v:"Chelsea",nl:"eigendom",en:"Chelsea owned"},{v:"River Plate",nl:"huur",en:"River Plate loan"}], value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/england/700x700/chelsea.png",
     team:"Ecuador", pos:{nl:"Aanvallende middenvelder",en:"Attacking midfielder"}, age:19, flag:"🇪🇨",
     club:"Chelsea (loan: River Plate)",
     why:{nl:"19 jaar, op uitleenbasis bij River Plate vanuit Chelsea. Paez is de meest opwindende tiener van het toernooi: elegant aan de bal, angstloos in 1-tegen-1-situaties, capabel om momenten te creëren die wedstrijden kantelen. Zijn samenwerking met Caicedo in het middenveld geeft Ecuador een technische, creatieve speler die ook druk weerstaat. Als hij dit toernooi pakt, is Chelsea een fortuin rijker. Het 19-jarige Ecuadoraanse talent maakte zijn opwachting na zijn overgang naar Chelsea, met speeltijd op huurbasis.",en:"19 years old, on loan at River Plate from Chelsea. Paez is the most exciting teenager at the tournament: elegant in possession, fearless in one-on-one situations, capable of creating the moments that change matches. His partnership with Caicedo gives Ecuador a technical, creative player who also handles pressure. The 19-year-old Ecuadorian made his move to Chelsea, gaining minutes out on loan."} },
 
-  { name:"Takefusa Kubo", st:{T:"Copa del Rey"}, value:"€31m", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-sociedad.png",
+  { name:"Takefusa Kubo", st:{T:"Copa del Rey"}, stats:[{v:"Copa del Rey",nl:"2026",en:"2026"},{v:"Elite",nl:"dribbels",en:"dribbling"},{v:"23",nl:"jaar",en:"years"}], value:"€31m", clubLogo:"https://assets.football-logos.cc/logos/spain/700x700/real-sociedad.png",
     team:"Japan", pos:{nl:"Rechtsmiddenvelder",en:"Right midfielder"}, age:23, flag:"🇯🇵",
     club:"Real Sociedad",
     why:{nl:"Japan's meest technisch begaafde speler en nu, met Mitoma afwezig, de creatieve aanvoerder van de aanval. Bij Real Sociedad heeft Kubo (23) bewezen consistent te zijn in La Liga: zijn dribbelstatistieken, schoten van buiten de zestien en bijdrage in nauwe ruimtes zijn allemaal elite. Als Japan Duitsland of Nederland verslaat, is Kubo waarschijnlijk de man die het verschil maakt. Kroonde zijn seizoen bij Real Sociedad met winst van de Copa del Rey 2026, na strafschoppen tegen Atlético.",en:"Japan's most technically gifted player and now, with Mitoma absent, the creative leader of their attack. At Real Sociedad, Kubo (23) has proven consistent in La Liga: dribbling stats, long-range shooting and tight-space contributions all elite. If Japan beat Germany or Netherlands, Kubo will almost certainly be the difference-maker. Capped his Real Sociedad season by winning the 2026 Copa del Rey on penalties against Atlético."} },
 
-  { name:"Lautaro Martinez", st:{G:17,A:6}, value:"€87m", clubLogo:"https://assets.football-logos.cc/logos/italy/700x700/inter-milan.png",
+  { name:"Lautaro Martinez", st:{G:17,A:6}, stats:[{v:"17",nl:"goals",en:"goals"},{v:"6",nl:"assists",en:"assists"},{v:"Aanvoerder",nl:"Inter",en:"Inter captain"}], value:"€87m", clubLogo:"https://assets.football-logos.cc/logos/italy/700x700/inter-milan.png",
     team:"Argentina", pos:{nl:"Spits",en:"Striker"}, age:27, flag:"🇦🇷",
     club:"Inter Milan",
     why:{nl:"Als Messi (hamstring) beperkt blijft, is Lautaro Martinez de man die Argentinië draagt. De Inter Milan-spits scoorde dit seizoen indrukwekkende totalen in de Serie A en is de complete centrumspits: sterk in de lucht, gevaarlijk met beide voeten, capabel om te scoren en assists te leveren. Bij een titelhouder die blessuregevoelig aankomt, is hij de stille ster die het verschil bepaalt als het erop aankomt. Aanvoerder en topschutter van Inter met 17 goals en 6 assists in Serie A.",en:"If Messi (hamstring) is limited, Lautaro Martinez is the man who carries Argentina. The Inter Milan striker put up impressive numbers in Serie A this season and is a complete centre-forward: strong in the air, dangerous with both feet, capable of both scoring and assisting. With the defending champions arriving injury-hit, he is the quiet star who decides when it matters most. Captain and top scorer for Inter with 17 goals and 6 assists in Serie A."} },
 
-  { name:"Yan Diomande", st:{G:12,A:8}, value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/rb-leipzig.png",
+  { name:"Yan Diomande", st:{G:12,A:8}, stats:[{v:"12",nl:"goals",en:"goals"},{v:"8",nl:"assists",en:"assists"},{v:"Doorbraak",nl:"RB Leipzig",en:"RB Leipzig breakout"}], value:"€20m", clubLogo:"https://assets.football-logos.cc/logos/germany/700x700/rb-leipzig.png",
     team:"Ivory Coast", pos:{nl:"Middenvelder",en:"Midfielder"}, age:22, flag:"🇨🇮",
     club:"RB Leipzig",
     why:{nl:"De meest consistente uitbreker van het toernooi die niemand verwacht. Diomande (22) domineerde voor RB Leipzig: zijn atletisme, zijn interceptievermogen en zijn doelgevaar vanuit de tweede lijn zijn het type combinatie dat ploegen op hoog niveau vernietigt. Ivoorkust is AFCON-kampioen van 2024 en met Haller en Adingra beschikt Diomande over buitenspelers die zijn runs belonen. Brak door bij RB Leipzig met 12 goals en 8 assists — een doorbraakseizoen voor de jonge Ivoriaan.",en:"The most consistently identified breakout pick that nobody expects. Diomande (22) dominated for RB Leipzig: athleticism, interception ability and late runs into the box: the type of combination that destroys sides at the highest level. Ivory Coast are AFCON 2024 champions and with Haller and Adingra, Diomande has wide players who reward his runs. Broke through at RB Leipzig with 12 goals and 8 assists."} },
@@ -2478,34 +2478,34 @@ const DARK_HORSES = [
 const BEST_XI = {
   formation: "4-3-3",
   players: [
-    { pos:"GK",  name:"Bart Verbruggen", st:{CS:10,SAVES:106}, value:"€28m",  team:"Netherlands", age:22, flag:"🇳🇱",
+    { pos:"GK",  name:"Bart Verbruggen", st:{CS:10,SAVES:106}, stats:[{v:"10",nl:"clean sheets",en:"clean sheets"},{v:"106",nl:"reddingen",en:"saves"},{v:"Brighton",nl:"#1 keeper",en:"#1 keeper"}], value:"€28m",  team:"Netherlands", age:22, flag:"🇳🇱",
       xG:0.1, xA:0.1,
       note:{nl:"Verbruggen (Brighton) is de best presterende jonge keeper op het toernooi. Zijn voetwerk en reflexen zijn uitzonderlijk voor 22 jaar. Nederland heeft een haalbaar knockoutpad wat clean sheets waarschijnlijk maakt. Hoog forum-consensus voor de keepersrol. Tweede volledige seizoen als Brighton-keeper: 106 reddingen en 10 clean sheets, en gaat als Oranje's eerste keuze naar zijn eerste WK.",en:"Verbruggen (Brighton) is the best-performing young goalkeeper at the tournament. Footwork and reflexes exceptional for 22. Netherlands have an achievable knockout path making clean sheets likely. High forum consensus for the goalkeeper slot. Second full season as Brighton keeper (106 saves, 10 clean sheets), heading to his first World Cup as the Netherlands' first choice."} },
-    { pos:"RB",  name:"Denzel Dumfries", st:{G:3,A:1,M:20,CS:8}, value:"€22m",  team:"Netherlands", age:28, flag:"🇳🇱",
+    { pos:"RB",  name:"Denzel Dumfries", st:{G:3,A:1,M:20,CS:8}, stats:[{v:"3",nl:"goals",en:"goals"},{v:"1",nl:"assist",en:"assist"},{v:"Inter",nl:"wingback",en:"wing-back"}], value:"€22m",  team:"Netherlands", age:28, flag:"🇳🇱",
       xG:0.6, xA:1.4,
       note:{nl:"Dumfries (Inter Milan) leverde dit seizoen 3 goals en 1 assist in de Serie A als rechtsback. Zijn overlappende runs in Nederland's 4-3-3 zijn gevaarlijker dan welke andere rechtsback op dit toernooi. Forum #1 verdediger voor assists. Productief vanaf rechts voor Inter met 3 goals, 1 assist en 8 clean sheets in 20 Serie A-duels.",en:"Dumfries (Inter Milan) delivered 3 goals and 1 assist in Serie A this season as a right-back. His overlapping runs in Netherlands' 4-3-3 are more dangerous than any other right-back at this tournament. Forum #1 defender for assists. Productive from the right for Inter with 3 goals, 1 assist and 8 clean sheets in 20 Serie A games."} },
-    { pos:"CB1", name:"Virgil van Dijk", st:{G:5}, value:"€15m",  team:"Netherlands", age:33, flag:"🇳🇱",
+    { pos:"CB1", name:"Virgil van Dijk", st:{G:5}, stats:[{v:"5",nl:"goals",en:"goals"},{v:"Aanvoerder",nl:"Liverpool",en:"Liverpool captain"},{v:"Leider",nl:"defensie",en:"defensive leader"}], value:"€15m",  team:"Netherlands", age:33, flag:"🇳🇱",
       xG:0.4, xA:0.2,
       note:{nl:"Kapitein van Oranje en de meest gezaghebbende centrale verdediger van het toernooi. Van Dijk scoort ook kopballen bij standaardsituaties: 3 goals dit seizoen voor Liverpool. Clean sheet bonus + set piece xG maakt hem de #1 verdediger qua fantasy waarde. Onverwoestbare aanvoerder van Liverpool: voltooide meer passes dan elke andere Premier League-speler en bleef op zijn 34e een bepalende verdediger.",en:"Dutch captain and the most authoritative centre-back at the tournament. Van Dijk also scores headers at set pieces: 3 goals this season for Liverpool. Clean sheet bonus + set piece xG makes him the #1 defender in fantasy value. Unbreakable Liverpool captain who completed more passes than any other Premier League player at 34."} },
-    { pos:"CB2", name:"Manuel Akanji", st:{}, value:"€28m",    team:"Switzerland", age:29, flag:"🇨🇭",
+    { pos:"CB2", name:"Manuel Akanji", st:{}, stats:[{v:"Man City",nl:"verdediger",en:"defender"},{v:"Veelzijdig",nl:"posities",en:"versatile"},{v:"Zwitserland",nl:"anker",en:"Switzerland anchor"}], value:"€28m",    team:"Switzerland", age:29, flag:"🇨🇭",
       xG:0.3, xA:0.1,
       note:{nl:"Akanji was een van Europa's best presterende centrale verdedigers in 2025-26 en is een ideale tweede CB vanuit fantasy-perspectief. Hij stapte over van Manchester City naar Inter (huur) om Champions League te blijven spelen en groeide uit tot vaste waarde in de Italiaanse defensie. Zwitserland heeft een comfortabel pad en is structureel goed voor clean sheets. Forum-consensus 2e CB naast Van Dijk.",en:"Akanji was among Europe's best-performing centre-backs in 2025-26 and is an ideal second CB from a fantasy perspective. He moved from Manchester City to Inter on loan to keep playing Champions League football and became a defensive mainstay. Switzerland have a comfortable path and are structurally clean-sheet reliable. Forum consensus 2nd CB alongside Van Dijk."} },
-    { pos:"LB",  name:"Theo Hernandez", st:{}, value:"€29m",  team:"France",      age:27, flag:"🇫🇷",
+    { pos:"LB",  name:"Theo Hernandez", st:{}, stats:[{v:"Al Hilal",nl:"linksback",en:"left-back"},{v:"Overlap",nl:"aanvallend",en:"attacking runs"},{v:"Frankrijk",nl:"vaste waarde",en:"France regular"}], value:"€29m",  team:"France",      age:27, flag:"🇫🇷",
       xG:0.5, xA:1.2,
       note:{nl:"Een van de meest aanvallende linksbacks op het toernooi. Hernandez verruilde de Serie A voor Al Hilal in Saudi-Arabië, waar hij zich als aanvallende linksback opnieuw bewees richting het WK. Zijn overlappende runs in Deschamps' systeem leveren regelmatig beslissende momenten op. Koploper in forums voor linksbacks.",en:"One of the most attacking left-backs at the tournament. Hernandez swapped Serie A for Al Hilal in Saudi Arabia, reasserting himself as an attacking left-back ahead of the World Cup. His overlapping runs in Deschamps' system regularly produce decisive moments. Leader in forums for left-back."} },
-    { pos:"CDM", name:"Rodri", st:{G:1,A:0}, value:"€130m",            team:"Spain",       age:28, flag:"🇪🇸",
+    { pos:"CDM", name:"Rodri", st:{G:1,A:0}, stats:[{v:"Ballon d'Or",nl:"2024",en:"2024"},{v:"ACL-rentree",nl:"Man City",en:"ACL return"},{v:"Aanvoerder",nl:"Spanje",en:"Spain captain"}], value:"€130m",            team:"Spain",       age:28, flag:"🇪🇸",
       xG:0.4, xA:1.1,
       note:{nl:"Rodri (Man City) aanvoerder van Spanje na ACL-revalidatie. Als defensief anker orkestreert hij Spanje's pressing: zijn passnauwkeurigheid en balverovering zijn de hoogste van het toernooi. Scoort ook vanuit standaardsituaties. Spanje's pad is het comfortabelste van alle favorieten. Keerde bij Manchester City terug van zijn zware knieblessure (ACL) — de Ballon d'Or-winnaar van 2024 bouwde zijn minuten geleidelijk weer op.",en:"Rodri (Man City) captain of Spain after ACL rehabilitation. As defensive anchor he orchestrates Spain's press: his pass accuracy and ball recovery are the highest in the tournament. Also scores from set pieces. Spain's path is the most comfortable of all favourites. Returned at Manchester City from his serious ACL injury — the 2024 Ballon d'Or winner gradually rebuilt his minutes."} },
-    { pos:"CM",  name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, value:"€45m", team:"Netherlands", age:29, flag:"🇳🇱",
+    { pos:"CM",  name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, stats:[{v:"La Liga",nl:"kampioen",en:"champion"},{v:"5",nl:"assists",en:"assists"},{v:"Dirigent",nl:"middenveld",en:"midfield hub"}], value:"€45m", team:"Netherlands", age:29, flag:"🇳🇱",
       xG:0.5, xA:1.5,
       note:{nl:"De Jong (Barcelona) hersteld van hamstringproblemen en terug op zijn beste niveau. Zijn box-to-box bijdrage, progressieve carries en vermogen om goals te scoren vanuit het middenveld zijn uniek. Zonder Simons is hij nog meer centraal in het Nederlandse spel. Forum top-5 middenvelder. Kwam na een blessure terug in de Barcelona-ploeg en droeg met zijn balbeheersing bij aan het kampioensseizoen.",en:"De Jong (Barcelona) recovered from hamstring issues and back at his best. His box-to-box contribution, progressive carries and ability to score from midfield are unique. Without Simons he is even more central to Dutch play. Forum top-5 midfielder. Returned from injury to the Barcelona side and helped steer the title-winning campaign."} },
-    { pos:"CAM", name:"Jude Bellingham", st:{G:6,A:4,M:30}, value:"€130m", team:"England",     age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    { pos:"CAM", name:"Jude Bellingham", st:{G:6,A:4,M:30}, stats:[{v:"6",nl:"goals",en:"goals"},{v:"4",nl:"assists",en:"assists"},{v:"#1",nl:"Engeland vorm",en:"England form"}], value:"€130m", team:"England",     age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       xG:3.2, xA:2.1,
       note:{nl:"Bellingham (Real Madrid) is een consistente fantasykeuze in het middenveld. Zijn late loopbewegingen in de zestien leverden 6 competitiedoelpunten en 4 assists op dit seizoen. Tuchel's systeem geeft hem maximale vrijheid om te scoren. Engeland haalt minimaal de kwartfinale per model. Forum #1 middenvelder universeel. Een wisselvalliger seizoen bij Real Madrid (6 goals, 4 assists), deels door een schouderoperatie eerder in het jaar.",en:"Bellingham (Real Madrid) is a consistent fantasy pick in midfield. His late runs into the box produced 6 league goals and 4 assists this season. Tuchel's system gives him maximum freedom to score. England reach at minimum the quarter-final per model. Universal forum #1 midfielder. A more uneven season at Real Madrid (6 goals, 4 assists), partly after shoulder surgery earlier in the year."} },
-    { pos:"RW",  name:"Lamine Yamal", st:{G:22,A:15,T:2}, value:"€200m",    team:"Spain",       age:18, flag:"🇪🇸",
+    { pos:"RW",  name:"Lamine Yamal", st:{G:22,A:15,T:2}, stats:[{v:"16",nl:"goals",en:"goals"},{v:"11",nl:"assists (#1 LaLiga)",en:"assists (#1 LaLiga)"},{v:"6+4",nl:"CL goals+assists",en:"CL goals+assists"}], value:"€200m",    team:"Spain",       age:18, flag:"🇪🇸",
       xG:2.4, xA:3.1,
       note:{nl:"Yamal (FC Barcelona) is de meest gevreesde rechtsbuiten van het toernooi. Zijn 16 La Liga-goals en 11 assists dit seizoen als 18-jarige zijn historisch — hij was bovendien topassistgever van de competitie. Spanje verwacht 7 wedstrijden te spelen wat zijn totale punten exponentieel verhoogt. Forum #1 aanvaller qua totale fantasy-waarde. Spil in Barcelona's kampioensseizoen waarin de Catalanen hun La Liga-titel pakten.",en:"Yamal (FC Barcelona) is the most feared right winger at the tournament. His 16 La Liga goals and 11 assists this season as an 18-year-old are historic — he was also the league's top assist provider. Spain expect to play 7 matches, exponentially boosting his total points. Forum #1 attacker for total fantasy value. Pivotal in Barcelona's title-winning campaign."} },
-    { pos:"ST",  name:"Erling Haaland", st:{G:38,A:8,T:2}, value:"€180m",  team:"Norway",      age:25, flag:"🇳🇴",
+    { pos:"ST",  name:"Erling Haaland", st:{G:38,A:8,T:2}, stats:[{v:"27",nl:"club goals",en:"club goals"},{v:"16",nl:"WK-kwal. goals",en:"WC qual. goals"},{v:"55",nl:"interlandgoals",en:"intl goals"}], value:"€180m",  team:"Norway",      age:25, flag:"🇳🇴",
       xG:6.1, xA:1.2,
       note:{nl:"Haaland (Man City) is de universele #1 pick in elk WK-fantasysysteem. 16 doelpunten in de kwalificatie, 27 PL-goals dit seizoen waarmee hij de Golden Boot pakte. Noorwegen opent vs Irak, daarna Senegal en Frankrijk. Zelfs bij uitschakeling in de groepsfase haalt hij 3+ goals. Als Noorwegen de R16 haalt (realistisch), loopt zijn totaal richting 7-8 doelpunten. Ondefendeerbaar in de zestien. Andermaal moordend efficiënt voor Manchester City met 27 goals en 8 assists.",en:"Haaland (Man City) is the universal #1 pick in any World Cup fantasy system. 16 qualifying goals, 27 PL goals this season to claim the Golden Boot. Norway open vs Iraq, then Senegal and France. Even if eliminated in the group stage he collects 3+ goals. If Norway reach R16 (realistic), his total approaches 7-8. Undefendable in the box. Ruthlessly efficient again for Manchester City with 27 goals and 8 assists."} },
     { pos:"LW",  name:"Kylian Mbappe", st:{G:38,A:7,T:0}, value:"€150m",   team:"France",      age:27, flag:"🇫🇷",
@@ -2550,30 +2550,35 @@ function usePlayerPhoto(name) {
 }
 
 // Compact season-stats bar shown at the bottom of player cards. Renders only known values.
-function StatBar({st,dark}){
+function StatBar({st,stats,dark}){
   const T=useTheme();
   const lang=useLang();
-  if(!st) return null;
-  const items=[];
-  // Consistent fields only: Goals, Assists, Clean sheets (GK/DEF), and Prize/Trophy.
-  if(st.G!==undefined) items.push([lang==="nl"?"Goals":"Goals",st.G]);
-  if(st.A!==undefined) items.push([lang==="nl"?"Assists":"Assists",st.A]);
-  if(st.CS!==undefined) items.push([lang==="nl"?"Clean sheets":"Clean sheets",st.CS]);
-  if(st.T) items.push([lang==="nl"?"Prijs":"Trophy",st.T]);
+  // Preferred: a curated set of the player's 3 most notable 2025/26 stats.
+  // Each entry is {v, nl, en} (value + a short label per language).
+  let items=[];
+  if(Array.isArray(stats)&&stats.length){
+    items=stats.map(s=>[s.v, lang==="nl"?s.nl:s.en]);
+  }else if(st){
+    // Legacy fallback: generic Goals/Assists/Clean-sheets/Trophy.
+    if(st.G!==undefined) items.push([st.G,lang==="nl"?"Goals":"Goals"]);
+    if(st.A!==undefined) items.push([st.A,lang==="nl"?"Assists":"Assists"]);
+    if(st.CS!==undefined) items.push([st.CS,lang==="nl"?"Clean sheets":"Clean sheets"]);
+    if(st.T) items.push([st.T,lang==="nl"?"Prijs":"Trophy"]);
+  }
   if(!items.length) return null;
   const labelCol=dark?"rgba(255,255,255,0.5)":T.textFaint;
   const valCol=dark?"#fff":T.text;
   const div=dark?"rgba(255,255,255,0.15)":T.border;
   return(
-    <div style={{display:"flex",flexWrap:"wrap",gap:0,marginTop:10,
+    <div style={{display:"flex",flexWrap:"nowrap",gap:0,marginTop:10,
       borderTop:`1px solid ${div}`,paddingTop:8}}>
-      {items.map(([lab,val],i)=>(
-        <div key={lab} style={{display:"flex",flexDirection:"column",alignItems:"center",
-          flex:"1 1 auto",minWidth:54,padding:"0 6px",
+      {items.map(([val,lab],i)=>(
+        <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",
+          flex:"1 1 0",minWidth:0,padding:"0 6px",
           borderRight:i<items.length-1?`1px solid ${div}`:"none"}}>
           <span style={{fontSize:FS.body,fontWeight:800,color:valCol,lineHeight:1.1}}>{val}</span>
           <span style={{fontSize:FS.micro,fontWeight:600,letterSpacing:0.4,textTransform:"uppercase",
-            color:labelCol,marginTop:2,textAlign:"center"}}>{lab}</span>
+            color:labelCol,marginTop:2,textAlign:"center",lineHeight:1.2}}>{lab}</span>
         </div>
       ))}
     </div>
@@ -2632,7 +2637,7 @@ function ChampionCard({p,label,icon}){
         </div>
       </div>
       <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55}}>{(p.bio||p.why)[lang]}</div>
-      <StatBar st={p.st} dark/>
+      <StatBar st={p.st} stats={p.stats} dark/>
     </div>
   );
 }
@@ -2690,7 +2695,7 @@ function PlayerCard({p,open,onToggle}){
       {open&&(
         <div style={{padding:"10px 12px",background:T.orangeFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.bio[lang]}
-          <StatBar st={p.st}/>
+          <StatBar st={p.st} stats={p.stats}/>
         </div>
       )}
     </div>
@@ -2722,7 +2727,7 @@ function DarkHorseCard({p,open,onToggle}){
       {open&&(
         <div style={{padding:"10px 12px",background:T.blueFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.id==="dark"?T.orange:T.blue}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.why[lang]}
-          <StatBar st={p.st}/>
+          <StatBar st={p.st} stats={p.stats}/>
         </div>
       )}
     </div>
@@ -3982,7 +3987,7 @@ function PlayersTab(){
             {openXI[p.name]&&(
               <div style={{padding:"8px 13px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
                 {p.note[lang]}
-                <StatBar st={p.st}/>
+                <StatBar st={p.st} stats={p.stats}/>
               </div>
             )}
           </div>
