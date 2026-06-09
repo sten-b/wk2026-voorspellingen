@@ -4315,60 +4315,92 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // Phase 0   : WC2026-themed intro (original roundel logo + "26" on black) fades in
-    // Phase 0.5 : red-white-blue accent sweep
-    // Phase 1   : weave — black→orange, WC logo scales/fades out, the "Sten's/WK2026/lion" stage fades in
-    // Phases 2-6: the existing loader sequence (flip → engulf → whoosh)
-    const tA=setTimeout(()=>setPhase(0.3),80);    // WC roundel + 26 ease in
-    const tB=setTimeout(()=>setPhase(0.6),720);   // accent sweep (after the mark settles)
-    const t1=setTimeout(()=>setPhase(1),1500);    // weave begins: WC drifts out, stage eases in
-    const t2=setTimeout(()=>setPhase(2),2600);    // 3D flip: white lion -> black lion
-    const t3=setTimeout(()=>setPhase(3),3250);    // bg fades to black, stage fades out
-    const t4=setTimeout(()=>setPhase(4),3650);    // orange lion grows from tiny
-    const t5=setTimeout(()=>setPhase(5),4450);    // whole loader fades to transparent
-    const t6=setTimeout(()=>onDone&&onDone(),5050); // unmount after fade
-    return()=>{[tA,tB,t1,t2,t3,t4,t5,t6].forEach(clearTimeout);};
+    // One continuous lion is the hero of the whole intro (shared-element handoff).
+    // Phases overlap deliberately; total ≈ 3.2s (modern app-intro standard).
+    const t=[];
+    t.push(setTimeout(()=>setPhase(1),60));     // WC roundel + lion-core ease in
+    t.push(setTimeout(()=>setPhase(2),760));    // RWB sweep across
+    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows out of roundel; title resolves
+    t.push(setTimeout(()=>setPhase(4),1850));   // 3D flip white→black→orange + glow beat
+    t.push(setTimeout(()=>setPhase(5),2450));   // lion launches through camera (z-depth)
+    t.push(setTimeout(()=>setPhase(6),3050));   // overlay fades to transparent
+    t.push(setTimeout(()=>onDone&&onDone(),3550));
+    return()=>t.forEach(clearTimeout);
   },[]);
-  // Background: black during the WC intro (phase<1), orange through the main stage, black from phase 3.
-  const bg=phase>=3?"#0D0D0D":(phase<1?"#0D0D0D":"#E85100");
-  const flipped=phase>=2;
-  // WC2026 intro visible only during phase 0–0.6, drifts out gently as the weave begins.
-  const wcOpacity=phase===0?0:(phase>=1?0:1);
-  const wcScale=phase>=1?1.18:(phase>=0.3?1.04:0.72);
-  const wcLift=phase>=1?-26:0;   // subtle upward drift as it hands off
-  const sweepOpacity=(phase>=0.6&&phase<1)?1:0;
-  // Stage = Sten's + WK2026 + lion + Voorspelling. Eases in (up) at the weave, out at phase 3.
-  const stageOpacity=phase<1?0:(phase>=3?0:1);
-  const stageLift=phase<1?16:0;  // slides up into place
-  // Engulf lion: grows from tiny to fill screen, keeps growing through the whoosh.
-  const engulfScale=phase>=5?16:(phase>=4?12:0.08);
-  const engulfOpacity=phase>=4?1:0;
-  const overlayOpacity=phase>=5?0:1;
+
+  // Haptic + nothing else on the flip beat (phase 4) — one physical accent.
+  React.useEffect(()=>{
+    if(phase===4&&typeof navigator!=="undefined"&&navigator.vibrate){try{navigator.vibrate(14);}catch(e){}}
+  },[phase]);
+
+  // ── Background: black through the WC intro, warms to orange at the flip, back to black on launch.
+  const bg=phase>=5?"#0D0D0D":(phase>=4?"#E85100":"#0D0D0D");
+
+  // ── Shared lion: scale + colour + depth evolve across phases (never unmounts).
+  const flipped=phase>=4;
+  const lionColor=phase>=5?"#FF5500":(phase>=4?"#FF5500":"#FFFFFF");
+  // size of the lion wrapper across phases (small core → stage → launch handled via translateZ)
+  const lionScale=
+    phase>=5?1:           // launch uses translateZ, keep base scale 1
+    phase>=3?1:           // settled at stage size
+    phase>=1?0.34:0.18;   // tiny core inside the roundel
+  const lionZ=phase>=5?640:(phase>=4?40:0);          // push through the camera
+  const lionRotY=phase>=5?22:0;                       // slight yaw as it passes
+  const lionLift=phase>=5?0:(phase>=3?-58:(phase>=1?-2:6));  // roundel heart → above the title → launch
+  const lionBlur=phase===5?5:0;                       // motion blur only on the fast segment
+  const lionOpacity=phase>=6?0:(phase>=1?1:0);
+
+  // ── WC roundel ring + "26" + RWB bars: present in the intro, dissolve as the lion grows out.
+  const ringOpacity=phase>=3?0:(phase>=1?1:0);
+  const ringScale=phase>=3?1.25:(phase>=1?1:0.8);
+  const sweepOpacity=phase===2?1:0;
+
+  // ── Title stage: resolves under the lion as the roundel dissolves; clears on launch.
+  const titleOpacity=phase>=5?0:(phase>=3?1:0);
+  const titleLift=phase>=3?0:14;
+
+  // ── Glow beat at the flip.
+  const glowOpacity=phase===4?1:0;
+  const overlayOpacity=phase>=6?0:1;
+
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:bg,opacity:overlayOpacity,
-      transition:phase>=5
-        ? "opacity 0.6s cubic-bezier(.4,0,.2,1) 0.1s"
-        : "background 1.1s cubic-bezier(.4,0,.2,1), opacity 0.6s cubic-bezier(.4,0,.2,1)",
-      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-      {/* WC2026-themed intro: red-white-blue accent sweep */}
+      transition:phase>=6
+        ? "opacity 0.5s cubic-bezier(.4,0,.2,1)"
+        : "background 0.9s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
+      perspective:"1100px"}}>
+
+      {/* Radial vignette — deepens slightly on launch for cinematic depth */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:phase>=5?1:0.5,transition:"opacity 0.8s ease",
+        background:"radial-gradient(120% 120% at 50% 50%, transparent 38%, rgba(0,0,0,0.55) 100%)"}}/>
+
+      {/* RWB accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
-        transition:"opacity 0.7s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
+        transition:"opacity 0.6s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
-      {/* WC2026-themed intro: original World Cup 2026 mark (roundel badge + 26 + RWB bars) */}
+
+      {/* Glow bloom on the flip beat */}
+      <div style={{position:"absolute",width:240,height:240,borderRadius:"50%",pointerEvents:"none",
+        opacity:glowOpacity,transform:`scale(${glowOpacity?1.1:0.6})`,
+        transition:"opacity 0.45s ease, transform 0.55s cubic-bezier(.34,1.2,.5,1)",
+        background:"radial-gradient(circle, rgba(255,180,90,0.55) 0%, rgba(255,120,40,0.18) 45%, transparent 70%)",
+        filter:"blur(4px)"}}/>
+
+      {/* WC roundel ring + 26 + RWB bars (the lion lives in its heart) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:wcOpacity,transform:`translateY(${wcLift}px) scale(${wcScale})`,
-        transition:"opacity 0.85s cubic-bezier(.4,0,.2,1), transform 0.95s cubic-bezier(.34,1.2,.5,1)",
+        opacity:ringOpacity,transform:`scale(${ringScale})`,
+        transition:"opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
-        <svg width="100" height="100" viewBox="0 0 100 100" aria-hidden="true"
+        <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true"
           style={{filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))"}}>
           <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
           </linearGradient></defs>
           <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
           <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
-          <path d="M50 31 L62 40 L57 54 L43 54 L38 40 Z" fill="#FFFFFF"/>
-          <path d="M50 31 L62 40 L69 34 M62 40 L57 54 L67 59 M43 54 L33 59 M38 40 L31 34" stroke="#FFFFFF" strokeWidth="1.6" fill="none" opacity="0.5"/>
           <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
         </svg>
         <span style={{fontSize:48,fontWeight:WEIGHT.bold,letterSpacing:0,lineHeight:0.78,color:"#FFFFFF",
@@ -4381,45 +4413,45 @@ function AppLoader({onDone}){
         <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:3,color:"#FFFFFF",
           textShadow:"0 1px 8px rgba(0,0,0,0.5)"}}>WORLD CUP 2026</span>
       </div>
-      {/* Stage: title, flipping lion, subtitle (existing loader) */}
-      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
-        opacity:stageOpacity,transform:`translateY(${stageLift}px)`,
-        transition:"opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.34,1.2,.5,1)",willChange:"transform,opacity"}}>
-        <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-6,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
+
+      {/* Title stage — resolves beneath the lion */}
+      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:10,
+        transform:`translateY(${titleLift+58}px)`,opacity:titleOpacity,
+        transition:"opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.34,1.2,.5,1)",
+        pointerEvents:"none",willChange:"transform,opacity"}}>
+        <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-4,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
         <span style={{fontSize:FS.display,fontWeight:WEIGHT.bold,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
-        <div style={{perspective:"900px"}}>
-          <style>{`@keyframes lionFlip{0%{transform:rotateY(0deg) scale(1)}45%{transform:rotateY(90deg) scale(0.86)}55%{transform:rotateY(90deg) scale(0.86)}100%{transform:rotateY(180deg) scale(1)}}`}</style>
-          <div style={{position:"relative",width:96,height:96,
-            transformStyle:"preserve-3d",
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:18}}>
+          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Data-driven</span>
+          <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Voorspellingen</span>
+        </div>
+      </div>
+
+      {/* THE HERO LION — one node, present from roundel-core through the launch */}
+      <div style={{position:"absolute",perspective:"1100px",pointerEvents:"none",
+        opacity:lionOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)"}}>
+        <style>{`@keyframes lionFlipBeat{0%{transform:rotateY(0deg) scale(1)}45%{transform:rotateY(90deg) scale(0.84)}55%{transform:rotateY(90deg) scale(0.84)}100%{transform:rotateY(180deg) scale(1)}}`}</style>
+        <div style={{position:"relative",width:108,height:108,
+          transformStyle:"preserve-3d",
+          transform:`translateZ(${lionZ}px) translateY(${lionLift}px) rotateY(${lionRotY}deg) scale(${lionScale})`,
+          filter:lionBlur?`blur(${lionBlur}px)`:"none",
+          transition:"transform 0.7s cubic-bezier(.5,0,.55,.95), filter 0.4s ease",
+          willChange:"transform,filter"}}>
+          {/* inner flip wrapper */}
+          <div style={{position:"absolute",inset:0,transformStyle:"preserve-3d",
             transform:flipped?"rotateY(180deg)":"rotateY(0deg)",
-            animation:flipped?"lionFlip 0.95s cubic-bezier(.45,.05,.25,1) both":"none",
+            animation:flipped?"lionFlipBeat 0.85s cubic-bezier(.45,.05,.25,1) both":"none",
             willChange:"transform"}}>
             <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",WebkitBackfaceVisibility:"hidden",
               display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <LionEmoji color="#FFFFFF" size={96}/>
+              <LionEmoji color="#FFFFFF" size={108}/>
             </div>
             <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",WebkitBackfaceVisibility:"hidden",
               transform:"rotateY(180deg)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <LionEmoji color="#0D0D0D" size={96}/>
+              <LionEmoji color={lionColor} size={108}/>
             </div>
           </div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>
-            Data-driven
-          </span>
-          <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>
-            Voorspellingen
-          </span>
-        </div>
-      </div>
-      {/* Engulf lion: orange, grows fast from very small to screen-size */}
-      <div style={{position:"absolute",
-        opacity:engulfOpacity,
-        transform:`scale(${engulfScale})`,
-        transition:"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.85s cubic-bezier(.5,0,.75,.4)",
-        pointerEvents:"none",willChange:"transform,opacity"}}>
-        <LionEmoji color="#FF5500" size={96}/>
       </div>
     </div>
   );
