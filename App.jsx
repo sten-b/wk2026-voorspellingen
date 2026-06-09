@@ -127,7 +127,7 @@ const LANG = {
   nl: {
     appTitle: "Sten's WK Voorspellingen",
     appSub: "48 landen · 104 wedstrijden · Klik op een duel voor onderbouwing",
-    tabs: { bracket:"Groep", knockout:"Knockout", nations:"Landen", players:"Spelers", model:"Model" },
+    tabs: { predictions:"Voorspellingen", bracket:"Groep", knockout:"Knockout", nations:"Landen", players:"Spelers", model:"Model" },
     tournamentLabel: "FIFA Wereldkampioenschap 2026",
     predictedChampion: "Voorspelde kampioen",
     knockoutLink: "Knockout",
@@ -155,7 +155,7 @@ const LANG = {
   en: {
     appTitle: "Sten's WC Predictions",
     appSub: "48 teams · 104 matches · Click any match for reasoning",
-    tabs: { bracket:"Group", knockout:"Knockout", nations:"Nations", players:"Players", model:"Model" },
+    tabs: { predictions:"Predictions", bracket:"Group", knockout:"Knockout", nations:"Nations", players:"Players", model:"Model" },
     tournamentLabel: "FIFA World Cup 2026",
     predictedChampion: "Predicted champion",
     knockoutLink: "Knockout",
@@ -1122,7 +1122,7 @@ const [fsA,fsB]=KO_SCORES[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]||[2,1];
 // ── CONTEXTS ──────────────────────────────────────────────────────────────────
 const LangCtx=createContext("nl");
 const ThemeCtx=createContext(THEMES.default);
-const NavCtx=createContext({setTab:()=>{},setNationsOpen:()=>{},goToModel:()=>{}});
+const NavCtx=createContext({setTab:()=>{},setNationsOpen:()=>{},goToModel:()=>{},goToPred:()=>{}});
 const useLang=()=>useContext(LangCtx);
 const useTheme=()=>useContext(ThemeCtx);
 const useT=()=>LANG[useContext(LangCtx)];
@@ -1575,8 +1575,7 @@ function Nav({tab,setTab}){
   const tr=useT();
   const tabs=[
     {id:"players",label:"WK2026"},
-    {id:"bracket",label:tr.tabs.bracket},
-    {id:"knockout",label:tr.tabs.knockout},
+    {id:"predictions",label:tr.tabs.predictions},
   ];
   return(
     <div style={{position:"sticky",top:0,zIndex:20,background:T.nav,borderBottom:`2px solid ${T.border}`,width:"100%",overflowX:"hidden"}}>
@@ -4005,6 +4004,8 @@ function PSection({label,sub,accent}){
 
 // Predicted-champion / tournament banner — shared by the Group tab and WK2026 tab.
 function TournamentBanner({setTab}){
+  const {goToPred}=useNav();
+  const jumpKO=()=>goToPred("knockout");
   const T=useTheme();
   const lang=useLang();
   const tr=useT();
@@ -4016,7 +4017,7 @@ function TournamentBanner({setTab}){
         <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
         <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
         <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
-        <div onClick={()=>setTab&&setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
+        <div onClick={jumpKO} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
           <span style={{fontSize:20}}>🏆</span>
           <div>
             <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
@@ -4031,7 +4032,7 @@ function TournamentBanner({setTab}){
     <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
       <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
       <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
-      <div onClick={()=>setTab&&setTab("knockout")} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"8px 12px",cursor:"pointer"}}>
+      <div onClick={jumpKO} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"8px 12px",cursor:"pointer"}}>
         <span style={{fontSize:20}}>🏆</span>
         <div>
           <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
@@ -4478,6 +4479,7 @@ export default function App(){
   const [lang,setLang]=useState("nl");
   const [theme,setTheme]=useState("default");
   const [tab,setTab]=useState("players");
+  const [predView,setPredView]=useState("group"); // "group" | "knockout" (within Predictions tab)
   const [srcOpen,setSrcOpen]=useState(false);
   const [openGroup,setOpenGroup]=useState(null);
   const [nationsOpen,setNationsOpen]=useState(null);
@@ -4499,7 +4501,7 @@ export default function App(){
   return(
     <ThemeCtx.Provider value={T}>
     <LangCtx.Provider value={lang}>
-    <NavCtx.Provider value={{setTab,setNationsOpen,goToModel:(sec)=>{setModelSection(sec);setTab("model");}}}>
+    <NavCtx.Provider value={{setTab,setNationsOpen,goToModel:(sec)=>{setModelSection(sec);setTab("model");},goToPred:(v)=>{setPredView(v||"group");setTab("predictions");}}}>
       {loading&&<AppLoader onDone={()=>setLoading(false)}/>}
       <div className={T.id==="orangeLion"?"ol-light":""} style={{minHeight:"100vh",
         background:T.id==="orangeLion"
@@ -4511,23 +4513,56 @@ export default function App(){
 
         <div style={{padding:"14px 16px 80px",width:"100%",boxSizing:"border-box"}}>
 
-          {/* TOURNAMENT */}
-          {tab==="bracket"&&(
+          {/* PREDICTIONS — merged Group + Knockout, switched by a segmented control */}
+          {tab==="predictions"&&(()=>{
+            const OL=T.id==="orangeLion";
+            const accent=OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
+            return(
             <React.Fragment>
               <TournamentBanner setTab={setTab}/>
-              <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
-                {lang==="nl"?"Groepsfase":"Group Stage"}
+              {/* Group / Knockout — segmented control (same style as News/Injuries) */}
+              <div style={{marginBottom:18}}>
+                <div style={{display:"flex",gap:0,border:`1px solid ${accent}`,borderRadius:8,overflow:"hidden"}}>
+                  {[
+                    {id:"group",label:lang==="nl"?"Groep":"Group",
+                     icon:"M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"},
+                    {id:"knockout",label:"Knockout",
+                     icon:"M6 3v18M6 7h7a3 3 0 013 3v0a3 3 0 01-3 3H6M19 13v8"},
+                  ].map((b,i)=>{
+                    const active=predView===b.id;
+                    return(
+                      <button key={b.id} onClick={()=>setPredView(b.id)}
+                        style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,
+                          padding:"9px 4px",fontSize:FS.small,fontWeight:active?800:600,cursor:"pointer",border:"none",
+                          borderLeft:i>0?`1px solid ${OL?"rgba(255,255,255,0.5)":accent}`:"none",
+                          background:active?accent:"transparent",
+                          color:active?(OL?"#0D0D0D":"#FFFFFF"):(OL?"#FFFFFF":T.textSub),
+                          transition:"background 0.2s ease, color 0.2s ease"}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                          <path d={b.icon}/>
+                        </svg>
+                        {b.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              {GROUP_DATA.map(g=>(
-                <GroupAccordion key={g.id} g={g} openGroup={openGroup} setOpenGroup={setOpenGroup} openMatches={openMatches} toggleMatch={toggleMatch}/>
-              ))}
-            </React.Fragment>
-          )}
 
+              {/* GROUP VIEW */}
+              {predView==="group"&&(
+                <React.Fragment>
+                  <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
+                    {lang==="nl"?"Groepsfase":"Group Stage"}
+                  </div>
+                  {GROUP_DATA.map(g=>(
+                    <GroupAccordion key={g.id} g={g} openGroup={openGroup} setOpenGroup={setOpenGroup} openMatches={openMatches} toggleMatch={toggleMatch}/>
+                  ))}
+                </React.Fragment>
+              )}
 
-
-          {/* KNOCKOUT */}
-          {tab==="knockout"&&(
+              {/* KNOCKOUT VIEW */}
+              {predView==="knockout"&&(
             <React.Fragment>
                     <div style={{marginBottom:14}}>
                       <div style={{fontSize:FS.h2,fontWeight:WEIGHT.semibold,color:T.text}}>{tr.knockoutTitle}</div>
@@ -4571,7 +4606,10 @@ export default function App(){
                 </div>
               </div>
             </React.Fragment>
-          )}
+              )}
+            </React.Fragment>
+            );
+          })()}
 
           {/* MODEL */}
                     {tab==="model"&&(
