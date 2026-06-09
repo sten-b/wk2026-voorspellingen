@@ -1533,9 +1533,13 @@ function Nav({tab,setTab}){
             ? <NavLion themeId="dark"/>
             : T.id==="orangeLion"
             ? <NavLion themeId="orangeLion"/>
-            : <div style={{width:26,height:26,borderRadius:"50%",background:"#E07000",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{color:"#fff",fontSize:FS.caption,fontWeight:700}}>SB</span>
-              </div>
+            : <svg width="28" height="28" viewBox="0 0 40 40" aria-label="SB" style={{display:"block"}}>
+                <defs><linearGradient id="sbLogo" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="#FF8A3D"/><stop offset="1" stopColor="#D95E00"/>
+                </linearGradient></defs>
+                <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#sbLogo)"/>
+                <text x="20" y="27" fontFamily="Arial,Helvetica,sans-serif" fontWeight="800" fontSize="18" fill="#FFFFFF" textAnchor="middle" letterSpacing="-1">SB</text>
+              </svg>
           }
         </div>
         <div style={{width:1,background:T.border,flexShrink:0,marginRight:2}}/>
@@ -2396,6 +2400,14 @@ const PLAYER_WIKI = {
   "Manuel Akanji": "Manuel_Akanji",
   "Bart Verbruggen": "Bart_Verbruggen",
   "David Raya": "David_Raya",
+  "Gilberto Mora": "Gilberto_Mora",
+  "Kenan Yildiz": "Kenan_Yıldız",
+  "Antonio Nusa": "Antonio_Nusa",
+  "Nico Paz": "Nico_Paz",
+  "Ibrahim Maza": "Ibrahim_Maza",
+  "Endrick": "Endrick_(footballer,_born_2006)",
+  "Crysencio Summerville": "Crysencio_Summerville",
+  "Elliot Anderson": "Elliot_Anderson_(footballer,_born_2002)",
 };
 
 const SPOTLIGHT = [
@@ -2724,24 +2736,24 @@ function DarkHorseCard({p,open,onToggle}){
   const photo=usePlayerPhoto(p.name);
   return(
     <div style={{borderBottom:`1px solid ${T.border}`}}>
-      <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",cursor:"pointer",background:open?T.blueFaint:T.card}}>
-        <PlayerAvatar photo={photo} flag={p.flag} open={open} activeColor={T.blue}/>
+      <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
+        <PlayerAvatar photo={photo} flag={p.flag} open={open}/>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:FS.body,fontWeight:600,color:T.text}}>{p.name}</div>
-          <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"}</div>
+          <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+          <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1}}>{p.pos[lang]} · {p.age} {lang==="nl"?"jaar":"years"} · {tName(p.team,lang)}</div>
           {(p.club||p.value)&&<div style={{marginTop:3,display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
             {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,
-              color:T.id==="orangeLion"?"#0D0D0D":(T.id==="dark"?T.orange:T.blue),
-              background:T.id==="orangeLion"?"#FFFFFF":T.blueFaint,
+              color:T.id==="orangeLion"?"#0D0D0D":T.orange,
+              background:T.id==="orangeLion"?"#FFFFFF":T.orangeFaint,
               padding:"1px 6px",borderRadius:10,
-              border:T.id==="orangeLion"?"1px solid #0D0D0D33":`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
+              border:T.id==="orangeLion"?"1px solid #0D0D0D33":`1px solid ${T.orange}22`}}>{p.club}</span>}
             {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#FFD24D",background:"#6B5200",padding:"1px 6px",borderRadius:10,border:"1px solid #B8860B"}}>💰 {p.value}</span>}
           </div>}
         </div>
-        <Chevron open={open} color={T.blue}/>
+        <Chevron open={open} color={T.orange}/>
       </div>
       {open&&(
-        <div style={{padding:"10px 12px",background:T.blueFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.id==="dark"?T.orange:T.blue}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
+        <div style={{padding:"10px 12px",background:T.orangeFaint,borderTop:`1px solid ${T.border}`,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
           {p.why[lang]}
           <StatBar st={p.st} stats={p.stats}/>
         </div>
@@ -4184,8 +4196,7 @@ export default function App(){
   const [lang,setLang]=useState("nl");
   const [theme,setTheme]=useState("default");
   const [tab,setTab]=useState("players");
-  const [newsOpen,setNewsOpen]=useState(false);
-  const [injuriesOpen,setInjuriesOpen]=useState(false);
+  const [infoPanel,setInfoPanel]=useState(null); // "news" | "injuries" | null
   const [srcOpen,setSrcOpen]=useState(false);
   const [openGroup,setOpenGroup]=useState(null);
   const [nationsOpen,setNationsOpen]=useState(null);
@@ -4250,45 +4261,38 @@ export default function App(){
                     </div>
                   </div>
               }
+              {/* News / Injuries — compact segmented control, matches the app style */}
               <div style={{marginBottom:14}}>
-                <div onClick={()=>setNewsOpen(o=>!o)}
-                  style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(newsOpen?T.orangeFaint:T.card),
-                    border:`1px solid ${T.id==="dark"?"#3a2e18":(newsOpen?T.orange+"55":T.border)}`,
-                    borderRadius:6,
-                    padding:"10px 12px"}}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke={T.id==="dark"?T.orange:T.blue} strokeWidth="2.2"
-                    strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-                    <path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z"/>
-                  </svg>
-                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
-                    textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue}}>
-                    {lang==="nl"?"Nieuws":"News"}
-                  </span>
-                  <Chevron open={newsOpen} color={T.textSub}/>
+                <div style={{display:"flex",gap:0,
+                  border:`1px solid ${T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,
+                  borderRadius:8,overflow:"hidden"}}>
+                  {[
+                    {id:"news",label:lang==="nl"?"Nieuws":"News",
+                     icon:"M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8M15 18h-5M10 6h8v4h-8z"},
+                    {id:"injuries",label:lang==="nl"?"Blessures":"Injuries",
+                     icon:"M22 12h-4l-3 9L9 3l-3 9H2"},
+                  ].map((b,i)=>{
+                    const active=infoPanel===b.id;
+                    const OL=T.id==="orangeLion";
+                    return(
+                      <button key={b.id} onClick={()=>setInfoPanel(active?null:b.id)}
+                        style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,
+                          padding:"9px 4px",fontSize:FS.small,fontWeight:active?800:600,cursor:"pointer",border:"none",
+                          borderLeft:i>0?`1px solid ${OL?"rgba(255,255,255,0.5)":(T.id==="dark"?"#FF5500":"#E07000")}`:"none",
+                          background:active?(OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")):"transparent",
+                          color:active?(OL?"#0D0D0D":"#FFFFFF"):(OL?"#FFFFFF":T.textSub),
+                          transition:"background 0.2s ease, color 0.2s ease"}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                          <path d={b.icon}/>
+                        </svg>
+                        {b.label}
+                      </button>
+                    );
+                  })}
                 </div>
-                {newsOpen&&<div style={{marginTop:10}}><NewsSection/></div>}
-              </div>
-              <div style={{marginBottom:14}}>
-                <div onClick={()=>setInjuriesOpen(o=>!o)}
-                  style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(injuriesOpen?T.orangeFaint:T.card),
-                    border:`1px solid ${T.id==="dark"?"#3a2e18":(injuriesOpen?T.orange+"55":T.border)}`,
-                    borderRadius:6,
-                    padding:"10px 12px"}}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke={T.id==="dark"?T.orange:T.blue} strokeWidth="2.2"
-                    strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                  </svg>
-                  <span style={{flex:1,fontSize:FS.small,fontWeight:700,letterSpacing:1.2,
-                    textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue}}>
-                    {lang==="nl"?"Blessures":"Injuries"}
-                  </span>
-                  <Chevron open={injuriesOpen} color={T.textSub}/>
-                </div>
-                {injuriesOpen&&<div style={{marginTop:10}}><InjuriesSection/></div>}
+                {infoPanel==="news"&&<div style={{marginTop:10}}><NewsSection/></div>}
+                {infoPanel==="injuries"&&<div style={{marginTop:10}}><InjuriesSection/></div>}
               </div>
               <div style={{fontSize:FS.caption,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
                 {lang==="nl"?"Groepsfase":"Group Stage"}
