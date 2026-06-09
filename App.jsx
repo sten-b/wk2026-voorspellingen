@@ -1317,40 +1317,51 @@ function SoccerIcon({color}){
 
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
-  const T=useTheme();
-  // Three segments: 0 = default (ball), 1 = dark Lion, 2 = orange Lion.
-  const order=["default","dark","orangeLion"];
-  const activeIdx=Math.max(0,order.indexOf(theme));
-  const next=()=>setTheme(order[(activeIdx+1)%order.length]);
   const SEG=30, H=30;
-  // The toggle frame uses a neutral track; the active cell gets a filled puck.
-  const trackBorder=T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#0D0D0D":T.border);
-  const puckColor=activeIdx===0?T.orange:activeIdx===1?"#0D0D0D":"#0D0D0D";
+  const BLACK="#0D0D0D", ORANGE="#E35A00", WHITE="#FFFFFF";
+  // Per-cell appearance keyed by the ACTIVE theme.
+  // cell 0 = ball (default), cell 1 = dark Lion, cell 2 = orange Lion.
+  const M={
+    default:[
+      {bg:WHITE, icon:BLACK},   // black ball, white bg
+      {bg:BLACK, icon:ORANGE},  // orange Lion, black bg
+      {bg:WHITE, icon:ORANGE},  // orange Lion, white bg
+    ],
+    dark:[
+      {bg:BLACK, icon:WHITE},   // white ball, black bg
+      {bg:BLACK, icon:ORANGE},  // orange Lion, black bg
+      {bg:ORANGE,icon:WHITE},   // white Lion, orange bg
+    ],
+    orangeLion:[
+      {bg:ORANGE,icon:WHITE},   // white ball, orange bg
+      {bg:BLACK, icon:ORANGE},  // orange Lion, black bg
+      {bg:WHITE, icon:ORANGE},  // orange Lion, white bg
+    ],
+  };
+  const active=M[theme]||M.default;
+  const targets=["default","dark","orangeLion"];
+  const isBallRolling=theme==="default"; // ball rolls into place when default is active
   const cells=[
-    {render:on=><SoccerIcon color={on?"#fff":T.textFaint}/>},
-    {render:on=><FooterLionIcon color={on?"#FF5500":T.textFaint} size={16}/>},
-    {render:on=><FooterLionIcon color={on?"#E35A00":T.textFaint} size={16}/>},
+    (col)=><SoccerIcon color={col}/>,
+    (col)=><FooterLionIcon color={col} size={16}/>,
+    (col)=><FooterLionIcon color={col} size={16}/>,
   ];
+  const frameBorder=theme==="dark"?"#FF5500":(theme==="orangeLion"?BLACK:"#E4E4E4");
   return(
-    <div
-      onClick={next}
-      style={{position:"relative",display:"flex",width:SEG*3,height:H,
-        border:`1px solid ${trackBorder}`,borderRadius:6,overflow:"hidden",
-        flexShrink:0,cursor:"pointer",background:T.id==="dark"?"#1A1A1A":"#fff"}}>
-      {/* Single sliding puck behind the active icon */}
-      <div style={{position:"absolute",top:0,left:0,width:SEG,height:"100%",
-        background:puckColor,
-        transform:`translateX(${activeIdx*SEG}px)`,
-        transition:"transform 0.3s cubic-bezier(.34,1.3,.6,1),background 0.3s ease"}}/>
-      {/* Dividers between cells */}
-      <div style={{position:"absolute",top:6,bottom:6,left:SEG,width:1,background:trackBorder,opacity:0.4,zIndex:2}}/>
-      <div style={{position:"absolute",top:6,bottom:6,left:SEG*2,width:1,background:trackBorder,opacity:0.4,zIndex:2}}/>
-      {cells.map((c,i)=>(
-        <div key={i} style={{position:"relative",zIndex:1,width:SEG,height:"100%",
-          display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{display:"flex",transform:activeIdx===i?"scale(1)":"scale(0.85)",
-            transition:"transform 0.3s cubic-bezier(.34,1.3,.6,1)"}}>
-            {c.render(activeIdx===i)}
+    <div style={{position:"relative",display:"flex",width:SEG*3,height:H,
+      border:`1px solid ${frameBorder}`,borderRadius:6,overflow:"hidden",
+      flexShrink:0}}>
+      {cells.map((render,i)=>(
+        <div key={i} onClick={(e)=>{e.stopPropagation();setTheme(targets[i]);}}
+          style={{position:"relative",width:SEG,height:"100%",cursor:"pointer",
+            display:"flex",alignItems:"center",justifyContent:"center",
+            background:active[i].bg,
+            borderRight:i<2?`1px solid ${frameBorder}`:"none",
+            transition:"background 0.32s ease"}}>
+          <div style={{display:"flex",
+            transform:i===0&&isBallRolling?"rotate(0deg)":(i===0?"rotate(-360deg)":"none"),
+            transition:"transform 0.45s cubic-bezier(.4,0,.2,1),color 0.3s ease"}}>
+            {render(active[i].icon)}
           </div>
         </div>
       ))}
