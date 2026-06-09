@@ -3720,12 +3720,8 @@ function PlayersTab(){
       </div>
       <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.6,marginBottom:10,paddingLeft:13,paddingRight:13}}>
         {lang==="nl"
-          ?"Een fantasy-georiënteerde selectie (4-3-3), gekozen op drie factoren: (1) clubvorm in seizoen 2025/26 — goals, assists en clean sheets; (2) verwacht toernooipad uit dit model — hoe verder een land komt, hoe meer wedstrijden en punten; (3) consensus uit WK-fantasycommunities per positie. Geen output van het voorspellingsmodel zelf."
-          :"A fantasy-oriented selection (4-3-3), chosen on three factors: (1) club form in the 2025/26 season — goals, assists and clean sheets; (2) expected tournament path from this model — the further a nation goes, the more matches and points; (3) consensus from World Cup fantasy communities per position. Not an output of the prediction model itself."}
-      </div>
-      <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap",paddingLeft:13}}>
-        <span style={{fontSize:FS.caption,fontWeight:700,color:T.green}}>{lang==="nl"?"xG = verwachte doelpunten":"xG = expected goals"}</span>
-        <span style={{fontSize:FS.caption,fontWeight:700,color:T.blue}}>{lang==="nl"?"xA = verwachte assists":"xA = expected assists"}</span>
+          ?"Een FPL-stijl team (Fantasy-opstelling, 4-3-3), gekozen op drie factoren: (1) clubvorm in seizoen 2025/26 — goals, assists en clean sheets; (2) verwacht toernooipad uit dit model — hoe verder een land komt, hoe meer wedstrijden en punten; (3) consensus uit WK-fantasycommunities per positie. Geen output van het voorspellingsmodel zelf."
+          :"An FPL-style team (fantasy line-up, 4-3-3), chosen on three factors: (1) club form in the 2025/26 season — goals, assists and clean sheets; (2) expected tournament path from this model — the further a nation goes, the more matches and points; (3) consensus from World Cup fantasy communities per position. Not an output of the prediction model itself."}
       </div>
       <PitchViz/>
       {/* Player list */}
@@ -3802,30 +3798,57 @@ function PlayersTab(){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    const t1=setTimeout(()=>setPhase(1),300);    // orange screen -> white lion fades in
-    const t2=setTimeout(()=>setPhase(2),1300);   // white lion -> black lion (smooth color)
-    const t3=setTimeout(()=>setPhase(3),2100);   // bg->black, lion->orange, grows past screen + fades out (engulf)
-    const t4=setTimeout(()=>onDone&&onDone(),3500); // reveal app after engulf completes
-    return()=>{[t1,t2,t3,t4].forEach(clearTimeout);};
+    const t1=setTimeout(()=>setPhase(1),250);    // orange screen -> white lion fades in
+    const t2=setTimeout(()=>setPhase(2),1050);   // modern 3D flip: white -> black lion
+    const t3=setTimeout(()=>setPhase(3),1850);   // black bg, orange lion grows toward viewer + fades (engulf)
+    const t4=setTimeout(()=>setPhase(4),2750);   // subtle final: hold on pure black
+    const t5=setTimeout(()=>onDone&&onDone(),3250); // reveal app
+    return()=>{[t1,t2,t3,t4,t5].forEach(clearTimeout);};
   },[]);
-  // Background: orange until the engulf phase, then black.
+  // Background orange until engulf, then black.
   const bg=phase>=3?"#0D0D0D":"#E85100";
-  // Lion: invisible at start, fades in white, smoothly turns black, then orange as it engulfs.
-  const lionColor=phase===0?"#FFFFFF":phase===1?"#FFFFFF":phase===2?"#0D0D0D":"#FF5500";
-  const lionOpacity=phase===0?0:(phase===3?0:1);   // hidden at start; fades out near end of engulf
-  const lionScale=phase===3?9:1;                    // grows far past the screen
+  // Flip the lion 180deg on the Y-axis at phase 2 (modern morph between white & black faces).
+  const flipped=phase>=2;
+  // Stage 1-2 lion (white front / black back, via 3D flip). Hidden from phase 3 on.
+  const stageLionVisible=phase>=1&&phase<3;
+  const stageOpacity=phase===0?0:(phase>=3?0:1);
+  // Engulf lion (orange), grows toward viewer then fades.
+  const engulf=phase>=3;
+  const engulfScale=phase===3?9:(phase>=4?9:0.7);
+  const engulfOpacity=phase===3?1:0;   // visible while growing, gone by the black final
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:bg,transition:"background 0.7s ease",
+      background:bg,transition:"background 0.6s ease",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-      <div style={{
-        opacity:lionOpacity,
-        transform:`scale(${lionScale})`,
-        transition:phase===3
-          ? "opacity 0.9s ease-in 0.35s, transform 1.2s cubic-bezier(.55,0,.8,.2)"   // grow first, fade later
-          : "opacity 0.7s ease, color 0.7s ease, transform 0.5s ease",
-        display:"flex",willChange:"transform,opacity"}}>
-        <LionEmoji color={lionColor} size={112}/>
+      <style>{`@keyframes loaderFadeIn{from{opacity:0}to{opacity:1}}`}</style>
+      {/* Stage lion: 3D flip morph from white to black */}
+      <div style={{position:"absolute",
+        opacity:stageOpacity,
+        transition:"opacity 0.5s ease",
+        perspective:"600px",display:stageLionVisible||phase<3?"flex":"none"}}>
+        <div style={{position:"relative",width:112,height:112,
+          transformStyle:"preserve-3d",
+          transform:flipped?"rotateY(180deg)":"rotateY(0deg)",
+          transition:"transform 0.75s cubic-bezier(.6,.05,.3,1)"}}>
+          {/* front: white lion */}
+          <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
+            display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <LionEmoji color="#FFFFFF" size={112}/>
+          </div>
+          {/* back: black lion (pre-rotated so it reads correctly after flip) */}
+          <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
+            transform:"rotateY(180deg)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <LionEmoji color="#0D0D0D" size={112}/>
+          </div>
+        </div>
+      </div>
+      {/* Engulf lion: orange, comes toward you, then gone before the black final */}
+      <div style={{position:"absolute",
+        opacity:engulfOpacity,
+        transform:`scale(${engulfScale})`,
+        transition:"opacity 0.7s ease-in 0.3s, transform 1.0s cubic-bezier(.55,0,.8,.2)",
+        display:engulf?"flex":"none",pointerEvents:"none",willChange:"transform,opacity"}}>
+        <LionEmoji color="#FF5500" size={112}/>
       </div>
     </div>
   );
