@@ -49,7 +49,7 @@ const THEMES = {
     id:"orangeLion",
     bg:"#E85100", card:"#FF6A1A", nav:"#D94800",
     border:"#FF8A4D", borderStrong:"#FFFFFF",
-    text:"#FFFFFF", textSub:"#FFD9BF", textFaint:"#FFB78A",
+    text:"#FFFFFF", textSub:"#FFEEE2", textFaint:"#FFD2B5",
     orange:"#FF7A33", blue:"#0D0D0D",        // accent = black, used sparingly
     gold:"#FFC861",
     orangeFaint:"#FF7E38", blueFaint:"#FF8A4D",
@@ -1253,10 +1253,12 @@ function NewsSection(){
 
 
 function Chevron({open=false, color="currentColor", size=10}){
+  const T=useTheme();
+  const c=T.id==="orangeLion"?"#0D0D0D":color;
   return(
     <svg width={size} height={size} viewBox="0 0 10 6" fill="none"
       style={{display:"block",flexShrink:0,transform:open?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.15s"}}>
-      <path d="M1 1L5 5L9 1" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M1 1L5 5L9 1" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
@@ -1508,8 +1510,8 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
       {/* Header — static (not a toggle) */}
       <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 13px",background:T.card,borderBottom:`1px solid ${T.border}`}}>
         {/* Group letter — rounded square */}
-        <div style={{width:26,height:26,borderRadius:4,background:T.blue,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-          <span style={{color:"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
+        <div style={{width:26,height:26,borderRadius:4,background:T.id==="orangeLion"?"#F0EDE9":T.blue,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+          <span style={{color:T.id==="orangeLion"?"#1A1208":"#fff",fontSize:FS.small,fontWeight:700,letterSpacing:0}}>{g.id}</span>
         </div>
         {/* Group label + two-column indicator row */}
         <div style={{flex:1,display:"flex",flexDirection:"column",gap:4,minWidth:0}}>
@@ -1553,12 +1555,13 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         {sorted.map((team,i)=>{
           const pass=i<2;
           const dev=formDev(team);
-          const fc=dev>0?"#1E7A40":dev<0?"#C0392B":T.textFaint;
+          const OL=T.id==="orangeLion";
+          const fc=dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):(OL?"#FFEEE2":T.textFaint);
           const mr=adjRank(team);
-          const rc=mr<=8?"#1E7A40":mr<=24?"#E07000":"#C0392B";
+          const rc=mr<=8?(OL?"#BFF5CE":"#1E7A40"):mr<=24?(OL?"#FFFFFF":"#E07000"):(OL?"#FFD0C7":"#C0392B");
           return(
-            <div key={team} style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?"rgba(224,112,0,0.05)":"transparent"}}>
-              <span style={{fontSize:FS.small,fontWeight:700,color:pass?"#E07000":T.textFaint,textAlign:"center"}}>{i+1}</span>
+            <div key={team} style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?(OL?"rgba(255,255,255,0.10)":"rgba(224,112,0,0.05)"):"transparent"}}>
+              <span style={{fontSize:FS.small,fontWeight:700,color:pass?(OL?"#FFFFFF":"#E07000"):T.textFaint,textAlign:"center"}}>{i+1}</span>
               <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
               <span style={{fontSize:FS.small,fontWeight:pass?600:400,color:pass?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
               <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:FS.caption,fontWeight:700,color:fc,textAlign:"right"}}>{dev===undefined?"":(dev>0?"+":"")+dev}</span>
@@ -2492,8 +2495,7 @@ function ChampionCard({p,label,icon}){
           </div>
         </div>
       </div>
-      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55,
-        display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{(p.bio||p.why)[lang]}</div>
+      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55}}>{(p.bio||p.why)[lang]}</div>
       <StatBar st={p.st} dark/>
     </div>
   );
@@ -3068,22 +3070,23 @@ function NationChampionCard({n}){
         </div>
       </div>
       <div style={{marginBottom:11}}><NationBadges team={n.team} dark/></div>
-      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55,
-        display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{n.outlook[lang]}</div>
+      <div style={{fontSize:FS.small,color:"rgba(255,255,255,0.82)",lineHeight:1.55}}>{n.outlook[lang]}</div>
     </div>
   );
 }
 
 // ── NATION CARD ───────────────────────────────────────────────────────────────
-function NationCard({n,open,onToggle}){
+function NationCard({n,open,onToggle,compact}){
   const T=useTheme();
   const lang=useLang();
   const adj=n.formRating;
   return(
-    <div style={{background:T.card,border:`1px solid ${open?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
+    <div style={compact
+      ? {borderBottom:`1px solid ${T.border}`,background:open?T.orangeFaint:T.card,overflow:"hidden"}
+      : {background:T.card,border:`1px solid ${open?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
       {/* Header */}
-      <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
-        <span style={{fontSize:20,lineHeight:1,flexShrink:0}}>{n.flag}</span>
+      <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:8,padding:compact?"8px 12px":"11px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
+        <span style={{fontSize:compact?16:20,lineHeight:1,flexShrink:0}}>{n.flag}</span>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:FS.body,fontWeight:700,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?TEAM_NL[n.team]||n.team:n.team}</div>
           <div style={{fontSize:FS.caption,color:T.textSub,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{lang==="nl"?"Groep":"Group"} {n.group} · <span style={{color:T.textFaint}}>{n.coach}</span></div>
@@ -3126,6 +3129,7 @@ function NationsTab({preOpen=null}){
   const lang=useLang();
   const [open,setOpen]=useState(preOpen);
   const [listOpen,setListOpen]=useState(!!preOpen);
+  const [allOpen,setAllOpen]=useState(false);
   const cardRefs=React.useRef({});
   const toggle=name=>{
     setOpen(p=>{
@@ -3168,15 +3172,29 @@ function NationsTab({preOpen=null}){
                 {lang==="nl"?`Bekijk top ${ranked.length} landen`:`View top ${ranked.length} nations`}
               </span>
             </div>
-            {listOpen&&(
-              <div style={{marginBottom:24}}>
-                {rest.map(n=>(
-                  <div key={n.team} ref={el=>cardRefs.current[n.team]=el}>
-                    <NationCard n={n} open={open===n.team} onToggle={()=>toggle(n.team)}/>
-                  </div>
-                ))}
-              </div>
-            )}
+            {listOpen&&(()=>{
+              const shown=allOpen?rest:rest.slice(0,5);
+              return(
+                <div style={{marginBottom:24,background:T.card,border:`1px solid ${T.border}`,borderTop:"none",
+                  borderBottomLeftRadius:8,borderBottomRightRadius:8,overflow:"hidden"}}>
+                  {shown.map(n=>(
+                    <div key={n.team} ref={el=>cardRefs.current[n.team]=el}>
+                      <NationCard n={n} open={open===n.team} onToggle={()=>toggle(n.team)} compact/>
+                    </div>
+                  ))}
+                  {!allOpen&&rest.length>5&&(
+                    <div onClick={()=>setAllOpen(true)}
+                      style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,cursor:"pointer",
+                        padding:"10px 13px",borderTop:`1px solid ${T.border}`,background:T.bg}}>
+                      <span style={{fontSize:FS.caption,fontWeight:700,color:T.id==="dark"?T.orange:T.blue}}>
+                        {lang==="nl"?`Toon alle ${ranked.length} landen`:`Show all ${ranked.length} nations`}
+                      </span>
+                      <Chevron open={false} color={T.textSub}/>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </React.Fragment>
         );
       })()}
