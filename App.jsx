@@ -1303,7 +1303,8 @@ function ThemeToggle({theme,setTheme}){
     (col)=><FooterLionIcon color={col} size={16}/>,
     (col)=><FooterLionIcon color={col} size={16}/>,
   ];
-  const frameBorder=theme==="dark"?"#FF5500":(theme==="orangeLion"?BLACK:"#E4E4E4");
+  const T=useTheme();
+  const frameBorder=T.id==="default"?"#E07000":T.border;
   return(
     <div style={{position:"relative",display:"flex",width:SEG*3,height:H,
       border:`1px solid ${frameBorder}`,borderRadius:6,overflow:"hidden",
@@ -1333,7 +1334,7 @@ function DataTabButton({onOpen,active}){
   const [anim,setAnim]=React.useState(false);
   // Per-theme colors for the icon + frame.
   const iconCol=T.id==="orangeLion"?"#0D0D0D":(T.id==="dark"?"#FF5500":"#E07000");
-  const frameBorder=active?iconCol:(T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#0D0D0D":"#E4E4E4"));
+  const frameBorder=T.id==="default"?"#E07000":T.border;
   const bg=active?(T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"rgba(255,85,0,0.16)":"rgba(224,112,0,0.12)")):"transparent";
   const handle=(e)=>{e.stopPropagation();setAnim(true);setTimeout(()=>setAnim(false),520);onOpen&&onOpen();};
   // three analytics bars that bounce on click
@@ -3555,9 +3556,9 @@ function FBrefStatsSection(){
   return(
     <React.Fragment>
       {/* WC Players table */}
-      <div style={{marginTop:28}}>
+      <div>
         <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:12,paddingLeft:13}}>
-          {lang==="nl"?"xGA per 90":"xGA per 90"}
+          {lang==="nl"?"Spelerstatistieken":"Player stats"}
         </div>
         {/* Nation filter */}
         <div style={{display:"flex",gap:6,marginBottom:10,alignItems:"center",flexWrap:"wrap",paddingLeft:13}}>
@@ -3593,7 +3594,7 @@ function FBrefStatsSection(){
           {visible.map((p,i)=>(<Row key={p.name+i} p={p} rank={i+1}/>))}
         </div>
         {/* Expand */}
-        <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap"}}>
+        <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap",justifyContent:"center"}}>
           {[{n:10,lab:"Top 10"},{n:50,lab:"Top 50"},{n:FBREF_WC.length,lab:lang==="nl"?"Alle":"All"}].map(({n,lab})=>(
             <button key={lab} onClick={()=>setLimit(n)}
               style={{fontSize:FS.caption,padding:"4px 10px",borderRadius:4,cursor:"pointer",
@@ -3633,6 +3634,22 @@ function FBrefStatsSection(){
   );
 }
 
+// Category section header for the Players tab — clearly separates the three content types:
+// player data, the FPL team, and nation info.
+function PSection({label,sub,accent}){
+  const T=useTheme();
+  const col=accent||T.orange;
+  return(
+    <div style={{marginTop:30,marginBottom:14,paddingLeft:13,paddingRight:13}}>
+      <div style={{display:"flex",alignItems:"center",gap:8}}>
+        <div style={{width:4,height:18,borderRadius:2,background:col,flexShrink:0}}/>
+        <span style={{fontSize:FS.h2,fontWeight:800,color:T.text,letterSpacing:0.2}}>{label}</span>
+      </div>
+      {sub&&<div style={{fontSize:FS.caption,color:T.textSub,marginTop:4,paddingLeft:12,lineHeight:1.4}}>{sub}</div>}
+    </div>
+  );
+}
+
 function PlayersTab(){
   const T=useTheme();
   const lang=useLang();
@@ -3644,6 +3661,10 @@ function PlayersTab(){
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   return(
     <div>
+      {/* ═══ CATEGORY 1: SPELERDATA (player data) ═══ */}
+      <PSection label={lang==="nl"?"Spelers":"Players"}
+        sub={lang==="nl"?"Sterspelers, opkomende talenten en statistieken per speler.":"Star players, emerging talents and per-player statistics."}/>
+
       {/* Spotlight — star champion card on top */}
       <ChampionCard p={SPOTLIGHT[0]}
         label={lang==="nl"?"Sterspelers":"Spotlight"}
@@ -3685,6 +3706,13 @@ function PlayersTab(){
           {DARK_HORSES.slice(1).map(p=><DarkHorseCard key={p.name} p={p} open={openDark[p.name]} onToggle={()=>toggle(setOpenDark,p.name)}/>)}
         </div>
       )}
+
+      {/* Player stats (xGA per 90) — part of the player-data category */}
+      <FBrefStatsSection/>
+
+      {/* ═══ CATEGORY 2: FPL-TEAM (the fantasy XI) ═══ */}
+      <PSection label={lang==="nl"?"FPL-team":"FPL team"}
+        sub={lang==="nl"?"Een fantasy-opstelling op basis van clubvorm en het verwachte toernooipad — geen modeloutput.":"A fantasy line-up based on club form and expected tournament path — not model output."}/>
 
       {/* Best XI */}
       <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:4,marginBottom:10,paddingLeft:13}}>
@@ -3751,13 +3779,11 @@ function PlayersTab(){
             )}
           </div>
         ))}
-      <FBrefStatsSection/>
       </div>
 
-      {/* ── LANDEN (merged from former Nations tab) ── */}
-      <div style={{fontSize:FS.small,fontWeight:700,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginTop:28,marginBottom:12,paddingLeft:13}}>
-        {lang==="nl"?"Landen":"Nations"}
-      </div>
+      {/* ═══ CATEGORY 3: LANDEN (nation info) ═══ */}
+      <PSection label={lang==="nl"?"Landen":"Nations"}
+        sub={lang==="nl"?"Per land het profiel, de vorm en de modelrang.":"Per nation: profile, form and model rank."}/>
       <NationsTab/>
     </div>
   );
