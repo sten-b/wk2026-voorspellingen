@@ -220,12 +220,12 @@ const MATCH_EXPL = {
     "Brazil-Morocco":"De topwedstrijd van Groep C. Regragui zet Marokko neer in de WK 2022-stijl: diep, compact, gevaarlijk op de omschakeling via Hakimi. Vinicius Jr. is de enige speler die dit blok individueel kan openbreken. Het model komt uit op 1-1: een gelijkspel.",
     "Scotland-Haiti":"Schotlands technische kwaliteit en snelheid op de flanken overspoelen een Haïti dat het internationale niveau net te hoog vindt. Robertson en McTominay controleren de wedstrijd. Schotland wint nipt met 2-1.",
     "Brazil-Haiti":"Met kwalificatie op zak roteert Ancelotti en geeft speeltijd aan zijn bankspelers. De kwaliteitskloof is te groot voor Haïti. Brazilië wint overtuigend met 4-1.",
-    "Morocco-Scotland":"Marokko's tactische intelligentie is te veel voor Schotland. Brahim Diaz vindt de opening, Amrabat sluit de middenlinie volledig af. Het model komt uit op 1-1: een gelijkspel.",
-    "Turkey-Paraguay":"Twee ploegen wiens lot nog hangt maar geen van beiden zet zich bloot. Calhanoglu raakt de paal. Het model komt uit op 1-1: een gelijkspel.",
+    "Morocco-Scotland":"Marokko's tactische intelligentie is te veel voor Schotland. Brahim Diaz vindt de opening, Amrabat sluit de middenlinie volledig af. De landen liggen dicht bij elkaar, maar Marokko's sterkere xG-profiel geeft de doorslag: het model komt uit op 2-1.",
+    "Turkey-Paraguay":"Twee ploegen wiens lot nog hangt maar geen van beiden zet zich bloot. Calhanoglu raakt de paal en zet er daarna een binnen. Het verschil is klein, maar Turkije's betere xG-profiel kantelt het: het model komt uit op 2-1.",
     "United States-Australia":"De VS verscherpt na de opener. Reyna exploiteert de ruimte achter Australiës hoge linie. Australië creëert kansen maar Turner redt. Het model komt uit op 2-2: een gelijkspel.",
     "Turkey-United States":"De VS weet dat een overwinning de groepswinst bevestigt en drukt agressief van de aftrap. Musah en Adams domineren het middenveld volledig. Het model komt uit op 2-2: een gelijkspel.",
     "Paraguay-Australia":"Australië heeft een overwinning nodig om door te gaan en speelt met de intensiteit die daarbij past. Het model komt uit op 1-1: een gelijkspel.",
-    "Turkey-Australia":"Beide ploegen spelen een vergelijkbare, directe stijl. De meest fysiek betwiste wedstrijd van de groep. Het model komt uit op 2-2: een gelijkspel.",
+    "Turkey-Australia":"Beide ploegen spelen een vergelijkbare, directe stijl in de meest fysiek betwiste wedstrijd van de groep. De marge is dun, maar Turkije's sterkere xG-profiel beslist: het model komt uit op 3-2.",
     "United States-Paraguay":"De VS speelt voor 80.000 fans in MetLife Stadium: het thuisvoordeel is reëel. Pulisic's beweging vindt voortdurend ruimte. Het model komt uit op 1-1: een gelijkspel.",
     "Germany-Ivory Coast":"Een echte test voor Duitslands defensieve structuur. Haller geeft Schlotterbeck problemen met zijn fysieke aanwezigheid. Duitsland leidt via Musiala maar Haller gelijkt. Duitsland wint nipt met 3-2.",
     "Ecuador-Curacao":"Caicedo en Páez spelen vrijuit tegen een Curaçao dat simpelweg niet het niveau heeft. Ecuador domineert via omschakelingsmomenten en individuele kwaliteit. Ecuador wint verdiend met 2-0.",
@@ -241,7 +241,7 @@ const MATCH_EXPL = {
     "Japan-Sweden":"De strijd om de tweede plek. Japans hoge pressing en intensiteit past perfect bij Zwedens tragere tempo. Japan wint nipt met 2-1.",
     "Belgium-Egypt":"Salah is een van de weinige spelers die een wedstrijd solo kan winnen: zijn beweging geeft Belgische backs echte problemen. De Bruyne draagt België in de aanval. Belgie wint nipt met 2-1.",
     "Iran-New Zealand":"Irans gedisciplineerde 4-5-1 sluit ruimte efficiënt af en Nieuw-Zeeland worstelt met creëren. Taremi maakt een standaardsituatie vroeg af. Iran wint nipt met 1-0.",
-    "Belgium-Iran":"Belgiums snelheid via Doku is het sleutelelement. Irans defensielinie worstelt met zijn directheid. De Bruyne creëert én scoort. Het model komt uit op 1-1: een gelijkspel.",
+    "Belgium-Iran":"Belgiums snelheid via Doku is het sleutelelement. Irans defensielinie worstelt met zijn directheid. De Bruyne creëert én scoort. Het krachtsverschil is klein, maar Belgiës duidelijk betere xG-profiel hakt de knoop door: het model komt uit op 2-1.",
     "Egypt-New Zealand":"Salah is fris en Nieuw-Zeeland heeft geen antwoord op zijn beweging. Salah scoort en assisteert. Egypte wint nipt met 2-1.",
     "Belgium-New Zealand":"België roteert na een lastige opener maar de kwaliteitskloof is enorm. Doku en Trossard vinden de pockets die ertoe doen. Belgie wint verdiend met 3-1.",
     "Iran-Egypt":"De beslissende wedstrijd van Groep G. Irans defensieve discipline geeft Egypte echte problemen. Maar Salah vindt twintig minuten voor tijd een halve meter en krul de bal in de bovenhoek. Het model komt uit op 1-1: een gelijkspel.",
@@ -260,7 +260,7 @@ const MATCH_EXPL = {
     "Argentina-Algeria":"Algerije worstelt op dit niveau zonder Mahrez op zijn best. Argentiniës nieuwe generatie: Álvarez en Fernández: heeft te veel kwaliteit. Argentinië wint verdiend met 3-1.",
     "Austria-Jordan":"Oostenrijk is een van Europa's meest complete technische ploegen buiten de elite. Jordanië is defensief poreus bij hoge pressing. Arnautovic en Gregoritsch veroorzaken de hele wedstrijd problemen. Oostenrijk wint nipt met 2-1.",
     "Argentina-Austria":"Argentiniës meest competitieve groepswedstrijd. Oostenrijk zit in een middenblokkering maar Álvarez' intelligente beweging vindt tweemaal de ruimte tussen de linies. Argentinië wint nipt met 2-1.",
-    "Algeria-Jordan":"Een gelijkwaardig duel dat Algerije wint via beter positiespel. Bennacer controleert het tempo. Het model komt uit op 2-2: een gelijkspel.",
+    "Algeria-Jordan":"Een gelijkwaardig duel dat Algerije wint via beter positiespel. Bennacer controleert het tempo en Algerije's sterkere xG-profiel maakt het af: het model komt uit op 2-1.",
     "Argentina-Jordan":"Met kwalificatie al zeker geeft Scaloni jongeren speeltijd. Maar zelfs Argentiniës tweede elftal is te goed voor Jordanië. Argentinië wint overtuigend met 4-1.",
     "Austria-Algeria":"Oostenrijk heeft een punt nodig voor de tweede plek; Algerije heeft een overwinning nodig om te overleven. Echte spanning. Sabitzer scoort vroeg; Bounedjah gelijkt. Het model komt uit op 1-1: een gelijkspel.",
     "Portugal-Uzbekistan":"Leão, Pedro Neto en Gonçalo Ramos krijgen vrij spel tegen een Oezbekistan dat op dit niveau wordt overweldigd. Portugal wint verdiend met 3-1.",
@@ -271,8 +271,8 @@ const MATCH_EXPL = {
     "Colombia-Uzbekistan":"Colombia's vormcorrectie weerspiegelt Díaz' kwaliteit en hun collectieve aanvallende klasse. Oezbekistan maakt hun WK-debuut maar mist toernooiervaring. Colombia wint nipt met 2-1.",
     "England-Panama":"Engeland roteert en beheert de speeltijd van sterspelers. Maar zelfs hun tweede keuze is te goed voor Panama. Engeland wint verdiend met 2-0.",
     "Croatia-Ghana":"Kroatië begint scherp en scoort tweemaal via Kramarić en Kovačić. Ghana kan niet bijkomen. Kroatie wint verdiend met 3-1.",
-    "England-Croatia":"Na Engeland's correctie zijn ze functioneel gelijkwaardig aan Kroatië. Bellinghams creativiteit veroorzaakt problemen maar Modrićs ervaring houdt Kroatië georganiseerd. Het model komt uit op 1-1: een gelijkspel.",
-    "Panama-Ghana":"Ghana heeft het individuele kwaliteitsvoordeel via Kudus en Parteys middenveldcontrole. Het model komt uit op 2-2: een gelijkspel.",
+    "England-Croatia":"Na Engeland's correctie liggen ze dicht bij Kroatië. Bellinghams creativiteit veroorzaakt problemen en Modrićs ervaring houdt Kroatië georganiseerd, maar Engelands sterkere xG-profiel geeft de doorslag: het model komt uit op 2-1.",
+    "Panama-Ghana":"Ghana heeft individuele klasse via Kudus en Parteys middenveldcontrole, maar Panama houdt het lang gelijk. In een krappe marge geeft Panama's iets sterkere xG-profiel de doorslag: het model komt uit op 3-2.",
     "England-Ghana":"Engeland is volledig gefocust. Bellingham dicteert het tempo en Kanes positiespel creëert ruimte voor Saka en Foden. Engeland wint overtuigend met 3-0.",
     "Croatia-Panama":"Kroatië's technische combinatiespel ontmantelt Panamas diep verdedigende blok. Modrić vindt voortdurend de gaten. Kroatie wint nipt met 2-1."
   },
@@ -294,12 +294,12 @@ const MATCH_EXPL = {
     "Brazil-Morocco":"The standout match of Group C. Regragui sets Morocco up in their 2022 semi-final shape: deep, compact, dangerous on the counter through Hakimi. Vinicius Jr. is the only player who can unlock this individually. The model lands on 1-1: a draw.",
     "Scotland-Haiti":"Scotland's technical quality and wide pace overwhelm a Haiti side that finds the level just too high. Robertson and McTominay control proceedings. Scotland edge it 2-1.",
     "Brazil-Haiti":"With qualification secured Ancelotti rotates, handing fringe players minutes. The quality gap is too large for Haiti. Brazil win convincingly, 4-1.",
-    "Morocco-Scotland":"Morocco's tactical intelligence is too much for Scotland. Brahim Diaz finds the opening; Amrabat closes the midfield entirely. The model lands on 1-1: a draw.",
-    "Turkey-Paraguay":"Two sides with their fate still open but neither willing to overcommit. Calhanoglu hits the post. The model lands on 1-1: a draw.",
+    "Morocco-Scotland":"Morocco's tactical intelligence is too much for Scotland. Brahim Diaz finds the opening; Amrabat closes the midfield entirely. The sides are close, but Morocco's stronger xG profile tips it: the model lands on 2-1.",
+    "Turkey-Paraguay":"Two sides with their fate still open but neither willing to overcommit. Calhanoglu hits the post, then converts. The gap is small, but Turkey's better xG profile tips it: the model lands on 2-1.",
     "United States-Australia":"The USA sharpen after the opener. Reyna exploits the space behind Australia's high line. Australia create chances but the goalkeeper holds firm. The model lands on 2-2: a draw.",
     "Turkey-United States":"The USA know a win confirms the group and press aggressively from the off. Musah and Adams fully control the midfield. The model lands on 2-2: a draw.",
     "Paraguay-Australia":"Australia need a win to advance and play with the urgency that demands. The model lands on 1-1: a draw.",
-    "Turkey-Australia":"Two direct, physically similar sides. The most physically contested match of the group. The model lands on 2-2: a draw.",
+    "Turkey-Australia":"Two direct, physically similar sides in the most physically contested match of the group. The margin is thin, but Turkey's stronger xG profile decides it: the model lands on 3-2.",
     "United States-Paraguay":"The USA play in front of 80,000 at MetLife Stadium: the home advantage is genuine. Pulisic's movement finds space consistently. The model lands on 1-1: a draw.",
     "Germany-Ivory Coast":"A genuine test of Germany's defensive structure. Haller causes Schlotterbeck problems with his physicality. Germany lead through Musiala but Haller equalises. Germany edge it 3-2.",
     "Ecuador-Curacao":"Caicedo and Páez play freely against a Curaçao that simply doesn't have the level. Ecuador dominate through transitions and individual quality. Ecuador earn a deserved 2-0 win.",
@@ -315,7 +315,7 @@ const MATCH_EXPL = {
     "Japan-Sweden":"The second-place decider. Japan's high press and intensity is perfect against Sweden's slower tempo. Japan edge it 2-1.",
     "Belgium-Egypt":"Salah is one of the few players who can win a match single-handedly: his movement causes Belgium's defenders real problems. De Bruyne carries Belgium in attack. Belgium edge it 2-1.",
     "Iran-New Zealand":"Iran's disciplined 4-5-1 closes space effectively and New Zealand struggle to create. Taremi finishes a set piece early. Iran edge it 1-0.",
-    "Belgium-Iran":"Belgium's pace through Doku is the key weapon. Iran's defensive line struggles with his directness. De Bruyne creates and scores. The model lands on 1-1: a draw.",
+    "Belgium-Iran":"Belgium's pace through Doku is the key weapon. Iran's defensive line struggles with his directness. De Bruyne creates and scores. The strength gap is small, but Belgium's clearly better xG profile settles it: the model lands on 2-1.",
     "Egypt-New Zealand":"Salah is fresh and New Zealand have no answer to his movement. Salah scores and assists. Egypt edge it 2-1.",
     "Belgium-New Zealand":"Belgium rotate after a difficult opener but the quality gap is enormous. Doku and Trossard find the pockets that matter. Belgium earn a deserved 3-1 win.",
     "Iran-Egypt":"The decisive Group G match. Iran's defensive discipline gives Egypt real problems. But Salah finds half a yard twenty minutes from time and bends one into the top corner. The model lands on 1-1: a draw.",
@@ -334,7 +334,7 @@ const MATCH_EXPL = {
     "Argentina-Algeria":"Algeria struggle at this level without Mahrez at full capacity. Argentina's new generation: Álvarez and Fernández: have too much quality. Argentina earn a deserved 3-1 win.",
     "Austria-Jordan":"Austria are one of Europe's most technically complete sides outside the elite. Jordan are defensively open against high-tempo pressing. Arnautovic and Gregoritsch cause problems throughout. Austria edge it 2-1.",
     "Argentina-Austria":"Argentina's most competitive group match. Austria sit in a mid-block but Álvarez's intelligent movement finds pockets between the lines twice. Argentina edge it 2-1.",
-    "Algeria-Jordan":"An evenly-contested match that Algeria edge through better positional play. Bennacer controls the tempo. The model lands on 2-2: a draw.",
+    "Algeria-Jordan":"An evenly-contested match that Algeria edge through better positional play. Bennacer controls the tempo and Algeria's stronger xG profile finishes it: the model lands on 2-1.",
     "Argentina-Jordan":"With qualification already secured Scaloni gives youth players game time. But even Argentina's second string is too much for Jordan. Argentina win convincingly, 4-1.",
     "Austria-Algeria":"Austria need a point for second place; Algeria need a win to survive. Genuine tension. Sabitzer scores early; Bounedjah equalises. The model lands on 1-1: a draw.",
     "Portugal-Uzbekistan":"Leão, Pedro Neto and Gonçalo Ramos are given free rein against a Uzbekistan side that is simply overmatched. Portugal earn a deserved 3-1 win.",
@@ -345,8 +345,8 @@ const MATCH_EXPL = {
     "Colombia-Uzbekistan":"Colombia's form correction reflects Díaz's quality and their collective attacking class. Uzbekistan are making their World Cup debut and lack tournament experience. Colombia edge it 2-1.",
     "England-Panama":"England rotate and manage the minutes of their key players. But even their second choice is too much for Panama. England earn a deserved 2-0 win.",
     "Croatia-Ghana":"Croatia start sharply and score twice through Kramarić and Kovačić. Ghana cannot recover. Croatia earn a deserved 3-1 win.",
-    "England-Croatia":"After England's correction both sides are functionally equivalent. Bellingham's creativity causes problems but Modrić's experience keeps Croatia organised. The model lands on 1-1: a draw.",
-    "Panama-Ghana":"Ghana have the individual quality edge through Kudus and Partey's midfield dominance. The model lands on 2-2: a draw.",
+    "England-Croatia":"After England's correction the sides are close. Bellingham's creativity causes problems and Modrić's experience keeps Croatia organised, but England's stronger xG profile tips it: the model lands on 2-1.",
+    "Panama-Ghana":"Ghana have individual class through Kudus and Partey's midfield control, but Panama hang level for long stretches. In a tight margin Panama's slightly stronger xG profile decides it: the model lands on 3-2.",
     "England-Ghana":"England are fully focused and Bellingham dictates the tempo. Kane's positioning creates space for Saka and Foden. England win convincingly, 3-0.",
     "Croatia-Panama":"Croatia's technical combination play dismantles Panama's deep defensive block. Modrić finds gaps consistently. Croatia edge it 2-1."
   }
@@ -1028,16 +1028,32 @@ function expectedGoals(a,b){
 // matchups produce realistic big scorelines (3-0, 4-1), then reconcile with
 // Model 1 (composite) so rounding never flips the win/draw/loss outcome.
 // Score engine. The composite (team strength) decides the OUTCOME and the
-// MARGIN via fixed ranges; xG/xGc fill in the actual height of the scoreline.
-//   |gap| < 20  → draw
-//   20–35       → win by 1
-//   35–50       → win by 2
-//   > 50        → win by 3
+// MARGIN; xG/xGc fill in the actual height of the scoreline.
+//   |gap| < 10        → draw
+//   10–20 (grey zone) → xG-edge decides: favourite wins by 1 if its net xG profile
+//                       is stronger, otherwise draw
+//   20–35             → win by 1
+//   35–50             → win by 2
+//   > 50              → win by 3
 // The loser's tally comes from their own expected goals (so an attacking match
 // runs higher, a defensive one stays low); the winner is loser + margin.
-function marginFromGap(g){
-  g=Math.abs(g);
-  if(g<20) return 0;
+// Net xG profile of a team: its expected goals minus expected goals conceded.
+function netXG(t){const d=MODEL_DATA[t]; if(!d) return 0; return (d.xg??GEM_XG)-(d.xgc??GEM_XGC);}
+// Margin from the composite gap (signed: diff = composite[a] - composite[b]):
+//   |gap| < 10   → draw
+//   10 ≤ |gap| < 20 → grey zone: the xG-edge decides. If the favourite also has the
+//                     stronger net-xG profile ((xG-xGc)fav > (xG-xGc)dog) it wins by 1,
+//                     otherwise it stays a draw. (The "10-point xG bonus".)
+//   20–35        → win by 1
+//   35–50        → win by 2
+//   > 50         → win by 3
+function marginFromGap(diff,a,b){
+  const g=Math.abs(diff);
+  if(g<10) return 0;
+  if(g<20){
+    const fav=diff>0?a:b, dog=diff>0?b:a;
+    return (netXG(fav)-netXG(dog))>0 ? 1 : 0;
+  }
   if(g<35) return 1;
   if(g<50) return 2;
   return 3;
@@ -1046,7 +1062,7 @@ function model2Score(a,b){
   const [ea,eb]=expectedGoals(a,b);
   const ca=COMPOSITE[a]??50, cb=COMPOSITE[b]??50;
   const diff=ca-cb;
-  const margin=marginFromGap(diff);
+  const margin=marginFromGap(diff,a,b);
   if(margin===0){                                 // draw — height from combined xG
     const lvl=Math.max(0,Math.round((ea+eb)/2));
     return [lvl,lvl];
@@ -3197,13 +3213,14 @@ function ModelViz({scrollTo,onScrolled}={}){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:12}}>
           {lang==="nl"
-            ?"Voor elke wedstrijd vergelijkt het model de twee sterktescores. Het verschil bepaalt wie wint en met welke marge; de xG-cijfers bepalen hoeveel goals er binnen die marge vallen."
-            :"For every match the model compares the two strength scores. The gap decides who wins and by what margin; the xG figures set how many goals fall within that margin."}
+            ?"Voor elke wedstrijd vergelijkt het model de twee sterktescores. Het verschil bepaalt wie wint en met welke marge; in de 10–20-zone geeft het xG-profiel de doorslag. De xG-cijfers bepalen hoeveel goals er binnen die marge vallen."
+            :"For every match the model compares the two strength scores. The gap decides who wins and by what margin; in the 10–20 zone the xG profile is the tiebreaker. The xG figures set how many goals fall within that margin."}
         </div>
         {/* compact margin rule */}
         <div style={{display:"flex",gap:6,marginBottom:13,flexWrap:"wrap"}}>
           {[
-            {g:lang==="nl"?"<20":"<20",r:lang==="nl"?"gelijk":"draw"},
+            {g:lang==="nl"?"<10":"<10",r:lang==="nl"?"gelijk":"draw"},
+            {g:"10–20",r:lang==="nl"?"xG":"xG"},
             {g:"20–35",r:"+1"},{g:"35–50",r:"+2"},{g:">50",r:"+3"},
           ].map((c,i)=>(
             <div key={i} style={{flex:"1 1 0",minWidth:52,textAlign:"center",
@@ -3238,7 +3255,7 @@ function ModelViz({scrollTo,onScrolled}={}){
           if(A===B||COMPOSITE[A]===undefined||COMPOSITE[B]===undefined)
             return <div style={{fontSize:FS.caption,color:T.textFaint,textAlign:"center",padding:"8px 0"}}>{lang==="nl"?"Kies twee verschillende landen.":"Pick two different countries."}</div>;
           const gap=COMPOSITE[A]-COMPOSITE[B];
-          const winner=gap>=0?A:B, margin=marginFromGap(gap);
+          const winner=gap>=0?A:B, margin=marginFromGap(gap,A,B);
           const [ea,eb]=expectedGoals(A,B);
           const [sA,sB]=model2Score(A,B);
           const nf=(x)=>x.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1});
@@ -3282,8 +3299,12 @@ function ModelViz({scrollTo,onScrolled}={}){
               </div>
               <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginTop:8,textAlign:"center"}}>
                 {margin===0
-                  ?(lang==="nl"?`Verschil ${nf(Math.abs(gap))} < 20 → gelijkspel. xG bepaalt ${sA}–${sB}.`:`Gap ${nf(Math.abs(gap))} < 20 → draw. xG sets ${sA}–${sB}.`)
-                  :(lang==="nl"?`${tName(winner,lang)} wint met ${margin}; xG bepaalt de hoogte: ${sA}–${sB}.`:`${tName(winner,lang)} wins by ${margin}; xG sets the height: ${sA}–${sB}.`)}
+                  ?(Math.abs(gap)<10
+                    ?(lang==="nl"?`Verschil ${nf(Math.abs(gap))} < 10 → gelijkspel. xG bepaalt ${sA}–${sB}.`:`Gap ${nf(Math.abs(gap))} < 10 → draw. xG sets ${sA}–${sB}.`)
+                    :(lang==="nl"?`Verschil ${nf(Math.abs(gap))} in de 10–20-zone; xG-profiel wijst geen winnaar aan → gelijkspel ${sA}–${sB}.`:`Gap ${nf(Math.abs(gap))} in the 10–20 zone; xG profile favours no winner → draw ${sA}–${sB}.`))
+                  :(Math.abs(gap)<20
+                    ?(lang==="nl"?`Verschil ${nf(Math.abs(gap))} in de 10–20-zone; ${tName(winner,lang)} heeft het betere xG-profiel → wint met ${margin}: ${sA}–${sB}.`:`Gap ${nf(Math.abs(gap))} in the 10–20 zone; ${tName(winner,lang)} has the better xG profile → wins by ${margin}: ${sA}–${sB}.`)
+                    :(lang==="nl"?`${tName(winner,lang)} wint met ${margin}; xG bepaalt de hoogte: ${sA}–${sB}.`:`${tName(winner,lang)} wins by ${margin}; xG sets the height: ${sA}–${sB}.`))}
               </div>
             </div>
           );
