@@ -1547,16 +1547,19 @@ function DataTabButton({onOpen,active}){
         transform:anim?"scale(0.9)":"scale(1)",
         transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1)"}}>
       <style>{`@keyframes dataPulse{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}`}</style>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}>
-        {/* connectors: parent down to the two children */}
-        <path d="M12 7v4M5.5 17v-2.5h13V17M12 11v3.5" stroke={iconCol} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-        {/* nodes (pulse on click) */}
-        {[{x:9,y:2,w:6,h:5},{x:2.5,y:17,w:6,h:5},{x:15.5,y:17,w:6,h:5}].map((n,i)=>(
-          <rect key={i} x={n.x} y={n.y} width={n.w} height={n.h} rx="1.4"
-            fill="none" stroke={iconCol} strokeWidth="1.7"
-            style={{transformOrigin:`${n.x+n.w/2}px ${n.y+n.h/2}px`,
-              animation:anim?`dataPulse 0.5s ${i*0.06}s ease`:"none"}}/>
-        ))}
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}
+        stroke={iconCol} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        {/* calculator body */}
+        <rect x="4" y="2" width="16" height="20" rx="2.2"
+          style={{transformOrigin:"12px 12px",animation:anim?"dataPulse 0.5s ease":"none"}}/>
+        {/* display */}
+        <rect x="7" y="5" width="10" height="3.2" rx="0.8" fill={iconCol} stroke="none"/>
+        {/* keypad dots */}
+        {[0,1,2].map(c=>[0,1,2].map(r=>(
+          <circle key={`${c}-${r}`} cx={8+c*4} cy={12.5+r*3.2} r="0.95" fill={iconCol} stroke="none"
+            style={{transformOrigin:`${8+c*4}px ${12.5+r*3.2}px`,
+              animation:anim?`dataPulse 0.5s ${(c+r)*0.05}s ease`:"none"}}/>
+        )))}
       </svg>
     </button>
   );
@@ -4111,11 +4114,20 @@ function PlayersTab({setTab}){
             </React.Fragment>
           ))}
         </div>
-        <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
-          {lang==="nl"
-            ?"Voor het eerst met 48 landen, verdeeld over drie gastlanden — het grootste WK ooit. Spanje arriveert als Europees kampioen en favoriet, terwijl Argentinië de titel verdedigt met Messi in vermoedelijk zijn laatste WK. Frankrijk, Engeland, Brazilië en Noorwegen wachten, en outsiders als Marokko en gastland Mexico kunnen verrassen. De nieuwe opzet kent extra knock-outrondes en weinig marge: één slechte avond en de grootste naam ligt eruit."
-            :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain arrive as European champions and favourites, while Argentina defend the title with Messi in what is likely his last World Cup. France, England, Brazil and Norway lie in wait, and outsiders like Morocco and hosts Mexico could surprise. The new format brings extra knockout rounds and little margin: one bad night and the biggest name is out."}
-        </p>
+        <div style={{marginTop:18}}>
+          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:1.5,textTransform:"uppercase",
+            color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>
+            {lang==="nl"?"Het toernooi":"The tournament"}
+          </div>
+          <h2 style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.3,margin:"0 0 8px",lineHeight:1.15}}>
+            {lang==="nl"?"48 landen, één troon":"48 nations, one throne"}
+          </h2>
+          <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
+            {lang==="nl"
+              ?"Voor het eerst met 48 landen, verdeeld over drie gastlanden — het grootste WK ooit. Spanje arriveert als Europees kampioen en favoriet, terwijl Argentinië de titel verdedigt met Messi in vermoedelijk zijn laatste WK. Frankrijk, Engeland, Brazilië en Noorwegen wachten, en outsiders als Marokko en gastland Mexico kunnen verrassen. De nieuwe opzet kent extra knock-outrondes en weinig marge: één slechte avond en de grootste naam ligt eruit."
+              :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain arrive as European champions and favourites, while Argentina defend the title with Messi in what is likely his last World Cup. France, England, Brazil and Norway lie in wait, and outsiders like Morocco and hosts Mexico could surprise. The new format brings extra knockout rounds and little margin: one bad night and the biggest name is out."}
+          </p>
+        </div>
       </div>
 
       {/* News / Injuries — compact segmented control, under the intro */}
@@ -4522,9 +4534,9 @@ export default function App(){
                 <div style={{display:"flex",gap:0,border:`1px solid ${accent}`,borderRadius:8,overflow:"hidden"}}>
                   {[
                     {id:"group",label:lang==="nl"?"Groep":"Group",
-                     icon:"M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"},
+                     icon:<><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14.5h18M9 9v11M15 9v11"/></>},
                     {id:"knockout",label:"Knockout",
-                     icon:"M6 3v18M6 7h7a3 3 0 013 3v0a3 3 0 01-3 3H6M19 13v8"},
+                     icon:<><rect x="9" y="2" width="6" height="5" rx="1.2"/><rect x="2.5" y="17" width="6" height="5" rx="1.2"/><rect x="15.5" y="17" width="6" height="5" rx="1.2"/><path d="M12 7v4M5.5 17v-2.5h13V17M12 11v3.5"/></>},
                   ].map((b,i)=>{
                     const active=predView===b.id;
                     return(
@@ -4537,7 +4549,7 @@ export default function App(){
                           transition:"background 0.2s ease, color 0.2s ease"}}>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
                           stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-                          <path d={b.icon}/>
+                          {b.icon}
                         </svg>
                         {b.label}
                       </button>
