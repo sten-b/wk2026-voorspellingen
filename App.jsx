@@ -3798,57 +3798,55 @@ function PlayersTab(){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    const t1=setTimeout(()=>setPhase(1),250);    // orange screen -> white lion fades in
-    const t2=setTimeout(()=>setPhase(2),1050);   // modern 3D flip: white -> black lion
-    const t3=setTimeout(()=>setPhase(3),1850);   // black bg, orange lion grows toward viewer + fades (engulf)
-    const t4=setTimeout(()=>setPhase(4),2750);   // subtle final: hold on pure black
-    const t5=setTimeout(()=>onDone&&onDone(),3250); // reveal app
+    const t1=setTimeout(()=>setPhase(1),50);     // fade in: WK2026 + white lion + Voorspelling
+    const t2=setTimeout(()=>setPhase(2),650);    // 3D flip: white lion -> black lion
+    const t3=setTimeout(()=>setPhase(3),1150);   // bg fades to black, stage (lion+text) fades out (~1s shown)
+    const t4=setTimeout(()=>setPhase(4),1600);   // orange lion grows from small to screen-size (engulf)
+    const t5=setTimeout(()=>onDone&&onDone(),2750); // reveal app
     return()=>{[t1,t2,t3,t4,t5].forEach(clearTimeout);};
   },[]);
-  // Background orange until engulf, then black.
+  // Background: orange until phase 3, then black.
   const bg=phase>=3?"#0D0D0D":"#E85100";
-  // Flip the lion 180deg on the Y-axis at phase 2 (modern morph between white & black faces).
   const flipped=phase>=2;
-  // Stage 1-2 lion (white front / black back, via 3D flip). Hidden from phase 3 on.
-  const stageLionVisible=phase>=1&&phase<3;
+  // Stage = WK2026 + lion + Voorspelling. Visible phases 1-2, fades out at phase 3.
   const stageOpacity=phase===0?0:(phase>=3?0:1);
-  // Engulf lion (orange), grows toward viewer then fades.
-  const engulf=phase>=3;
-  const engulfScale=phase===3?9:(phase>=4?9:0.7);
-  const engulfOpacity=phase===3?1:0;   // visible while growing, gone by the black final
+  // Engulf lion: always mounted, starts tiny+invisible, grows to fill screen at phase 4.
+  const engulfScale=phase>=4?11:0.25;
+  const engulfOpacity=phase===4?1:0;
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:bg,transition:"background 0.6s ease",
+      background:bg,transition:"background 0.55s ease",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-      <style>{`@keyframes loaderFadeIn{from{opacity:0}to{opacity:1}}`}</style>
-      {/* Stage lion: 3D flip morph from white to black */}
-      <div style={{position:"absolute",
-        opacity:stageOpacity,
-        transition:"opacity 0.5s ease",
-        perspective:"600px",display:stageLionVisible||phase<3?"flex":"none"}}>
-        <div style={{position:"relative",width:112,height:112,
-          transformStyle:"preserve-3d",
-          transform:flipped?"rotateY(180deg)":"rotateY(0deg)",
-          transition:"transform 0.75s cubic-bezier(.6,.05,.3,1)"}}>
-          {/* front: white lion */}
-          <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
-            display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <LionEmoji color="#FFFFFF" size={112}/>
-          </div>
-          {/* back: black lion (pre-rotated so it reads correctly after flip) */}
-          <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
-            transform:"rotateY(180deg)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <LionEmoji color="#0D0D0D" size={112}/>
+      {/* Stage: title, flipping lion, subtitle */}
+      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
+        opacity:stageOpacity,transition:"opacity 0.5s ease"}}>
+        <span style={{fontSize:FS.h2,fontWeight:800,letterSpacing:3,color:"#FFFFFF"}}>WK2026</span>
+        <div style={{perspective:"600px"}}>
+          <div style={{position:"relative",width:96,height:96,
+            transformStyle:"preserve-3d",
+            transform:flipped?"rotateY(180deg)":"rotateY(0deg)",
+            transition:"transform 0.7s cubic-bezier(.6,.05,.3,1)"}}>
+            <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
+              display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <LionEmoji color="#FFFFFF" size={96}/>
+            </div>
+            <div style={{position:"absolute",inset:0,backfaceVisibility:"hidden",
+              transform:"rotateY(180deg)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <LionEmoji color="#0D0D0D" size={96}/>
+            </div>
           </div>
         </div>
+        <span style={{fontSize:FS.small,fontWeight:600,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.85)"}}>
+          Voorspelling
+        </span>
       </div>
-      {/* Engulf lion: orange, comes toward you, then gone before the black final */}
+      {/* Engulf lion: orange, grows from small to screen-size */}
       <div style={{position:"absolute",
         opacity:engulfOpacity,
         transform:`scale(${engulfScale})`,
-        transition:"opacity 0.7s ease-in 0.3s, transform 1.0s cubic-bezier(.55,0,.8,.2)",
-        display:engulf?"flex":"none",pointerEvents:"none",willChange:"transform,opacity"}}>
-        <LionEmoji color="#FF5500" size={112}/>
+        transition:"opacity 0.5s ease, transform 1.05s cubic-bezier(.5,0,.75,.25)",
+        pointerEvents:"none",willChange:"transform,opacity"}}>
+        <LionEmoji color="#FF5500" size={96}/>
       </div>
     </div>
   );
@@ -3925,7 +3923,7 @@ export default function App(){
               <div style={{marginBottom:14}}>
                 <div onClick={()=>setNewsOpen(o=>!o)}
                   style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(newsOpen?T.orangeFaint:T.bg),
+                    background:T.id==="dark"?"#1a1408":(newsOpen?T.orangeFaint:T.card),
                     border:`1px solid ${T.id==="dark"?"#3a2e18":(newsOpen?T.orange+"55":T.border)}`,
                     borderRadius:6,
                     padding:"10px 12px"}}>
@@ -3945,7 +3943,7 @@ export default function App(){
               <div style={{marginBottom:14}}>
                 <div onClick={()=>setInjuriesOpen(o=>!o)}
                   style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",
-                    background:T.id==="dark"?"#1a1408":(injuriesOpen?T.orangeFaint:T.bg),
+                    background:T.id==="dark"?"#1a1408":(injuriesOpen?T.orangeFaint:T.card),
                     border:`1px solid ${T.id==="dark"?"#3a2e18":(injuriesOpen?T.orange+"55":T.border)}`,
                     borderRadius:6,
                     padding:"10px 12px"}}>
