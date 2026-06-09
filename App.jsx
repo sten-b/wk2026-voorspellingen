@@ -3797,30 +3797,47 @@ function PlayersTab(){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    const t1=setTimeout(()=>setPhase(1),1100);   // orange+white -> black+orange
-    const t2=setTimeout(()=>setPhase(2),2000);   // -> fully black (lion fades)
-    const t3=setTimeout(()=>onDone&&onDone(),2650); // reveal app
-    return()=>{clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);};
+    const t1=setTimeout(()=>setPhase(1),900);    // white lion -> black lion (bg still orange)
+    const t2=setTimeout(()=>setPhase(2),1500);   // bg fades to black (black lion vanishes into black)
+    const t3=setTimeout(()=>setPhase(3),2100);   // orange lion appears, comes toward you
+    const t4=setTimeout(()=>setPhase(4),3100);   // whole loader fades transparent
+    const t5=setTimeout(()=>onDone&&onDone(),3700); // reveal app
+    return()=>{[t1,t2,t3,t4,t5].forEach(clearTimeout);};
   },[]);
-  const bg=phase===0?"#E85100":"#0D0D0D";
-  const lionColor=phase===0?"#FFFFFF":"#FF5500";
-  const lionOpacity=phase===2?0:1;
-  const lionScale=phase===0?1:(phase===1?1.04:0.9);
+  // Background: orange for phases 0-1, black from phase 2 on.
+  const bg=phase<=1?"#E85100":"#0D0D0D";
+  // Lion 1 (phases 0-2): white, then black; fades out as bg goes black.
+  const lion1Color=phase===0?"#FFFFFF":"#0D0D0D";
+  const lion1Opacity=phase>=2?0:1;
+  // Lion 2 (phases 3-4): orange, zooms toward viewer.
+  const lion2Visible=phase>=3;
+  const lion2Scale=phase===3?1:(phase===4?1.25:0.55);
+  const lion2Opacity=phase===3?1:(phase===4?0:0);
+  // Whole overlay fades out at phase 4.
+  const overlayOpacity=phase===4?0:1;
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:bg,transition:"background 0.6s ease",
+      background:bg,opacity:overlayOpacity,
+      transition:"background 0.6s ease, opacity 0.6s ease",
       display:"flex",alignItems:"center",justifyContent:"center"}}>
       <style>{`
         @keyframes lionIn{0%{opacity:0;transform:scale(0.7)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
-        @keyframes lionPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
       `}</style>
-      <div style={{
-        opacity:lionOpacity,
-        transform:`scale(${lionScale})`,
-        transition:"opacity 0.55s ease, transform 0.6s ease, color 0.6s ease",
-        animation:phase===0?"lionIn 0.9s ease both":"none",
+      {/* Lion 1: white -> black, on orange, fades into the black bg */}
+      <div style={{position:"absolute",
+        opacity:lion1Opacity,
+        transition:"opacity 0.55s ease, color 0.5s ease",
+        animation:phase===0?"lionIn 0.85s ease both":"none",
         display:"flex"}}>
-        <LionEmoji color={lionColor} size={108}/>
+        <LionEmoji color={lion1Color} size={108}/>
+      </div>
+      {/* Lion 2: orange, comes toward you on black, then fades transparent */}
+      <div style={{position:"absolute",
+        opacity:lion2Opacity,
+        transform:`scale(${lion2Scale})`,
+        transition:"opacity 0.6s ease, transform 0.85s cubic-bezier(.2,.7,.3,1)",
+        display:"flex",pointerEvents:"none"}}>
+        <LionEmoji color="#FF5500" size={108}/>
       </div>
     </div>
   );
