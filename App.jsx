@@ -1566,15 +1566,12 @@ function DataTabButton({onOpen,active}){
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}
         stroke={iconCol} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         {/* calculator body */}
-        <rect x="4" y="2" width="16" height="20" rx="2.2"
-          style={{transformOrigin:"12px 12px",animation:anim?"dataPulse 0.5s ease":"none"}}/>
+        <rect x="4.5" y="2.5" width="15" height="19" rx="2.2"/>
         {/* display */}
-        <rect x="7" y="5" width="10" height="3.2" rx="0.8" fill={iconCol} stroke="none"/>
+        <rect x="7" y="5" width="10" height="3" rx="0.8" fill={iconCol} stroke="none"/>
         {/* keypad dots */}
         {[0,1,2].map(c=>[0,1,2].map(r=>(
-          <circle key={`${c}-${r}`} cx={8+c*4} cy={12.5+r*3.2} r="0.95" fill={iconCol} stroke="none"
-            style={{transformOrigin:`${8+c*4}px ${12.5+r*3.2}px`,
-              animation:anim?`dataPulse 0.5s ${(c+r)*0.05}s ease`:"none"}}/>
+          <circle key={`${c}-${r}`} cx={8+c*4} cy={12.5+r*2.9} r="0.9" fill={iconCol} stroke="none"/>
         )))}
       </svg>
     </button>
@@ -2923,6 +2920,10 @@ function ModelViz({scrollTo,onScrolled}={}){
   const [exA,setExA]=useState("Spain");
   const [exB,setExB]=useState("Uruguay");
   const stepRefs=React.useRef({});
+  const goStep=(key)=>{
+    const el=stepRefs.current[key];
+    if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+  };
   React.useEffect(()=>{
     if(scrollTo&&stepRefs.current[scrollTo]){
       const el=stepRefs.current[scrollTo];
@@ -3044,17 +3045,18 @@ function ModelViz({scrollTo,onScrolled}={}){
             ?"Vijf gewogen factoren vormen één sterktescore per land. Het verschil tussen twee scores bepaalt wie wint en met welke marge; xG en xGc bepalen de hoogte van de uitslag. Alles volgt direct uit de data, zonder handmatige correcties."
             :"Five weighted factors form one strength score per country. The gap between two scores decides who wins and by what margin; xG and xGc set the height of the scoreline. Everything follows directly from the data, with no manual corrections."}
         </div>
-        {/* compact step flow */}
+        {/* compact step flow — each chip jumps to its section below */}
         <div style={{display:"flex",alignItems:"stretch",gap:0,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
           {[
-            {n:"1",t:lang==="nl"?"Factoren":"Factors"},
-            {n:"2",t:lang==="nl"?"Score":"Score"},
-            {n:"3",t:lang==="nl"?"Ranglijst":"Ranking"},
-            {n:"4",t:lang==="nl"?"Uitslag":"Result"},
-            {n:"5",t:lang==="nl"?"Titelkans":"Odds"},
+            {n:"1",t:lang==="nl"?"Factoren":"Factors",sec:"data"},
+            {n:"2",t:lang==="nl"?"Score":"Score",sec:"score"},
+            {n:"3",t:lang==="nl"?"Ranglijst":"Ranking",sec:"ranking"},
+            {n:"4",t:lang==="nl"?"Uitslag":"Result",sec:"result"},
+            {n:"5",t:lang==="nl"?"Titelkans":"Odds",sec:"odds"},
           ].map((s,i)=>(
-            <div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,
-              padding:"9px 2px",borderLeft:i>0?`1px solid ${T.border}`:"none",background:T.card}}>
+            <div key={i} role="button" tabIndex={0} onClick={()=>goStep(s.sec)}
+              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,
+              padding:"9px 2px",borderLeft:i>0?`1px solid ${T.border}`:"none",background:T.card,cursor:"pointer"}}>
               <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,color:orange,lineHeight:1}}>{s.n}</span>
               <span style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,color:T.textSub,textAlign:"center",lineHeight:1.2,letterSpacing:0.2}}>{s.t}</span>
             </div>
@@ -3180,6 +3182,7 @@ function ModelViz({scrollTo,onScrolled}={}){
       </div>
 
       {/* STEP 3 — RANKING (each row expands to show its calculation) */}
+      <div ref={el=>stepRefs.current.ranking=el}/>
       {SL(lang==="nl"?"Stap 3 · De ranglijst":"Step 3 · The ranking","bars")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
@@ -3312,6 +3315,7 @@ function ModelViz({scrollTo,onScrolled}={}){
       </div>
 
       {/* STEP 5 — TITLE ODDS */}
+      <div ref={el=>stepRefs.current.odds=el}/>
       {SL(lang==="nl"?"Stap 5 · De titelkansen":"Step 5 · The title odds","dice")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
@@ -4093,6 +4097,7 @@ function TournamentBanner({setTab}){
 function PlayersTab({setTab}){
   const T=useTheme();
   const lang=useLang();
+  const {goToModel}=useNav();
   const [view,setView]=useState("players");
   const [openSpotlight,setOpenSpotlight]=useState({});
   const [spotlightMore,setSpotlightMore]=useState(false);
@@ -4127,16 +4132,17 @@ function PlayersTab({setTab}){
         <div style={{display:"flex",alignItems:"stretch",margin:"4px 0 16px",
           border:`1px solid ${T.border}`,borderRadius:10,overflow:"hidden",background:T.card}}>
           {[
-            {nl:"Databronnen",en:"Data sources",
+            {nl:"Databronnen",en:"Data sources",sec:"data",
              icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
-            {nl:"Landscore",en:"Team score",
+            {nl:"Landscore",en:"Team score",sec:"score",
              icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20" /></>},
-            {nl:"Uitslag",en:"Result",
+            {nl:"Uitslag",en:"Result",sec:"result",
              icon:<><path d="M5 12l4 4L19 6"/></>},
           ].map((s,i,arr)=>(
             <React.Fragment key={i}>
-              <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",
-                justifyContent:"flex-start",gap:7,padding:"13px 4px"}}>
+              <div role="button" tabIndex={0} onClick={()=>goToModel&&goToModel(s.sec)}
+                style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",
+                justifyContent:"flex-start",gap:7,padding:"13px 4px",cursor:"pointer"}}>
                 <div style={{width:32,height:32,borderRadius:9,flexShrink:0,
                   display:"flex",alignItems:"center",justifyContent:"center",
                   background:T.id==="orangeLion"?"rgba(255,255,255,0.16)":(T.id==="dark"?"rgba(255,85,0,0.12)":T.orangeFaint)}}>
