@@ -2589,8 +2589,8 @@ function ChampionCard({p,label,icon}){
             {p.club&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#fff",
               background:"rgba(255,255,255,0.14)",padding:"2px 8px",borderRadius:10,
               border:`1px solid ${T.orange}66`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.orange,
-              background:"rgba(224,112,0,0.16)",padding:"2px 8px",borderRadius:10}}>💰 {p.value}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#FFD24D",
+              background:"#6B5200",border:"1px solid #B8860B",padding:"2px 8px",borderRadius:10}}>💰 {p.value}</span>}
           </div>
         </div>
       </div>
@@ -2645,7 +2645,7 @@ function PlayerCard({p,open,onToggle}){
               background:T.id==="orangeLion"?"#FFFFFF":T.orangeFaint,
               padding:"1px 6px",borderRadius:10,
               border:T.id==="orangeLion"?"1px solid #0D0D0D33":`1px solid ${T.orange}22`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>💰 {p.value}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#FFD24D",background:"#6B5200",padding:"1px 6px",borderRadius:10,border:"1px solid #B8860B"}}>💰 {p.value}</span>}
           </div>}
         </div>
         <Chevron open={open} color={T.orange}/>
@@ -2677,7 +2677,7 @@ function DarkHorseCard({p,open,onToggle}){
               background:T.id==="orangeLion"?"#FFFFFF":T.blueFaint,
               padding:"1px 6px",borderRadius:10,
               border:T.id==="orangeLion"?"1px solid #0D0D0D33":`1px solid ${T.id==="dark"?T.orange+"22":"#1A529622"}`}}>{p.club}</span>}
-            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:T.green,background:`${T.green}14`,padding:"1px 6px",borderRadius:10,border:`1px solid ${T.green}33`}}>💰 {p.value}</span>}
+            {p.value&&<span style={{fontSize:FS.caption,fontWeight:700,color:"#FFD24D",background:"#6B5200",padding:"1px 6px",borderRadius:10,border:"1px solid #B8860B"}}>💰 {p.value}</span>}
           </div>}
         </div>
         <Chevron open={open} color={T.blue}/>
@@ -3139,7 +3139,7 @@ function NationBadges({team,dark}){
   const divider=dark?"rgba(255,255,255,0.18)":(OL?"rgba(255,255,255,0.22)":T.border);
   const items=[
     dev!==undefined&&{lab:lang==="nl"?"Vorm":"Form",val:`${dev>0?"+":""}${dev}`},
-    SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s},
+    SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s,money:true},
   ].filter(Boolean);
   return(
     <div style={{display:"flex",alignItems:"stretch",flexShrink:0,
@@ -3147,10 +3147,11 @@ function NationBadges({team,dark}){
       {items.map((b,i)=>(
         <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",
           justifyContent:"center",padding:"2px 7px",minWidth:30,
+          background:b.money?"#6B5200":"transparent",
           borderLeft:i>0?`1px solid ${divider}`:"none"}}>
-          <span style={{fontSize:FS.caption,fontWeight:700,color:valCol,lineHeight:1.1}}>{b.val}</span>
+          <span style={{fontSize:FS.caption,fontWeight:700,color:b.money?"#FFD24D":valCol,lineHeight:1.1}}>{b.val}</span>
           <span style={{fontSize:7,fontWeight:600,letterSpacing:0.4,textTransform:"uppercase",
-            color:labCol,lineHeight:1.2,marginTop:1}}>{b.lab}</span>
+            color:b.money?"rgba(255,210,77,0.8)":labCol,lineHeight:1.2,marginTop:1}}>{b.lab}</span>
         </div>
       ))}
     </div>
@@ -3921,7 +3922,7 @@ function PlayersTab(){
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.body,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2,flexWrap:"wrap"}}>
-                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
+                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#FFD24D",background:"#6B5200",border:"1px solid #B8860B",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
                   {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xG} xG</span>}
                   {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xA} xA</span>}
                 </div>
@@ -3952,7 +3953,7 @@ function PlayersTab(){
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:FS.body,fontWeight:500,color:T.text}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2}}>
-                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}14`,border:`1px solid ${T.green}33`,borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
+                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:700,color:"#FFD24D",background:"#6B5200",border:"1px solid #B8860B",borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
                   {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px"}}>~{p.xG} xG</span>}
                   {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:700,color:T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px"}}>~{p.xA} xA</span>}
                 </div>
