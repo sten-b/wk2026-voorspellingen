@@ -1600,19 +1600,17 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         <Chevron open={expanded} color={T.textSub}/>
       </div>
 
-      {/* Summary bottom bar — shown when COLLAPSED: qualifiers + in-form + see-matches */}
+      {/* Summary bottom bar — shown when COLLAPSED: qualifiers + in-form + matches icon */}
       {!expanded&&(
         <div onClick={()=>setOpenGroup(g.id)}
-          style={{display:"flex",alignItems:"center",gap:8,padding:"9px 13px",
+          style={{display:"flex",alignItems:"center",gap:10,padding:"9px 13px",
             borderTop:`1px solid ${T.border}`,cursor:"pointer",background:T.bg,flexWrap:"nowrap",overflow:"hidden"}}>
-          {/* Qualifiers (flag + name) */}
-          <div style={{display:"flex",alignItems:"center",gap:6,flexShrink:1,minWidth:0,overflow:"hidden"}}>
-            <svg width="8" height="10" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
+          {/* Qualifiers: green arrow + two flags */}
+          <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
+            <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
+            <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"door":"to qualify"}</span>
             {sorted.slice(0,2).map(t=>(
-              <span key={t} style={{display:"inline-flex",alignItems:"center",gap:3,minWidth:0}}>
-                <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
-                <span style={{fontSize:FS.caption,fontWeight:600,color:T.textSub,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{tName(t,lang)}</span>
-              </span>
+              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
             ))}
           </div>
           {/* In-form */}
@@ -1620,15 +1618,22 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
             const dev=formDev(bestForm);
             return(
               <div style={{display:"flex",alignItems:"center",gap:3,flexShrink:0,marginLeft:"auto"}}>
+                <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"vorm":"form"}</span>
                 <span style={{fontSize:14,lineHeight:1}}>{FLAGS[bestForm]}</span>
                 <span style={{fontSize:FS.caption,fontWeight:700,color:dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):T.textFaint}}>{dev>0?"+":""}{dev}</span>
               </div>
             );
           })()}
-          {/* See matches affordance */}
-          <span style={{display:"flex",alignItems:"center",gap:2,flexShrink:0,paddingLeft:8,borderLeft:`1px solid ${T.border}`}}>
-            <span style={{fontSize:FS.caption,fontWeight:700,color:OL?"#FFFFFF":T.orange,whiteSpace:"nowrap"}}>{lang==="nl"?"Bekijk":"View"}</span>
-            <Chevron open={false} color={OL?"#FFFFFF":T.orange}/>
+          {/* Matches/field icon — expands the games */}
+          <span title={lang==="nl"?"Bekijk wedstrijden":"View matches"}
+            style={{display:"flex",alignItems:"center",flexShrink:0,paddingLeft:8,borderLeft:`1px solid ${T.border}`}}>
+            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" style={{flexShrink:0}}>
+              <rect x="0.7" y="0.7" width="18.6" height="12.6" rx="1.6" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
+              <line x1="10" y1="0.7" x2="10" y2="13.3" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
+              <circle cx="10" cy="7" r="2.4" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
+              <rect x="0.7" y="4" width="2.6" height="6" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
+              <rect x="16.7" y="4" width="2.6" height="6" stroke={OL?"#FFFFFF":T.orange} strokeWidth="1.2"/>
+            </svg>
           </span>
         </div>
       )}
@@ -3977,7 +3982,7 @@ function PlayersTab(){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // Phase 0   : WC2026-themed intro (gold trophy + "26" on black) fades in
+    // Phase 0   : WC2026-themed intro (original roundel logo + "26" on black) fades in
     // Phase 0.5 : red-white-blue accent sweep
     // Phase 1   : weave — black→orange, WC logo scales/fades out, the "Sten's/WK2026/lion" stage fades in
     // Phases 2-6: the existing loader sequence (flip → engulf → whoosh)
@@ -4015,21 +4020,27 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
         transition:"opacity 0.5s ease",pointerEvents:"none",
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.55) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
-      {/* WC2026-themed intro: gold trophy + stacked 26 */}
-      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:8,
+      {/* WC2026-themed intro: original World Cup 2026 mark (roundel badge + 26 + RWB bars) */}
+      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
         opacity:wcOpacity,transform:`scale(${wcScale})`,
         transition:"opacity 0.5s ease, transform 0.6s cubic-bezier(.34,1.56,.64,1)",pointerEvents:"none"}}>
-        <svg width="78" height="104" viewBox="0 0 90 120" aria-hidden="true">
-          <defs><linearGradient id="wcGold" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#FFE7A0"/><stop offset="0.55" stopColor="#E8B84B"/><stop offset="1" stopColor="#C0871F"/>
+        <svg width="100" height="100" viewBox="0 0 100 100" aria-hidden="true">
+          <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
           </linearGradient></defs>
-          <ellipse cx="45" cy="20" rx="15" ry="16" fill="url(#wcGold)"/>
-          <path d="M45 36 C31 42 27 58 31 76 C34 90 40 99 45 103 C50 99 56 90 59 76 C63 58 59 42 45 36 Z" fill="url(#wcGold)"/>
-          <rect x="31" y="103" width="28" height="6" rx="2" fill="#C0871F"/>
-          <rect x="27" y="109" width="36" height="6" rx="2" fill="#C0871F"/>
+          <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
+          <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
+          <path d="M50 31 L62 40 L57 54 L43 54 L38 40 Z" fill="#FFFFFF"/>
+          <path d="M50 31 L62 40 L69 34 M62 40 L57 54 L67 59 M43 54 L33 59 M38 40 L31 34" stroke="#FFFFFF" strokeWidth="1.6" fill="none" opacity="0.5"/>
+          <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
         </svg>
-        <span style={{fontSize:38,fontWeight:800,letterSpacing:1,lineHeight:0.82,color:"#FFFFFF"}}>26</span>
-        <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:3,color:"#E8B84B"}}>WE ARE 26</span>
+        <span style={{fontSize:46,fontWeight:900,letterSpacing:0,lineHeight:0.78,color:"#FFFFFF"}}>26</span>
+        <div style={{display:"flex",gap:4}}>
+          <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
+          <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
+          <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
+        </div>
+        <span style={{fontSize:FS.micro,fontWeight:700,letterSpacing:4,color:"rgba(255,255,255,0.62)"}}>WORLD CUP 2026</span>
       </div>
       {/* Stage: title, flipping lion, subtitle (existing loader) */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:14,
