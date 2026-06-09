@@ -3012,29 +3012,27 @@ function NationBadges({team,dark}){
   const lang=useLang();
   if(!MODEL_RANK[team]) return null;
   const dev=formDev(team);
-  const upCol=dark?"#7BE8A0":(T.id==="dark"?"#3DBE6E":"#1E7A40");
-  const downCol=dark?"#FF9C8E":(T.id==="dark"?"#FF5544":"#C0392B");
-  const neutral=dark?"rgba(255,255,255,0.65)":T.textSub;
-  const fc=dev>0?upCol:dev<0?downCol:neutral;
-  const valCol=dark?"#fff":T.text;
-  const modelCol=dark?T.orange:(T.id==="dark"?T.orange:T.blue);
+  const OL=T.id==="orangeLion";
+  // Uniform value + label colors across all three badges (no per-metric coloring).
+  const valCol=dark?"#fff":(OL?"#fff":T.text);
+  const labCol=dark?"rgba(255,255,255,0.55)":(OL?"rgba(255,255,255,0.75)":T.textFaint);
+  const bg=dark?"rgba(255,255,255,0.08)":(OL?"rgba(255,255,255,0.14)":(T.id==="dark"?"#161616":T.bg));
+  const divider=dark?"rgba(255,255,255,0.18)":(OL?"rgba(255,255,255,0.22)":T.border);
   const items=[
-    dev!==undefined&&{lab:lang==="nl"?"Vorm":"Form",val:`${dev>0?"+":""}${dev}`,col:fc},
-    SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s,col:valCol},
-    {lab:"Model",val:`#${MODEL_RANK[team]}`,col:modelCol},
+    dev!==undefined&&{lab:lang==="nl"?"Vorm":"Form",val:`${dev>0?"+":""}${dev}`},
+    SQUAD_VAL[team]&&{lab:lang==="nl"?"Waarde":"Value",val:SQUAD_VAL[team].s},
+    {lab:"Model",val:`#${MODEL_RANK[team]}`},
   ].filter(Boolean);
-  const divider=dark?"rgba(255,255,255,0.18)":T.border;
   return(
-    <div style={{display:"flex",alignItems:"center",flexShrink:0,
-      background:dark?"rgba(255,255,255,0.08)":(T.id==="dark"?"#161616":T.bg),
-      border:`1px solid ${divider}`,borderRadius:8,overflow:"hidden"}}>
+    <div style={{display:"flex",alignItems:"stretch",flexShrink:0,
+      background:bg,border:`1px solid ${divider}`,borderRadius:6,overflow:"hidden"}}>
       {items.map((b,i)=>(
         <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",
-          justifyContent:"center",padding:"3px 8px",minWidth:34,
+          justifyContent:"center",padding:"2px 7px",minWidth:30,
           borderLeft:i>0?`1px solid ${divider}`:"none"}}>
-          <span style={{fontSize:FS.body,fontWeight:800,color:b.col,lineHeight:1.05}}>{b.val}</span>
-          <span style={{fontSize:7,fontWeight:700,letterSpacing:0.5,textTransform:"uppercase",
-            color:dark?"rgba(255,255,255,0.5)":T.textFaint,lineHeight:1.2,marginTop:1}}>{b.lab}</span>
+          <span style={{fontSize:FS.caption,fontWeight:700,color:valCol,lineHeight:1.1}}>{b.val}</span>
+          <span style={{fontSize:7,fontWeight:600,letterSpacing:0.4,textTransform:"uppercase",
+            color:labCol,lineHeight:1.2,marginTop:1}}>{b.lab}</span>
         </div>
       ))}
     </div>
