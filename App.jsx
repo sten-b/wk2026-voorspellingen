@@ -4311,152 +4311,72 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // White lion in the WC ring → grows on orange while turning orange and PUSHING the orange away
-    // into black → settles on black → a transparent hole opens from the lion's mouth and grows to
-    // fill the screen for the transition. No fade-in, no blur on the lion.
+    // The lion sits in the centre of the World Cup ring's empty space, with the title below.
+    // The whole lockup holds on screen (a beat longer), then the loader fades out to the app.
     const t=[];
-    t.push(setTimeout(()=>setPhase(1),60));     // ring + lion appear (instant, no fade)
-    t.push(setTimeout(()=>setPhase(2),760));    // RWB sweep across
-    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows + turns orange; orange pushed away to black; title
-    t.push(setTimeout(()=>setPhase(4),2050));   // settle beat on black (the held hero shot)
-    t.push(setTimeout(()=>setPhase(5),2450));   // mouth-hole opens and grows as the lion grows
-    t.push(setTimeout(()=>onDone&&onDone(),3450));
+    t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
+    t.push(setTimeout(()=>setPhase(2),900));    // RWB accent sweep across
+    t.push(setTimeout(()=>setPhase(3),3400));   // hold the hero lockup, then begin fade-out
+    t.push(setTimeout(()=>onDone&&onDone(),3900));
     return()=>t.forEach(clearTimeout);
   },[]);
 
-  // ── Background: warm orange through the intro; the push-away disc turns it black at phase 3.
-  const bg=phase>=3?"#0D0D0D":"#E85100";
-
-  // ── Lion colour: white → orange crossfade as it grows on orange (the "cool" turn). Orange stays
-  // visible against the black background through the ending.
-  const orangeOpacity=phase>=3?1:0;
-
-  // ── Lion scale: tiny core in the ring → stage → grows large while the mouth-hole opens.
-  const lionScale=
-    phase>=5?5.2:         // grows large as the hole opens from its mouth
-    phase>=3?1:           // settled at stage size
-    phase>=1?0.3:0.16;    // tiny core inside the ring's hole
-  const lionLift=phase>=5?0:(phase>=3?-58:(phase>=1?-24:6));
-  const lionOpacity=phase>=1?1:0;   // no fade-in/out — visible immediately, stays visible
-
-  // ── Mouth-hole gate (declared early so the push-disc can clear when it opens).
-  const holeOn=phase>=5;
-
-  // ── Push-away disc: black circle expands from the lion's centre, shoving the orange off-screen.
-  // It hands off to the solid black layer; it must clear once the mouth-hole starts revealing the app.
-  const pushScale=phase>=3?42:0;
-  const pushOpacity=(phase>=3&&!holeOn)?1:0;
-
-  // ── Mouth-hole: a transparent circle opens from the lion's mouth and grows to fill the screen,
-  // revealing the app behind. Drawn by a disc with a huge black box-shadow; scaling it grows the hole.
-  const holeCx="50%";
-  const holeCy="56%";
-  const holeScale=holeOn?95:0.01;   // 24px disc → ~2280px hole, covers the screen for the transition
-
-  // ── WC roundel ring + RWB bars: present in the intro, dissolve as the lion grows out.
-  const ringOpacity=phase>=3?0:(phase>=1?1:0);
-  const ringScale=phase>=3?1.25:(phase>=1?1:0.8);
+  const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
   const sweepOpacity=phase===2?1:0;
-
-  // ── Title stage: resolves under the lion as the ring dissolves; clears when the hole opens.
-  const titleOpacity=phase>=5?0:(phase>=3?1:0);
-  const titleLift=phase>=3?0:14;
-
-  const overlayOpacity=1;
+  const overlayOpacity=phase>=3?0:1;   // clean fade-out to the app at the end
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:"transparent",opacity:overlayOpacity,
-      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
-      perspective:"1100px"}}>
+      background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
+      opacity:overlayOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
 
-      {/* BLACK / ORANGE LAYER — orange wash during intro, solid black after the push-away.
-          The transparent mouth-hole is drawn by a separate scaling disc below. */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        background:bg,opacity:holeOn?0:1,
-        transition:"background 0.5s cubic-bezier(.4,0,.2,1), opacity 0.2s ease"}}/>
-
-      {/* MOUTH-HOLE — a disc at the lion's mouth whose huge black box-shadow fills the screen;
-          scaling the disc up grows the transparent hole until it covers everything. */}
-      {holeOn&&(
-        <div style={{position:"absolute",top:holeCy,left:holeCx,width:24,height:24,
-          marginLeft:-12,marginTop:-12,borderRadius:"50%",pointerEvents:"none",
-          background:"transparent",boxShadow:"0 0 0 9999px #0D0D0D",
-          transform:`scale(${holeScale})`,transformOrigin:"center",
-          transition:"transform 1s cubic-bezier(.5,0,.5,1)",willChange:"transform"}}/>
-      )}
-
-      {/* Warm orange radial wash (visible during the intro) */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase>=3?0:1,transition:"opacity 0.5s ease",
-        background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)"}}/>
-
-      {/* Push-away disc — black circle expands from the lion's centre, shoving the orange off-screen */}
-      <div style={{position:"absolute",width:120,height:120,borderRadius:"50%",pointerEvents:"none",
-        top:"50%",left:"50%",marginTop:-118,marginLeft:-60,
-        opacity:pushOpacity,transform:`scale(${pushScale})`,
-        transition:"transform 0.8s cubic-bezier(.5,0,.6,1), opacity 0.3s ease",
-        background:"#0D0D0D",willChange:"transform,opacity"}}/>
+      {/* Subtle radial vignette for depth */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
+        background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
       {/* RWB accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
         transition:"opacity 0.6s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
 
-      {/* WC roundel ring + 26 + RWB bars (the lion lives in its heart) */}
+      {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:ringOpacity,transform:`scale(${ringScale})`,
-        transition:"opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
+        opacity:shown?1:0,transform:`scale(${shown?1:0.86})`,
+        transition:"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
-        <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true"
-          style={{filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))"}}>
-          <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
-          </linearGradient></defs>
-          <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
-          <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
-          <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
-        </svg>
+
+        {/* WC roundel ring with the lion living in its centre */}
+        <div style={{position:"relative",width:120,height:120,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true"
+            style={{position:"absolute",inset:0,filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))"}}>
+            <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
+            </linearGradient></defs>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
+            <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
+            <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
+          </svg>
+          {/* the lion, centred in the ring's empty space */}
+          <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <LionEmoji color="#FFFFFF" size={54}/>
+          </div>
+        </div>
+
+        {/* RWB bars */}
         <div style={{display:"flex",gap:4}}>
           <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
           <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
           <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
         </div>
-        <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:3,color:"#FFFFFF",
-          textShadow:"0 1px 8px rgba(0,0,0,0.5)"}}>WORLD CUP 2026</span>
-      </div>
 
-      {/* Title stage — resolves beneath the lion */}
-      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:10,
-        transform:`translateY(${titleLift+58}px)`,opacity:titleOpacity,
-        transition:"opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.34,1.2,.5,1)",
-        pointerEvents:"none",willChange:"transform,opacity"}}>
-        <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-4,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
-        <span style={{fontSize:FS.display,fontWeight:WEIGHT.bold,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:18}}>
-          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Data-driven</span>
-          <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Voorspellingen</span>
-        </div>
-      </div>
-
-      {/* THE HERO LION — one node: white in the ring → turns orange as it grows on orange →
-          grows from its mouth while the transparent hole opens there. No fade, no blur. */}
-      <div style={{position:"absolute",pointerEvents:"none",opacity:lionOpacity}}>
-        <div style={{position:"relative",width:108,height:108,
-          transformOrigin:"50% 70%",
-          transform:`translateY(${lionLift}px) scale(${lionScale})`,
-          transition:phase>=5
-            ? "transform 1s cubic-bezier(.5,0,.5,1)"                  // grow as the hole opens
-            : "transform 0.7s cubic-bezier(.34,1.2,.5,1)",           // settle into place
-          willChange:"transform"}}>
-          {/* white lion (in the ring + early growth) */}
-          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <LionEmoji color="#FFFFFF" size={108}/>
-          </div>
-          {/* orange lion crossfades in as it grows and the orange bg is pushed away to black */}
-          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",
-            opacity:orangeOpacity,transition:"opacity 0.55s cubic-bezier(.4,0,.2,1)"}}>
-            <LionEmoji color="#FF5500" size={108}/>
+        {/* TITLE — Sten's · WK2026 · Data-driven Voorspellingen (now part of the first phase) */}
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:6}}>
+          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-2,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
+          <span style={{fontSize:FS.display,fontWeight:WEIGHT.bold,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:14}}>
+            <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Data-driven</span>
+            <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Voorspellingen</span>
           </div>
         </div>
       </div>
