@@ -4242,32 +4242,6 @@ function PlayersTab({setTab}){
 
       <h2 style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,margin:"2px 0 12px",letterSpacing:-0.5}}>{lang==="nl"?"FPL-team":"FPL team"}</h2>
 
-      {/* Budget + projection summary — single stat strip in the app's house style */}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,
-        padding:"11px 6px",marginBottom:10,display:"flex",flexWrap:"nowrap"}}>
-        {[
-          {val:<span>${BEST_XI.spent.toFixed(1)}m<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textFaint}}> / {BEST_XI.budget.toFixed(0)}</span></span>,
-           lab:lang==="nl"?"Budget":"Budget",col:T.text},
-          {val:<span>{Math.round(BEST_XI.projXI)}</span>,
-           lab:lang==="nl"?"Proj. basiself":"Proj. XI",col:T.orange},
-          {val:<span>{BEST_XI.formation}</span>,
-           lab:lang==="nl"?"Formatie":"Formation",col:T.text},
-        ].map((c,i,arr)=>(
-          <div key={i} style={{flex:"1 1 0",minWidth:0,padding:"0 6px",display:"flex",
-            flexDirection:"column",alignItems:"center",
-            borderRight:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
-            <span style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:c.col,lineHeight:1.1,whiteSpace:"nowrap"}}>{c.val}</span>
-            <span style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:0.4,textTransform:"uppercase",
-              color:T.textFaint,marginTop:3,textAlign:"center",lineHeight:1.2}}>{c.lab}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{fontSize:FS.micro,color:T.textFaint,lineHeight:1.5,marginBottom:12}}>
-        {lang==="nl"
-          ?"Budgetoptimaal binnen $100m via FIFA World Cup Fantasy-prijzen en RotoWire-projecties (groepsfase). Aanvoerder verdubbelt zijn punten."
-          :"Budget-optimal within $100m using FIFA World Cup Fantasy prices and RotoWire projections (group stage). The captain doubles their points."}
-      </div>
-
       {/* Best XI */}
       <PitchViz/>
       {/* Player list — table */}
