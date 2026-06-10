@@ -4059,8 +4059,8 @@ function PlayersTab({setTab}){
         </h2>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.65,margin:"0 0 12px"}}>
           {lang==="nl"
-            ?"Eén data-gedreven model om mijn WK 2026 poules te voorspellen, van elke groepswedstrijd tot de finale. Verken hieronder de landen, spelers en het droomelftal, of open het model-icoon voor de cijfers achter elke uitslag."
-            :"A single data-driven model to predict my 2026 World Cup pools, from every group game to the final. Explore the nations, players and dream XI below, or open the model icon for the numbers behind each result."}
+            ?"Eén data-gedreven model dat mijn WK 2026 voorspelt, van groepsfase tot finale. Tik het model-icoon voor de cijfers."
+            :"A single data-driven model predicting my 2026 World Cup, from group stage to final. Tap the model icon for the numbers."}
         </p>
         {/* How the model works — minimalist 3-step flow */}
         <div style={{display:"flex",alignItems:"stretch",margin:"4px 0 16px",
@@ -4107,8 +4107,8 @@ function PlayersTab({setTab}){
           </h2>
           <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
             {lang==="nl"
-              ?"Voor het eerst met 48 landen, verdeeld over drie gastlanden — het grootste WK ooit. Spanje arriveert als Europees kampioen en favoriet, terwijl Argentinië de titel verdedigt met Messi in vermoedelijk zijn laatste WK. Frankrijk, Engeland, Brazilië en Noorwegen wachten, en outsiders als Marokko en gastland Mexico kunnen verrassen. De nieuwe opzet kent extra knock-outrondes en weinig marge: één slechte avond en de grootste naam ligt eruit."
-              :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain arrive as European champions and favourites, while Argentina defend the title with Messi in what is likely his last World Cup. France, England, Brazil and Norway lie in wait, and outsiders like Morocco and hosts Mexico could surprise. The new format brings extra knockout rounds and little margin: one bad night and the biggest name is out."}
+              ?"Voor het eerst met 48 landen over drie gastlanden — het grootste WK ooit. Spanje is favoriet, Argentinië verdedigt de titel met Messi, en outsiders als Marokko kunnen verrassen."
+              :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain are favourites, Argentina defend the title with Messi, and outsiders like Morocco could surprise."}
           </p>
         </div>
       </div>
