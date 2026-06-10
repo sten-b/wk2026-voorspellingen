@@ -2419,6 +2419,18 @@ const NATIONS_DATA = [
    formRating:-5},
 ];
 const PLAYER_WIKI = {
+  "José Rangel":      "José_Rangel_(footballer,_born_1999)",
+  "Joshua Kimmich":   "Joshua_Kimmich",
+  "Nicolás Tagliafico":"Nicolás_Tagliafico",
+  "Raphinha":         "Raphinha",
+  "Bruno Fernandes":  "Bruno_Fernandes",
+  "Kevin De Bruyne":  "Kevin_De_Bruyne",
+  "Hakan Çalhanoğlu": "Hakan_Çalhanoğlu",
+  "Mikel Oyarzabal":  "Mikel_Oyarzabal",
+  "Kylian Mbappé":    "Kylian_Mbappé",
+  "Harry Kane":       "Harry_Kane",
+  "Matt Freese":      "Matt_Freese",
+  "Aleksandar Pavlović":"Aleksandar_Pavlović",
   "Kylian Mbappe":    "Kylian_Mbappé",
   "Erling Haaland":   "Erling_Haaland",
   "Lamine Yamal":     "Lamine_Yamal",
@@ -2547,56 +2559,58 @@ const DARK_HORSES = [
 // Role multipliers: ST=1.0, LW/RW=0.80, CAM=0.65, CM_att=0.55,
 //                   CDM=0.25, RB/LB_att=0.40, CB=0.08, GK=0.05
 // Sources: fantasy forums Sorare, FPL, WC Fantasy consensus June 2026
+// ── BEST XI — Fantasy WK-team (budget-geoptimaliseerd) ───────────────────────
+// Echte FIFA World Cup Fantasy 2026-prijzen + RotoWire groepsfase-projecties
+// (verwachte punten over 3 groepsduels). Squad: 2 GK / 5 VER / 5 MID / 3 AANV,
+// totaal $100.0m / $100m budget. Formatie 1-3-4-3. Aanvoerder: Oyarzabal.
+// Bron: play.fifa.com (prijzen) + RotoWire WC Fantasy rankings (9 juni 2026).
 const BEST_XI = {
-  formation: "4-3-3",
+  formation: "1-3-4-3",
+  budget: 100.0, spent: 100.0, projXI: 222.9, captain: "Mikel Oyarzabal",
   players: [
-    { pos:"GK",  name:"Bart Verbruggen", st:{CS:10,SAVES:106}, stats:[{v:"10",nl:"clean sheets",en:"clean sheets"},{v:"106",nl:"reddingen",en:"saves"},{v:"Brighton",nl:"#1 keeper",en:"#1 keeper"}], value:"€28m",  team:"Netherlands", age:22, flag:"🇳🇱",
-      xG:0.1, xA:0.1,
-      note:{nl:"Verbruggen (Brighton) is de best presterende jonge keeper op het toernooi. Zijn voetwerk en reflexen zijn uitzonderlijk voor 22 jaar. Nederland heeft een haalbaar knockoutpad wat clean sheets waarschijnlijk maakt. Hoog forum-consensus voor de keepersrol. Tweede volledige seizoen als Brighton-keeper: 106 reddingen en 10 clean sheets, en gaat als Oranje's eerste keuze naar zijn eerste WK.",en:"Verbruggen (Brighton) is the best-performing young goalkeeper at the tournament. Footwork and reflexes exceptional for 22. Netherlands have an achievable knockout path making clean sheets likely. High forum consensus for the goalkeeper slot. Second full season as Brighton keeper (106 saves, 10 clean sheets), heading to his first World Cup as the Netherlands' first choice."} },
-    { pos:"RB",  name:"Denzel Dumfries", st:{G:3,A:1,M:20,CS:8}, stats:[{v:"3",nl:"goals",en:"goals"},{v:"1",nl:"assist",en:"assist"},{v:"Inter",nl:"wingback",en:"wing-back"}], value:"€22m",  team:"Netherlands", age:28, flag:"🇳🇱",
-      xG:0.6, xA:1.4,
-      note:{nl:"Dumfries (Inter Milan) leverde dit seizoen 3 goals en 1 assist in de Serie A als rechtsback. Zijn overlappende runs in Nederland's 4-3-3 zijn gevaarlijker dan welke andere rechtsback op dit toernooi. Forum #1 verdediger voor assists. Productief vanaf rechts voor Inter met 3 goals, 1 assist en 8 clean sheets in 20 Serie A-duels.",en:"Dumfries (Inter Milan) delivered 3 goals and 1 assist in Serie A this season as a right-back. His overlapping runs in Netherlands' 4-3-3 are more dangerous than any other right-back at this tournament. Forum #1 defender for assists. Productive from the right for Inter with 3 goals, 1 assist and 8 clean sheets in 20 Serie A games."} },
-    { pos:"CB1", name:"Virgil van Dijk", st:{G:5}, stats:[{v:"5",nl:"goals",en:"goals"},{v:"Aanvoerder",nl:"Liverpool",en:"Liverpool captain"},{v:"Leider",nl:"defensie",en:"defensive leader"}], value:"€15m",  team:"Netherlands", age:33, flag:"🇳🇱",
-      xG:0.4, xA:0.2,
-      note:{nl:"Kapitein van Oranje en de meest gezaghebbende centrale verdediger van het toernooi. Van Dijk scoort ook kopballen bij standaardsituaties: 3 goals dit seizoen voor Liverpool. Clean sheet bonus + set piece xG maakt hem de #1 verdediger qua fantasy waarde. Onverwoestbare aanvoerder van Liverpool: voltooide meer passes dan elke andere Premier League-speler en bleef op zijn 34e een bepalende verdediger.",en:"Dutch captain and the most authoritative centre-back at the tournament. Van Dijk also scores headers at set pieces: 3 goals this season for Liverpool. Clean sheet bonus + set piece xG makes him the #1 defender in fantasy value. Unbreakable Liverpool captain who completed more passes than any other Premier League player at 34."} },
-    { pos:"CB2", name:"Manuel Akanji", st:{}, stats:[{v:"Man City",nl:"verdediger",en:"defender"},{v:"Veelzijdig",nl:"posities",en:"versatile"},{v:"Zwitserland",nl:"anker",en:"Switzerland anchor"}], value:"€28m",    team:"Switzerland", age:29, flag:"🇨🇭",
-      xG:0.3, xA:0.1,
-      note:{nl:"Akanji was een van Europa's best presterende centrale verdedigers in 2025-26 en is een ideale tweede CB vanuit fantasy-perspectief. Hij stapte over van Manchester City naar Inter (huur) om Champions League te blijven spelen en groeide uit tot vaste waarde in de Italiaanse defensie. Zwitserland heeft een comfortabel pad en is structureel goed voor clean sheets. Forum-consensus 2e CB naast Van Dijk.",en:"Akanji was among Europe's best-performing centre-backs in 2025-26 and is an ideal second CB from a fantasy perspective. He moved from Manchester City to Inter on loan to keep playing Champions League football and became a defensive mainstay. Switzerland have a comfortable path and are structurally clean-sheet reliable. Forum consensus 2nd CB alongside Van Dijk."} },
-    { pos:"LB",  name:"Theo Hernandez", st:{}, stats:[{v:"Al Hilal",nl:"linksback",en:"left-back"},{v:"Overlap",nl:"aanvallend",en:"attacking runs"},{v:"Frankrijk",nl:"vaste waarde",en:"France regular"}], value:"€29m",  team:"France",      age:27, flag:"🇫🇷",
-      xG:0.5, xA:1.2,
-      note:{nl:"Een van de meest aanvallende linksbacks op het toernooi. Hernandez verruilde de Serie A voor Al Hilal in Saudi-Arabië, waar hij zich als aanvallende linksback opnieuw bewees richting het WK. Zijn overlappende runs in Deschamps' systeem leveren regelmatig beslissende momenten op. Koploper in forums voor linksbacks.",en:"One of the most attacking left-backs at the tournament. Hernandez swapped Serie A for Al Hilal in Saudi Arabia, reasserting himself as an attacking left-back ahead of the World Cup. His overlapping runs in Deschamps' system regularly produce decisive moments. Leader in forums for left-back."} },
-    { pos:"CDM", name:"Rodri", st:{G:1,A:0}, stats:[{v:"Ballon d'Or",nl:"2024",en:"2024"},{v:"ACL-rentree",nl:"Man City",en:"ACL return"},{v:"Aanvoerder",nl:"Spanje",en:"Spain captain"}], value:"€130m",            team:"Spain",       age:28, flag:"🇪🇸",
-      xG:0.4, xA:1.1,
-      note:{nl:"Rodri (Man City) aanvoerder van Spanje na ACL-revalidatie. Als defensief anker orkestreert hij Spanje's pressing: zijn passnauwkeurigheid en balverovering zijn de hoogste van het toernooi. Scoort ook vanuit standaardsituaties. Spanje's pad is het comfortabelste van alle favorieten. Keerde bij Manchester City terug van zijn zware knieblessure (ACL) — de Ballon d'Or-winnaar van 2024 bouwde zijn minuten geleidelijk weer op.",en:"Rodri (Man City) captain of Spain after ACL rehabilitation. As defensive anchor he orchestrates Spain's press: his pass accuracy and ball recovery are the highest in the tournament. Also scores from set pieces. Spain's path is the most comfortable of all favourites. Returned at Manchester City from his serious ACL injury — the 2024 Ballon d'Or winner gradually rebuilt his minutes."} },
-    { pos:"CM",  name:"Frenkie de Jong", st:{A:5,T:"La Liga"}, stats:[{v:"La Liga",nl:"kampioen",en:"champion"},{v:"5",nl:"assists",en:"assists"},{v:"Dirigent",nl:"middenveld",en:"midfield hub"}], value:"€45m", team:"Netherlands", age:29, flag:"🇳🇱",
-      xG:0.5, xA:1.5,
-      note:{nl:"De Jong (Barcelona) hersteld van hamstringproblemen en terug op zijn beste niveau. Zijn box-to-box bijdrage, progressieve carries en vermogen om goals te scoren vanuit het middenveld zijn uniek. Zonder Simons is hij nog meer centraal in het Nederlandse spel. Forum top-5 middenvelder. Kwam na een blessure terug in de Barcelona-ploeg en droeg met zijn balbeheersing bij aan het kampioensseizoen.",en:"De Jong (Barcelona) recovered from hamstring issues and back at his best. His box-to-box contribution, progressive carries and ability to score from midfield are unique. Without Simons he is even more central to Dutch play. Forum top-5 midfielder. Returned from injury to the Barcelona side and helped steer the title-winning campaign."} },
-    { pos:"CAM", name:"Jude Bellingham", st:{G:6,A:4,M:30}, stats:[{v:"6",nl:"goals",en:"goals"},{v:"4",nl:"assists",en:"assists"},{v:"#1",nl:"Engeland vorm",en:"England form"}], value:"€130m", team:"England",     age:22, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-      xG:3.2, xA:2.1,
-      note:{nl:"Bellingham (Real Madrid) is een consistente fantasykeuze in het middenveld. Zijn late loopbewegingen in de zestien leverden 6 competitiedoelpunten en 4 assists op dit seizoen. Tuchel's systeem geeft hem maximale vrijheid om te scoren. Engeland haalt minimaal de kwartfinale per model. Forum #1 middenvelder universeel. Een wisselvalliger seizoen bij Real Madrid (6 goals, 4 assists), deels door een schouderoperatie eerder in het jaar.",en:"Bellingham (Real Madrid) is a consistent fantasy pick in midfield. His late runs into the box produced 6 league goals and 4 assists this season. Tuchel's system gives him maximum freedom to score. England reach at minimum the quarter-final per model. Universal forum #1 midfielder. A more uneven season at Real Madrid (6 goals, 4 assists), partly after shoulder surgery earlier in the year."} },
-    { pos:"RW",  name:"Lamine Yamal", st:{G:22,A:15,T:2}, stats:[{v:"16",nl:"goals",en:"goals"},{v:"11",nl:"assists (#1 LaLiga)",en:"assists (#1 LaLiga)"},{v:"6+4",nl:"CL goals+assists",en:"CL goals+assists"}], value:"€200m",    team:"Spain",       age:18, flag:"🇪🇸",
-      xG:2.4, xA:3.1,
-      note:{nl:"Yamal (FC Barcelona) is de meest gevreesde rechtsbuiten van het toernooi. Zijn 16 La Liga-goals en 11 assists dit seizoen als 18-jarige zijn historisch — hij was bovendien topassistgever van de competitie. Spanje verwacht 7 wedstrijden te spelen wat zijn totale punten exponentieel verhoogt. Forum #1 aanvaller qua totale fantasy-waarde. Spil in Barcelona's kampioensseizoen waarin de Catalanen hun La Liga-titel pakten.",en:"Yamal (FC Barcelona) is the most feared right winger at the tournament. His 16 La Liga goals and 11 assists this season as an 18-year-old are historic — he was also the league's top assist provider. Spain expect to play 7 matches, exponentially boosting his total points. Forum #1 attacker for total fantasy value. Pivotal in Barcelona's title-winning campaign."} },
-    { pos:"ST",  name:"Erling Haaland", st:{G:38,A:8,T:2}, stats:[{v:"27",nl:"club goals",en:"club goals"},{v:"16",nl:"WK-kwal. goals",en:"WC qual. goals"},{v:"55",nl:"interlandgoals",en:"intl goals"}], value:"€180m",  team:"Norway",      age:25, flag:"🇳🇴",
-      xG:6.1, xA:1.2,
-      note:{nl:"Haaland (Man City) is de universele #1 pick in elk WK-fantasysysteem. 16 doelpunten in de kwalificatie, 27 PL-goals dit seizoen waarmee hij de Golden Boot pakte. Noorwegen opent vs Irak, daarna Senegal en Frankrijk. Zelfs bij uitschakeling in de groepsfase haalt hij 3+ goals. Als Noorwegen de R16 haalt (realistisch), loopt zijn totaal richting 7-8 doelpunten. Ondefendeerbaar in de zestien. Andermaal moordend efficiënt voor Manchester City met 27 goals en 8 assists.",en:"Haaland (Man City) is the universal #1 pick in any World Cup fantasy system. 16 qualifying goals, 27 PL goals this season to claim the Golden Boot. Norway open vs Iraq, then Senegal and France. Even if eliminated in the group stage he collects 3+ goals. If Norway reach R16 (realistic), his total approaches 7-8. Undefendable in the box. Ruthlessly efficient again for Manchester City with 27 goals and 8 assists."} },
-    { pos:"LW",  name:"Kylian Mbappe", st:{G:38,A:7,T:0}, value:"€150m",   team:"France",      age:27, flag:"🇫🇷",
-      xG:5.4, xA:2.3,
-      note:{nl:"Mbappe (Real Madrid) is de #2 pick in de aanval na Haaland in vrijwel elk forum. 50+ interlands en La Liga-topscorer met 25 goals dit seizoen. Frankrijk's pad bevat Irak, Senegal en Noorwegen in de groep: relatief beheersbaar. Als Frankrijk de finale halen (model: 42.9% kans), noteert Mbappe 7 games en richting 8+ betrokken doelpunten. Topscorer van La Liga 2025/26 met 25 goals voor Real Madrid (5 assists), maar zag Barcelona er met de titel vandoor gaan.",en:"Mbappe (Real Madrid) is the #2 pick in attack after Haaland in virtually every forum. 50+ international caps and La Liga top scorer with 25 goals this season. France's path contains Iraq, Senegal and Norway in the group: relatively manageable. If France reach the final (model: 42.9% chance), Mbappe plays 7 games approaching 8+ goal involvements. La Liga top scorer with 25 goals for Real Madrid (5 assists), though Barcelona took the title."} },
+    { pos:"GK", row:0, name:"José Rangel", price:"$3.9m", proj:17.9, value:"$3.9m", team:"Mexico", age:26, flag:"🇲🇽", xG:0, xA:0,
+      st:{}, stats:[{v:"$3.9m",nl:"prijs",en:"price"},{v:"17.9",nl:"proj. punten",en:"proj. pts"},{v:"Mexico",nl:"opener thuis",en:"home opener"}],
+      note:{nl:"Goedkoopste route naar clean sheets: gastland Mexico opent tegen Zuid-Afrika en Curaçao en is favoriet om de groep te winnen. Voor $3.9m de beste keeper qua punten-per-dollar.",en:"Cheapest route to clean sheets: host nation Mexico opens against South Africa and Curaçao and is favourite to win the group. At $3.9m the best goalkeeper for points-per-dollar."} },
+    { pos:"DEF", row:1, name:"Joshua Kimmich", price:"$5.5m", proj:18.7, value:"$5.5m", team:"Germany", age:31, flag:"🇩🇪", xG:0, xA:0,
+      st:{}, stats:[{v:"$5.5m",nl:"prijs",en:"price"},{v:"18.7",nl:"proj. punten",en:"proj. pts"},{v:"Duitsland",nl:"set-pieces",en:"set pieces"}],
+      note:{nl:"Levert aanvallend rendement vanaf rechts en neemt corners voor Duitsland, dat tegen Curaçao, Ecuador en Ivoorkust favoriet is voor clean sheets. Verdediger met middenvelder-opbrengst.",en:"Provides attacking returns from the right and takes Germany's corners; they are clean-sheet favourites against Curaçao, Ecuador and Ivory Coast. A defender with midfielder upside."} },
+    { pos:"DEF", row:1, name:"Nathaniel Brown", price:"$4.7m", proj:18.6, value:"$4.7m", team:"Germany", age:22, flag:"🇩🇪", xG:0, xA:0,
+      st:{}, stats:[{v:"$4.7m",nl:"prijs",en:"price"},{v:"18.6",nl:"proj. punten",en:"proj. pts"},{v:"<1%",nl:"eigendom",en:"owned"}],
+      note:{nl:"Aanvallende linksback in een sterke Duitse defensie, op vrijwel niemands team (<1%). Goedkope enabler met clean-sheet- én bonuspotentieel: een echte differential.",en:"Attacking left-back in a strong German defence, on almost no one's team (<1%). A cheap enabler with clean-sheet and bonus upside: a genuine differential."} },
+    { pos:"DEF", row:1, name:"Nicolás Tagliafico", price:"$4.3m", proj:18.6, value:"$4.3m", team:"Argentina", age:33, flag:"🇦🇷", xG:0, xA:0,
+      st:{}, stats:[{v:"$4.3m",nl:"prijs",en:"price"},{v:"18.6",nl:"proj. punten",en:"proj. pts"},{v:"Argentinië",nl:"clean sheets",en:"clean sheets"}],
+      note:{nl:"Vaste linksback van wereldkampioen Argentinië, dat met Otamendi en Romero structureel clean sheets levert. Voor $4.3m een topverdediger qua waarde.",en:"Regular left-back for world champions Argentina, who keep clean sheets structurally with Otamendi and Romero. At $4.3m a top-value defender."} },
+    { pos:"MID", row:2, name:"Raphinha", price:"$8.2m", proj:22.1, value:"$8.2m", team:"Brazil", age:29, flag:"🇧🇷", xG:0, xA:0,
+      st:{}, stats:[{v:"$8.2m",nl:"prijs",en:"price"},{v:"22.1",nl:"proj. punten",en:"proj. pts"},{v:"#1 MID",nl:"beste waarde",en:"best value"}],
+      note:{nl:"De beste premium-middenvelder qua waarde: neemt Brazilië's vrije trappen, corners en mogelijk penalty's, in een zachte groep. Bouw je team rond hem.",en:"The best-value premium midfielder: takes Brazil's free-kicks, corners and possibly penalties in a soft group. Build the team around him."} },
+    { pos:"MID", row:2, name:"Bruno Fernandes", price:"$8.5m", proj:20.9, value:"$8.5m", team:"Portugal", age:31, flag:"🇵🇹", xG:0, xA:0,
+      st:{}, stats:[{v:"$8.5m",nl:"prijs",en:"price"},{v:"20.9",nl:"proj. punten",en:"proj. pts"},{v:"Pen + corners",nl:"standaardsituaties",en:"set pieces"}],
+      note:{nl:"Neemt penalty's, vrije trappen én corners voor Portugal: enorme floor aan punten via assists en bonus. Tegen Congo DR en Uzbekistan een gunstige opening.",en:"Takes penalties, free-kicks and corners for Portugal: a huge points floor via assists and bonus. A favourable opening against DR Congo and Uzbekistan."} },
+    { pos:"MID", row:2, name:"Kevin De Bruyne", price:"$7.5m", proj:20.2, value:"$7.5m", team:"Belgium", age:34, flag:"🇧🇪", xG:0, xA:0,
+      st:{}, stats:[{v:"$7.5m",nl:"prijs",en:"price"},{v:"20.2",nl:"proj. punten",en:"proj. pts"},{v:"5%",nl:"eigendom",en:"owned"}],
+      note:{nl:"Op slechts 5% eigendom een uitgelezen differential: België is favoriet in groep G en De Bruyne levert de assists. Hoog plafond tegen een laag bezit.",en:"At just 5% owned, a prime differential: Belgium are favourites in Group G and De Bruyne supplies the assists. High ceiling at low ownership."} },
+    { pos:"MID", row:2, name:"Hakan Çalhanoğlu", price:"$7.1m", proj:19.8, value:"$7.1m", team:"Turkey", age:32, flag:"🇹🇷", xG:0, xA:0,
+      st:{}, stats:[{v:"$7.1m",nl:"prijs",en:"price"},{v:"19.8",nl:"proj. punten",en:"proj. pts"},{v:"Pen-nemer",nl:"Turkije",en:"penalties"}],
+      note:{nl:"Penalty- en vrijetrapspecialist van Turkije, dat tegen Australië en Paraguay punten kan pakken. Goedkope middenvelder met een gegarandeerde rol bij standaardsituaties.",en:"Turkey's penalty and free-kick specialist, with points to grab against Australia and Paraguay. A cheap midfielder with a guaranteed set-piece role."} },
+    { pos:"FWD", row:3, name:"Mikel Oyarzabal", price:"$8.1m", proj:25.2, value:"$8.1m", team:"Spain", age:28, flag:"🇪🇸", xG:0, xA:0,
+      st:{}, stats:[{v:"$8.1m",nl:"prijs",en:"price"},{v:"25.2",nl:"proj. punten",en:"proj. pts"},{v:"Aanvoerder",nl:"hoogste proj.",en:"captain"}],
+      note:{nl:"De hoogst geprojecteerde speler van het toernooi en de aanvoerderskeuze: een aanvaller met elite-plafond die niet zo geprijsd is, op 16% eigendom. Spanje heeft het zachtste pad van alle favorieten.",en:"The highest-projected player at the tournament and the captain pick: an elite-ceiling forward who isn't priced like one, at 16% ownership. Spain have the softest path of any favourite."} },
+    { pos:"FWD", row:3, name:"Kylian Mbappé", price:"$10.5m", proj:20.3, value:"$10.5m", team:"France", age:27, flag:"🇫🇷", xG:0, xA:0,
+      st:{}, stats:[{v:"$10.5m",nl:"prijs",en:"price"},{v:"20.3",nl:"proj. punten",en:"proj. pts"},{v:"Pen-nemer",nl:"Frankrijk",en:"penalties"}],
+      note:{nl:"Een van de twee duurste spelers in de pool: penaltynemer en topafmaker met een matchwinnend plafond. Frankrijk's groep (Irak, Senegal, Noorwegen) is beheersbaar.",en:"One of the two most expensive players in the pool: penalty taker and elite finisher with a match-winning ceiling. France's group (Iraq, Senegal, Norway) is manageable."} },
+    { pos:"FWD", row:3, name:"Harry Kane", price:"$10.5m", proj:20.3, value:"$10.5m", team:"England", age:32, flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", xG:0, xA:0,
+      st:{}, stats:[{v:"$10.5m",nl:"prijs",en:"price"},{v:"20.3",nl:"proj. punten",en:"proj. pts"},{v:"Pen-nemer",nl:"Engeland",en:"penalties"}],
+      note:{nl:"Penaltynemer van Engeland, dat met de beste xGC van de Europese kwalificatie een lang en stabiel pad heeft. Combineert goals met de langste verwachte speelduur.",en:"England's penalty taker; with the best xGC in European qualifying they have a long, stable path. Combines goals with the longest expected game time."} },
   ],
   subs: [
-    { pos:"GK",  name:"David Raya", st:{M:37,CS:19,T:"Premier League",note:"Golden Glove"}, value:"€35m",       team:"Spain",   age:29, flag:"🇪🇸",
-      xG:0.0, xA:0.0,
-      note:{nl:"Betrouwbare reserve. Arsenal-keeper in topvorm, sleutele clean sheets in Spanje's pad naar de finale. Won zijn derde Golden Glove op rij met 19 clean sheets en was de defensieve hoeksteen van Arsenals titel.",en:"Reliable backup. Arsenal's first-choice keeper in top form, key for clean sheets on Spain's path. Won his third straight Golden Glove with 19 clean sheets, the cornerstone of Arsenal's title."} },
-    { pos:"DEF", name:"Jules Kounde", st:{G:1,A:3,T:"La Liga"}, value:"€60m",     team:"France",  age:26, flag:"🇫🇷",
-      xG:0.2, xA:0.5,
-      note:{nl:"Veelzijdig, kan rechts en centraal. Elite passing voor een verdediger. Speelt elk WK-duel voor Frankrijk. Vaste rechtsback in Barcelona's kampioensjaar (1 goal, 3 assists) en verlengde zijn contract tot 2030 ondanks Premier League-interesse.",en:"Versatile, plays right or central. Elite passing for a defender. Plays every France match. Regular right-back in Barcelona's title year (1 goal, 3 assists) and extended his deal to 2030."} },
-    { pos:"MID", name:"Martin Odegaard", st:{G:1,A:6,M:24,T:"Premier League"}, value:"€90m",  team:"Norway",  age:27, flag:"🇳🇴",
-      xG:0.8, xA:1.6,
-      note:{nl:"Arsenal-aanvoerder en Premier League-kampioen 2025-26. Haaland's creatieve partner: zijn assists naar de spits zijn de beste op het toernooi. Als Noorwegen ver komt, is Odegaard een elitekeuze. Een door blessures onderbroken seizoen als Arsenal-aanvoerder (1 goal, 6 assists in 24 duels), maar wel met de eerste Premier League-titel sinds 2004 als kroon.",en:"Arsenal captain and Premier League champion 2025-26. Haaland's creative partner: his through balls to the striker are the best at the tournament. If Norway go deep, Odegaard is an elite pick. An injury-disrupted season as Arsenal captain (1 goal, 6 assists), crowned with the first league title since 2004."} },
-    { pos:"FWD", name:"Mohamed Salah", st:{G:10,A:9,T:0}, value:"€30m",    team:"Egypt",   age:33, flag:"🇪🇬",
-      xG:1.8, xA:0.9,
-      note:{nl:"Liverpool's all-time topscorer op zijn eerste WK. Als Egypte de R16 haalt (realistisch in Groep G), levert Salah 4+ doelpunten en meerdere assists. Het risico: Egypte kan al in de groepsfase uitvallen. Hoog plafond, middelhoog risico. Op zijn 33e nog altijd bepalend voor Liverpool met 7 goals en 7 assists in de Premier League.",en:"Liverpool's all-time top scorer at his first World Cup. If Egypt reach the R16 (realistic in Group G), Salah delivers 4+ goals and multiple assists. The risk: Egypt could exit in the group stage. High ceiling, medium risk. Still decisive for Liverpool at 33 with 7 goals and 7 assists in the league."} },
+    { pos:"GK", name:"Matt Freese", price:"$4.2m", proj:17.2, value:"$4.2m", team:"USA", age:27, flag:"🇺🇸", xG:0, xA:0,
+      note:{nl:"Goedkope tweede keeper: gastland VS heeft een redelijk groepspad. Pure bankvulling om budget vrij te spelen voor de basiself.",en:"Cheap second keeper: hosts USA have a reasonable group path. Pure bench fodder to free up budget for the starting XI."} },
+    { pos:"DEF", name:"Lee Tae-Seok", price:"$3.7m", proj:16.5, value:"$3.7m", team:"South Korea", age:25, flag:"🇰🇷", xG:0, xA:0,
+      note:{nl:"Een van de goedkoopste verdedigers in het spel; enkel aanwezig om de squad-quota te vullen binnen budget.",en:"One of the cheapest defenders in the game; present only to complete the squad quota within budget."} },
+    { pos:"DEF", name:"Nathan Ngoy", price:"$3.7m", proj:16.5, value:"$3.7m", team:"Belgium", age:23, flag:"🇧🇪", xG:0, xA:0,
+      note:{nl:"Goedkope Belgische verdediger met clean-sheet-kans als achtervang; bankvulling om de premiums voorin te betalen.",en:"Cheap Belgian defender with clean-sheet upside as cover; bench fodder to fund the premiums up front."} },
+    { pos:"MID", name:"Aleksandar Pavlović", price:"$5.5m", proj:17.3, value:"$5.5m", team:"Germany", age:21, flag:"🇩🇪", xG:0, xA:0,
+      note:{nl:"Goedkoopste speelbare middenvelder uit een sterke Duitse ploeg; ideale vijfde middenvelder die de budgetstructuur sluitend maakt.",en:"Cheapest playable midfielder from a strong German side; the ideal fifth midfielder that balances the budget structure."} },
   ],
 };
 
@@ -2808,14 +2822,9 @@ function DarkHorseCard({p,open,onToggle}){
 
 function PitchViz(){
   const T=useTheme();
-  const rows = [
-    ["GK"],
-    ["RB","CB1","CB2","LB"],
-    ["CDM","CM","CAM"],
-    ["RW","ST","LW"],
-  ];
-  const byPos={};
-  BEST_XI.players.forEach(p=>{byPos[p.pos]=p;});
+  // Build rows from each player's row index (0=GK,1=DEF,2=MID,3=FWD) so any formation renders.
+  const rows=[[],[],[],[]];
+  BEST_XI.players.forEach(p=>{ if(rows[p.row]) rows[p.row].push(p); });
   const posLabel=(pos)=>pos==="CB1"||pos==="CB2"?"CB":pos;
   return(
     <div style={{background:"linear-gradient(160deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",
@@ -2831,20 +2840,23 @@ function PitchViz(){
       {/* Players (attacking row on top) */}
       {[...rows].reverse().map((row,ri)=>(
         <div key={ri} style={{display:"flex",justifyContent:"center",gap:8,marginBottom:ri<rows.length-1?14:0,position:"relative",zIndex:1}}>
-          {row.map(pos=>{
-            const p=byPos[pos];
-            if(!p) return null;
+          {row.map(p=>{
+            const isCap=p.name===BEST_XI.captain;
             return(
-              <div key={pos} style={{display:"flex",flexDirection:"column",alignItems:"center",width:64}}>
+              <div key={p.name} style={{display:"flex",flexDirection:"column",alignItems:"center",width:64}}>
                 <div style={{position:"relative",width:38,height:38,marginBottom:5}}>
                   <div style={{width:38,height:38,borderRadius:"50%",
                     background:"linear-gradient(135deg,#FF7A33,#E07000)",
                     border:"2px solid rgba(255,255,255,0.85)",
                     display:"flex",alignItems:"center",justifyContent:"center",
                     fontSize:FS.micro,fontWeight:WEIGHT.bold,color:"#fff",
-                    boxShadow:"0 2px 6px rgba(0,0,0,0.35)"}}>{posLabel(pos)}</div>
+                    boxShadow:"0 2px 6px rgba(0,0,0,0.35)"}}>{posLabel(p.pos)}</div>
                   <div style={{position:"absolute",bottom:-3,right:-3,fontSize:11,lineHeight:1,
                     filter:"drop-shadow(0 1px 2px rgba(0,0,0,.5))"}}>{p.flag}</div>
+                  {isCap&&<div style={{position:"absolute",top:-4,left:-4,width:15,height:15,borderRadius:"50%",
+                    background:"#FFD24D",color:"#0D0D0D",fontSize:9,fontWeight:WEIGHT.bold,
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    border:"1px solid #B8860B",boxShadow:"0 1px 3px rgba(0,0,0,0.4)"}}>C</div>}
                 </div>
                 <div style={{fontSize:FS.caption,color:"#fff",textAlign:"center",fontWeight:WEIGHT.medium,lineHeight:1.15}}>{p.name.split(" ").slice(-1)[0]}</div>
               </div>
@@ -4228,6 +4240,27 @@ function PlayersTab({setTab}){
 
       <h2 style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,margin:"2px 0 12px",letterSpacing:-0.5}}>{lang==="nl"?"FPL-team":"FPL team"}</h2>
 
+      {/* Budget + projection summary — real FIFA World Cup Fantasy 2026 prices */}
+      <div style={{display:"flex",gap:8,marginBottom:12}}>
+        <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
+          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Budget":"Budget"}</div>
+          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.text,lineHeight:1}}>${BEST_XI.spent.toFixed(1)}m<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub}}> / ${BEST_XI.budget.toFixed(0)}m</span></div>
+        </div>
+        <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
+          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Proj. basiself":"Proj. XI"}</div>
+          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.orange,lineHeight:1}}>{BEST_XI.projXI}<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub}}> {lang==="nl"?"pnt":"pts"}</span></div>
+        </div>
+        <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
+          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Formatie":"Formation"}</div>
+          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.text,lineHeight:1}}>{BEST_XI.formation}</div>
+        </div>
+      </div>
+      <div style={{fontSize:FS.micro,color:T.textFaint,lineHeight:1.5,marginBottom:12}}>
+        {lang==="nl"
+          ?"Budgetoptimaal binnen $100m via FIFA World Cup Fantasy-prijzen en RotoWire-projecties (groepsfase). Aanvoerder verdubbelt zijn punten."
+          :"Budget-optimal within $100m using FIFA World Cup Fantasy prices and RotoWire projections (group stage). The captain doubles their points."}
+      </div>
+
       {/* Best XI */}
       <PitchViz/>
       {/* Player list */}
@@ -4242,11 +4275,10 @@ function PlayersTab({setTab}){
                 <span style={{color:"#fff",fontSize:FS.micro,fontWeight:WEIGHT.semibold}}>{p.pos==="CB1"||p.pos==="CB2"?"CB":p.pos}</span>
               </div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+                <div style={{fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}{p.name===BEST_XI.captain&&<span style={{marginLeft:6,fontSize:FS.micro,fontWeight:WEIGHT.bold,color:"#0D0D0D",background:"#FFD24D",border:"1px solid #B8860B",borderRadius:4,padding:"0 5px",verticalAlign:"middle"}}>C</span>}</div>
                 <div style={{display:"flex",gap:4,marginTop:2,flexWrap:"wrap"}}>
                   {p.value&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:"#FFD24D",background:"#6B5200",border:"1px solid #B8860B",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
-                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xG} xG</span>}
-                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>~{p.xA} xA</span>}
+                  {p.proj>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.proj} {lang==="nl"?"proj. pnt":"proj. pts"}</span>}
                 </div>
               </div>
               <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
@@ -4276,8 +4308,7 @@ function PlayersTab({setTab}){
                 <div style={{fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text}}>{p.name}</div>
                 <div style={{display:"flex",gap:4,marginTop:2}}>
                   {p.value&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:"#FFD24D",background:"#6B5200",border:"1px solid #B8860B",borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
-                  {p.xG>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px"}}>~{p.xG} xG</span>}
-                  {p.xA>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px"}}>~{p.xA} xA</span>}
+                  {p.proj>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px"}}>{p.proj} {lang==="nl"?"proj. pnt":"proj. pts"}</span>}
                 </div>
               </div>
               <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
