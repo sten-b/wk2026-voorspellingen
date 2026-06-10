@@ -136,7 +136,7 @@ const LANG = {
     knockoutTitle: "Knockoutronde",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "Hoe worden scores bepaald",
-    modelBody: "Elke wedstrijd wordt bepaald door de sterktescore per land (Elo, selectiekwaliteit, recente vorm, ervaring, coach). Het verschil in sterktescore bepaalt wie wint en met welke marge; xG en xGc vullen de hoogte van de uitslag in. Alles vloeit direct voort uit de berekeningen, zonder handmatige aanpassingen.",
+    modelBody: "Elke wedstrijd wordt bepaald door de sterktescore per land (Elo, selectiekwaliteit, recente vorm, ervaring, coach), waarvan het verschil bepaalt wie wint en met welke marge terwijl xG en xGc de hoogte van de uitslag invullen — alles direct uit de berekeningen, zonder handmatige aanpassingen.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Kwartfinales",
@@ -164,7 +164,7 @@ const LANG = {
     knockoutTitle: "Knockout Rounds",
     modelTitle: "Sten's Prediction Model",
     modelSubtitle: "How scores are determined",
-    modelBody: "Every match is determined by each country's strength score (Elo, squad quality, recent form, experience, coach). The gap in strength score decides who wins and by what margin; xG and xGc fill in the height of the scoreline. Everything follows directly from the calculations, with no manual adjustments.",
+    modelBody: "Every match is determined by each country's strength score (Elo, squad quality, recent form, experience, coach) whose gap decides who wins and by what margin while xG and xGc fill in the height of the scoreline — all directly from the calculations, with no manual adjustments.",
     overTitle: "Overperformers",
     underTitle: "Underperformers",
     qf: "Quarter-finals",
@@ -827,7 +827,7 @@ const KO_DATE_LABEL={
 
 const OUTLOOK = {
   over:[
-    {team:"Norway",rank:41,adj:-18,projection:{nl:"Achtste finale / Kwartfinale",en:"Round of 16 / QF"},group:"I",
+{team:"Norway",rank:41,adj:-18,projection:{nl:"Achtste finale / Kwartfinale",en:"Round of 16 / QF"},group:"I",
      headline:{nl:"Haaland's eerste WK: het gevaarlijkste debuut ooit",en:"Haaland's first World Cup: the most dangerous debut ever"},
      reasons:{nl:[
        "Haaland scoorde 16 doelpunten in de kwalificatie: meer dan elke andere speler in Europa",
@@ -843,8 +843,7 @@ const OUTLOOK = {
        "First World Cup since 1998: no external pressure, maximum internal hunger"
      ]},
      risk:{nl:"Als Odegaard niet op topniveau is, valt de creatieve verbinding met Haaland weg.",en:"If Odegaard is not at his top level, the creative link to Haaland breaks down."}},
-
-    {team:"Japan",rank:18,adj:-10,projection:{nl:"Achtste finale, mogelijk kwartfinale",en:"Last 16, potentially QF"},group:"F",
+{team:"Japan",rank:18,adj:-10,projection:{nl:"Achtste finale, mogelijk kwartfinale",en:"Last 16, potentially QF"},group:"F",
      headline:{nl:"Versloeg Brazilië en Engeland en is klaar voor meer",en:"Beat Brazil and England and is ready for more"},
      reasons:{nl:[
        "Versloeg Brazilië 1-0 en Engeland 2-1 in voorbereidingswedstrijden in juni 2026",
@@ -859,26 +858,8 @@ const OUTLOOK = {
        "Moriyasu's pressing system is the best-coached of any Asian team ever",
        "Opener vs Netherlands is statistically near even: a win would change everything"
      ]},
-     risk:{nl:"Mitoma's afwezigheid vermindert hun aanvalsbreedte significant. Kubo moet het alleen doen.",en:"Mitoma's absence significantly reduces attacking width. Kubo has to do it alone."}},
-
-    {team:"Morocco",rank:8,adj:-3,projection:{nl:"Kwartfinale naar Halve finale",en:"QF to SF"},group:"C",
-     headline:{nl:"Het meest onderschatte team van het toernooi",en:"The most underestimated team at the tournament"},
-     reasons:{nl:[
-       "Wonnen alle 10 CAF-kwalificatiewedstrijden: geen enkel ander WK-deelnemer deed dat",
-       "2022 halvefinalisten: versloegen Spanje en Portugal onderweg. Dat was geen toeval",
-       "Regragui bouwt het beste georganiseerde verdedigingssysteem van Afrika ooit",
-       "Hakimi, Amrabat, Brahim Diaz: drie spelers van Champions League-niveau in de basis",
-       "Groep C (Brazilië, Schotland, Haïti): als groepswinnaar ontwijken ze de zwaarste kant"
-     ],en:[
-       "Won all 10 CAF qualifying matches: no other World Cup participant did that",
-       "2022 semi-finalists: beat Spain and Portugal along the way. That was no fluke",
-       "Regragui builds the best-organised defensive system Africa has ever produced",
-       "Hakimi, Amrabat, Brahim Diaz: three Champions League-level players in the starting XI",
-       "Group C (Brazil, Scotland, Haiti): as group winners they avoid the tougher bracket half"
-     ]},
-     risk:{nl:"Hakimi heeft een kleine hamstringkwetsuur. Als hij niet fit is, verliest hun rechterkant haar gevaar.",en:"Hakimi has a minor hamstring issue. If not fit, their right side loses its danger."}},
-
-    {team:"Ecuador",rank:23,adj:-8,projection:{nl:"Achtste finale, mogelijk kwartfinale",en:"Last 16, potentially QF"},group:"E",
+     risk:{nl:"Mitoma's afwezigheid vermindert hun aanvalsbreedte significant, waardoor Kubo het alleen moet doen.",en:"Mitoma's absence significantly reduces attacking width, leaving Kubo to do it alone."}},
+{team:"Ecuador",rank:23,adj:-8,projection:{nl:"Achtste finale, mogelijk kwartfinale",en:"Last 16, potentially QF"},group:"E",
      headline:{nl:"Caicedo en Paez zijn een van de beste middenveldduo's",en:"Caicedo and Paez are one of the best midfield duos"},
      reasons:{nl:[
        "Ongeslagen kwalificatiecampagne, geen enkel verlies op weg naar het WK",
@@ -893,9 +874,8 @@ const OUTLOOK = {
        "Enner Valencia (39) provides the attacking leadership and charisma money cannot buy",
        "Plays organised, direct football and punishes any team on the counter-attack"
      ]},
-     risk:{nl:"Groep E heeft Duitsland. Ecuador moet het maximale halen uit de wedstrijden tegen Ivoorkust en Curaçao.",en:"Group E has Germany. Ecuador must extract maximum points from the matches against Ivory Coast and Curacao."}},
-
-    {team:"Colombia",rank:13,adj:-7,projection:{nl:"Achtste finale, mogelijk kwartfinale",en:"Last 16, possibly QF"},group:"K",
+     risk:{nl:"Met Duitsland in groep E moet Ecuador het maximale halen uit de wedstrijden tegen Ivoorkust en Curaçao.",en:"With Germany in Group E, Ecuador must extract maximum points from the matches against Ivory Coast and Curacao."}},
+{team:"Colombia",rank:13,adj:-7,projection:{nl:"Achtste finale, mogelijk kwartfinale",en:"Last 16, possibly QF"},group:"K",
      headline:{nl:"Copa América-finalisten met ideale loting",en:"Copa América finalists with an ideal draw"},
      reasons:{nl:[
        "Luis Diaz (Liverpool) had zijn beste seizoen ooit: 22 goals, 10 assists in 2025-26",
@@ -910,9 +890,8 @@ const OUTLOOK = {
        "Rios (Bayer Leverkusen) has grown into one of the strongest central midfielders",
        "Young, fast and athletic: built for the counter in the heat of the USA"
      ]},
-     risk:{nl:"Als Diaz een slechte dag heeft, valt hun aanvalspotentieel dramatisch terug. De ploeg heeft geen plan B van gelijke kwaliteit.",en:"If Diaz has a bad day, their attacking potential drops dramatically. The team has no plan B of equal quality."}},
-
-    {team:"Egypt",rank:37,adj:-9,projection:{nl:"Groepsfase naar achtste finale",en:"Groups to last 16"},group:"G",
+     risk:{nl:"Als Diaz een slechte dag heeft valt hun aanvalspotentieel dramatisch terug, want de ploeg heeft geen plan B van gelijke kwaliteit.",en:"If Diaz has a bad day their attacking potential drops dramatically, because the team has no plan B of equal quality."}},
+{team:"Egypt",rank:37,adj:-9,projection:{nl:"Groepsfase naar achtste finale",en:"Groups to last 16"},group:"G",
      headline:{nl:"Salah's eerste WK en de loting is perfect",en:"Salah's first World Cup and the draw is perfect"},
      reasons:{nl:[
        "Mohamed Salah arriveert op zijn allereerste WK op 33: Liverpool's all-time topscorer in piekjaren",
@@ -927,10 +906,40 @@ const OUTLOOK = {
        "26 points from 10 CAF qualifying matches: the best tally in Africa",
        "Egypt always win their qualifiers but always lose in knockouts: the format now works in their favour"
      ]},
-     risk:{nl:"Voorbij de achtste finale wacht vrijwel zeker een topland. Salah heeft nog nooit zo ver gereikt: de mentale drempel is onbekend.",en:"Beyond the last 16 a top side almost certainly awaits. Salah has never reached that far: the mental threshold is unknown."}},
+     risk:{nl:"Voorbij de achtste finale wacht vrijwel zeker een topland, en Salah heeft nog nooit zo ver gereikt waardoor de mentale drempel onbekend is.",en:"Beyond the last 16 a top side almost certainly awaits, and Salah has never reached that far so the mental threshold is unknown."}},
+
+    {team:"Germany",rank:10,adj:-3,projection:{nl:"Kwartfinale, mogelijk verder",en:"QF, possibly further"},group:"E",
+     headline:{nl:"Het model tilt Duitsland boven zijn FIFA-positie",en:"The model lifts Germany above its FIFA position"},
+     reasons:{nl:[
+       "Hoge Elo (1932) en een ongeslagen, dominante kwalificatiecampagne wegen in het model zwaar door",
+       "Selectiekwaliteit top-5 van het toernooi: Musiala, Wirtz en Kimmich tillen de marktwaarde ver omhoog",
+       "Recente vorm staat op 76,9: een van de beste aanloopreeksen van alle Europese ploegen",
+       "Loting in groep E is gunstig, waardoor het model een soepele groepsfase projecteert"
+     ],en:[
+       "High Elo (1932) and an unbeaten, dominant qualifying campaign carry heavy weight in the model",
+       "Top-5 squad quality at the tournament: Musiala, Wirtz and Kimmich push the market value far up",
+       "Recent form sits at 76.9: one of the best run-ups of any European side",
+       "The Group E draw is favourable, so the model projects a smooth group stage"
+     ]},
+     risk:{nl:"Het model ziet de thuisdruk en de jonge kern niet: bij vroege tegenslag kan de werkelijkheid lager uitvallen dan rang #7.",en:"The model does not see the home pressure or the young core: an early setback could leave reality below rank #7."}},
+
+    {team:"Brazil",rank:6,adj:-1,projection:{nl:"Kwartfinale, mogelijk halve finale",en:"QF, possibly SF"},group:"C",
+     headline:{nl:"Het model zet Brazilië nipt boven zijn FIFA-positie",en:"The model places Brazil marginally above its FIFA position"},
+     reasons:{nl:[
+       "Elo (1991) en de hoogste coachscore van het toernooi (Ancelotti) duwen Brazilië in het model omhoog",
+       "Selectiewaarde blijft wereldtop, ook met de geblesseerden weggestreept",
+       "Als groepswinnaar in groep C ontwijkt het model de zwaarste kant van het schema",
+       "xG-profiel blijft sterk: het model verwacht ruim voldoende productie voorin"
+     ],en:[
+       "Elo (1991) and the tournament's highest coach score (Ancelotti) push Brazil up in the model",
+       "Squad value stays world-class, even with the injured players removed",
+       "As group winners in Group C the model avoids the tougher half of the bracket",
+       "The xG profile stays strong: the model expects ample output up front"
+     ]},
+     risk:{nl:"De marge is klein (#5 vs #6) en het model weegt de drie blessures en de debuterende bondscoach niet mee.",en:"The margin is small (#5 vs #6) and the model does not weigh the three injuries or the debutant national coach."}},
   ],
   under:[
-    {team:"Belgium",rank:9,adj:+8,projection:{nl:"Achtste finale exit",en:"Last 16 exit"},group:"G",
+{team:"Belgium",rank:9,adj:+8,projection:{nl:"Achtste finale exit",en:"Last 16 exit"},group:"G",
      headline:{nl:"Gouden generatie, maar de goudkoorts is over",en:"Golden generation, but the golden age is over"},
      reasons:{nl:[
        "WK 2022: 1 doelpunt in 3 wedstrijden, uitgeschakeld in de groepsfase achter Marokko",
@@ -945,58 +954,22 @@ const OUTLOOK = {
        "Euro 2024: knocked out in the group stage for the second time at a major tournament",
        "On paper in the top 10 for nine years: never reached beyond the quarter-finals"
      ]},
-     risk:{nl:"Jeremy Doku (Man City) en Kevin De Bruyne op één goede dag kunnen elke ploeg verslaan. Maar één dag is niet genoeg voor een toernooi.",en:"Jeremy Doku (Man City) and Kevin De Bruyne on one good day can beat anyone. But one day is not enough to win a tournament."}},
+     risk:{nl:"Jeremy Doku en Kevin De Bruyne kunnen op één goede dag elke ploeg verslaan, maar één dag is niet genoeg voor een heel toernooi.",en:"Jeremy Doku and Kevin De Bruyne on one good day can beat anyone, but one day is not enough to win a tournament."}},
 
-    {team:"England",rank:4,adj:+6,projection:{nl:"Achtste finale exit",en:"Last 16 exit"},group:"L",
-     headline:{nl:"Bellingham is wereldklasse. De ploeg eromheen niet altijd",en:"Bellingham is world class. The team around him is not always"},
+    {team:"Morocco",rank:8,adj:+7,projection:{nl:"Achtste finale naar kwartfinale",en:"Last 16 to QF"},group:"C",
+     headline:{nl:"Het model waardeert Marokko lager dan zijn FIFA-positie",en:"The model rates Morocco below its FIFA position"},
      reasons:{nl:[
-       "WK 1990, 2018: halvefinalisten. WK 1998, 2002, 2006, 2010, 2014: vroege uitschakelingen. Het patroon is hardnekkig",
-       "Tuchel veranderde de structuur maar niet het fundamentele knockoutprobleem: angst voor verlies",
-       "De diepte achter Bellingham en Saka is aanzienlijk minder dan die van Spanje of Frankrijk",
-       "Engeland treft in de knockouts bijna zeker Argentinië: de slechtst mogelijke tegenstander psychologisch",
-       "De FA-cultuur rond het elftal creëert de zwaarste mediapressie van elk WK-deelnemer"
+       "Elo (1827) ligt onder de FIFA-reputatie: het model leunt voor 70% op Elo en zet Marokko daardoor op #15",
+       "Selectiewaarde blijft achter bij de Europese top, ondanks Hakimi, Amrabat en Brahim Diaz",
+       "De halve finale van 2022 weegt in het model minder zwaar dan in de FIFA-ranking",
+       "Het model ziet vooral de harde cijfers, niet de tactische organisatie waar Marokko in uitblinkt"
      ],en:[
-       "WC 1990, 2018: semi-finals. WC 1998, 2002, 2006, 2010, 2014: early exits. The pattern is stubborn",
-       "Tuchel changed the structure but not the fundamental knockout problem: fear of losing",
-       "The depth behind Bellingham and Saka is significantly weaker than Spain or France",
-       "England almost certainly face Argentina in the knockouts: the worst possible psychological opponent",
-       "The FA culture around the squad creates the heaviest media pressure of any World Cup participant"
+       "Elo (1827) sits below the FIFA reputation: the model leans 70% on Elo and so places Morocco at #15",
+       "Squad value trails the European top, despite Hakimi, Amrabat and Brahim Diaz",
+       "The 2022 semi-final weighs less in the model than it does in the FIFA ranking",
+       "The model mainly sees the hard numbers, not the tactical organisation Morocco excels at"
      ]},
-     risk:{nl:"Als Bellingham speelt zoals hij kan, en Kane scoort, heeft Engeland meer kwaliteit dan wie ook op hun dag. Dat is het probleem: consistent zijn over zes wedstrijden.",en:"If Bellingham plays as he can, and Kane scores, England have more quality than anyone on their day. That is the problem: being consistent across six matches."}},
-
-    {team:"Germany",rank:10,adj:+8,projection:{nl:"Achtste finale naar kwartfinale",en:"Last 16 to QF"},group:"E",
-     headline:{nl:"Spannende jeugd, maar de druk thuis is meedogenloos",en:"Exciting youth, but the pressure at home is merciless"},
-     reasons:{nl:[
-       "Verloren 2-0 van Slowakije in de kwalificatie: een land van 5,5 miljoen versloeg Duitsland",
-       "2018: regerend wereldkampioen en als laatste in de groep geëindigd. Dat trauma zit er nog in",
-       "Musiala en Wirtz zijn uitzonderlijk maar spelen hun eerste grote toernooi als basisspelers",
-       "Havertz als centrumspits is een gamble: hij scoort inconsistent voor een topeltfal",
-       "Verwachtingen in Duitsland zijn altijd maximaal: dat maakt jonge spelers fragiel bij tegenslagen"
-     ],en:[
-       "Lost 2-0 to Slovakia in qualifying: a country of 5.5 million beat Germany",
-       "2018: defending world champions and finished last in their group. That trauma is still present",
-       "Musiala and Wirtz are exceptional but this is their first major tournament as starting players",
-       "Havertz as centre-forward is a gamble: he scores inconsistently for a top side",
-       "Expectations in Germany are always maximum: that makes young players fragile under pressure"
-     ]},
-     risk:{nl:"Als Musiala en Wirtz hun niveau halen tegelijk, is Duitsland zo sterk als de favorietenlijst aangeeft. Maar samen op topniveau is tot nu toe zeldzaam geweest.",en:"If Musiala and Wirtz reach their level simultaneously, Germany are as strong as the favourites list suggests. But both at peak level at the same time has been rare so far."}},
-
-    {team:"Brazil",rank:6,adj:+7,projection:{nl:"Kwartfinale exit",en:"QF exit"},group:"C",
-     headline:{nl:"Drie blessures, een debuterende coach en Marokko in de groep",en:"Three injuries, a debutant coach and Morocco in the group"},
-     reasons:{nl:[
-       "Geen WK-overwinning sinds 2002: 24 jaar zonder titel is niet te verklaren met individueel talent alleen",
-       "Ancelotti coacht zijn eerste internationale toernooi ooit op 66-jarige leeftijd: nul ervaring met interlandvoetbal",
-       "Rodrygo (ACL), Estêvão (hamstring) en Neymar (kuit, twijfelachtig) zijn allemaal weg of in twijfel",
-       "Verloren van Japan in een junivoorbereiding: een land dat ze 20 jaar geleden nooit verloren aan",
-       "Marokko in de groep is de zwaarste mogelijke groepstegenstander: perfecte stijl om Brazil te neutraliseren"
-     ],en:[
-       "No World Cup win since 2002: 24 years without a title cannot be explained by individual talent alone",
-       "Ancelotti coaches his very first international tournament at 66: zero experience with international football",
-       "Rodrygo (ACL), Estêvão (hamstring) and Neymar (calf, doubtful) are all out or in doubt",
-       "Lost to Japan in a June warm-up: a country they would never have lost to twenty years ago",
-       "Morocco in the group is the toughest possible group opponent: perfect style to neutralise Brazil"
-     ]},
-     risk:{nl:"Als Vinicius, Endrick en Raphinha alle drie in topvorm zijn tegelijk, is Brazil gevaarlijk voor iedereen. Dat is echter zelden gebeurd bij grote toernooien.",en:"If Vinicius, Endrick and Raphinha are all in top form simultaneously, Brazil are dangerous for anyone. That has, however, rarely happened at major tournaments."}},
+     risk:{nl:"Hier kan het model het mis hebben: Marokko's organisatie en toernooibestendigheid zijn met cijfers lastig te vangen.",en:"Here the model may be wrong: Morocco's organisation and tournament resilience are hard to capture in numbers."}},
   ],
 };
 
@@ -2110,7 +2083,7 @@ function OutlookRow({d,type,open,onToggle}){
         <TeamLink team={d.team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[d.team]}</span></TeamLink>
         <span style={{flex:1,fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text}}>{tName(d.team,lang)}</span>
         <Tag color={T.textSub}>FIFA #{d.rank}</Tag>
-        <Tag color={ac}>{lang==="nl"?"Model":"Model"} #{Math.max(1,d.rank+d.adj)}</Tag>
+        <Tag color={ac}>{lang==="nl"?"Model":"Model"} #{MODEL_RANK[d.team]||d.rank}</Tag>
         <Chevron open={open} color={T.textSub}/>
       </div>
       {open&&(
@@ -2983,36 +2956,36 @@ function ModelViz({scrollTo,onScrolled}={}){
      formula:lang==="nl"?"(Elo − 1400) / 800 × 100":"(Elo − 1400) / 800 × 100",
      intro:lang==="nl"?"De betrouwbaarste maatstaf voor teamsterkte.":"The most reliable measure of team strength.",
      detail:lang==="nl"
-       ?"Puntensysteem dat na elke interland bijwerkt: winst tegen een sterke ploeg telt het zwaarst. Officiële waarden van eloratings.net."
-       :"A points system updated after every match: beating a strong side counts most. Official values from eloratings.net."},
+       ?"Een puntensysteem dat na elke interland bijwerkt en winst tegen een sterke ploeg het zwaarst weegt, met officiële waarden van eloratings.net."
+       :"A points system updated after every match that weighs beating a strong side most heavily, using official values from eloratings.net."},
     {key:"users",pct:10,
      label:lang==="nl"?"Selectiekwaliteit":"Squad quality",
      formula:lang==="nl"?"log(marktwaarde) + topspeler-bonus, geschaald 0–100":"log(squad value) + star bonus, scaled 0–100",
      intro:lang==="nl"?"Individueel talent, los van resultaten.":"Individual talent, independent of results.",
      detail:lang==="nl"
-       ?"Totale Transfermarkt-waarde van de selectie, logaritmisch geschaald, plus een topspeler-bonus: spelers boven €60m tellen extra mee, spelers boven €100m nog zwaarder (×1 per speler ≥€60m, ×2 per speler ≥€100m). Zo wordt superster-dichtheid beloond, niet alleen totale diepte. Vangt clubniveau dat Elo niet ziet — Ghana scoort hier hoger dan Panama dankzij spelers als Kudus en Partey."
-       :"Total Transfermarkt squad value, log-scaled, plus a star-player bonus: players above €60m add extra weight, players above €100m more still (×1 per player ≥€60m, ×2 per player ≥€100m). This rewards superstar density, not just total depth. Captures club level Elo misses — Ghana scores higher than Panama thanks to players like Kudus and Partey."},
+       ?"De logaritmisch geschaalde Transfermarkt-waarde van de selectie plus een topspeler-bonus (×1 per speler ≥€60m, ×2 per speler ≥€100m) beloont superster-dichtheid en vangt het clubniveau dat Elo mist — zo scoort Ghana hier hoger dan Panama dankzij spelers als Kudus en Partey."
+       :"The log-scaled Transfermarkt squad value plus a star-player bonus (×1 per player ≥€60m, ×2 per player ≥€100m) rewards superstar density and captures the club level Elo misses — so Ghana scores higher than Panama thanks to players like Kudus and Partey."},
     {key:"trophy",pct:5,
      label:lang==="nl"?"Toernooi-ervaring":"Tournament experience",
      formula:lang==="nl"?"Σ(toernooizwaarte × rondediepte × recentheid), 10 jaar":"Σ(tournament weight × round depth × recency), 10 yrs",
      intro:lang==="nl"?"Diepe toernooiruns wijzen op bestendigheid onder druk.":"Deep tournament runs signal composure under pressure.",
      detail:lang==="nl"
-       ?"Berekend uit alle grote toernooien van de laatste 10 jaar (WK, EK, Copa América, Afrika Cup, Azië Cup, Gold Cup). Hoe verder een land kwam en hoe recenter, hoe zwaarder het telt — afgeleid uit het aantal gespeelde wedstrijden per editie. Argentinië scoort maximaal (WK-titel 2022 + twee Copa-finales)."
-       :"Computed from every major tournament of the last 10 years (WC, Euro, Copa América, Africa Cup, Asian Cup, Gold Cup). Going further and more recently counts more — derived from matches played per edition. Argentina scores maximum (2022 WC title + two Copa finals)."},
+       ?"Berekend uit alle grote toernooien van de laatste 10 jaar (WK, EK, Copa, Afrika Cup, Azië Cup, Gold Cup), waarbij een verdere en recentere run zwaarder telt — Argentinië scoort maximaal met de WK-titel 2022 en twee Copa-finales."
+       :"Computed from every major tournament of the last 10 years (WC, Euro, Copa, Africa Cup, Asian Cup, Gold Cup), where a further and more recent run counts more — Argentina scores maximum with the 2022 WC title and two Copa finals."},
     {key:"coach",pct:5,
      label:lang==="nl"?"Coachkwaliteit":"Coaching quality",
      formula:lang==="nl"?"65% recent interland-trackrecord + 35% gewogen prijzen":"65% recent international record + 35% weighted honours",
      intro:lang==="nl"?"Een bewezen coach scherpt keuzes onder druk.":"A proven coach sharpens decisions under pressure.",
      detail:lang==="nl"
-       ?"Volledig data-gedreven: voor 65% het puntengemiddelde van de coach met dit land sinds zijn aanstelling (recente wedstrijden zwaarder, halveringstijd 18 maanden, uit results.csv), voor 35% een gewogen prijzenbonus per categorie (WK 40, Champions League 18, continentale landentitel 16, top-5 titel 12, enz. — incl. clubcarrière, geverifieerd per coach). Scaloni en Ancelotti scoren het hoogst."
-       :"Fully data-driven: 65% the coach's points-per-game with this country since appointment (recent matches weighted more, 18-month half-life, from results.csv), 35% a weighted honours bonus by category (WC 40, Champions League 18, continental national title 16, top-5 league 12, etc. — incl. club career, verified per coach). Scaloni and Ancelotti score highest."},
+       ?"Volledig data-gedreven uit 65% het puntengemiddelde van de coach met dit land sinds zijn aanstelling (recente wedstrijden zwaarder, halveringstijd 18 maanden) en 35% een gewogen prijzenbonus per categorie (WK 40, Champions League 18, continentale titel 16, top-5 titel 12, incl. clubcarrière), waarbij Scaloni en Ancelotti het hoogst scoren."
+       :"Fully data-driven from 65% the coach's points-per-game with this country since appointment (recent matches weighted more, 18-month half-life) and 35% a weighted honours bonus by category (WC 40, Champions League 18, continental title 16, top-5 league 12, incl. club career), with Scaloni and Ancelotti scoring highest."},
     {key:"trend",pct:10,
      label:lang==="nl"?"Recente vorm":"Recent form",
      formula:lang==="nl"?"½ punten laatste 12 + ½ punten WK-kwalificatie":"½ points last 12 + ½ points WC qualifying",
      intro:lang==="nl"?"Hoeveel punten pakt een land recent?":"How many points is a country taking lately?",
      detail:lang==="nl"
-       ?"Voor de helft de behaalde punten uit de laatste 12 interlands, voor de helft uit de WK-kwalificatie (3 per winst, 1 per gelijkspel). Gastlanden VS, Mexico en Canada spelen geen kwalificatie en krijgen daarom een positieve vormcompensatie. Marokko, Noorwegen en Engeland kwalificeerden zich foutloos."
-       :"Half from points won in the last 12 internationals, half from World Cup qualifying (3 per win, 1 per draw). Hosts USA, Mexico and Canada play no qualifiers and receive a positive form compensation. Morocco, Norway and England qualified with a perfect record."},
+       ?"Voor de helft de punten uit de laatste 12 interlands en voor de helft uit de WK-kwalificatie (3 per winst, 1 per gelijkspel), waarbij gastlanden VS, Mexico en Canada zonder kwalificatie een positieve vormcompensatie krijgen."
+       :"Half from points in the last 12 internationals and half from World Cup qualifying (3 per win, 1 per draw), with hosts USA, Mexico and Canada receiving a positive form compensation as they play no qualifiers."},
   ];
 
   // Monte-Carlo title odds: 50,000 simulated tournaments on the composite scores.
@@ -3042,8 +3015,8 @@ function ModelViz({scrollTo,onScrolled}={}){
         </div>
         <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:16,maxWidth:520}}>
           {lang==="nl"
-            ?"Vijf gewogen factoren vormen één sterktescore per land. Het verschil tussen twee scores bepaalt wie wint en met welke marge; xG en xGc bepalen de hoogte van de uitslag. Alles volgt direct uit de data, zonder handmatige correcties."
-            :"Five weighted factors form one strength score per country. The gap between two scores decides who wins and by what margin; xG and xGc set the height of the scoreline. Everything follows directly from the data, with no manual corrections."}
+            ?"Vijf gewogen factoren vormen één sterktescore per land, waarvan het onderlinge verschil bepaalt wie wint en met welke marge terwijl xG en xGc de hoogte van de uitslag invullen — alles direct uit de data, zonder handmatige correcties."
+            :"Five weighted factors form one strength score per country whose gap decides who wins and by what margin while xG and xGc set the height of the scoreline — all directly from the data, with no manual corrections."}
         </div>
         {/* compact step flow — each chip jumps to its section below */}
         <div style={{display:"flex",alignItems:"stretch",gap:0,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
@@ -3157,17 +3130,6 @@ function ModelViz({scrollTo,onScrolled}={}){
                   <span style={{fontWeight:WEIGHT.semibold,color:T.text,textAlign:"right"}}>{r.contrib.toLocaleString(lang==="nl"?"nl-NL":"en-US",{minimumFractionDigits:1,maximumFractionDigits:1})}</span>
                 </div>
               ))}
-              {/* Coach provenance — makes the 5% coach factor traceable */}
-              {COACH_DATA[exTeam]&&(
-                <div style={{padding:"7px 10px",borderTop:`1px solid ${T.border}`,background:T.bg}}>
-                  <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,marginBottom:2}}>
-                    {lang==="nl"?"Coach":"Coach"}: {COACH_DATA[exTeam].coach}
-                  </div>
-                  <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.4}}>
-                    {lang==="nl"?"Erelijst":"Honours"}: {COACH_DATA[exTeam].basis}
-                  </div>
-                </div>
-              )}
               {/* total */}
               <div style={{display:"flex",alignItems:"center",padding:"8px 10px",
                 borderTop:`2px solid ${T.border}`,background:T.bg}}>
@@ -3186,10 +3148,6 @@ function ModelViz({scrollTo,onScrolled}={}){
       {SL(lang==="nl"?"Stap 3 · De ranglijst":"Step 3 · The ranking","bars")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginBottom:10}}>
-          {lang==="nl"?"Elke sterktescore uit stap 2 bepaalt de plek op de ranglijst. De top 8:"
-            :"Each strength score from step 2 sets the place in the ranking. The top 8:"}
-        </div>
         {TOP8.map((t,i)=>{
           const maxSc=84;
           return(
@@ -3216,8 +3174,8 @@ function ModelViz({scrollTo,onScrolled}={}){
         padding:"12px",marginBottom:16}}>
         <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:12}}>
           {lang==="nl"
-            ?"Voor elke wedstrijd vergelijkt het model de twee sterktescores. Het verschil bepaalt wie wint en met welke marge; in de 10–20-zone geeft het xG-profiel de doorslag. De xG-cijfers bepalen hoeveel goals er binnen die marge vallen."
-            :"For every match the model compares the two strength scores. The gap decides who wins and by what margin; in the 10–20 zone the xG profile is the tiebreaker. The xG figures set how many goals fall within that margin."}
+            ?"Voor elke wedstrijd vergelijkt het model de twee sterktescores, waarbij het verschil bepaalt wie wint en met welke marge (in de 10–20-zone geeft het xG-profiel de doorslag) terwijl de xG-cijfers invullen hoeveel goals er binnen die marge vallen."
+            :"For every match the model compares the two strength scores, where the gap decides who wins and by what margin (in the 10–20 zone the xG profile is the tiebreaker) while the xG figures set how many goals fall within that margin."}
         </div>
         {/* compact margin rule */}
         <div style={{display:"flex",gap:6,marginBottom:13,flexWrap:"wrap"}}>
@@ -4676,20 +4634,18 @@ export default function App(){
               <ModelViz scrollTo={modelSection} onScrolled={()=>setModelSection(null)}/>
 
               {/* ── OVER / UNDERPERFORMERS (section 5) ── */}
-              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,marginTop:16,
-                paddingBottom:5,borderBottom:`2px solid ${T.border}`}}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.textSub}
-                  strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
-                  <path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>
-                </svg>
-                <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.textSub}}>
-                  {lang==="nl"?"Stap 6 · Waar het model afwijkt van FIFA":"Step 6 · Where the model differs from FIFA"}
+              <div style={{display:"flex",alignItems:"baseline",gap:8,marginTop:24,marginBottom:12}}>
+                <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",color:T.id==="dark"?T.orange:(T.id==="orangeLion"?"#FFFFFF":"#E07000"),flexShrink:0}}>
+                  {lang==="nl"?"Stap 6":"Step 6"}
+                </span>
+                <span style={{fontSize:FS.h2,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.3,lineHeight:1.1}}>
+                  {lang==="nl"?"Waar het model afwijkt van FIFA":"Where the model differs from FIFA"}
                 </span>
               </div>
               <div style={{fontSize:FS.small,color:T.textSub,marginBottom:10,lineHeight:1.6}}>
                 {lang==="nl"
-                  ?"Welke landen schat het model hoger of lager in dan hun FIFA-positie? Tik een land aan voor de onderbouwing."
-                  :"Which countries does the model rate higher or lower than their FIFA position? Tap a country for the reasoning."}
+                  ?"Welke landen schat het model hoger of lager in dan hun FIFA-positie, met de onderbouwing per land bij het aantikken?"
+                  :"Which countries does the model rate higher or lower than their FIFA position, with the reasoning shown per country on tap?"}
               </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:12}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
