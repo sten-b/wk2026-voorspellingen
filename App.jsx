@@ -4059,9 +4059,9 @@ function PlayersTab({setTab}){
           border:`1px solid ${T.border}`,borderRadius:10,overflow:"hidden",background:T.card}}>
           {[
             {nl:"Databronnen",en:"Data sources",sec:"data",
-             icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
-            {nl:"Landscore",en:"Team score",sec:"score",
              icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20" /></>},
+            {nl:"Berekening",en:"Calculation",sec:"score",
+             icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
             {nl:"Uitslag",en:"Result",sec:"result",
              icon:<><path d="M5 12l4 4L19 6"/></>},
           ].map((s,i,arr)=>(
