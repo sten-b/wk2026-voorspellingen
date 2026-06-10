@@ -1472,7 +1472,9 @@ function SoccerIcon({color}){
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
   const SEG=34, H=34;
-  const BLACK="#0D0D0D", ORANGE="#E07000", WHITE="#FFFFFF";
+  const T=useTheme();
+  // Match the language toggle's orange exactly: #E07000 in default, the theme orange (#FF5500) in dark.
+  const BLACK="#0D0D0D", ORANGE=(T.id==="default"?"#E07000":T.orange), WHITE="#FFFFFF";
   // Per-cell appearance keyed by the ACTIVE theme.
   // cell 0 = ball (default), cell 1 = dark Lion, cell 2 = orange Lion.
   const M={
@@ -1500,7 +1502,6 @@ function ThemeToggle({theme,setTheme}){
     (col)=><FooterLionIcon color={col} size={16}/>,
     (col)=><FooterLionIcon color={col} size={16}/>,
   ];
-  const T=useTheme();
   const frameBorder=T.id==="orangeLion"?"#FFFFFF":ORANGE;
   return(
     <div style={{position:"relative",display:"flex",width:SEG*3,height:H,
@@ -4014,12 +4015,13 @@ function TournamentBanner({setTab}){
         <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.10))",pointerEvents:"none"}}/>
         <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
         <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:12}}>USA · Canada · Mexico 2026</div>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,background:"rgba(255,255,255,0.10)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:6,padding:"18px 12px",backdropFilter:"blur(4px)"}}>
+        <div onClick={jumpKO} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,background:"rgba(255,255,255,0.10)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:6,padding:"18px 12px",backdropFilter:"blur(4px)",cursor:"pointer"}}>
           <span style={{fontSize:52,lineHeight:1}}>🏆</span>
           <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.orange,letterSpacing:1.5,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
           <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:10,lineHeight:1.1}}>
             <span style={{fontSize:28}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
           </div>
+          <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,marginTop:2}}>{tr.knockoutLink} →</div>
         </div>
       </div>
     );
@@ -4027,12 +4029,13 @@ function TournamentBanner({setTab}){
   return(
     <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
       <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:12}}>{tr.tournamentLabel}</div>
-      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"18px 12px"}}>
+      <div onClick={jumpKO} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"18px 12px",cursor:"pointer"}}>
         <span style={{fontSize:52,lineHeight:1}}>🏆</span>
         <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:"#FF5500",letterSpacing:1.5,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
         <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:10,lineHeight:1.1}}>
           <span style={{fontSize:28}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
         </div>
+        <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,marginTop:2}}>{tr.knockoutLink} →</div>
       </div>
     </div>
   );
@@ -4064,9 +4067,9 @@ function PlayersTab({setTab}){
       {/* Welcome + tournament intro — first thing on the WK2026 tab */}
       <div style={{marginBottom:20}}>
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.text} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.orange} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
           <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",
-            color:T.id==="orangeLion"?"#FFFFFF":T.text}}>
+            color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
             {lang==="nl"?"Het model":"The model"}
           </span>
         </div>
@@ -4118,9 +4121,9 @@ function PlayersTab({setTab}){
       {/* ── CONTEXT ZONE: the tournament + news/injuries grouped together ── */}
         <div style={{marginTop:24,marginBottom:14}}>
           <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.text} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M6 4h12v3a6 6 0 01-12 0zM6 5H4a2 2 0 002 4M18 5h2a2 2 0 01-2 4M9 16h6M10 16v-2M14 16v-2M8 20h8"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.orange} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M6 4h12v3a6 6 0 01-12 0zM6 5H4a2 2 0 002 4M18 5h2a2 2 0 01-2 4M9 16h6M10 16v-2M14 16v-2M8 20h8"/></svg>
             <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",
-              color:T.id==="orangeLion"?"#FFFFFF":T.text}}>
+              color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
               {lang==="nl"?"Het toernooi":"The tournament"}
             </span>
           </div>
