@@ -3828,43 +3828,43 @@ function InjuriesSection(){
 // npxG/90 & xA/90 via FBref/FootyStats; MP = league apps; WS = season rating (WhoScored/FotMob,
 // best available source). Defenders' npxG/xA are naturally near-zero. Figures source-traceable.
 const PLAYERS_TOP30=[
-{"r":1,"name":"Lamine Yamal","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Barcelona","comp":"La Liga","mp":28,"npxg90":0.59,"xa90":0.44,"ws":8.2,"val":"€200m"},
-{"r":2,"name":"Michael Olise","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Bayern Munich","comp":"Bundesliga","mp":32,"npxg90":0.6,"xa90":0.64,"ws":7.8,"val":"€185m"},
-{"r":3,"name":"Erling Haaland","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"FW","squad":"Man City","comp":"Premier League","mp":35,"npxg90":0.63,"xa90":0.19,"ws":7.5,"val":"€180m"},
-{"r":4,"name":"Kylian Mbappé","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":31,"npxg90":0.7,"xa90":0.26,"ws":7.7,"val":"€180m"},
-{"r":5,"name":"Jude Bellingham","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Real Madrid","comp":"La Liga","mp":28,"npxg90":0.4,"xa90":0.27,"ws":7.2,"val":"€160m"},
-{"r":6,"name":"Vinícius Júnior","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":36,"npxg90":0.47,"xa90":0.24,"ws":7.3,"val":"€150m"},
-{"r":7,"name":"Pedri","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","comp":"La Liga","mp":29,"npxg90":0.12,"xa90":0.51,"ws":7.2,"val":"€140m"},
-{"r":8,"name":"Florian Wirtz","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.29,"xa90":0.26,"ws":6.85,"val":"€140m"},
-{"r":9,"name":"Désiré Doué","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris S-G","comp":"Ligue 1","mp":23,"npxg90":0.51,"xa90":0.32,"ws":7.3,"val":"€135m"},
-{"r":10,"name":"Arda Güler","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Real Madrid","comp":"La Liga","mp":33,"npxg90":0.26,"xa90":0.46,"ws":7.43,"val":"€130m"},
-{"r":11,"name":"João Neves","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Paris S-G","comp":"Ligue 1","mp":15,"npxg90":0.1,"xa90":0.13,"ws":7.2,"val":"€130m"},
-{"r":12,"name":"Alexander Isak","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":14,"npxg90":0.29,"xa90":0.1,"ws":6.32,"val":"€120m"},
-{"r":13,"name":"Estêvão","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","comp":"Premier League","mp":17,"npxg90":0.3,"xa90":0.2,"ws":7.0,"val":"€119m"},
-{"r":14,"name":"Cole Palmer","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":26,"npxg90":0.31,"xa90":0.13,"ws":7.04,"val":"€116m"},
-{"r":15,"name":"Kenan Yıldız","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Juventus","comp":"Serie A","mp":36,"npxg90":0.4,"xa90":0.27,"ws":7.5,"val":"€121m"},
-{"r":16,"name":"Hugo Ekitiké","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":28,"npxg90":0.56,"xa90":0.19,"ws":7.08,"val":"€124m"},
-{"r":17,"name":"Morgan Rogers","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Aston Villa","comp":"Premier League","mp":37,"npxg90":0.2,"xa90":0.16,"ws":7.0,"val":"€126m"},
-{"r":18,"name":"Nick Woltemade","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Newcastle","comp":"Premier League","mp":33,"npxg90":0.31,"xa90":0.15,"ws":7.0,"val":"€121m"},
-{"r":19,"name":"Julián Álvarez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Atlético Madrid","comp":"La Liga","mp":29,"npxg90":0.34,"xa90":0.24,"ws":7.0,"val":"€128m"},
-{"r":20,"name":"Lautaro Martínez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Inter","comp":"Serie A","mp":30,"npxg90":0.72,"xa90":0.24,"ws":7.47,"val":"€110m"},
-{"r":21,"name":"Dean Huijsen","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"DF","squad":"Real Madrid","comp":"La Liga","mp":30,"npxg90":0.05,"xa90":0.03,"ws":7.1,"val":"€108m"},
-{"r":22,"name":"Enzo Fernández","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":36,"npxg90":0.31,"xa90":0.12,"ws":7.3,"val":"€104m"},
-{"r":23,"name":"Rayan Cherki","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Man City","comp":"Premier League","mp":33,"npxg90":0.33,"xa90":0.58,"ws":7.3,"val":"€101m"},
-{"r":24,"name":"Ryan Gravenberch","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.16,"xa90":0.21,"ws":7.43,"val":"€101m"},
-{"r":25,"name":"João Pedro","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","comp":"Premier League","mp":35,"npxg90":0.49,"xa90":0.17,"ws":7.18,"val":"€101m"},
-{"r":26,"name":"Cody Gakpo","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.3,"xa90":0.2,"ws":7.17,"val":"€100m"},
-{"r":27,"name":"Moisés Caicedo","nat":"ECU","flag":"🇪🇨","country":"Ecuador","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":33,"npxg90":0.1,"xa90":0.08,"ws":7.2,"val":"€99m"},
-{"r":28,"name":"William Saliba","nat":"FRA","flag":"🇫🇷","country":"France","pos":"DF","squad":"Arsenal","comp":"Premier League","mp":31,"npxg90":0.03,"xa90":0.0,"ws":7.16,"val":"€96m"},
-{"r":29,"name":"Joško Gvardiol","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"DF","squad":"Man City","comp":"Premier League","mp":30,"npxg90":0.06,"xa90":0.05,"ws":7.0,"val":"€95m"},
-{"r":30,"name":"Viktor Gyökeres","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Arsenal","comp":"Premier League","mp":36,"npxg90":0.43,"xa90":0.08,"ws":6.82,"val":"€94m"},
+{"r":1,"name":"Lamine Yamal","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"FW","squad":"Barcelona","comp":"La Liga","mp":28,"npxg90":0.59,"xa90":0.44,"ws":8.2,"g":16,"a":11,"val":"€200m"},
+{"r":2,"name":"Michael Olise","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Bayern Munich","comp":"Bundesliga","mp":32,"npxg90":0.6,"xa90":0.64,"ws":7.8,"g":15,"a":19,"val":"€185m"},
+{"r":3,"name":"Erling Haaland","nat":"NOR","flag":"🇳🇴","country":"Norway","pos":"FW","squad":"Man City","comp":"Premier League","mp":35,"npxg90":0.63,"xa90":0.19,"ws":7.5,"g":27,"a":8,"val":"€180m"},
+{"r":4,"name":"Kylian Mbappé","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":31,"npxg90":0.7,"xa90":0.26,"ws":7.7,"g":25,"a":5,"val":"€180m"},
+{"r":5,"name":"Jude Bellingham","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Real Madrid","comp":"La Liga","mp":28,"npxg90":0.4,"xa90":0.27,"ws":7.2,"g":6,"a":4,"val":"€160m"},
+{"r":6,"name":"Vinícius Júnior","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Real Madrid","comp":"La Liga","mp":36,"npxg90":0.47,"xa90":0.24,"ws":7.3,"g":16,"a":5,"val":"€150m"},
+{"r":7,"name":"Pedri","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"MF","squad":"Barcelona","comp":"La Liga","mp":29,"npxg90":0.12,"xa90":0.51,"ws":7.2,"g":2,"a":9,"val":"€140m"},
+{"r":8,"name":"Florian Wirtz","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.29,"xa90":0.26,"ws":6.85,"g":5,"a":3,"val":"€140m"},
+{"r":9,"name":"Désiré Doué","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Paris S-G","comp":"Ligue 1","mp":23,"npxg90":0.51,"xa90":0.32,"ws":7.3,"g":7,"a":4,"val":"€135m"},
+{"r":10,"name":"Arda Güler","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Real Madrid","comp":"La Liga","mp":33,"npxg90":0.26,"xa90":0.46,"ws":7.43,"g":4,"a":9,"val":"€130m"},
+{"r":11,"name":"João Neves","nat":"POR","flag":"🇵🇹","country":"Portugal","pos":"MF","squad":"Paris S-G","comp":"Ligue 1","mp":15,"npxg90":0.1,"xa90":0.13,"ws":7.2,"g":5,"a":1,"val":"€130m"},
+{"r":12,"name":"Alexander Isak","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":14,"npxg90":0.29,"xa90":0.1,"ws":6.32,"g":3,"a":1,"val":"€120m"},
+{"r":13,"name":"Estêvão","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","comp":"Premier League","mp":17,"npxg90":0.3,"xa90":0.2,"ws":7.0,"g":2,"a":2,"val":"€119m"},
+{"r":14,"name":"Cole Palmer","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":26,"npxg90":0.31,"xa90":0.13,"ws":7.04,"g":10,"a":1,"val":"€116m"},
+{"r":15,"name":"Kenan Yıldız","nat":"TUR","flag":"🇹🇷","country":"Turkey","pos":"MF","squad":"Juventus","comp":"Serie A","mp":36,"npxg90":0.4,"xa90":0.27,"ws":7.5,"g":10,"a":6,"val":"€121m"},
+{"r":16,"name":"Hugo Ekitiké","nat":"FRA","flag":"🇫🇷","country":"France","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":28,"npxg90":0.56,"xa90":0.19,"ws":7.08,"g":11,"a":4,"val":"€124m"},
+{"r":17,"name":"Morgan Rogers","nat":"ENG","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","country":"England","pos":"MF","squad":"Aston Villa","comp":"Premier League","mp":37,"npxg90":0.2,"xa90":0.16,"ws":7.0,"g":10,"a":6,"val":"€126m"},
+{"r":18,"name":"Nick Woltemade","nat":"GER","flag":"🇩🇪","country":"Germany","pos":"FW","squad":"Newcastle","comp":"Premier League","mp":33,"npxg90":0.31,"xa90":0.15,"ws":7.0,"g":9,"a":3,"val":"€121m"},
+{"r":19,"name":"Julián Álvarez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Atlético Madrid","comp":"La Liga","mp":29,"npxg90":0.34,"xa90":0.24,"ws":7.0,"g":8,"a":4,"val":"€128m"},
+{"r":20,"name":"Lautaro Martínez","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"FW","squad":"Inter","comp":"Serie A","mp":30,"npxg90":0.72,"xa90":0.24,"ws":7.47,"g":17,"a":6,"val":"€110m"},
+{"r":21,"name":"Dean Huijsen","nat":"ESP","flag":"🇪🇸","country":"Spain","pos":"DF","squad":"Real Madrid","comp":"La Liga","mp":30,"npxg90":0.05,"xa90":0.03,"ws":7.1,"g":2,"a":2,"val":"€108m"},
+{"r":22,"name":"Enzo Fernández","nat":"ARG","flag":"🇦🇷","country":"Argentina","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":36,"npxg90":0.31,"xa90":0.12,"ws":7.3,"g":10,"a":4,"val":"€104m"},
+{"r":23,"name":"Rayan Cherki","nat":"FRA","flag":"🇫🇷","country":"France","pos":"MF","squad":"Man City","comp":"Premier League","mp":33,"npxg90":0.33,"xa90":0.58,"ws":7.3,"g":4,"a":12,"val":"€101m"},
+{"r":24,"name":"Ryan Gravenberch","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"MF","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.16,"xa90":0.21,"ws":7.43,"g":5,"a":3,"val":"€101m"},
+{"r":25,"name":"João Pedro","nat":"BRA","flag":"🇧🇷","country":"Brazil","pos":"FW","squad":"Chelsea","comp":"Premier League","mp":35,"npxg90":0.49,"xa90":0.17,"ws":7.18,"g":15,"a":5,"val":"€101m"},
+{"r":26,"name":"Cody Gakpo","nat":"NED","flag":"🇳🇱","country":"Netherlands","pos":"FW","squad":"Liverpool","comp":"Premier League","mp":33,"npxg90":0.3,"xa90":0.2,"ws":7.17,"g":7,"a":5,"val":"€100m"},
+{"r":27,"name":"Moisés Caicedo","nat":"ECU","flag":"🇪🇨","country":"Ecuador","pos":"MF","squad":"Chelsea","comp":"Premier League","mp":33,"npxg90":0.1,"xa90":0.08,"ws":7.2,"g":3,"a":1,"val":"€99m"},
+{"r":28,"name":"William Saliba","nat":"FRA","flag":"🇫🇷","country":"France","pos":"DF","squad":"Arsenal","comp":"Premier League","mp":31,"npxg90":0.03,"xa90":0.0,"ws":7.16,"g":1,"a":0,"val":"€96m"},
+{"r":29,"name":"Joško Gvardiol","nat":"CRO","flag":"🇭🇷","country":"Croatia","pos":"DF","squad":"Man City","comp":"Premier League","mp":30,"npxg90":0.06,"xa90":0.05,"ws":7.0,"g":2,"a":2,"val":"€95m"},
+{"r":30,"name":"Viktor Gyökeres","nat":"SWE","flag":"🇸🇪","country":"Sweden","pos":"FW","squad":"Arsenal","comp":"Premier League","mp":36,"npxg90":0.43,"xa90":0.08,"ws":6.82,"g":14,"a":1,"val":"€94m"},
 ];
 
 // ── FBREF STATS SECTION COMPONENT ────────────────────────────────────────────
 function FBrefStatsSection(){
   const T=useTheme();
   const lang=useLang();
-  const [sortKey,setSortKey]=React.useState("val");  // val | mp | npxg90 | xa90 | ws
+  const [sortKey,setSortKey]=React.useState("g");  // val | mp | g | a | xga | ws
   const orange=T.id==="dark"?"#FF5500":(T.id==="orangeLion"?"#FFFFFF":"#E07000");
   const blue=T.id==="dark"?"#909090":(T.id==="orangeLion"?"rgba(255,255,255,0.78)":T.blue);
   const green=T.id==="dark"?"#3DBE6E":"#1E7A40";
@@ -3878,12 +3878,13 @@ function FBrefStatsSection(){
   const valNum=(p)=>parseInt(String(p.val).replace(/[^0-9]/g,""),10);
   const sorted=[...PLAYERS_TOP30].sort((a,b)=>{
     if(sortKey==="val") return valNum(b)-valNum(a);
+    if(sortKey==="xga") return (b.npxg90+b.xa90)-(a.npxg90+a.xa90);
     return b[sortKey]-a[sortKey];
   });
-  const COLS="20px 1fr 26px 30px 42px 42px 38px";
+  const COLS="20px 1fr 26px 30px 30px 30px 44px 38px";
   const HDR=lang==="nl"
-    ?["#","Speler","Pos","Wed","npxG","xA","WS"]
-    :["#","Player","Pos","MP","npxG","xA","WS"];
+    ?["#","Speler","Pos","Wed","G","A","xG+A","WS"]
+    :["#","Player","Pos","MP","G","A","xG+A","WS"];
   const Row=({p,rank})=>(
     <div style={{display:"grid",gridTemplateColumns:COLS,gap:0,padding:"8px 12px",
       borderBottom:`1px solid ${T.border}`,alignItems:"center"}}>
@@ -3899,8 +3900,9 @@ function FBrefStatsSection(){
         <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:posColor(p.pos),background:`${posColor(p.pos)}18`,borderRadius:3,padding:"1px 4px"}}>{p.pos}</span>
       </div>
       <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub,textAlign:"right"}}>{p.mp}</div>
-      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:orange,textAlign:"right"}}>{p.npxg90.toFixed(2)}</div>
-      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:blue,textAlign:"right"}}>{p.xa90.toFixed(2)}</div>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:orange,textAlign:"right"}}>{p.g}</div>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:blue,textAlign:"right"}}>{p.a}</div>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub,textAlign:"right"}}>{(p.npxg90+p.xa90).toFixed(2)}</div>
       <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:gold,textAlign:"right"}}>{p.ws.toFixed(2)}</div>
     </div>
   );
@@ -3909,21 +3911,19 @@ function FBrefStatsSection(){
       {/* Top 30 by transfer value */}
       <div>
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,paddingLeft:13}}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill={T.id==="orangeLion"?"#FFFFFF":T.orange} stroke="none" style={{flexShrink:0}}><path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/></svg>
           <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
-            {lang==="nl"?"Topspelers: waarde én vorm":"Top players: value & form"}
+            {lang==="nl"?"Topspelers dit seizoen":"Top players this season"} <span style={{fontWeight:WEIGHT.medium,letterSpacing:0.8,color:T.textFaint}}>· 2025/26</span>
           </span>
         </div>
-        {/* Legend — stat keys on one line, source as a subtle footnote */}
+        {/* Legend — clear stat keys, one line */}
         <div style={{paddingLeft:13,paddingRight:13,marginBottom:12}}>
           <div style={{display:"flex",flexWrap:"wrap",gap:"4px 12px",fontSize:FS.micro,color:T.textFaint,lineHeight:1.5}}>
-            <span><b style={{color:T.textSub}}>Wed</b> {lang==="nl"?"wedstrijden":"matches"}</span>
-            <span><b style={{color:orange}}>npxG</b> per 90</span>
-            <span><b style={{color:blue}}>xA</b> per 90</span>
-            <span><b style={{color:gold}}>WS</b> {lang==="nl"?"seizoensrating":"season rating"}</span>
-          </div>
-          <div style={{fontSize:FS.micro,color:T.textFaint,opacity:0.8,marginTop:4,lineHeight:1.4}}>
-            {lang==="nl"?"Competitie 2025/26 · waarde via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob":"2025/26 league · value via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob"}
+            <span><b style={{color:T.textSub}}>{lang==="nl"?"Wed":"MP"}</b> {lang==="nl"?"wedstrijden":"matches"}</span>
+            <span><b style={{color:orange}}>G</b> {lang==="nl"?"goals":"goals"}</span>
+            <span><b style={{color:blue}}>A</b> {lang==="nl"?"assists":"assists"}</span>
+            <span><b style={{color:T.textSub}}>xG+A</b> {lang==="nl"?"verwachte goals + assists per 90":"expected goals + assists per 90"}</span>
+            <span><b style={{color:gold}}>WS</b> {lang==="nl"?"WhoScored-rating":"WhoScored rating"}</span>
           </div>
         </div>
         {/* Table */}
@@ -3932,7 +3932,7 @@ function FBrefStatsSection(){
             borderBottom:`2px solid ${T.border}`,background:T.id==="dark"?"#161616":T.bg}}>
             {HDR.map((h,i)=>{
               const sortable=i>=3;
-              const keyFor=["","","","mp","npxg90","xa90","ws"][i];
+              const keyFor=["","","","mp","g","a","xga","ws"][i];
               const active=sortable&&sortKey===keyFor;
               return(
               <div key={h} onClick={sortable?()=>setSortKey(keyFor):undefined}
@@ -3948,8 +3948,8 @@ function FBrefStatsSection(){
         </div>
         <div style={{fontSize:FS.micro,color:T.textFaint,marginBottom:20,paddingLeft:13,paddingRight:13,lineHeight:1.5}}>
           {lang==="nl"
-            ?"Tik op npxG, xA of WS om te sorteren. npxG = verwachte goals zonder penalty's. Verdedigers (zoals Cubarsí) hebben logischerwijs lage aanvallende cijfers."
-            :"Tap npxG, xA or WS to sort. npxG = non-penalty expected goals. Defenders (like Cubarsí) naturally post low attacking figures."}
+            ?"Tik op een kolomkop om te sorteren. xG+A = verwachte goals + assists per 90. Verdedigers hebben logischerwijs lage aanvallende cijfers."
+            :"Tap a column header to sort. xG+A = expected goals + assists per 90. Defenders naturally post low attacking figures."}
         </div>
       </div>
       {/* Missed out */}
