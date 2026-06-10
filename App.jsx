@@ -1894,11 +1894,12 @@ function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
       )}
       {isOpen&&expl&&(
         <div style={{padding:"8px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.6}}>
-          {dateLabel&&<div style={{...chipStyle(T,"orange"),width:"fit-content",marginBottom:7}}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={marker(T,"orange").fg} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:0.4}}>{dateLabel}</span>
+          {dateLabel&&<div style={{display:"block",marginBottom:7}}>
+            <span style={{...chipStyle(T,"orange")}}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={marker(T,"orange").fg} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:0.4}}>{dateLabel}</span>
+            </span>
           </div>}
-
           {expl}
         </div>
       )}
