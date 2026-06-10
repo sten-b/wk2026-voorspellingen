@@ -1950,20 +1950,20 @@ function KnockoutBracket({scrollToMatch}){
         style={{background:T.card,
           border:`1px solid ${accent?T.orange:T.border}`,
           borderLeft:`3px solid ${accent?T.orange:T.blue}`,
-          borderRadius:6,padding:"7px 9px",cursor:"pointer",
+          borderRadius:7,padding:"10px 12px",cursor:"pointer",
           WebkitTapHighlightColor:"transparent",userSelect:"none",flex:1,minWidth:0}}>
         {[{team:a,s:sA,w:aW},{team:b,s:sB,w:!aW}].map(({team,s,w},i)=>(
-          <div key={team} style={{display:"flex",alignItems:"center",gap:6,
-            marginTop:i?5:0,paddingTop:i?5:0,
+          <div key={team} style={{display:"flex",alignItems:"center",gap:7,
+            marginTop:i?7:0,paddingTop:i?7:0,
             borderTop:i?`1px solid ${T.border}`:"none"}}>
-            <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
-            <span style={{flex:1,fontSize:FS.caption,fontWeight:w?700:500,
+            <span style={{fontSize:16,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
+            <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:500,
               color:w?winCol:loseCol,
               overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
               {tName(team,lang)}
             </span>
-            <span style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,
-              color:w?winCol:loseCol,flexShrink:0,minWidth:12,textAlign:"right"}}>
+            <span style={{fontSize:FS.body,fontWeight:WEIGHT.semibold,
+              color:w?winCol:loseCol,flexShrink:0,minWidth:14,textAlign:"right"}}>
               {s}
             </span>
           </div>
@@ -1972,12 +1972,13 @@ function KnockoutBracket({scrollToMatch}){
     );
   };
 
-  // Round header: label + subtle date chip
+  // Round header: same style as the group section headers (uppercase caption + underline)
   const RoundHead=({label,date})=>(
-    <div style={{display:"flex",alignItems:"center",gap:8,margin:"0 0 8px"}}>
-      <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.2,textTransform:"uppercase",
-        color:OL?"#FFFFFF":(T.id==="dark"?T.orange:T.blue)}}>{label}</span>
-      <div style={{flex:1,height:1,background:T.border}}/>
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,paddingBottom:5,
+      borderBottom:`1px solid ${T.border}`}}>
+      <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",
+        color:T.id==="dark"?T.orange:(OL?"#FFFFFF":T.blue)}}>{label}</span>
+      <div style={{flex:1}}/>
       <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.textFaint}}>{date}</span>
     </div>
   );
@@ -1990,17 +1991,7 @@ function KnockoutBracket({scrollToMatch}){
   );
 
   return(
-    <div style={{marginBottom:14,background:T.card,border:`1px solid ${T.border}`,
-      borderRadius:8,padding:"14px 13px"}}>
-      {/* Header */}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
-        <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.2}}>
-          {lang==="nl"?"Voorspeld schema":"Predicted bracket"}
-        </span>
-        <span style={{fontSize:FS.micro,color:T.textFaint}}>
-          {lang==="nl"?"tik voor details":"tap for details"}
-        </span>
-      </div>
+    <div style={{marginBottom:14}}>
 
       {/* QUARTER FINALS */}
       <RoundHead label={tr.qf} date={lang==="nl"?"9–11 jul":"9–11 Jul"}/>
@@ -2028,7 +2019,7 @@ function KnockoutBracket({scrollToMatch}){
 
       {/* FINAL */}
       <RoundHead label={lang==="nl"?"Finale":"Final"} date={lang==="nl"?"19 jul":"19 Jul"}/>
-      <div style={{maxWidth:280,margin:"0 auto"}}>
+      <div>
         <div onClick={()=>scrollToMatch&&scrollToMatch(finalKey)}
           style={{background:OL?"rgba(255,255,255,0.10)":(T.id==="dark"?"rgba(255,85,0,0.06)":T.orangeFaint),
             border:`2px solid ${T.orange}`,borderRadius:8,
@@ -4463,9 +4454,6 @@ export default function App(){
               {/* GROUP VIEW */}
               {predView==="group"&&(
                 <React.Fragment>
-                  <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.textSub,marginBottom:8,paddingBottom:4,borderBottom:`1px solid ${T.border}`}}>
-                    {lang==="nl"?"Groepsfase":"Group Stage"}
-                  </div>
                   {GROUP_DATA.map(g=>(
                     <GroupAccordion key={g.id} g={g} openGroup={openGroup} setOpenGroup={setOpenGroup} openMatches={openMatches} toggleMatch={toggleMatch}/>
                   ))}
@@ -4475,9 +4463,6 @@ export default function App(){
               {/* KNOCKOUT VIEW */}
               {predView==="knockout"&&(
             <React.Fragment>
-                    <div style={{marginBottom:14}}>
-                      <div style={{fontSize:FS.h2,fontWeight:WEIGHT.semibold,color:T.text}}>{tr.knockoutTitle}</div>
-                    </div>
                     <KnockoutBracket scrollToMatch={scrollToMatch}/>
                     {[{label:tr.qf,rounds:QF,dk:"QF"},{label:tr.sf,rounds:SF,dk:"SF"}].map(({label,rounds,dk})=>(
                       <div key={label} style={{marginBottom:14}}>
