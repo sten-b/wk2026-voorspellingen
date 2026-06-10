@@ -1339,13 +1339,13 @@ function NewsSection(){
         {item.detail[lang]||item.detail.en||item.detail}
       </div>
       <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-        <span style={{fontSize:FS.caption,color:T.orange,fontWeight:WEIGHT.medium,textTransform:"capitalize"}}>
+        <span style={{fontSize:FS.caption,color:(T.id==="orangeLion"?"#FFFFFF":T.orange),fontWeight:WEIGHT.medium,textTransform:"capitalize"}}>
           {relativeDate(item.date)}
         </span>
         {item.source&&<span style={{fontSize:FS.caption,color:T.textFaint}}>· {item.source}</span>}
         {item.url&&<a href={item.url} target="_blank" rel="noopener noreferrer"
           onClick={e=>e.stopPropagation()}
-          style={{fontSize:FS.caption,color:T.orange,textDecoration:"none",
+          style={{fontSize:FS.caption,color:(T.id==="orangeLion"?"#FFFFFF":T.orange),textDecoration:"none",
             borderBottom:`1px solid ${T.orange}`,marginLeft:"auto"}}>
           {lang==="nl"?"Lees artikel":"Read article"} ↗
         </a>}
@@ -1378,7 +1378,7 @@ function NewsSection(){
         <div style={{padding:"10px 12px",background:T.card,border:`1px solid ${T.border}`,
           borderRadius:4,fontSize:FS.small,color:T.textFaint,marginBottom:10,textAlign:"center"}}>
           {lang==="nl"?"Live nieuws laden...":"Loading live news..."}
-          {loadingLive&&<span style={{marginLeft:6,color:T.orange}}>●</span>}
+          {loadingLive&&<span style={{marginLeft:6,color:(T.id==="orangeLion"?"#FFFFFF":T.orange)}}>●</span>}
         </div>
       ):(
         <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:10}}>
@@ -1387,7 +1387,7 @@ function NewsSection(){
       )}
       {recentItems.length>5&&(
         <div onClick={()=>setExpandedRecent(!expandedRecent)}
-          style={{marginBottom:10,textAlign:"center",fontSize:FS.caption,color:T.orange,
+          style={{marginBottom:10,textAlign:"center",fontSize:FS.caption,color:(T.id==="orangeLion"?"#FFFFFF":T.orange),
             cursor:"pointer",padding:"3px 0"}}>
           {expandedRecent
             ?(lang==="nl"?"Minder ↑":"Less ↑")
@@ -2914,8 +2914,8 @@ function ModelViz({scrollTo,onScrolled}={}){
   },[scrollTo]);
   // Theme-compliant palette only: orange (primary), blue (secondary),
   // green/red reserved strictly for semantic up/down vs FIFA, greys for everything else.
-  const orange=T.orange;
-  const blue=T.id==="dark"?T.text:T.blue;
+  const orange=T.id==="orangeLion"?"#FFFFFF":T.orange;
+  const blue=T.id==="dark"?T.text:(T.id==="orangeLion"?"rgba(255,255,255,0.82)":T.blue);
   const green=T.green;
   const red=T.red;
 
@@ -3338,7 +3338,7 @@ function NationChampionCard({n}){
         <svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}>
           <path d="M5 4h14v3a4 4 0 01-4 4h-1.2A3 3 0 0113 13.8V16h2a1 1 0 011 1v2H8v-2a1 1 0 011-1h2v-2.2A3 3 0 019.2 11H8a4 4 0 01-4-4V4z"/>
         </svg>
-        <span style={{flex:1,fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:T.orange}}>
+        <span style={{flex:1,fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange)}}>
           {lang==="nl"?"Topfavoriet":"Top Favourite"}
         </span>
         {MODEL_RANK[n.team]&&(
@@ -3397,7 +3397,7 @@ function NationCard({n,open,onToggle,compact}){
           </div>
           {/* News */}
           <div style={{padding:"10px 13px",borderBottom:`1px solid ${T.border}`,background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`}}>
-            <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:T.orange,marginBottom:6}}>{lang==="nl"?"Laatste Nieuws":"Latest News"}</div>
+            <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange),marginBottom:6}}>{lang==="nl"?"Laatste Nieuws":"Latest News"}</div>
             <div style={{fontSize:FS.small,color:T.text,lineHeight:1.6}}>{n.news[lang]}</div>
           </div>
           {/* Key players */}
@@ -4258,7 +4258,7 @@ function PlayersTab({setTab}){
       <PitchViz/>
       {/* Player list — table */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden",marginBottom:10}}>
-        <div style={{padding:"8px 13px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.orange}}>
+        <div style={{padding:"8px 13px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange)}}>
           {lang==="nl"?"Basiselftal":"Starting XI"} · {BEST_XI.formation}
         </div>
         {/* table header */}
@@ -4345,15 +4345,14 @@ function AppLoader({onDone}){
     // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
-    t.push(setTimeout(()=>setPhase(2),900));    // RWB sweep appears in its initial vague style
-    t.push(setTimeout(()=>setPhase(3),2900));   // the colours grow fuller and brighter (toward a Dutch tricolour)
-    t.push(setTimeout(()=>setPhase(4),4300));   // the sweep fades out to the app
-    t.push(setTimeout(()=>onDone&&onDone(),4900));
+    t.push(setTimeout(()=>setPhase(2),900));    // faint RWB sweep appears in its initial style
+    t.push(setTimeout(()=>setPhase(3),2700));   // colours grow fuller and fully take over the background
+    t.push(setTimeout(()=>setPhase(4),4500));   // the tricolour fades out to the app
+    t.push(setTimeout(()=>onDone&&onDone(),5100));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const bright=phase>=3;          // the RWB colours have swelled to full/bright (Dutch tricolour); stay full through the fade
   const overlayOpacity=phase>=4?0:1;   // clean fade-out to the app at the very end
 
   return(
@@ -4366,16 +4365,18 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* RWB SWEEP — the existing red-white-blue diagonal accent. It keeps its place and
-          style, then grows fuller and brighter (the colours intensify toward a Dutch
-          tricolour), and finally fades. No movement: only the colours swell. */}
+      {/* RWB SWEEP — the existing red-white-blue diagonal accent, in its original place/style. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase>=2?(phase>=4?0:1):0,
-        background:bright
-          ? "linear-gradient(115deg,transparent 6%,#E61D25 24%,#E61D25 40%,#FFFFFF 50%,#2A398D 60%,#2A398D 76%,transparent 94%)"
-          : "linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
-        transition:"background 1.2s cubic-bezier(.4,0,.2,1), opacity 0.9s cubic-bezier(.4,0,.2,1)",
-        willChange:"opacity,background"}}/>
+        opacity:phase===2?1:(phase>=3?0.0:0),
+        background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
+        transition:"opacity 1.1s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}/>
+
+      {/* RWB TAKEOVER — a full-bleed diagonal tricolour that smoothly fades in so the colours
+          grow fuller/brighter and fully take over the orange background, then fades out. */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:phase>=3?(phase>=4?0:1):0,
+        background:"linear-gradient(115deg,#E61D25 0%,#E61D25 38%,#FFFFFF 50%,#2A398D 62%,#2A398D 100%)",
+        transition:"opacity 1.4s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}/>
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
