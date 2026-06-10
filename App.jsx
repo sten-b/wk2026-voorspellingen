@@ -4048,11 +4048,11 @@ function PlayersTab({setTab}){
   const OL=T.id==="orangeLion";
   const views=[
     {id:"nations",label:lang==="nl"?"Landen":"Nations",
-     icon:"M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20M12 2c2.5 2.7 4 6.3 4 10s-1.5 7.3-4 10c-2.5-2.7-4-6.3-4-10s1.5-7.3 4-10z"},
+     icon:"M4 22V3M4 4h13l-2 3 2 3H4"},
     {id:"players",label:lang==="nl"?"Spelers":"Players",
      icon:"M12 12a4 4 0 100-8 4 4 0 000 8zM4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"},
     {id:"fpl",label:lang==="nl"?"FPL-team":"FPL team",
-     icon:"M9 3H5a2 2 0 00-2 2v4M15 3h4a2 2 0 012 2v4M9 21H5a2 2 0 01-2-2v-4M15 21h4a2 2 0 002-2v-4M12 8v8M8 12h8"},
+     icon:"M3 5h18v14H3zM12 5v14M3 12h4M17 12h4M9.5 9.5h5v5h-5z"},
   ];
   return(
     <div>
