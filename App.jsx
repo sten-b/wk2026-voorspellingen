@@ -4692,15 +4692,15 @@ export default function App(){
                   :"Which countries does the model rate higher or lower than their FIFA position? Tap a country for the reasoning."}
               </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:12}}>
-                <div style={{display:"flex",alignItems:"center",gap:5,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                <div style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
+                  <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>🙂</span>
                   <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.green}}>{tr.overTitle}</span>
                 </div>
                 {OUTLOOK.over.map(d=><OutlookRow key={d.team} d={d} type="over" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
               </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
-                <div style={{display:"flex",alignItems:"center",gap:5,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.red} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                <div style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
+                  <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>🙁</span>
                   <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.red}}>{tr.underTitle}</span>
                 </div>
                 {OUTLOOK.under.map(d=><OutlookRow key={d.team} d={d} type="under" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
