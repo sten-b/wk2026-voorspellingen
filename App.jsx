@@ -1853,7 +1853,7 @@ function FinalExplainer({openMatches,toggleMatch}){
 }
 
 // ── KO CARD ───────────────────────────────────────────────────────────────────
-function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
+function KOCard({a,b,openMatches,toggleMatch,dateLabel,bare}){
   const T=useTheme();
   const lang=useLang();
   const tr=useT();
@@ -1863,7 +1863,7 @@ function KOCard({a,b,openMatches,toggleMatch,dateLabel}){
   const expl=koExpl(key,lang);
   const isOpen=openMatches?.[key];
   return(
-    <div style={{background:T.card,border:`1px solid ${T.border}`,borderTop:`2px solid ${T.blue}`,borderRadius:4,overflow:"hidden"}}>
+    <div style={{background:T.card,border:bare?"none":`1px solid ${T.border}`,borderTop:bare?"none":`2px solid ${T.blue}`,borderRadius:bare?0:4,overflow:"hidden"}}>
       {[{team:a,score:sA,win:aW},{team:b,score:sB,win:!aW}].map(({team,score,win},i)=>{
         const OL=T.id==="orangeLion";
         const winCol=OL?"#0D0D0D":T.orange;
@@ -4481,10 +4481,9 @@ export default function App(){
                 </React.Fragment>
               )}
 
-              {/* KNOCKOUT VIEW */}
+              {/* KNOCKOUT VIEW — one coherent flow: each match shown once, by round, with its explanation */}
               {predView==="knockout"&&(
             <React.Fragment>
-                    <KnockoutBracket scrollToMatch={scrollToMatch}/>
                     {[{label:tr.qf,rounds:QF,dk:"QF"},{label:tr.sf,rounds:SF,dk:"SF"}].map(({label,rounds,dk})=>(
                       <div key={label} style={{marginBottom:14}}>
                         <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label} · {KO_DATE_LABEL[dk][lang]}</div>
@@ -4497,31 +4496,20 @@ export default function App(){
                         </div>
                       </div>
                     ))}
-                    <div ref={el=>koCardRefs.current[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]=el}>
+                    {/* FINAL — same detailed card, with the predicted-champion badge */}
+                    <div style={{marginBottom:14}} ref={el=>koCardRefs.current[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]=el}>
                       <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{tr.final}</div>
-                <div style={{background:T.card,border:`1px solid ${T.orange}`,borderTop:`3px solid ${T.orange}`,borderRadius:4,overflow:"hidden"}}>
-                  <div style={{padding:14}}>
-                    {[{team:FINAL_TEAMS[0],score:fsA,win:fsA>fsB},{team:FINAL_TEAMS[1],score:fsB,win:fsB>fsA}].map(({team,score,win},i)=>(
-                      <div key={team}>
-                        {i===1&&<div style={{height:1,background:T.border,margin:"8px 0"}}/>}
-                        <div style={{display:"flex",alignItems:"center",gap:8}}>
-                          <TeamLink team={team}><span style={{fontSize:20,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
-                          <span style={{flex:1,fontSize:FS.body,fontWeight:win?700:400,color:win?T.text:T.textSub}}>{tName(team,lang)}</span>
-                          <span style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:win?T.orange:T.textSub}}>{score}</span>
+                      <div style={{borderRadius:4,overflow:"hidden",border:`1px solid ${T.orange}`,borderTop:`3px solid ${T.orange}`}}>
+                        <KOCard a={FINAL_TEAMS[0]} b={FINAL_TEAMS[1]} openMatches={openMatches} toggleMatch={toggleMatch} dateLabel={KO_DATE_LABEL["FINAL"][lang]} bare/>
+                        <div style={{display:"flex",alignItems:"center",gap:8,background:T.id==="orangeLion"?"rgba(0,0,0,0.15)":T.blueFaint,padding:"10px 14px",borderTop:`1px solid ${T.border}`}}>
+                          <span style={{fontSize:16}}>🏆</span>
+                          <div>
+                            <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,letterSpacing:0.8,textTransform:"uppercase",color:T.textSub}}>{tr.predictedChampionLabel}</div>
+                            <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+                          </div>
                         </div>
                       </div>
-                    ))}
-                    <div style={{marginTop:12,paddingTop:10,borderTop:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:8,background:T.id==="lion"?"rgba(0,0,0,0.15)":T.blueFaint,margin:"12px -14px -14px",padding:"10px 14px"}}>
-                      <span style={{fontSize:16}}>🏆</span>
-                      <div>
-                        <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,letterSpacing:0.8,textTransform:"uppercase",color:T.textSub}}>{tr.predictedChampionLabel}</div>
-                        <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
-                      </div>
                     </div>
-                  </div>
-                <FinalExplainer openMatches={openMatches} toggleMatch={toggleMatch}/>
-                </div>
-              </div>
             </React.Fragment>
               )}
             </React.Fragment>
