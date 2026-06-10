@@ -4013,13 +4013,12 @@ function TournamentBanner({setTab}){
       <div style={{background:"linear-gradient(135deg,#0D1B3E 0%,#1A3A6A 60%,#0D3060 100%)",borderRadius:6,padding:"14px",marginBottom:12,borderLeft:`4px solid ${T.orange}`,position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,right:0,width:80,height:"100%",background:"linear-gradient(90deg,transparent,rgba(224,112,0,0.10))",pointerEvents:"none"}}/>
         <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
-        <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
-        <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,background:"rgba(255,255,255,0.10)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:6,padding:"16px 12px",backdropFilter:"blur(4px)"}}>
+        <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:12}}>USA · Canada · Mexico 2026</div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,background:"rgba(255,255,255,0.10)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:6,padding:"18px 12px",backdropFilter:"blur(4px)"}}>
           <span style={{fontSize:52,lineHeight:1}}>🏆</span>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",letterSpacing:1,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
-          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:8}}>
-            <span style={{fontSize:24}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
+          <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.orange,letterSpacing:1.5,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
+          <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:10,lineHeight:1.1}}>
+            <span style={{fontSize:28}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
           </div>
         </div>
       </div>
@@ -4027,13 +4026,12 @@ function TournamentBanner({setTab}){
   }
   return(
     <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
-      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
-      <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
-      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"16px 12px"}}>
+      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:12}}>{tr.tournamentLabel}</div>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"18px 12px"}}>
         <span style={{fontSize:52,lineHeight:1}}>🏆</span>
-        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",letterSpacing:1,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
-        <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:"#FF5500",display:"flex",alignItems:"center",gap:8}}>
-          <span style={{fontSize:24}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
+        <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:"#FF5500",letterSpacing:1.5,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
+        <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:10,lineHeight:1.1}}>
+          <span style={{fontSize:28}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
         </div>
       </div>
     </div>
@@ -4343,19 +4341,21 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // The lion sits in the centre of the World Cup ring's empty space, with the title below.
-    // The whole lockup holds on screen (a beat longer), then the loader fades out to the app.
+    // Lion centred in the ring + title below; hold; then the red-white-blue gradient
+    // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // RWB accent sweep across
-    t.push(setTimeout(()=>setPhase(3),3400));   // hold the hero lockup, then begin fade-out
-    t.push(setTimeout(()=>onDone&&onDone(),3900));
+    t.push(setTimeout(()=>setPhase(3),3000));   // RWB gradient engulfs the full screen (behind lockup)
+    t.push(setTimeout(()=>setPhase(4),3900));   // everything fades out to the app
+    t.push(setTimeout(()=>onDone&&onDone(),4400));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
   const sweepOpacity=phase===2?1:0;
-  const overlayOpacity=phase>=3?0:1;   // clean fade-out to the app at the end
+  const engulf=phase>=3;           // RWB gradient has spread to fill the screen
+  const overlayOpacity=phase>=4?0:1;   // clean fade-out to the app at the very end
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
@@ -4371,6 +4371,13 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
         transition:"opacity 0.6s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
+
+      {/* RWB ENGULF — red-white-blue gradient grows from the centre to fill the whole
+          screen at the end, sitting BEHIND the lion + title lockup. */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:engulf?1:0,transform:engulf?"scale(1)":"scale(0.15)",transformOrigin:"50% 45%",
+        transition:"opacity 0.9s cubic-bezier(.4,0,.2,1), transform 1.0s cubic-bezier(.5,0,.2,1)",
+        background:"radial-gradient(circle at 50% 45%, #E61D25 0%, #E61D25 28%, #FFFFFF 50%, #2A398D 74%, #1A2A6E 100%)"}}/>
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
