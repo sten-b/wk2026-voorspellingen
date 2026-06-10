@@ -2566,11 +2566,11 @@ const DARK_HORSES = [
 // Bron: play.fifa.com (prijzen) + RotoWire WC Fantasy rankings (9 juni 2026).
 const BEST_XI = {
   formation: "1-3-4-3",
-  budget: 100.0, spent: 100.0, projXI: 222.9, captain: "Mikel Oyarzabal",
+  budget: 100.0, spent: 96.4, projXI: 222.6, captain: "Mikel Oyarzabal",
   players: [
-    { pos:"GK", row:0, name:"José Rangel", price:"$3.9m", proj:17.9, value:"$3.9m", team:"Mexico", age:26, flag:"🇲🇽", xG:0, xA:0,
-      st:{}, stats:[{v:"$3.9m",nl:"prijs",en:"price"},{v:"17.9",nl:"proj. punten",en:"proj. pts"},{v:"Mexico",nl:"opener thuis",en:"home opener"}],
-      note:{nl:"Goedkoopste route naar clean sheets: gastland Mexico opent tegen Zuid-Afrika en Curaçao en is favoriet om de groep te winnen. Voor $3.9m de beste keeper qua punten-per-dollar.",en:"Cheapest route to clean sheets: host nation Mexico opens against South Africa and Curaçao and is favourite to win the group. At $3.9m the best goalkeeper for points-per-dollar."} },
+    { pos:"GK", row:0, name:"Bart Verbruggen", price:"$4.7m", proj:17.5, value:"$4.7m", team:"Netherlands", age:23, flag:"🇳🇱", xG:0, xA:0,
+      st:{}, stats:[{v:"$4.7m",nl:"prijs",en:"price"},{v:"17.5",nl:"proj. punten",en:"proj. pts"},{v:"Oranje",nl:"#1 keeper",en:"#1 keeper"}],
+      note:{nl:"De beste Nederlander die binnen het budget past: voor amper 0,3 projectiepunten meer dan de goedkoopste keeper haal je Oranje's nummer 1 binnen. Nederland heeft een haalbaar pad met clean-sheet-potentieel.",en:"The best Dutchman that fits the budget: for barely 0.3 projected points more than the cheapest keeper you get the Netherlands' number one. The Dutch have an achievable path with clean-sheet upside."} },
     { pos:"DEF", row:1, name:"Joshua Kimmich", price:"$5.5m", proj:18.7, value:"$5.5m", team:"Germany", age:31, flag:"🇩🇪", xG:0, xA:0,
       st:{}, stats:[{v:"$5.5m",nl:"prijs",en:"price"},{v:"18.7",nl:"proj. punten",en:"proj. pts"},{v:"Duitsland",nl:"set-pieces",en:"set pieces"}],
       note:{nl:"Levert aanvallend rendement vanaf rechts en neemt corners voor Duitsland, dat tegen Curaçao, Ecuador en Ivoorkust favoriet is voor clean sheets. Verdediger met middenvelder-opbrengst.",en:"Provides attacking returns from the right and takes Germany's corners; they are clean-sheet favourites against Curaçao, Ecuador and Ivory Coast. A defender with midfielder upside."} },
@@ -2603,8 +2603,8 @@ const BEST_XI = {
       note:{nl:"Penaltynemer van Engeland, dat met de beste xGC van de Europese kwalificatie een lang en stabiel pad heeft. Combineert goals met de langste verwachte speelduur.",en:"England's penalty taker; with the best xGC in European qualifying they have a long, stable path. Combines goals with the longest expected game time."} },
   ],
   subs: [
-    { pos:"GK", name:"Matt Freese", price:"$4.2m", proj:17.2, value:"$4.2m", team:"USA", age:27, flag:"🇺🇸", xG:0, xA:0,
-      note:{nl:"Goedkope tweede keeper: gastland VS heeft een redelijk groepspad. Pure bankvulling om budget vrij te spelen voor de basiself.",en:"Cheap second keeper: hosts USA have a reasonable group path. Pure bench fodder to free up budget for the starting XI."} },
+    { pos:"GK", name:"José Rangel", price:"$3.9m", proj:17.9, value:"$3.9m", team:"Mexico", age:26, flag:"🇲🇽", xG:0, xA:0,
+      note:{nl:"Goedkope tweede keeper van gastland Mexico, dat een gunstig groepspad heeft. Bankvulling om budget vrij te spelen voor de basiself.",en:"Cheap second keeper from host nation Mexico, who have a favourable group path. Bench fodder to free up budget for the starting XI."} },
     { pos:"DEF", name:"Lee Tae-Seok", price:"$3.7m", proj:16.5, value:"$3.7m", team:"South Korea", age:25, flag:"🇰🇷", xG:0, xA:0,
       note:{nl:"Een van de goedkoopste verdedigers in het spel; enkel aanwezig om de squad-quota te vullen binnen budget.",en:"One of the cheapest defenders in the game; present only to complete the squad quota within budget."} },
     { pos:"DEF", name:"Nathan Ngoy", price:"$3.7m", proj:16.5, value:"$3.7m", team:"Belgium", age:23, flag:"🇧🇪", xG:0, xA:0,
@@ -2822,6 +2822,7 @@ function DarkHorseCard({p,open,onToggle}){
 
 function PitchViz(){
   const T=useTheme();
+  const lang=useLang();
   // Build rows from each player's row index (0=GK,1=DEF,2=MID,3=FWD) so any formation renders.
   const rows=[[],[],[],[]];
   BEST_XI.players.forEach(p=>{ if(rows[p.row]) rows[p.row].push(p); });
@@ -2859,6 +2860,7 @@ function PitchViz(){
                     border:"1px solid #B8860B",boxShadow:"0 1px 3px rgba(0,0,0,0.4)"}}>C</div>}
                 </div>
                 <div style={{fontSize:FS.caption,color:"#fff",textAlign:"center",fontWeight:WEIGHT.medium,lineHeight:1.15}}>{p.name.split(" ").slice(-1)[0]}</div>
+                <div style={{fontSize:FS.micro,color:"rgba(255,255,255,0.6)",textAlign:"center",lineHeight:1.2,marginTop:1}}>{Math.round(p.proj)} {lang==="nl"?"pnt":"pts"}</div>
               </div>
             );
           })}
@@ -4248,7 +4250,7 @@ function PlayersTab({setTab}){
         </div>
         <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
           <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Proj. basiself":"Proj. XI"}</div>
-          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.orange,lineHeight:1}}>{BEST_XI.projXI}<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub}}> {lang==="nl"?"pnt":"pts"}</span></div>
+          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.orange,lineHeight:1}}>{Math.round(BEST_XI.projXI)}<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub}}> {lang==="nl"?"pnt":"pts"}</span></div>
         </div>
         <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
           <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Formatie":"Formation"}</div>
@@ -4263,26 +4265,33 @@ function PlayersTab({setTab}){
 
       {/* Best XI */}
       <PitchViz/>
-      {/* Player list */}
+      {/* Player list — table */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden",marginBottom:10}}>
         <div style={{padding:"8px 13px",background:T.orangeFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.orange}}>
           {lang==="nl"?"Basiselftal":"Starting XI"} · {BEST_XI.formation}
         </div>
+        {/* table header */}
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
+          <span style={{width:34,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0}}>{lang==="nl"?"Pos":"Pos"}</span>
+          <span style={{flex:1,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Speler":"Player"}</span>
+          <span style={{width:48,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right",flexShrink:0}}>{lang==="nl"?"Prijs":"Price"}</span>
+          <span style={{width:36,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right",flexShrink:0}}>{lang==="nl"?"Pnt":"Pts"}</span>
+          <span style={{width:14,flexShrink:0}}/>
+        </div>
         {BEST_XI.players.map(p=>(
           <div key={p.name} style={{borderBottom:`1px solid ${T.border}`}}>
             <div onClick={()=>toggle(setOpenXI,p.name)} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",cursor:"pointer",background:openXI[p.name]?T.orangeFaint:T.card}}>
-              <div style={{width:28,height:28,borderRadius:"50%",background:"#E07000",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,flexShrink:0}}>
-                <span style={{color:"#fff",fontSize:FS.micro,fontWeight:WEIGHT.semibold}}>{p.pos==="CB1"||p.pos==="CB2"?"CB":p.pos}</span>
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}{p.name===BEST_XI.captain&&<span style={{marginLeft:6,fontSize:FS.micro,fontWeight:WEIGHT.bold,color:"#0D0D0D",background:"#FFD24D",border:"1px solid #B8860B",borderRadius:4,padding:"0 5px",verticalAlign:"middle"}}>C</span>}</div>
-                <div style={{display:"flex",gap:4,marginTop:2,flexWrap:"wrap"}}>
-                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:"#FFD24D",background:"#6B5200",border:"1px solid #B8860B",borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.value}</span>}
-                  {p.proj>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.green,background:`${T.green}1A`,border:`1px solid ${T.green}4D`,borderRadius:4,padding:"1px 5px",whiteSpace:"nowrap"}}>{p.proj} {lang==="nl"?"proj. pnt":"proj. pts"}</span>}
-                </div>
-              </div>
-              <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
-              <Chevron open={openXI[p.name]} color={T.orange}/>
+              <span style={{width:34,flexShrink:0}}>
+                <span style={{display:"inline-block",minWidth:26,textAlign:"center",fontSize:FS.micro,fontWeight:WEIGHT.bold,color:"#fff",background:"#E07000",borderRadius:4,padding:"1px 4px"}}>{p.pos==="CB1"||p.pos==="CB2"?"CB":p.pos}</span>
+              </span>
+              <span style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:5}}>
+                <span style={{fontSize:12,flexShrink:0}}>{p.flag}</span>
+                <span style={{fontSize:FS.small,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</span>
+                {p.name===BEST_XI.captain&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,color:"#0D0D0D",background:"#FFD24D",border:"1px solid #B8860B",borderRadius:3,padding:"0 4px",flexShrink:0}}>C</span>}
+              </span>
+              <span style={{width:48,textAlign:"right",fontSize:FS.small,fontWeight:WEIGHT.semibold,color:T.textSub,flexShrink:0}}>{p.price}</span>
+              <span style={{width:36,textAlign:"right",fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.id==="dark"?T.orange:T.blue,flexShrink:0}}>{Math.round(p.proj)}</span>
+              <span style={{width:14,flexShrink:0,display:"flex",justifyContent:"center"}}><Chevron open={openXI[p.name]} color={T.orange}/></span>
             </div>
             {openXI[p.name]&&(
               <div style={{padding:"8px 13px 10px",background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
@@ -4293,26 +4302,31 @@ function PlayersTab({setTab}){
           </div>
         ))}
       </div>
-      {/* Subs */}
+      {/* Subs — table */}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
         <div style={{padding:"8px 13px",background:T.blueFaint,borderBottom:`1px solid ${T.border}`,fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.id==="dark"?"#909090":T.blue}}>
           {lang==="nl"?"Wissels":"Substitutes"}
         </div>
+        <div style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",borderBottom:`1px solid ${T.border}`,background:T.bg}}>
+          <span style={{width:34,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,flexShrink:0}}>{lang==="nl"?"Pos":"Pos"}</span>
+          <span style={{flex:1,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint}}>{lang==="nl"?"Speler":"Player"}</span>
+          <span style={{width:48,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right",flexShrink:0}}>{lang==="nl"?"Prijs":"Price"}</span>
+          <span style={{width:36,fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,textAlign:"right",flexShrink:0}}>{lang==="nl"?"Pnt":"Pts"}</span>
+          <span style={{width:14,flexShrink:0}}/>
+        </div>
         {BEST_XI.subs.map(p=>(
           <div key={p.name} style={{borderBottom:`1px solid ${T.border}`}}>
             <div onClick={()=>toggle(setOpenXI,"sub_"+p.name)} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",cursor:"pointer",background:openXI["sub_"+p.name]?T.blueFaint:T.card}}>
-              <div style={{width:28,height:28,borderRadius:"50%",background:T.blueFaint,border:"1px solid #1A5296",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{color:T.id==="dark"?"#909090":T.blue,fontSize:FS.micro,fontWeight:WEIGHT.semibold}}>{p.pos}</span>
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text}}>{p.name}</div>
-                <div style={{display:"flex",gap:4,marginTop:2}}>
-                  {p.value&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:"#FFD24D",background:"#6B5200",border:"1px solid #B8860B",borderRadius:4,padding:"1px 5px"}}>{p.value}</span>}
-                  {p.proj>0&&<span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue,background:`${T.blue}1A`,border:`1px solid ${T.blue}4D`,borderRadius:4,padding:"1px 5px"}}>{p.proj} {lang==="nl"?"proj. pnt":"proj. pts"}</span>}
-                </div>
-              </div>
-              <span style={{fontSize:11,color:T.textSub,flexShrink:0}}>{p.flag} {p.age} {lang==="nl"?"jr":"yrs"}</span>
-              <Chevron open={openXI["sub_"+p.name]} color={T.id==="dark"?T.orange:T.blue}/>
+              <span style={{width:34,flexShrink:0}}>
+                <span style={{display:"inline-block",minWidth:26,textAlign:"center",fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue,background:T.blueFaint,border:"1px solid #1A5296",borderRadius:4,padding:"1px 4px"}}>{p.pos}</span>
+              </span>
+              <span style={{flex:1,minWidth:0,display:"flex",alignItems:"center",gap:5}}>
+                <span style={{fontSize:12,flexShrink:0}}>{p.flag}</span>
+                <span style={{fontSize:FS.small,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</span>
+              </span>
+              <span style={{width:48,textAlign:"right",fontSize:FS.small,fontWeight:WEIGHT.semibold,color:T.textSub,flexShrink:0}}>{p.price}</span>
+              <span style={{width:36,textAlign:"right",fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.textFaint,flexShrink:0}}>{Math.round(p.proj)}</span>
+              <span style={{width:14,flexShrink:0,display:"flex",justifyContent:"center"}}><Chevron open={openXI["sub_"+p.name]} color={T.id==="dark"?T.orange:T.blue}/></span>
             </div>
             {openXI["sub_"+p.name]&&p.note&&(
               <div style={{padding:"6px 12px 8px",background:T.blueFaint,borderLeft:`3px solid ${T.id==="dark"?T.orange:T.blue}`,fontSize:FS.small,color:T.textSub,lineHeight:1.5}}>
