@@ -1537,15 +1537,9 @@ function DataTabButton({onOpen,active}){
         transition:"transform 0.18s cubic-bezier(.34,1.56,.64,1)"}}>
       <style>{`@keyframes dataPulse{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}`}</style>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:"block"}}
-        stroke={iconCol} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-        {/* calculator body */}
-        <rect x="4.5" y="2.5" width="15" height="19" rx="2.2"/>
-        {/* display */}
-        <rect x="7" y="5" width="10" height="3" rx="0.8" fill={iconCol} stroke="none"/>
-        {/* keypad dots */}
-        {[0,1,2].map(c=>[0,1,2].map(r=>(
-          <circle key={`${c}-${r}`} cx={8+c*4} cy={12.5+r*2.9} r="0.9" fill={iconCol} stroke="none"/>
-        )))}
+        stroke={iconCol} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        {/* vertical-bars analytics icon */}
+        <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
       </svg>
     </button>
   );
@@ -4073,11 +4067,11 @@ function PlayersTab({setTab}){
           border:`1px solid ${T.border}`,borderRadius:10,overflow:"hidden",background:T.card}}>
           {[
             {nl:"Databronnen",en:"Data sources",sec:"data",
-             icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20h-20" /></>},
-            {nl:"Berekening",en:"Calculation",sec:"score",
              icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
+            {nl:"Berekening",en:"Calculation",sec:"score",
+             icon:<><rect x="5" y="2.5" width="14" height="19" rx="2.2"/><rect x="7.5" y="5" width="9" height="3" rx="0.8"/><path d="M8.5 12h0M12 12h0M15.5 12h0M8.5 15h0M12 15h0M15.5 15h0M8.5 18h0M12 18h0M15.5 18h0"/></>},
             {nl:"Uitslag",en:"Result",sec:"result",
-             icon:<><path d="M5 12l4 4L19 6"/></>},
+             icon:<><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></>},
           ].map((s,i,arr)=>(
             <React.Fragment key={i}>
               <div role="button" tabIndex={0} onClick={()=>goToModel&&goToModel(s.sec)}
