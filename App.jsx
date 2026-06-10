@@ -264,10 +264,10 @@ const MATCH_EXPL = {
     "Argentina-Jordan":"Met kwalificatie al zeker geeft Scaloni jongeren speeltijd. Maar zelfs Argentiniës tweede elftal is te goed voor Jordanië. Argentinië wint overtuigend met 4-1.",
     "Austria-Algeria":"Oostenrijk heeft een punt nodig voor de tweede plek; Algerije heeft een overwinning nodig om te overleven. Echte spanning. Sabitzer scoort vroeg; Bounedjah gelijkt. Het model komt uit op 1-1: een gelijkspel.",
     "Portugal-Uzbekistan":"Leão, Pedro Neto en Gonçalo Ramos krijgen vrij spel tegen een Oezbekistan dat op dit niveau wordt overweldigd. Portugal wint verdiend met 3-1.",
-    "Colombia-Congo DR":"Colombia's defensieve structuur is te solide voor Congo DRs directe aanvallers. Díaz en Arias exploiteren de ruimte op de omschakeling. Colombia wint nipt met 3-2.",
+    "Colombia-Congo DR":"Colombia's defensieve structuur is te solide voor Congo DRs directe aanvallers. Díaz en Arias exploiteren de ruimte op de omschakeling. Colombia wint nipt met 2-1.",
     "Portugal-Colombia":"De groepsfinale. Na aanpassingen zijn beide landen in het model effectief gelijkwaardig. Bruno Fernandes vs Colombia's creatieve hart is de sleutelstrijd. Beide ploegen zijn al door en overdrijven niet. Het model komt uit op 2-2: een gelijkspel.",
     "Uzbekistan-Congo DR":"Een evenwichtige wedstrijd tussen twee gelijkwaardig geklasseerde landen. Congo DRs Muleka is de voornaamste aanvallende dreiging. Het model komt uit op 1-1: een gelijkspel.",
-    "Portugal-Congo DR":"Portugals aanvalslinie: Bernardo Silva, Leão en Fernandes: produceert combinaties die Congo DRs verdedigers niet kunnen bijhouden. Portugal wint verdiend met 4-2.",
+    "Portugal-Congo DR":"Portugals aanvalslinie: Bernardo Silva, Leão en Fernandes: produceert combinaties die Congo DRs verdedigers niet kunnen bijhouden. Portugal wint verdiend met 3-1.",
     "Colombia-Uzbekistan":"Colombia's vormcorrectie weerspiegelt Díaz' kwaliteit en hun collectieve aanvallende klasse. Oezbekistan maakt hun WK-debuut maar mist toernooiervaring. Colombia wint nipt met 2-1.",
     "England-Panama":"Engeland roteert en beheert de speeltijd van sterspelers. Maar zelfs hun tweede keuze is te goed voor Panama. Engeland wint verdiend met 2-0.",
     "Croatia-Ghana":"Kroatië begint scherp en scoort tweemaal via Kramarić en Kovačić. Ghana kan niet bijkomen. Kroatie wint verdiend met 3-1.",
@@ -338,10 +338,10 @@ const MATCH_EXPL = {
     "Argentina-Jordan":"With qualification already secured Scaloni gives youth players game time. But even Argentina's second string is too much for Jordan. Argentina win convincingly, 4-1.",
     "Austria-Algeria":"Austria need a point for second place; Algeria need a win to survive. Genuine tension. Sabitzer scores early; Bounedjah equalises. The model lands on 1-1: a draw.",
     "Portugal-Uzbekistan":"Leão, Pedro Neto and Gonçalo Ramos are given free rein against a Uzbekistan side that is simply overmatched. Portugal earn a deserved 3-1 win.",
-    "Colombia-Congo DR":"Colombia's defensive structure is too solid for Congo DR's direct forwards. Díaz and Arias exploit space on the counter. Colombia edge it 3-2.",
+    "Colombia-Congo DR":"Colombia's defensive structure is too solid for Congo DR's direct forwards. Díaz and Arias exploit space on the counter. Colombia edge it 2-1.",
     "Portugal-Colombia":"The group decider. After adjustments both sides are effectively level in the model. Bruno Fernandes vs Colombia's creative hub is the key battle. Both teams are already through and neither overextends. The model lands on 2-2: a draw.",
     "Uzbekistan-Congo DR":"A low-quality but competitive match between two similarly-ranked sides. Congo DR's Muleka is the main attacking threat. The model lands on 1-1: a draw.",
-    "Portugal-Congo DR":"Portugal's forward line: Bernardo Silva, Leão and Fernandes: produce combinations Congo DR's defenders cannot track. Portugal earn a deserved 4-2 win.",
+    "Portugal-Congo DR":"Portugal's forward line: Bernardo Silva, Leão and Fernandes: produce combinations Congo DR's defenders cannot track. Portugal earn a deserved 3-1 win.",
     "Colombia-Uzbekistan":"Colombia's form correction reflects Díaz's quality and their collective attacking class. Uzbekistan are making their World Cup debut and lack tournament experience. Colombia edge it 2-1.",
     "England-Panama":"England rotate and manage the minutes of their key players. But even their second choice is too much for Panama. England earn a deserved 2-0 win.",
     "Croatia-Ghana":"Croatia start sharply and score twice through Kramarić and Kovačić. Ghana cannot recover. Croatia earn a deserved 3-1 win.",
@@ -358,7 +358,7 @@ const KO_EXPL = {
     "Argentina-Norway":"Argentinië treft een Noorwegen dat op vorm de kwartfinale haalde, met Haaland als constante dreiging. Maar Argentiniës complete elftal en toernooiroutine zijn een maatje te groot: Mac Allister en Álvarez controleren het tempo. Haaland prikt er nog 1 binnen voor de 2-1, maar Argentinië staat defensief te sterk en gaat door.",
     "England-Brazil":"Twee zwaargewichten met contrasterende stijlen: Engelands structuur tegen Braziliaanse individuele klasse. Bellingham trekt het middenveld naar zich toe en Saka's directheid langs rechts is het wapen dat Brazilië niet neutraliseert. Vinícius blijft gevaarlijk en maakt er 2-1 van, maar Engeland controleert de cruciale fases en houdt stand.",
     "Brazil-England":"Twee zwaargewichten, gescheiden door het kleinste verschil. Braziliës recente vorm en aanvallende klasse geven net de doorslag: Vinícius en Rodrygo vinden ruimte achter de Engelse defensie, terwijl Engeland via Bellingham en Saka blijft dreigen. Engeland komt terug tot 2-1, maar Brazilië is in de beslissende momenten net iets gevaarlijker en trekt het over de streep.",
-    "France-Portugal":"Frankrijks balans tussen controle en omschakeling tegen een Portugal dat op leeftijd begint te raken. Mbappé exploiteert de ruimte achter de Portugese defensie en Frankrijk wint het fysieke duel op het middenveld. Portugal vecht terug tot 2-1 via een moment van Ronaldo, maar Frankrijk is klinischer en beslist het.",
+    "France-Portugal":"Frankrijks balans tussen controle en omschakeling tegen een Portugal dat op leeftijd begint te raken. Mbappé exploiteert de ruimte achter de Portugese defensie en Frankrijk wint het fysieke duel op het middenveld. Portugal vecht terug tot 3-2 via een moment van Ronaldo, maar Frankrijk is klinischer en beslist het.",
     "Spain-Colombia":"Spanje tegen een fysiek sterke, gretige Colombiaanse ploeg. Luis Díaz is het grootste gevaar en zorgt voor de aansluitingstreffer, maar Spanjes balbezit en de creativiteit van Yamal en Pedri zijn over negentig minuten te veel. Rodri controleert het tempo vanuit de diepte: een verdiende 2-1 die comfortabeler aanvoelt dan de score.",
     "Spain-Belgium":"Spanje versus het enige ploeg dat qua organisatie en ervaring in de buurt komt. De Bruyne probeert het spel te dicteren maar Rodri en Pedri controleren het tempo volledig. Yamal maakt het verschil langs de rechterkant: zijn directheid is het kwaliteitsverschil dat België niet kan compenseren. Een knappe maar verdiende Spaanse overwinning.",
     "France-Germany":"Frankrijks individuele kwaliteit is de doorslaggevende factor. Mbappe exploiteert de ruimte achter Duitslands hoge defensielinie en Frankrijk wint de middenveldstrijd fysiek. Duitsland is competitief maar de Fransen zijn klinischer in de beslissende momenten. Musiala maakt het uitdagend maar Frankrijk beslist.",
@@ -378,7 +378,7 @@ const KO_EXPL = {
     "Argentina-Norway":"Argentina face a Norway side that reached the quarters on form, with Haaland a constant threat. But Argentina's complete team and tournament savvy are a level above: Mac Allister and Álvarez control the tempo. Haaland pulls one back for 2-1, but Argentina are too solid defensively and go through.",
     "England-Brazil":"Two heavyweights with contrasting styles: England's structure against Brazilian individual brilliance. Bellingham draws the midfield to him and Saka's directness down the right is the weapon Brazil cannot neutralise. Vinícius stays dangerous and makes it 2-1, but England control the crucial phases and hold on.",
     "Brazil-England":"Two heavyweights separated by the smallest of margins. Brazil's recent form and attacking class just tip it: Vinícius and Rodrygo find space behind the English defence, while England keep threatening through Bellingham and Saka. England pull back to 2-1, but Brazil are a fraction more dangerous in the decisive moments and see it through.",
-    "France-Portugal":"France's balance of control and transition against a Portugal side starting to age. Mbappé exploits the space behind the Portuguese defence and France win the physical midfield battle. Portugal fight back to 2-1 through a Ronaldo moment, but France are more clinical and see it out.",
+    "France-Portugal":"France's balance of control and transition against a Portugal side starting to age. Mbappé exploits the space behind the Portuguese defence and France win the physical midfield battle. Portugal fight back to 3-2 through a Ronaldo moment, but France are more clinical and see it out.",
     "Spain-Colombia":"Spain against a physically strong, eager Colombia. Luis Díaz is the biggest threat and grabs a consolation, but Spain's possession and the creativity of Yamal and Pedri are too much over ninety minutes. Rodri controls the tempo from deep: a deserved 2-1 that feels more comfortable than the scoreline.",
     "Spain-Belgium":"Spain versus the only side that comes close in organisation and experience. De Bruyne tries to dictate but Rodri and Pedri control the tempo completely. Yamal makes the difference on the right: his directness is the quality gap Belgium cannot compensate for. A hard-fought but deserved Spanish victory.",
     "France-Germany":"France's individual quality is the decisive factor. Mbappe's pace exploits the space behind Germany's high defensive line and France dominate midfield physically. Germany are competitive: Musiala makes it difficult: but France are more clinical in the decisive moments.",
@@ -719,7 +719,12 @@ function composite(team){
            (f.formN||0)*WEIGHTS.recentForm).toFixed(1);
 }
 
-const COMPOSITE = Object.fromEntries(Object.keys(MODEL_DATA).map(t=>[t,composite(t)]));
+// Congo DR alias — GROUPS/FLAGS use "Congo DR" while MODEL_DATA/stats use "DR Congo".
+// Alias the data object so every engine lookup (composite, expectedGoals, netXG, formDev)
+// resolves the team's REAL numbers instead of silently falling back to defaults.
+MODEL_DATA["Congo DR"]=MODEL_DATA["DR Congo"];
+const _MODEL_KEYS=Object.keys(MODEL_DATA).filter(t=>t!=="Congo DR");  // canonical, no alias dupe
+const COMPOSITE = Object.fromEntries(_MODEL_KEYS.map(t=>[t,composite(t)]));
 const MODEL_ORDER = Object.keys(COMPOSITE).sort((a,b)=>COMPOSITE[b]-COMPOSITE[a]);
 const COMPOSITE_RANK = Object.fromEntries(MODEL_ORDER.map((t,i)=>[t,i+1]));
 COMPOSITE["Congo DR"]=COMPOSITE["DR Congo"];
@@ -4042,9 +4047,12 @@ function PlayersTab({setTab}){
   const toggle=(setter,key)=>setter(p=>({...p,[key]:!p[key]}));
   const OL=T.id==="orangeLion";
   const views=[
-    {id:"nations",label:lang==="nl"?"Landen":"Nations"},
-    {id:"players",label:lang==="nl"?"Spelers":"Players"},
-    {id:"fpl",label:lang==="nl"?"FPL-team":"FPL team"},
+    {id:"nations",label:lang==="nl"?"Landen":"Nations",
+     icon:"M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20M12 2c2.5 2.7 4 6.3 4 10s-1.5 7.3-4 10c-2.5-2.7-4-6.3-4-10s1.5-7.3 4-10z"},
+    {id:"players",label:lang==="nl"?"Spelers":"Players",
+     icon:"M12 12a4 4 0 100-8 4 4 0 000 8zM4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"},
+    {id:"fpl",label:lang==="nl"?"FPL-team":"FPL team",
+     icon:"M9 3H5a2 2 0 00-2 2v4M15 3h4a2 2 0 012 2v4M9 21H5a2 2 0 01-2-2v-4M15 21h4a2 2 0 002-2v-4M12 8v8M8 12h8"},
   ];
   return(
     <div>
@@ -4159,12 +4167,17 @@ function PlayersTab({setTab}){
           const active=view===v.id;
           return(
             <button key={v.id} onClick={()=>setView(v.id)}
-              style={{flex:1,padding:"9px 4px",fontSize:FS.small,
+              style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,
+                padding:"9px 4px",fontSize:FS.small,
                 fontWeight:active?800:600,cursor:"pointer",border:"none",
                 borderLeft:i>0?`1px solid ${OL?"rgba(255,255,255,0.5)":(T.id==="dark"?"#FF5500":"#E07000")}`:"none",
                 background:active?(OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")):"transparent",
                 color:active?(OL?"#0D0D0D":"#FFFFFF"):(OL?"#FFFFFF":T.textSub),
                 transition:"background 0.2s ease, color 0.2s ease"}}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                <path d={v.icon}/>
+              </svg>
               {v.label}
             </button>
           );
