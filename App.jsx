@@ -4058,13 +4058,13 @@ function PlayersTab({setTab}){
     <div>
       {/* Welcome + tournament intro — first thing on the WK2026 tab */}
       <div style={{marginBottom:20}}>
-        <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:1.5,textTransform:"uppercase",
-          color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>
-          {lang==="nl"?"Het model":"The model"}
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.text} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",
+            color:T.id==="orangeLion"?"#FFFFFF":T.text}}>
+            {lang==="nl"?"Het model":"The model"}
+          </span>
         </div>
-        <h2 style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.5,margin:"0 0 8px",lineHeight:1.1}}>
-          {lang==="nl"?"Het WK, doorgerekend":"The World Cup, computed"}
-        </h2>
         <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.65,margin:"0 0 12px"}}>
           {lang==="nl"
             ?"Eén data-gedreven model dat mijn WK 2026 voorspelt, van groepsfase tot finale. Tik het model-icoon voor de cijfers."
@@ -4112,13 +4112,13 @@ function PlayersTab({setTab}){
 
       {/* ── CONTEXT ZONE: the tournament + news/injuries grouped together ── */}
         <div style={{marginTop:24,marginBottom:14}}>
-          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:1.5,textTransform:"uppercase",
-            color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>
-            {lang==="nl"?"Het toernooi":"The tournament"}
+          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.text} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M6 4h12v3a6 6 0 01-12 0zM6 5H4a2 2 0 002 4M18 5h2a2 2 0 01-2 4M9 16h6M10 16v-2M14 16v-2M8 20h8"/></svg>
+            <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",
+              color:T.id==="orangeLion"?"#FFFFFF":T.text}}>
+              {lang==="nl"?"Het toernooi":"The tournament"}
+            </span>
           </div>
-          <h2 style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.3,margin:"0 0 8px",lineHeight:1.15}}>
-            {lang==="nl"?"48 landen, één troon":"48 nations, one throne"}
-          </h2>
           <p style={{fontSize:FS.small,color:T.textSub,lineHeight:1.7,margin:0}}>
             {lang==="nl"
               ?"Voor het eerst met 48 landen over drie gastlanden — het grootste WK ooit. Spanje is favoriet, Argentinië verdedigt de titel met Messi, en outsiders als Marokko kunnen verrassen."
@@ -4373,13 +4373,18 @@ function AppLoader({onDone}){
 
         {/* WC roundel ring with the lion living in its centre */}
         <div style={{position:"relative",width:120,height:120,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <style>{`@keyframes wcRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
           <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true"
-            style={{position:"absolute",inset:0,filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))"}}>
+            style={{position:"absolute",inset:0,filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))",
+              animation:"wcRingSpin 1.6s linear infinite",transformOrigin:"50% 50%"}}>
             <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
             </linearGradient></defs>
             <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
             <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
+          </svg>
+          {/* gold star stays fixed at the top while the ring spins */}
+          <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none"}}>
             <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
           </svg>
           {/* the lion, centred in the ring's empty space */}
