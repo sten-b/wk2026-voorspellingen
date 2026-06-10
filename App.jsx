@@ -1439,7 +1439,7 @@ function NavLion({themeId}){
 function LionEmoji({color="#E07000", size=14}){
   // Main outline only — internal detail lines removed for a clean icon
   return(
-    <svg width={size} height={size} viewBox="157 124 717 798" fill={color} xmlns="http://www.w3.org/2000/svg">
+    <svg width={size} height={size} viewBox="116 124 798 798" preserveAspectRatio="xMidYMid meet" fill={color} xmlns="http://www.w3.org/2000/svg" style={{display:"block"}}>
       <g transform="translate(0,1024) scale(0.1,-0.1)">
         <path d="M5111 8804 c-110 -125 -189 -296 -192 -414 0 -37 -17 -90 -18 -59 -2 29 -87 135 -153 188 -178 146 -439 191 -702 120 l-40 -11 76 -39 c84 -44 194 -133 249 -200 38 -47 66 -94 52 -87 -103 48 -141 63 -209 83 -337 98 -788 26 -1139 -183 -157 -93 -353 -278 -445 -418 -119 -182 -170 -344 -170 -539 0 -161 42 -320 117 -440 18 -27 29 -53 27 -57 -9 -14 -146 -104 -201 -131 -117 -60 -257 -101 -411 -121 l-87 -12 77 -42 c110 -60 234 -99 360 -112 59 -7 112 -9 118 -5 5 3 10 2 10 -3 0 -4 -42 -39 -92 -78 -193 -145 -362 -343 -464 -547 -49 -96 -109 -283 -130 -402 -18 -104 -25 -402 -11 -459 8 -27 10 -24 50 56 81 161 172 284 311 423 158 157 237 214 597 430 152 91 327 203 388 250 61 46 111 82 111 79 0 -19 -133 -266 -186 -346 -78 -118 -171 -217 -410 -439 -100 -92 -208 -195 -239 -229 -186 -194 -324 -447 -391 -713 -49 -196 -44 -529 12 -743 24 -95 86 -259 129 -345 29 -57 115 -192 120 -187 2 2 -1 28 -7 58 -16 84 -3 376 21 491 43 203 142 439 256 615 144 222 424 505 671 679 38 27 88 65 112 83 23 19 44 33 47 31 2 -3 -57 -92 -131 -199 -330 -479 -377 -554 -476 -758 -71 -148 -128 -316 -160 -472 -19 -98 -23 -146 -23 -320 0 -133 5 -226 13 -265 84 -381 291 -710 616 -983 84 -70 224 -167 231 -160 2 2 -23 56 -55 120 -62 127 -138 324 -163 428 -68 275 -74 574 -16 833 68 305 216 623 404 865 94 121 129 158 97 101 -61 -106 -131 -349 -163 -569 -29 -198 -23 -465 15 -645 68 -323 229 -657 449 -930 85 -105 233 -255 325 -329 77 -62 274 -197 280 -191 2 1 -19 52 -46 111 -107 234 -163 473 -161 687 1 128 12 232 21 207 3 -8 22 -64 41 -125 145 -458 405 -919 688 -1218 l54 -57 96 112 c165 196 257 326 367 523 107 192 215 455 279 679 17 61 30 93 36 87 16 -16 21 -280 8 -387 -22 -182 -69 -335 -162 -532 -21 -46 -39 -86 -39 -88 0 -7 180 117 255 176 486 386 784 927 837 1518 26 294 -28 616 -152 905 -21 48 -37 87 -35 87 2 0 29 -32 60 -71 242 -299 416 -680 471 -1029 20 -128 23 -403 5 -510 -18 -107 -55 -254 -91 -356 -35 -102 -134 -326 -163 -367 -10 -16 -17 -30 -14 -33 6 -6 114 65 212 141 107 83 284 269 367 386 128 179 220 388 265 599 36 169 36 403 0 582 -64 316 -211 624 -478 1003 -228 323 -299 428 -295 432 2 2 55 -34 118 -80 561 -415 847 -799 965 -1297 28 -121 42 -400 25 -505 -5 -33 -9 -61 -7 -63 1 -1 25 32 53 75 100 153 180 351 224 558 28 132 31 414 6 551 -40 214 -138 443 -267 624 -107 149 -153 197 -506 525 -138 128 -224 226 -301 343 -65 98 -159 266 -169 301 -7 23 -5 22 36 -11 80 -64 311 -213 524 -337 116 -68 246 -148 289 -179 236 -169 444 -405 556 -631 19 -38 38 -70 41 -71 3 0 9 53 12 119 19 353 -77 694 -270 964 -81 111 -207 243 -316 328 -51 40 -98 78 -105 85 -11 9 1 12 56 12 126 1 262 35 396 97 123 57 123 60 18 74 -231 29 -443 114 -601 239 l-24 19 26 35 c59 76 120 257 132 388 19 207 -60 453 -207 652 -175 236 -423 411 -733 516 -327 111 -702 104 -960 -19 -32 -15 -61 -27 -62 -25 -9 8 97 133 148 176 61 51 176 122 218 135 35 11 13 20 -94 40 -132 25 -322 17 -431 -19 -138 -44 -262 -144 -337 -268 l-34 -57 -5 62 c-7 81 -49 206 -98 287 -42 71 -128 181 -146 187 -6 2 -30 -17 -53 -43z m-1364 -938 c229 -49 395 -146 524 -306 63 -80 74 -89 112 -95 76 -13 270 -85 367 -137 129 -68 239 -148 331 -240 l78 -78 58 61 c171 180 415 318 684 385 103 25 105 26 133 70 159 252 510 392 888 355 383 -37 646 -259 689 -582 30 -217 -79 -447 -268 -567 -24 -15 -43 -32 -43 -38 0 -25 141 -408 168 -459 17 -30 27 -55 24 -55 -3 0 -38 19 -76 42 -95 56 -178 142 -256 266 -146 232 -202 311 -272 386 -92 100 -204 184 -330 247 -175 88 -316 125 -513 136 -120 6 -132 -5 -30 -27 64 -13 171 -63 245 -113 306 -209 505 -680 503 -1192 -1 -325 -55 -540 -192 -765 -47 -77 -51 -81 -44 -45 15 73 6 209 -18 290 -12 42 -25 78 -29 80 -4 2 -10 -39 -13 -93 -9 -149 -74 -351 -164 -506 l-46 -78 -13 51 c-27 103 -73 201 -138 296 -38 53 -70 95 -72 92 -2 -2 8 -32 22 -67 64 -159 151 -529 161 -685 9 -159 -42 -303 -139 -390 -151 -135 -386 -121 -645 41 -144 90 -201 188 -190 324 9 113 52 202 119 247 18 12 78 34 133 49 123 33 181 61 227 112 38 42 55 84 60 146 l3 40 -85 18 c-47 10 -130 18 -185 19 -85 2 -113 -2 -190 -27 -118 -38 -204 -38 -330 1 -112 34 -209 36 -358 10 l-109 -19 7 -35 c10 -53 42 -122 73 -155 55 -58 105 -80 287 -127 64 -17 125 -73 156 -142 27 -63 37 -196 20 -260 -26 -90 -132 -191 -282 -267 -262 -134 -534 -62 -643 170 -27 58 -31 77 -34 180 -6 173 47 438 147 733 16 48 28 87 26 87 -8 0 -122 -176 -142 -220 -12 -25 -31 -77 -44 -115 -12 -39 -25 -78 -28 -88 -9 -27 -112 175 -155 303 -32 95 -61 239 -68 330 -3 34 -3 34 -21 -20 -26 -81 -40 -195 -33 -280 l7 -75 -46 70 c-221 343 -259 902 -94 1382 135 390 344 609 674 706 l50 15 -40 1 c-152 3 -403 -50 -541 -114 -113 -52 -258 -152 -344 -237 -71 -70 -135 -159 -300 -418 -76 -120 -185 -229 -278 -278 l-63 -34 30 54 c17 30 58 133 92 229 34 95 67 186 75 201 8 15 14 29 14 32 0 2 -29 25 -63 50 -127 90 -213 212 -246 350 -21 86 -15 222 13 312 82 260 314 434 628 474 96 12 296 4 385 -14z m1578 -3910 c28 -8 117 -54 200 -101 161 -91 238 -122 328 -132 65 -7 64 -3 41 -106 -26 -117 -93 -247 -166 -323 -54 -56 -185 -150 -195 -140 -2 2 6 20 17 39 25 42 62 157 51 157 -5 0 -16 -10 -27 -22 -44 -49 -196 -132 -358 -196 l-49 -19 -89 34 c-148 56 -237 106 -321 182 l-40 36 8 -35 c11 -54 35 -123 51 -147 22 -35 17 -36 -38 -6 -29 15 -87 62 -129 104 -90 89 -146 192 -179 329 -26 112 -27 110 18 110 91 0 212 47 392 154 139 83 221 107 340 102 52 -2 118 -11 145 -20z"/>
       </g>
@@ -1472,7 +1472,7 @@ function SoccerIcon({color}){
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
   const SEG=34, H=34;
-  const BLACK="#0D0D0D", ORANGE="#E35A00", WHITE="#FFFFFF";
+  const BLACK="#0D0D0D", ORANGE="#E07000", WHITE="#FFFFFF";
   // Per-cell appearance keyed by the ACTIVE theme.
   // cell 0 = ball (default), cell 1 = dark Lion, cell 2 = orange Lion.
   const M={
@@ -1501,7 +1501,7 @@ function ThemeToggle({theme,setTheme}){
     (col)=><FooterLionIcon color={col} size={16}/>,
   ];
   const T=useTheme();
-  const frameBorder=T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000");
+  const frameBorder=T.id==="orangeLion"?"#FFFFFF":ORANGE;
   return(
     <div style={{position:"relative",display:"flex",width:SEG*3,height:H,
       border:`1px solid ${frameBorder}`,borderRadius:6,overflow:"hidden",
@@ -3912,16 +3912,23 @@ function FBrefStatsSection(){
     <React.Fragment>
       {/* Top 30 by transfer value */}
       <div>
-        <div style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,letterSpacing:1.1,textTransform:"uppercase",color:T.textSub,marginBottom:6,paddingLeft:13}}>
-          {lang==="nl"?"De 30 duurste WK-gangers":"The 30 most valuable WC players"}
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,paddingLeft:13}}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.id==="orangeLion"?"#FFFFFF":T.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
+            {lang==="nl"?"Topspelers: waarde én vorm":"Top players: value & form"}
+          </span>
         </div>
-        {/* Compact legend */}
-        <div style={{display:"flex",flexWrap:"wrap",gap:"4px 10px",fontSize:FS.micro,color:T.textFaint,marginBottom:12,paddingLeft:13,paddingRight:13,lineHeight:1.5}}>
-          <span><b style={{color:T.textSub}}>Wed</b> {lang==="nl"?"wedstrijden":"matches"}</span>
-          <span><b style={{color:orange}}>npxG</b> {lang==="nl"?"per 90":"per 90"}</span>
-          <span><b style={{color:blue}}>xA</b> {lang==="nl"?"per 90":"per 90"}</span>
-          <span><b style={{color:gold}}>WS</b> {lang==="nl"?"seizoensrating":"season rating"}</span>
-          <span style={{flexBasis:"100%"}}>{lang==="nl"?"Competitie 2025/26 · waarde via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob (beste beschikbare bron)":"2025/26 league · value via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob (best available source)"}</span>
+        {/* Legend — stat keys on one line, source as a subtle footnote */}
+        <div style={{paddingLeft:13,paddingRight:13,marginBottom:12}}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:"4px 12px",fontSize:FS.micro,color:T.textFaint,lineHeight:1.5}}>
+            <span><b style={{color:T.textSub}}>Wed</b> {lang==="nl"?"wedstrijden":"matches"}</span>
+            <span><b style={{color:orange}}>npxG</b> per 90</span>
+            <span><b style={{color:blue}}>xA</b> per 90</span>
+            <span><b style={{color:gold}}>WS</b> {lang==="nl"?"seizoensrating":"season rating"}</span>
+          </div>
+          <div style={{fontSize:FS.micro,color:T.textFaint,opacity:0.8,marginTop:4,lineHeight:1.4}}>
+            {lang==="nl"?"Competitie 2025/26 · waarde via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob":"2025/26 league · value via CIES/Transfermarkt · stats via FBref/FootyStats/FotMob"}
+          </div>
         </div>
         {/* Table */}
         <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:8}}>
