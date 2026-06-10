@@ -4323,28 +4323,50 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // The lion sits in the centre of the World Cup ring's empty space, with the title below.
-    // The whole lockup holds on screen (a beat longer), then the loader fades out to the app.
+    // Lion centred in the ring + title below; hold, then the flag splits along its centre
+    // line and the two slanted halves pull apart to reveal the app behind.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // RWB accent sweep across
-    t.push(setTimeout(()=>setPhase(3),3400));   // hold the hero lockup, then begin fade-out
-    t.push(setTimeout(()=>onDone&&onDone(),3900));
+    t.push(setTimeout(()=>setPhase(3),3300));   // hero lockup fades out
+    t.push(setTimeout(()=>setPhase(4),3750));   // the two slanted halves pull apart (reveal)
+    t.push(setTimeout(()=>onDone&&onDone(),4650));
     return()=>t.forEach(clearTimeout);
   },[]);
 
-  const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
+  const shown=phase>=1&&phase<3;   // lockup visible (fades out at phase 3, before the split)
   const sweepOpacity=phase===2?1:0;
-  const overlayOpacity=phase>=3?0:1;   // clean fade-out to the app at the end
+  const split=phase>=4;            // the two halves have pulled apart
+
+  // Diagonal seam through the centre (the "centre line of the flag"). The two slanted
+  // halves slide apart along the seam's normal: top-right half goes up-right, the
+  // bottom-left half goes down-left. Oversized translate guarantees a full off-screen exit.
+  const SEAM=115;  // degrees — matches the RWB sweep direction
+  const flagBg="radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)";
+  // RWB stripe sitting along the seam so the split happens right on the flag's centre line.
+  const seamStripe="linear-gradient(115deg,transparent calc(50% - 16px),rgba(230,29,37,0.85) calc(50% - 11px),rgba(255,255,255,0.95) 50%,rgba(42,57,141,0.85) calc(50% + 11px),transparent calc(50% + 16px))";
+
+  const halfBase={position:"absolute",inset:"-2px",pointerEvents:"none",
+    backgroundImage:`${seamStripe}, ${flagBg}`,
+    transition:"transform 0.9s cubic-bezier(.7,0,.3,1)",willChange:"transform"};
 
   return(
-    <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
-      opacity:overlayOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
-      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+    <div style={{position:"fixed",inset:0,zIndex:9999,overflow:"hidden",
+      display:"flex",alignItems:"center",justifyContent:"center",
+      pointerEvents:split?"none":"auto"}}>
 
-      {/* Subtle radial vignette for depth */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
+      {/* TOP-RIGHT slanted half — clipped to one side of the diagonal seam, slides up-right */}
+      <div style={{...halfBase,
+        clipPath:"polygon(-20% -20%, 120% -20%, 120% 120%)",
+        transform:split?"translate(58vw,-58vh)":"translate(0,0)"}}/>
+      {/* BOTTOM-LEFT slanted half — the other side, slides down-left */}
+      <div style={{...halfBase,
+        clipPath:"polygon(-20% -20%, 120% 120%, -20% 120%)",
+        transform:split?"translate(-58vw,58vh)":"translate(0,0)"}}/>
+
+      {/* Subtle radial vignette for depth (rides on top of the halves, fades on split) */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:split?0:0.4,
+        transition:"opacity 0.3s ease",
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
       {/* RWB accent sweep */}
