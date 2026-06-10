@@ -3010,13 +3010,8 @@ function ModelViz({scrollTo,onScrolled}={}){
 
       {/* OVERVIEW — clean minimalist pipeline header */}
       <div style={{marginBottom:20}}>
-        <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.5,marginBottom:6}}>
+        <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.5,marginBottom:16}}>
           {lang==="nl"?"Zo werkt het model":"How the model works"}
-        </div>
-        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:16,maxWidth:520}}>
-          {lang==="nl"
-            ?"Vijf gewogen factoren vormen één sterktescore per land, waarvan het onderlinge verschil bepaalt wie wint en met welke marge terwijl xG en xGc de hoogte van de uitslag invullen — alles direct uit de data, zonder handmatige correcties."
-            :"Five weighted factors form one strength score per country whose gap decides who wins and by what margin while xG and xGc set the height of the scoreline — all directly from the data, with no manual corrections."}
         </div>
         {/* compact step flow — each chip jumps to its section below */}
         <div style={{display:"flex",alignItems:"stretch",gap:0,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
@@ -3073,10 +3068,6 @@ function ModelViz({scrollTo,onScrolled}={}){
       {SL(lang==="nl"?"Stap 2 · Naar één score":"Step 2 · Into one score","sigma")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
-          {lang==="nl"?"Elke factor telt mee voor zijn gewicht. Kies een land om de berekening te zien:"
-            :"Each factor counts for its weight. Pick a country to see the calculation:"}
-        </div>
         {/* team selector */}
         <div style={{position:"relative",marginBottom:10}}>
           <select value={exTeam} onChange={e=>setExTeam(e.target.value)}
@@ -3172,11 +3163,6 @@ function ModelViz({scrollTo,onScrolled}={}){
       {SL(lang==="nl"?"Stap 4 · De uitslag":"Step 4 · The result","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:12}}>
-          {lang==="nl"
-            ?"Voor elke wedstrijd vergelijkt het model de twee sterktescores, waarbij het verschil bepaalt wie wint en met welke marge (in de 10–20-zone geeft het xG-profiel de doorslag) terwijl de xG-cijfers invullen hoeveel goals er binnen die marge vallen."
-            :"For every match the model compares the two strength scores, where the gap decides who wins and by what margin (in the 10–20 zone the xG profile is the tiebreaker) while the xG figures set how many goals fall within that margin."}
-        </div>
         {/* compact margin rule */}
         <div style={{display:"flex",gap:6,marginBottom:13,flexWrap:"wrap"}}>
           {[
@@ -3277,11 +3263,6 @@ function ModelViz({scrollTo,onScrolled}={}){
       {SL(lang==="nl"?"Stap 5 · De titelkansen":"Step 5 · The title odds","dice")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
-        <div style={{fontSize:FS.small,color:T.textSub,lineHeight:1.6,marginBottom:11}}>
-          {lang==="nl"
-            ?"Het toernooi is 50.000 keer gesimuleerd. Elke wedstrijd beslist op het sterkteverschil; het percentage is hoe vaak elk land kampioen werd."
-            :"The tournament was simulated 50,000 times. Each match is decided on the strength gap; the percentage is how often each country won the title."}
-        </div>
         {[...TOP8].sort((a,b)=>b.pct-a.pct).map((r,i,arr)=>{
           const max=46;
           return(
@@ -3297,11 +3278,6 @@ function ModelViz({scrollTo,onScrolled}={}){
             </div>
           );
         })}
-        <div style={{marginTop:11,paddingTop:8,borderTop:`1px solid ${T.border}`,
-          fontSize:FS.caption,color:T.textFaint,lineHeight:1.5}}>
-          {lang==="nl"?"De resterende kans verdeelt zich over de overige 40 landen, die elk minder dan 0,5% scoorden."
-            :"The remaining probability is split across the other 40 nations, each scoring under 0.5%."}
-        </div>
       </div>
 
     </React.Fragment>
@@ -4641,11 +4617,6 @@ export default function App(){
                   {lang==="nl"?"Waar het model afwijkt van FIFA":"Where the model differs from FIFA"}
                 </span>
               </div>
-              <div style={{fontSize:FS.small,color:T.textSub,marginBottom:10,lineHeight:1.6}}>
-                {lang==="nl"
-                  ?"Welke landen schat het model hoger of lager in dan hun FIFA-positie, met de onderbouwing per land bij het aantikken?"
-                  :"Which countries does the model rate higher or lower than their FIFA position, with the reasoning shown per country on tap?"}
-              </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:12}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
                   <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>🙂</span>
@@ -4694,11 +4665,6 @@ export default function App(){
                   </div>
                 ))}
                 <div style={{marginTop:11,paddingTop:11,borderTop:`1px solid ${T.border}`}}>
-                  <div style={{fontSize:FS.caption,color:T.textSub,lineHeight:1.5,marginBottom:7}}>
-                    {lang==="nl"
-                      ?"De ruwe brondata is volledig in te zien en te downloaden:"
-                      :"The raw source data is fully viewable and downloadable:"}
-                  </div>
                   {[
                     {t:lang==="nl"?"Alle interlanduitslagen (49.365 wedstrijden, CSV)":"All international results (49,365 matches, CSV)",u:"https://github.com/sten-b/wk2026-voorspellingen/blob/main/data/results.csv"},
                     {t:lang==="nl"?"Ruwe modelinvoer per land (JSON)":"Raw per-country model inputs (JSON)",u:"https://github.com/sten-b/wk2026-voorspellingen/blob/main/data/source_inputs.json"},
