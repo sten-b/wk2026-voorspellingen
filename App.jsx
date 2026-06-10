@@ -130,6 +130,7 @@ const LANG = {
     tabs: { predictions:"Voorspellingen", bracket:"Groep", knockout:"Knockout", nations:"Landen", players:"Spelers", model:"Model" },
     tournamentLabel: "FIFA Wereldkampioenschap 2026",
     predictedChampion: "Voorspelde kampioen",
+    predictedWinner: "Sten's voorspelde winnaar",
     knockoutLink: "Knockout",
     groupStage: "Groepsfase",
     groupSub: "12 groepen · klik om een groep uit te klappen",
@@ -158,6 +159,7 @@ const LANG = {
     tabs: { predictions:"Predictions", bracket:"Group", knockout:"Knockout", nations:"Nations", players:"Players", model:"Model" },
     tournamentLabel: "FIFA World Cup 2026",
     predictedChampion: "Predicted champion",
+    predictedWinner: "Sten's predicted winner",
     knockoutLink: "Knockout",
     groupStage: "Group Stage",
     groupSub: "12 groups · click a group to expand",
@@ -4006,13 +4008,12 @@ function TournamentBanner({setTab}){
         <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:2,color:T.orange,textTransform:"uppercase",marginBottom:2}}>{tr.tournamentLabel}</div>
         <div style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:1,color:"rgba(255,255,255,0.5)",textTransform:"uppercase",marginBottom:8}}>USA · Canada · Mexico 2026</div>
         <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:10}}>{tr.appTitle}</div>
-        <div onClick={jumpKO} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.12)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:4,padding:"8px 12px",cursor:"pointer",backdropFilter:"blur(4px)"}}>
-          <span style={{fontSize:20}}>🏆</span>
-          <div>
-            <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
-            <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:"#fff"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,background:"rgba(255,255,255,0.10)",border:`1px solid rgba(224,112,0,0.55)`,borderRadius:6,padding:"16px 12px",backdropFilter:"blur(4px)"}}>
+          <span style={{fontSize:52,lineHeight:1}}>🏆</span>
+          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",letterSpacing:1,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
+          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:8}}>
+            <span style={{fontSize:24}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
           </div>
-          <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:WEIGHT.medium}}>{tr.knockoutLink} →</span>
         </div>
       </div>
     );
@@ -4021,13 +4022,12 @@ function TournamentBanner({setTab}){
     <div style={{background:"#1A3A6A",borderRadius:4,padding:"14px",marginBottom:12,borderLeft:`4px solid #FF5500`}}>
       <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.5,color:"#FF5500",textTransform:"uppercase",marginBottom:4}}>{tr.tournamentLabel}</div>
       <div style={{fontSize:FS.h1,fontWeight:WEIGHT.semibold,color:"#fff",lineHeight:1.2,marginBottom:8}}>{tr.appTitle}</div>
-      <div onClick={jumpKO} style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"8px 12px",cursor:"pointer"}}>
-        <span style={{fontSize:20}}>🏆</span>
-        <div>
-          <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.6)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{tr.predictedChampion}</div>
-          <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:"#FF5500"}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6,background:"rgba(255,255,255,0.1)",border:`1.5px solid #FF5500`,borderRadius:4,padding:"16px 12px"}}>
+        <span style={{fontSize:52,lineHeight:1}}>🏆</span>
+        <div style={{fontSize:FS.caption,color:"rgba(255,255,255,0.65)",letterSpacing:1,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
+        <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:"#FF5500",display:"flex",alignItems:"center",gap:8}}>
+          <span style={{fontSize:24}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
         </div>
-        <span style={{marginLeft:4,color:"#fff",fontSize:FS.small,fontWeight:WEIGHT.medium}}>{tr.knockoutLink} →</span>
       </div>
     </div>
   );
