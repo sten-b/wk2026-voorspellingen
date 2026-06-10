@@ -4335,67 +4335,80 @@ function PlayersTab({setTab}){
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // Orange-staged intro: white lion in the WC ring → grows on orange while turning black and
-    // PUSHING the orange away into black → anticipation crimp → explosive charge → fade to black.
+    // White lion in the WC ring → grows on orange while turning orange and PUSHING the orange away
+    // into black → settles on black → a transparent hole opens from the lion's mouth and grows to
+    // fill the screen for the transition. No fade-in, no blur on the lion.
     const t=[];
-    t.push(setTimeout(()=>setPhase(1),60));     // ring + white lion ease in (on orange)
+    t.push(setTimeout(()=>setPhase(1),60));     // ring + lion appear (instant, no fade)
     t.push(setTimeout(()=>setPhase(2),760));    // RWB sweep across
-    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows + turns black; orange pushed away to black; title
-    t.push(setTimeout(()=>setPhase(4),1980));   // anticipation crimp + glow (the "inhale")
-    t.push(setTimeout(()=>setPhase(5),2300));   // CHARGE: black lion surges at the viewer, glow blooms
-    t.push(setTimeout(()=>setPhase(6),2980));   // fade to black — lion dissolves at the peak
-    t.push(setTimeout(()=>onDone&&onDone(),3300));
+    t.push(setTimeout(()=>setPhase(3),1180));   // lion grows + turns orange; orange pushed away to black; title
+    t.push(setTimeout(()=>setPhase(4),2050));   // settle beat on black (the held hero shot)
+    t.push(setTimeout(()=>setPhase(5),2450));   // mouth-hole opens and grows as the lion grows
+    t.push(setTimeout(()=>onDone&&onDone(),3450));
     return()=>t.forEach(clearTimeout);
   },[]);
-
-  // Haptic on the anticipation beat — one physical accent before the charge.
-  React.useEffect(()=>{
-    if(phase===4&&typeof navigator!=="undefined"&&navigator.vibrate){try{navigator.vibrate(18);}catch(e){}}
-  },[phase]);
 
   // ── Background: warm orange through the intro; the push-away disc turns it black at phase 3.
   const bg=phase>=3?"#0D0D0D":"#E85100";
 
   // ── Lion colour: white → orange crossfade as it grows on orange (the "cool" turn). Orange stays
-  // visible against the black background during the charge.
+  // visible against the black background through the ending.
   const orangeOpacity=phase>=3?1:0;
 
-  // ── Lion scale: tiny core in the ring → stage → anticipation crimp → charges huge at the viewer.
+  // ── Lion scale: tiny core in the ring → stage → grows large while the mouth-hole opens.
   const lionScale=
-    phase>=6?12:          // dissolving as it fills
-    phase>=5?4.6:         // exploding toward the viewer
-    phase>=4?0.92:        // anticipation crimp (pull back before the surge)
+    phase>=5?5.2:         // grows large as the hole opens from its mouth
     phase>=3?1:           // settled at stage size
     phase>=1?0.3:0.16;    // tiny core inside the ring's hole
-  const lionZ=phase>=5?440:0;                          // surge toward the viewer (z-depth)
-  const lionLift=phase>=4?0:(phase>=3?-58:(phase>=1?-24:6));
-  const lionBlur=phase>=6?7:(phase===5?3:0);           // motion blur builds as it rushes in
-  const lionOpacity=phase>=6?0:(phase>=1?1:0);
+  const lionLift=phase>=5?0:(phase>=3?-58:(phase>=1?-24:6));
+  const lionOpacity=phase>=1?1:0;   // no fade-in/out — visible immediately, stays visible
+
+  // ── Mouth-hole gate (declared early so the push-disc can clear when it opens).
+  const holeOn=phase>=5;
 
   // ── Push-away disc: black circle expands from the lion's centre, shoving the orange off-screen.
+  // It hands off to the solid black layer; it must clear once the mouth-hole starts revealing the app.
   const pushScale=phase>=3?42:0;
-  const pushOpacity=phase>=3?1:0;
+  const pushOpacity=(phase>=3&&!holeOn)?1:0;
+
+  // ── Mouth-hole: a transparent circle opens from the lion's mouth and grows to fill the screen,
+  // revealing the app behind. Drawn by a disc with a huge black box-shadow; scaling it grows the hole.
+  const holeCx="50%";
+  const holeCy="56%";
+  const holeScale=holeOn?95:0.01;   // 24px disc → ~2280px hole, covers the screen for the transition
 
   // ── WC roundel ring + RWB bars: present in the intro, dissolve as the lion grows out.
   const ringOpacity=phase>=3?0:(phase>=1?1:0);
   const ringScale=phase>=3?1.25:(phase>=1?1:0.8);
   const sweepOpacity=phase===2?1:0;
 
-  // ── Title stage: resolves under the lion as the ring dissolves; clears on the charge.
-  const titleOpacity=phase>=4?0:(phase>=3?1:0);
+  // ── Title stage: resolves under the lion as the ring dissolves; clears when the hole opens.
+  const titleOpacity=phase>=5?0:(phase>=3?1:0);
   const titleLift=phase>=3?0:14;
 
-  // ── Glow bloom behind the lion at the anticipation + charge beats.
-  const glowOpacity=(phase===4||phase===5)?1:0;
-
-  const overlayOpacity=phase>=6?0:1;
+  const overlayOpacity=1;
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:bg,opacity:overlayOpacity,
-      transition:"background 0.5s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      background:"transparent",opacity:overlayOpacity,
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
       perspective:"1100px"}}>
+
+      {/* BLACK / ORANGE LAYER — orange wash during intro, solid black after the push-away.
+          The transparent mouth-hole is drawn by a separate scaling disc below. */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        background:bg,opacity:holeOn?0:1,
+        transition:"background 0.5s cubic-bezier(.4,0,.2,1), opacity 0.2s ease"}}/>
+
+      {/* MOUTH-HOLE — a disc at the lion's mouth whose huge black box-shadow fills the screen;
+          scaling the disc up grows the transparent hole until it covers everything. */}
+      {holeOn&&(
+        <div style={{position:"absolute",top:holeCy,left:holeCx,width:24,height:24,
+          marginLeft:-12,marginTop:-12,borderRadius:"50%",pointerEvents:"none",
+          background:"transparent",boxShadow:"0 0 0 9999px #0D0D0D",
+          transform:`scale(${holeScale})`,transformOrigin:"center",
+          transition:"transform 1s cubic-bezier(.5,0,.5,1)",willChange:"transform"}}/>
+      )}
 
       {/* Warm orange radial wash (visible during the intro) */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",
@@ -4408,18 +4421,6 @@ function AppLoader({onDone}){
         opacity:pushOpacity,transform:`scale(${pushScale})`,
         transition:"transform 0.8s cubic-bezier(.5,0,.6,1), opacity 0.3s ease",
         background:"#0D0D0D",willChange:"transform,opacity"}}/>
-
-      {/* Subtle radial vignette for depth */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase>=4?0.85:0.4,transition:"opacity 0.7s ease",
-        background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.6) 100%)"}}/>
-
-      {/* Glow bloom behind the lion at the anticipation + charge beats */}
-      <div style={{position:"absolute",width:260,height:260,borderRadius:"50%",pointerEvents:"none",
-        opacity:glowOpacity,transform:`scale(${glowOpacity?1.15:0.6})`,
-        transition:"opacity 0.4s ease, transform 0.55s cubic-bezier(.34,1.2,.5,1)",
-        background:"radial-gradient(circle, rgba(255,150,70,0.5) 0%, rgba(255,110,40,0.16) 45%, transparent 70%)",
-        filter:"blur(4px)"}}/>
 
       {/* RWB accent sweep */}
       <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
@@ -4462,18 +4463,16 @@ function AppLoader({onDone}){
         </div>
       </div>
 
-      {/* THE HERO LION — one node: white in the ring → turns black as it grows on orange → charges */}
-      <div style={{position:"absolute",perspective:"1100px",pointerEvents:"none",
-        opacity:lionOpacity,transition:"opacity 0.4s cubic-bezier(.4,0,.2,1)"}}>
+      {/* THE HERO LION — one node: white in the ring → turns orange as it grows on orange →
+          grows from its mouth while the transparent hole opens there. No fade, no blur. */}
+      <div style={{position:"absolute",pointerEvents:"none",opacity:lionOpacity}}>
         <div style={{position:"relative",width:108,height:108,
-          transform:`translateZ(${lionZ}px) translateY(${lionLift}px) scale(${lionScale})`,
-          filter:lionBlur?`blur(${lionBlur}px)`:"none",
+          transformOrigin:"50% 70%",
+          transform:`translateY(${lionLift}px) scale(${lionScale})`,
           transition:phase>=5
-            ? "transform 0.66s cubic-bezier(.42,0,.7,.6), filter 0.5s ease"   // explosive charge
-            : phase>=4
-              ? "transform 0.3s cubic-bezier(.4,0,.6,1), filter 0.3s ease"    // anticipation crimp (snappy)
-              : "transform 0.7s cubic-bezier(.34,1.2,.5,1), filter 0.3s ease",// settle into place
-          willChange:"transform,filter"}}>
+            ? "transform 1s cubic-bezier(.5,0,.5,1)"                  // grow as the hole opens
+            : "transform 0.7s cubic-bezier(.34,1.2,.5,1)",           // settle into place
+          willChange:"transform"}}>
           {/* white lion (in the ring + early growth) */}
           <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
             <LionEmoji color="#FFFFFF" size={108}/>
