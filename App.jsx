@@ -4346,9 +4346,9 @@ function AppLoader({onDone}){
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // faint RWB sweep appears in its initial style
-    t.push(setTimeout(()=>setPhase(3),2700));   // colours grow fuller and fully take over the background
-    t.push(setTimeout(()=>setPhase(4),4500));   // the tricolour fades out to the app
-    t.push(setTimeout(()=>onDone&&onDone(),5100));
+    t.push(setTimeout(()=>setPhase(3),2700));   // colours fade in and ripple like a flag, taking over the background
+    t.push(setTimeout(()=>setPhase(4),5000));   // the tricolour fades out to the app
+    t.push(setTimeout(()=>onDone&&onDone(),5600));
     return()=>t.forEach(clearTimeout);
   },[]);
 
@@ -4371,12 +4371,25 @@ function AppLoader({onDone}){
         background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
         transition:"opacity 1.1s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}/>
 
-      {/* RWB TAKEOVER — a full-bleed diagonal tricolour that smoothly fades in so the colours
-          grow fuller/brighter and fully take over the orange background, then fades out. */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase>=3?(phase>=4?0:1):0,
-        background:"linear-gradient(115deg,#E61D25 0%,#E61D25 38%,#FFFFFF 50%,#2A398D 62%,#2A398D 100%)",
-        transition:"opacity 1.4s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}/>
+      {/* RWB TAKEOVER — a softer red-white-blue tricolour that fades in and ripples like a
+          flag in the wind (a continuous 3D wave) as it expands to take over the background. */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
+        perspective:"1100px",perspectiveOrigin:"50% 45%",
+        opacity:phase>=3?(phase>=4?0:0.78):0,
+        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
+        <style>{`@keyframes flagWave{
+          0%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
+          25%{transform:rotateY(5deg) rotateX(-3deg) skewX(2.5deg) scale(1.26)}
+          50%{transform:rotateY(8deg) rotateX(3deg) skewX(-1.5deg) scale(1.22)}
+          75%{transform:rotateY(-4deg) rotateX(-4deg) skewX(2deg) scale(1.26)}
+          100%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
+        }`}</style>
+        <div style={{position:"absolute",inset:"-14%",
+          transformOrigin:"50% 50%",
+          animation:phase>=3?"flagWave 3.4s ease-in-out infinite":"none",
+          background:"linear-gradient(115deg,#E61D25 0%,#E61D25 34%,#FFFFFF 50%,#2A398D 66%,#2A398D 100%)",
+          willChange:"transform"}}/>
+      </div>
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
