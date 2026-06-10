@@ -4348,10 +4348,10 @@ function AppLoader({onDone}){
     // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
-    t.push(setTimeout(()=>setPhase(2),900));    // RWB accent sweep across
-    t.push(setTimeout(()=>setPhase(3),3000));   // RWB gradient engulfs the full screen (behind lockup)
-    t.push(setTimeout(()=>setPhase(4),3900));   // everything fades out to the app
-    t.push(setTimeout(()=>onDone&&onDone(),4400));
+    t.push(setTimeout(()=>setPhase(2),900));    // RWB wave appears (tilted, in the distance)
+    t.push(setTimeout(()=>setPhase(3),2900));   // the wave rises and spreads in 3D to fill the screen
+    t.push(setTimeout(()=>setPhase(4),4100));   // everything fades out to the app
+    t.push(setTimeout(()=>onDone&&onDone(),4600));
     return()=>t.forEach(clearTimeout);
   },[]);
 
@@ -4370,17 +4370,23 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* RWB accent sweep */}
-      <div style={{position:"absolute",inset:0,opacity:sweepOpacity,
-        transition:"opacity 0.6s cubic-bezier(.4,0,.2,1)",pointerEvents:"none",
-        background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)"}}/>
-
-      {/* RWB ENGULF — red-white-blue gradient grows from the centre to fill the whole
-          screen at the end, sitting BEHIND the lion + title lockup. */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:engulf?1:0,transform:engulf?"scale(1)":"scale(0.15)",transformOrigin:"50% 45%",
-        transition:"opacity 0.9s cubic-bezier(.4,0,.2,1), transform 1.0s cubic-bezier(.5,0,.2,1)",
-        background:"radial-gradient(circle at 50% 45%, #E61D25 0%, #E61D25 28%, #FFFFFF 50%, #2A398D 74%, #1A2A6E 100%)"}}/>
+      {/* RWB 3D WAVE — the existing red-white-blue diagonal sweep spreads as a wave
+          (tilting through 3D space) to fill the whole screen at the end, behind the lockup. */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
+        perspective:"900px",perspectiveOrigin:"50% 60%",
+        opacity:phase>=2?1:0,transition:"opacity 0.5s ease"}}>
+        <div style={{position:"absolute",left:"-40%",top:"-40%",width:"180%",height:"180%",
+          transformOrigin:"50% 100%",
+          transform:engulf
+            ? "rotateX(0deg) rotateZ(-12deg) translateY(0%) scale(1.25)"
+            : "rotateX(72deg) rotateZ(-12deg) translateY(38%) scale(0.9)",
+          opacity:engulf?1:0.85,
+          transition:"transform 1.1s cubic-bezier(.45,.05,.2,1), opacity 0.9s ease",
+          background:engulf
+            ? "linear-gradient(115deg,#E61D25 0%,#E61D25 30%,#FFFFFF 50%,#2A398D 70%,#1A2A6E 100%)"
+            : "linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
+          willChange:"transform,opacity"}}/>
+      </div>
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
