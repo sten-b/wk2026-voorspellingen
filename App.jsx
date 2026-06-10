@@ -4242,20 +4242,25 @@ function PlayersTab({setTab}){
 
       <h2 style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,margin:"2px 0 12px",letterSpacing:-0.5}}>{lang==="nl"?"FPL-team":"FPL team"}</h2>
 
-      {/* Budget + projection summary — real FIFA World Cup Fantasy 2026 prices */}
-      <div style={{display:"flex",gap:8,marginBottom:12}}>
-        <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
-          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Budget":"Budget"}</div>
-          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.text,lineHeight:1}}>${BEST_XI.spent.toFixed(1)}m<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub}}> / ${BEST_XI.budget.toFixed(0)}m</span></div>
-        </div>
-        <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
-          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Proj. basiself":"Proj. XI"}</div>
-          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.orange,lineHeight:1}}>{Math.round(BEST_XI.projXI)}<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub}}> {lang==="nl"?"pnt":"pts"}</span></div>
-        </div>
-        <div style={{flex:1,background:T.card,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 11px"}}>
-          <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.8,textTransform:"uppercase",color:T.textFaint,marginBottom:3}}>{lang==="nl"?"Formatie":"Formation"}</div>
-          <div style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:T.text,lineHeight:1}}>{BEST_XI.formation}</div>
-        </div>
+      {/* Budget + projection summary — single stat strip in the app's house style */}
+      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:8,
+        padding:"11px 6px",marginBottom:10,display:"flex",flexWrap:"nowrap"}}>
+        {[
+          {val:<span>${BEST_XI.spent.toFixed(1)}m<span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textFaint}}> / {BEST_XI.budget.toFixed(0)}</span></span>,
+           lab:lang==="nl"?"Budget":"Budget",col:T.text},
+          {val:<span>{Math.round(BEST_XI.projXI)}</span>,
+           lab:lang==="nl"?"Proj. basiself":"Proj. XI",col:T.orange},
+          {val:<span>{BEST_XI.formation}</span>,
+           lab:lang==="nl"?"Formatie":"Formation",col:T.text},
+        ].map((c,i,arr)=>(
+          <div key={i} style={{flex:"1 1 0",minWidth:0,padding:"0 6px",display:"flex",
+            flexDirection:"column",alignItems:"center",
+            borderRight:i<arr.length-1?`1px solid ${T.border}`:"none"}}>
+            <span style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:c.col,lineHeight:1.1,whiteSpace:"nowrap"}}>{c.val}</span>
+            <span style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,letterSpacing:0.4,textTransform:"uppercase",
+              color:T.textFaint,marginTop:3,textAlign:"center",lineHeight:1.2}}>{c.lab}</span>
+          </div>
+        ))}
       </div>
       <div style={{fontSize:FS.micro,color:T.textFaint,lineHeight:1.5,marginBottom:12}}>
         {lang==="nl"
