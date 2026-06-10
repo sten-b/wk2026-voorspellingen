@@ -3024,25 +3024,42 @@ function ModelViz({scrollTo,onScrolled}={}){
         {/* compact step flow — each chip jumps to its section below */}
         <div style={{display:"flex",alignItems:"stretch",gap:0,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
           {[
-            {n:"1",t:lang==="nl"?"Factoren":"Factors",sec:"data"},
-            {n:"2",t:lang==="nl"?"Score":"Score",sec:"score"},
-            {n:"3",t:lang==="nl"?"Ranglijst":"Ranking",sec:"ranking"},
-            {n:"4",t:lang==="nl"?"Uitslag":"Result",sec:"result"},
-            {n:"5",t:lang==="nl"?"Titelkans":"Odds",sec:"odds"},
-          ].map((s,i)=>(
-            <div key={i} role="button" tabIndex={0} onClick={()=>goStep(s.sec)}
-              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,
-              padding:"9px 2px",borderLeft:i>0?`1px solid ${T.border}`:"none",background:T.card,cursor:"pointer"}}>
-              <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,color:orange,lineHeight:1}}>{s.n}</span>
-              <span style={{fontSize:FS.micro,fontWeight:WEIGHT.medium,color:T.textSub,textAlign:"center",lineHeight:1.2,letterSpacing:0.2}}>{s.t}</span>
-            </div>
+            {t:lang==="nl"?"Brondata":"Source data",sec:"data",
+             icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
+            {t:lang==="nl"?"Model":"Model",sec:"score",
+             icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></>},
+            {t:lang==="nl"?"Berekening":"Calculation",sec:"ranking",
+             icon:<><rect x="5" y="2.5" width="14" height="19" rx="2.2"/><rect x="7.5" y="5" width="9" height="3" rx="0.8"/><path d="M8.5 12h0M12 12h0M15.5 12h0M8.5 15h0M12 15h0M15.5 15h0M8.5 18h0M12 18h0M15.5 18h0"/></>},
+            {t:lang==="nl"?"Score":"Score",sec:"result",
+             icon:<><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></>},
+          ].map((s,i,arr)=>(
+            <React.Fragment key={i}>
+              <div role="button" tabIndex={0} onClick={()=>goStep(s.sec)}
+                style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+                padding:"11px 2px",background:T.card,cursor:"pointer"}}>
+                <div style={{width:30,height:30,borderRadius:8,flexShrink:0,
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  background:T.id==="orangeLion"?"rgba(255,255,255,0.16)":(T.id==="dark"?"rgba(255,85,0,0.12)":T.orangeFaint)}}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke={T.id==="orangeLion"?"#FFFFFF":orange} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                    {s.icon}
+                  </svg>
+                </div>
+                <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.textSub,textAlign:"center",lineHeight:1.2,letterSpacing:0.2}}>{s.t}</span>
+              </div>
+              {i<arr.length-1&&(
+                <div style={{display:"flex",alignItems:"center",color:T.textFaint,flexShrink:0,padding:"0 1px"}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </div>
+              )}
+            </React.Fragment>
           ))}
         </div>
       </div>
 
       {/* STEP 1 — FACTORS (collapsed: label + weight; tap to expand) */}
       <div ref={el=>stepRefs.current.data=el}/>
-      {SL(lang==="nl"?"Stap 1 · De vijf bouwstenen":"Step 1 · The five building blocks","layers")}
+      {SL(lang==="nl"?"Brondata":"Source data","layers")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         overflow:"hidden",marginBottom:16}}>
         {[...FACTORS].sort((a,b)=>b.pct-a.pct).map((f,i)=>(
@@ -3073,7 +3090,7 @@ function ModelViz({scrollTo,onScrolled}={}){
 
       {/* STEP 2 — CALCULATION BRIDGE */}
       <div ref={el=>stepRefs.current.score=el}/>
-      {SL(lang==="nl"?"Stap 2 · Naar één score":"Step 2 · Into one score","sigma")}
+      {SL(lang==="nl"?"Model":"Model","sigma")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         {/* team selector */}
@@ -3144,7 +3161,7 @@ function ModelViz({scrollTo,onScrolled}={}){
 
       {/* STEP 3 — RANKING (each row expands to show its calculation) */}
       <div ref={el=>stepRefs.current.ranking=el}/>
-      {SL(lang==="nl"?"Stap 3 · De ranglijst":"Step 3 · The ranking","bars")}
+      {SL(lang==="nl"?"Berekening":"Calculation","bars")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         {TOP8.map((t,i)=>{
@@ -3168,7 +3185,7 @@ function ModelViz({scrollTo,onScrolled}={}){
 
       {/* STEP 4 — MATCH RESULT (model 2) */}
       <div ref={el=>stepRefs.current.result=el}/>
-      {SL(lang==="nl"?"Stap 4 · De uitslag":"Step 4 · The result","arrow")}
+      {SL(lang==="nl"?"Score":"Score","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         {/* compact margin rule */}
@@ -3264,28 +3281,6 @@ function ModelViz({scrollTo,onScrolled}={}){
             </div>
           );
         })()}
-      </div>
-
-      {/* STEP 5 — TITLE ODDS */}
-      <div ref={el=>stepRefs.current.odds=el}/>
-      {SL(lang==="nl"?"Stap 5 · De titelkansen":"Step 5 · The title odds","dice")}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
-        padding:"12px",marginBottom:16}}>
-        {[...TOP8].sort((a,b)=>b.pct-a.pct).map((r,i,arr)=>{
-          const max=46;
-          return(
-            <div key={r.t} style={{display:"flex",alignItems:"center",gap:8,marginBottom:i<arr.length-1?9:0}}>
-              <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.textFaint,width:14,flexShrink:0,textAlign:"right"}}>{i+1}</span>
-              <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{r.f}</span>
-              <span style={{fontSize:FS.small,fontWeight:WEIGHT.medium,color:T.text,width:66,flexShrink:0,
-                overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(r.t)}</span>
-              <div style={{flex:1,height:12,background:T.bg,borderRadius:4,overflow:"hidden"}}>
-                <div style={{width:`${r.pct/max*100}%`,height:"100%",borderRadius:4,background:i===0?orange:blue}}/>
-              </div>
-              <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.text,flexShrink:0,minWidth:36,textAlign:"right"}}>{r.pct}%</span>
-            </div>
-          );
-        })}
       </div>
 
     </React.Fragment>
@@ -4082,11 +4077,13 @@ function PlayersTab({setTab}){
         <div style={{display:"flex",alignItems:"stretch",margin:"4px 0 16px",
           border:`1px solid ${T.border}`,borderRadius:10,overflow:"hidden",background:T.card}}>
           {[
-            {nl:"Databronnen",en:"Data sources",sec:"data",
+            {nl:"Brondata",en:"Source data",sec:"data",
              icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
-            {nl:"Berekening",en:"Calculation",sec:"score",
+            {nl:"Model",en:"Model",sec:"score",
+             icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></>},
+            {nl:"Berekening",en:"Calculation",sec:"ranking",
              icon:<><rect x="5" y="2.5" width="14" height="19" rx="2.2"/><rect x="7.5" y="5" width="9" height="3" rx="0.8"/><path d="M8.5 12h0M12 12h0M15.5 12h0M8.5 15h0M12 15h0M15.5 15h0M8.5 18h0M12 18h0M15.5 18h0"/></>},
-            {nl:"Uitslag",en:"Result",sec:"result",
+            {nl:"Score",en:"Score",sec:"result",
              icon:<><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></>},
           ].map((s,i,arr)=>(
             <React.Fragment key={i}>
@@ -4563,25 +4560,24 @@ export default function App(){
               {/* ── MODEL EXPLANATION + VISUALISATIONS (sections 1-4) ── */}
               <ModelViz scrollTo={modelSection} onScrolled={()=>setModelSection(null)}/>
 
-              {/* ── OVER / UNDERPERFORMERS (section 5) ── */}
-              <div style={{display:"flex",alignItems:"baseline",gap:8,marginTop:24,marginBottom:12}}>
-                <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",color:T.id==="dark"?T.orange:(T.id==="orangeLion"?"#FFFFFF":"#E07000"),flexShrink:0}}>
-                  {lang==="nl"?"Stap 6":"Step 6"}
-                </span>
+              {/* ── OVER / UNDERPERFORMERS — a separate section, not a step ── */}
+              <div style={{display:"flex",alignItems:"center",gap:8,marginTop:28,marginBottom:12,
+                paddingBottom:6,borderBottom:`2px solid ${T.border}`}}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={T.id==="dark"?T.orange:(T.id==="orangeLion"?"#FFFFFF":"#E07000")} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
                 <span style={{fontSize:FS.h2,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.3,lineHeight:1.1}}>
                   {lang==="nl"?"Waar het model afwijkt van FIFA":"Where the model differs from FIFA"}
                 </span>
               </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:12}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
-                  <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>🙂</span>
+                  <span style={{fontSize:15,lineHeight:1,flexShrink:0,color:T.green,fontWeight:WEIGHT.bold}}>☺</span>
                   <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.green}}>{tr.overTitle}</span>
                 </div>
                 {OUTLOOK.over.map(d=><OutlookRow key={d.team} d={d} type="over" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
               </div>
               <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,overflow:"hidden",marginBottom:20}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,padding:"8px 12px",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
-                  <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>🙁</span>
+                  <span style={{fontSize:15,lineHeight:1,flexShrink:0,color:T.red,fontWeight:WEIGHT.bold}}>☹</span>
                   <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:T.red}}>{tr.underTitle}</span>
                 </div>
                 {OUTLOOK.under.map(d=><OutlookRow key={d.team} d={d} type="under" open={openOutlook[d.team]} onToggle={()=>toggleOutlook(d.team)}/>)}
