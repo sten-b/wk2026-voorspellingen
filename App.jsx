@@ -4089,7 +4089,13 @@ function PlayersTab({setTab}){
             </React.Fragment>
           ))}
         </div>
-        <div style={{marginTop:18}}>
+      </div>
+
+      {/* Predicted-champion banner (shared with the Group tab) — the model's payoff, right under the model intro */}
+      <TournamentBanner setTab={setTab}/>
+
+      {/* ── CONTEXT ZONE: the tournament + news/injuries grouped together ── */}
+        <div style={{marginTop:24,marginBottom:14}}>
           <div style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:1.5,textTransform:"uppercase",
             color:T.id==="orangeLion"?T.textSub:T.orange,marginBottom:4}}>
             {lang==="nl"?"Het toernooi":"The tournament"}
@@ -4103,7 +4109,6 @@ function PlayersTab({setTab}){
               :"For the first time with 48 nations across three host countries — the biggest World Cup ever. Spain are favourites, Argentina defend the title with Messi, and outsiders like Morocco could surprise."}
           </p>
         </div>
-      </div>
 
       {/* News / Injuries — compact segmented control, under the intro */}
       <div style={{marginBottom:18}}>
@@ -4137,9 +4142,6 @@ function PlayersTab({setTab}){
         {infoPanel==="news"&&<div style={{marginTop:10}}><NewsSection/></div>}
         {infoPanel==="injuries"&&<div style={{marginTop:10}}><InjuriesSection/></div>}
       </div>
-
-      {/* Predicted-champion banner (shared with the Group tab) */}
-      <TournamentBanner setTab={setTab}/>
 
       {/* View switcher: Nations / Players / FPL team */}
       <div style={{display:"flex",gap:0,marginBottom:18,
