@@ -4345,16 +4345,15 @@ function AppLoader({onDone}){
     // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
-    t.push(setTimeout(()=>setPhase(2),900));    // RWB wave appears (tilted, in the distance)
-    t.push(setTimeout(()=>setPhase(3),2900));   // the wave rises and spreads in 3D to fill the screen
-    t.push(setTimeout(()=>setPhase(4),4100));   // everything fades out to the app
-    t.push(setTimeout(()=>onDone&&onDone(),4600));
+    t.push(setTimeout(()=>setPhase(2),900));    // RWB sweep appears in its initial vague style
+    t.push(setTimeout(()=>setPhase(3),2900));   // the colours grow fuller and brighter (toward a Dutch tricolour)
+    t.push(setTimeout(()=>setPhase(4),4300));   // the sweep fades out to the app
+    t.push(setTimeout(()=>onDone&&onDone(),4900));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const sweepOpacity=phase===2?1:0;
-  const engulf=phase>=3;           // RWB gradient has spread to fill the screen
+  const bright=phase>=3;          // the RWB colours have swelled to full/bright (Dutch tricolour); stay full through the fade
   const overlayOpacity=phase>=4?0:1;   // clean fade-out to the app at the very end
 
   return(
@@ -4367,23 +4366,16 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* RWB 3D WAVE — the existing red-white-blue diagonal sweep spreads as a wave
-          (tilting through 3D space) to fill the whole screen at the end, behind the lockup. */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
-        perspective:"900px",perspectiveOrigin:"50% 60%",
-        opacity:phase>=2?1:0,transition:"opacity 0.5s ease"}}>
-        <div style={{position:"absolute",left:"-40%",top:"-40%",width:"180%",height:"180%",
-          transformOrigin:"50% 100%",
-          transform:engulf
-            ? "rotateX(0deg) rotateZ(-12deg) translateY(0%) scale(1.25)"
-            : "rotateX(72deg) rotateZ(-12deg) translateY(38%) scale(0.9)",
-          opacity:engulf?1:0.85,
-          transition:"transform 1.1s cubic-bezier(.45,.05,.2,1), opacity 0.9s ease",
-          background:engulf
-            ? "linear-gradient(115deg,#E61D25 0%,#E61D25 30%,#FFFFFF 50%,#2A398D 70%,#1A2A6E 100%)"
-            : "linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
-          willChange:"transform,opacity"}}/>
-      </div>
+      {/* RWB SWEEP — the existing red-white-blue diagonal accent. It keeps its place and
+          style, then grows fuller and brighter (the colours intensify toward a Dutch
+          tricolour), and finally fades. No movement: only the colours swell. */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:phase>=2?(phase>=4?0:1):0,
+        background:bright
+          ? "linear-gradient(115deg,transparent 6%,#E61D25 24%,#E61D25 40%,#FFFFFF 50%,#2A398D 60%,#2A398D 76%,transparent 94%)"
+          : "linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
+        transition:"background 1.2s cubic-bezier(.4,0,.2,1), opacity 0.9s cubic-bezier(.4,0,.2,1)",
+        willChange:"opacity,background"}}/>
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
