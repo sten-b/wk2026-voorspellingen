@@ -3037,10 +3037,8 @@ function ModelViz({scrollTo,onScrolled}={}){
           {[
             {t:lang==="nl"?"Brondata":"Source data",sec:"data",
              icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
-            {t:lang==="nl"?"Model":"Model",sec:"score",
+            {t:lang==="nl"?"Team uitslag":"Team result",sec:"score",
              icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></>},
-            {t:lang==="nl"?"Berekening":"Calculation",sec:"ranking",
-             icon:<><rect x="5" y="2.5" width="14" height="19" rx="2.2"/><rect x="7.5" y="5" width="9" height="3" rx="0.8"/><path d="M8.5 12h0M12 12h0M15.5 12h0M8.5 15h0M12 15h0M15.5 15h0M8.5 18h0M12 18h0M15.5 18h0"/></>},
             {t:lang==="nl"?"Score":"Score",sec:"result",
              icon:<><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></>},
           ].map((s,i,arr)=>(
@@ -3071,7 +3069,7 @@ function ModelViz({scrollTo,onScrolled}={}){
 
       {/* STEP 1 — FACTORS (collapsed: label + weight; tap to expand) */}
       <div ref={el=>stepRefs.current.data=el}/>
-      {SL(lang==="nl"?"Brondata":"Source data","layers")}
+      {SL(lang==="nl"?"Data":"Data","layers")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         overflow:"hidden",marginBottom:16}}>
         {[...FACTORS].sort((a,b)=>b.pct-a.pct).map((f,i)=>(
@@ -3102,7 +3100,7 @@ function ModelViz({scrollTo,onScrolled}={}){
 
       {/* STEP 2 — CALCULATION BRIDGE */}
       <div ref={el=>stepRefs.current.score=el}/>
-      {SL(lang==="nl"?"Model":"Model","sigma")}
+      {SL(lang==="nl"?"Berekening":"Calculation","sigma")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         {/* team selector */}
@@ -3172,32 +3170,9 @@ function ModelViz({scrollTo,onScrolled}={}){
       </div>
 
       {/* STEP 3 — RANKING (each row expands to show its calculation) */}
-      <div ref={el=>stepRefs.current.ranking=el}/>
-      {SL(lang==="nl"?"Berekening":"Calculation","bars")}
-      <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
-        padding:"12px",marginBottom:16}}>
-        {TOP8.map((t,i)=>{
-          const maxSc=84;
-          return(
-            <div key={t.t} style={{display:"flex",alignItems:"center",gap:8,
-              padding:"4px 4px",marginBottom:i<7?6:0}}>
-              <span style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,color:T.textSub,width:18,flexShrink:0,textAlign:"right"}}>{t.mo}</span>
-              <span style={{fontSize:14,lineHeight:1,flexShrink:0}}>{t.f}</span>
-              <span style={{fontSize:FS.small,fontWeight:WEIGHT.medium,color:T.text,width:66,flexShrink:0,
-                overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tn(t.t)}</span>
-              <div style={{flex:1,height:8,background:T.bg,borderRadius:4,overflow:"hidden"}}>
-                <div style={{width:`${t.sc/maxSc*100}%`,height:"100%",borderRadius:4,
-                  background:i===0?orange:blue}}/>
-              </div>
-              <span style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,color:T.text,flexShrink:0,minWidth:28,textAlign:"right"}}>{t.sc}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* STEP 4 — MATCH RESULT (model 2) */}
+      {/* STEP 3 — MATCH RESULT (model 2) */}
       <div ref={el=>stepRefs.current.result=el}/>
-      {SL(lang==="nl"?"Score":"Score","arrow")}
+      {SL(lang==="nl"?"Uitslag":"Result","arrow")}
       <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,
         padding:"12px",marginBottom:16}}>
         {/* compact margin rule */}
@@ -4091,10 +4066,8 @@ function PlayersTab({setTab}){
           {[
             {nl:"Brondata",en:"Source data",sec:"data",
              icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
-            {nl:"Model",en:"Model",sec:"score",
+            {nl:"Team uitslag",en:"Team result",sec:"score",
              icon:<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></>},
-            {nl:"Berekening",en:"Calculation",sec:"ranking",
-             icon:<><rect x="5" y="2.5" width="14" height="19" rx="2.2"/><rect x="7.5" y="5" width="9" height="3" rx="0.8"/><path d="M8.5 12h0M12 12h0M15.5 12h0M8.5 15h0M12 15h0M15.5 15h0M8.5 18h0M12 18h0M15.5 18h0"/></>},
             {nl:"Score",en:"Score",sec:"result",
              icon:<><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></>},
           ].map((s,i,arr)=>(
