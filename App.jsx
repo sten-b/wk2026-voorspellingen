@@ -1712,29 +1712,26 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
         <Chevron open={expanded} color={T.textSub}/>
       </div>
 
-      {/* Summary bottom bar — shown when COLLAPSED: in-form (left) + qualifiers (right) */}
+      {/* Summary bottom bar — shown when COLLAPSED: non-qualifiers (red, left) → "qualifies" → qualifiers (green, right) */}
       {!expanded&&(
         <div onClick={()=>setOpenGroup(g.id)}
-          style={{display:"flex",alignItems:"center",gap:10,padding:"9px 13px",
+          style={{display:"flex",alignItems:"center",gap:7,padding:"9px 13px",
             borderTop:`1px solid ${T.border}`,cursor:"pointer",background:T.bg,flexWrap:"nowrap",overflow:"hidden"}}>
-          {/* In-form (left) */}
-          {bestForm&&(()=>{
-            const dev=formDev(bestForm);
-            return(
-              <div style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
-                <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"in vorm":"in form"}</span>
-                <span style={{fontSize:15,lineHeight:1}}>{FLAGS[bestForm]}</span>
-                <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):T.textFaint}}>{dev>0?"+":""}{dev}</span>
-              </div>
-            );
-          })()}
-          {/* Qualifiers (right): green arrow + two flags */}
-          <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0,marginLeft:"auto"}}>
-            <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
-            <span style={{fontSize:FS.caption,color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"kwalificeren":"to qualify"}</span>
+          {/* Non-qualifiers (left): red down-arrow + the bottom two flags */}
+          <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
+            <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 9L0 5H2.5V0H4.5V5H7L3.5 9Z" fill={OL?"#FFD0C7":"#C0392B"}/></svg>
+            {sorted.slice(2).map(t=>(
+              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0,opacity:0.85}}>{FLAGS[t]}</span>
+            ))}
+          </div>
+          {/* Divider word */}
+          <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:T.textFaint,whiteSpace:"nowrap",margin:"0 auto",letterSpacing:0.3,textTransform:"uppercase"}}>{lang==="nl"?"kwalificeert":"qualifies"}</span>
+          {/* Qualifiers (right): two flags + green up-arrow */}
+          <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
             {sorted.slice(0,2).map(t=>(
               <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
             ))}
+            <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
           </div>
         </div>
       )}
@@ -1767,8 +1764,19 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
             </div>
           );
         })}
+        {/* In-form country — at the foot of the standings */}
+        {bestForm&&(()=>{
+          const dev=formDev(bestForm);
+          return(
+            <div style={{display:"flex",alignItems:"center",gap:6,padding:"7px 12px",borderTop:`1px solid ${T.border}`,background:T.bg}}>
+              <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"In vorm":"In form"}</span>
+              <span style={{fontSize:14,lineHeight:1}}>{FLAGS[bestForm]}</span>
+              <span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(bestForm,lang)}</span>
+              <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):T.textFaint,marginLeft:"auto"}}>{dev>0?"+":""}{dev}</span>
+            </div>
+          );
+        })()}
       </div>
-      {/* Predictions — collapsible, folded by default */}
       <div onClick={()=>setPredOpen(o=>!o)}
         style={{padding:"9px 12px",background:T.card,borderTop:`1px solid ${T.border}`,
           display:"flex",alignItems:"center",gap:8,cursor:"pointer"}}>
@@ -4345,8 +4353,8 @@ function AppLoader({onDone}){
     // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
-    t.push(setTimeout(()=>setPhase(2),900));    // faint RWB sweep appears in its initial style
-    t.push(setTimeout(()=>setPhase(3),2700));   // colours fade in and ripple like a flag, taking over the background
+    t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
+    t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples, taking over the orange
     t.push(setTimeout(()=>setPhase(4),5000));   // the tricolour fades out to the app
     t.push(setTimeout(()=>onDone&&onDone(),5600));
     return()=>t.forEach(clearTimeout);
@@ -4365,14 +4373,9 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* RWB SWEEP — the existing red-white-blue diagonal accent, in its original place/style. */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:phase===2?1:(phase>=3?0.0:0),
-        background:"linear-gradient(115deg,transparent 32%,rgba(230,29,37,0.55) 42%,rgba(255,255,255,0.7) 50%,rgba(42,57,141,0.55) 58%,transparent 68%)",
-        transition:"opacity 1.1s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}/>
-
-      {/* RWB TAKEOVER — a softer red-white-blue tricolour that fades in and ripples like a
-          flag in the wind (a continuous 3D wave) as it expands to take over the background. */}
+      {/* RWB TAKEOVER — the background starts plain orange, then this softer red-white-blue
+          tricolour fades in and ripples like a flag in the wind (a continuous 3D wave),
+          merging over the orange to take over the screen. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
         perspective:"1100px",perspectiveOrigin:"50% 45%",
         opacity:phase>=3?(phase>=4?0:0.78):0,
