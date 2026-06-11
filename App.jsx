@@ -2575,11 +2575,11 @@ const DARK_HORSES = [
 // ── BEST XI — Fantasy WK-team (budget-geoptimaliseerd) ───────────────────────
 // Echte FIFA World Cup Fantasy 2026-prijzen + RotoWire groepsfase-projecties
 // (verwachte punten over 3 groepsduels). Squad: 2 GK / 5 VER / 5 MID / 3 AANV,
-// totaal $100.0m / $100m budget. Formatie 1-3-4-3. Aanvoerder: Oyarzabal.
+// totaal $99.4m / $100m budget. Formatie 1-3-4-3. Aanvoerder: Oyarzabal.
 // Bron: play.fifa.com (prijzen) + RotoWire WC Fantasy rankings (9 juni 2026).
 const BEST_XI = {
   formation: "1-3-4-3",
-  budget: 100.0, spent: 96.4, projXI: 222.6, captain: "Mikel Oyarzabal",
+  budget: 100.0, spent: 99.4, projXI: 223.9, captain: "Mikel Oyarzabal",
   players: [
     { pos:"GK", row:0, name:"Bart Verbruggen", price:"$4.7m", proj:17.5, value:"$4.7m", team:"Netherlands", age:23, flag:"🇳🇱", xG:0, xA:0,
       st:{}, stats:[{v:"$4.7m",nl:"prijs",en:"price"},{v:"17.5",nl:"proj. punten",en:"proj. pts"},{v:"Oranje",nl:"#1 keeper",en:"#1 keeper"}],
@@ -2587,9 +2587,9 @@ const BEST_XI = {
     { pos:"DEF", row:1, name:"Joshua Kimmich", price:"$5.5m", proj:18.7, value:"$5.5m", team:"Germany", age:31, flag:"🇩🇪", xG:0, xA:0,
       st:{}, stats:[{v:"$5.5m",nl:"prijs",en:"price"},{v:"18.7",nl:"proj. punten",en:"proj. pts"},{v:"Duitsland",nl:"set-pieces",en:"set pieces"}],
       note:{nl:"Levert aanvallend rendement vanaf rechts en neemt corners voor Duitsland, dat tegen Curaçao, Ecuador en Ivoorkust favoriet is voor clean sheets. Verdediger met middenvelder-opbrengst.",en:"Provides attacking returns from the right and takes Germany's corners; they are clean-sheet favourites against Curaçao, Ecuador and Ivory Coast. A defender with midfielder upside."} },
-    { pos:"DEF", row:1, name:"Nathaniel Brown", price:"$4.7m", proj:18.6, value:"$4.7m", team:"Germany", age:22, flag:"🇩🇪", xG:0, xA:0,
-      st:{}, stats:[{v:"$4.7m",nl:"prijs",en:"price"},{v:"18.6",nl:"proj. punten",en:"proj. pts"},{v:"<1%",nl:"eigendom",en:"owned"}],
-      note:{nl:"Aanvallende linksback in een sterke Duitse defensie, op vrijwel niemands team (<1%). Goedkope enabler met clean-sheet- én bonuspotentieel: een echte differential.",en:"Attacking left-back in a strong German defence, on almost no one's team (<1%). A cheap enabler with clean-sheet and bonus upside: a genuine differential."} },
+    { pos:"DEF", row:1, name:"Denzel Dumfries", price:"$5.7m", proj:19.0, value:"$5.7m", team:"Netherlands", age:30, flag:"🇳🇱", xG:0, xA:0,
+      st:{}, stats:[{v:"$5.7m",nl:"prijs",en:"price"},{v:"19.0",nl:"proj. punten",en:"proj. pts"},{v:"Oranje",nl:"clean sheets",en:"clean sheets"}],
+      note:{nl:"Constante aanvallende dreiging die graag de rechterflank opstormt: 2 goals en 2 assists in de kwalificatie en 14 schoten, het vierde-meeste van alle verdedigers. Koppelt mooi met keeper Verbruggen — houdt Oranje de nul, dan scoor je dubbel.",en:"A constant attacking threat who loves to bomb down the right: 2 goals and 2 assists in qualifying plus 14 shots, the fourth-most of any defender. Pairs neatly with keeper Verbruggen — a Netherlands clean sheet scores you twice."} },
     { pos:"DEF", row:1, name:"Nicolás Tagliafico", price:"$4.3m", proj:18.6, value:"$4.3m", team:"Argentina", age:33, flag:"🇦🇷", xG:0, xA:0,
       st:{}, stats:[{v:"$4.3m",nl:"prijs",en:"price"},{v:"18.6",nl:"proj. punten",en:"proj. pts"},{v:"Argentinië",nl:"clean sheets",en:"clean sheets"}],
       note:{nl:"Vaste linksback van wereldkampioen Argentinië, dat met Otamendi en Romero structureel clean sheets levert. Voor $4.3m een topverdediger qua waarde.",en:"Regular left-back for world champions Argentina, who keep clean sheets structurally with Otamendi and Romero. At $4.3m a top-value defender."} },
@@ -2599,9 +2599,9 @@ const BEST_XI = {
     { pos:"MID", row:2, name:"Bruno Fernandes", price:"$8.5m", proj:20.9, value:"$8.5m", team:"Portugal", age:31, flag:"🇵🇹", xG:0, xA:0,
       st:{}, stats:[{v:"$8.5m",nl:"prijs",en:"price"},{v:"20.9",nl:"proj. punten",en:"proj. pts"},{v:"Pen + corners",nl:"standaardsituaties",en:"set pieces"}],
       note:{nl:"Neemt penalty's, vrije trappen én corners voor Portugal: enorme floor aan punten via assists en bonus. Tegen Congo DR en Uzbekistan een gunstige opening.",en:"Takes penalties, free-kicks and corners for Portugal: a huge points floor via assists and bonus. A favourable opening against DR Congo and Uzbekistan."} },
-    { pos:"MID", row:2, name:"Kevin De Bruyne", price:"$7.5m", proj:20.2, value:"$7.5m", team:"Belgium", age:34, flag:"🇧🇪", xG:0, xA:0,
-      st:{}, stats:[{v:"$7.5m",nl:"prijs",en:"price"},{v:"20.2",nl:"proj. punten",en:"proj. pts"},{v:"5%",nl:"eigendom",en:"owned"}],
-      note:{nl:"Op slechts 5% eigendom een uitgelezen differential: België is favoriet in groep G en De Bruyne levert de assists. Hoog plafond tegen een laag bezit.",en:"At just 5% owned, a prime differential: Belgium are favourites in Group G and De Bruyne supplies the assists. High ceiling at low ownership."} },
+    { pos:"MID", row:2, name:"Michael Olise", price:"$9.5m", proj:21.5, value:"$9.5m", team:"France", age:24, flag:"🇫🇷", xG:0, xA:0,
+      st:{}, stats:[{v:"$9.5m",nl:"prijs",en:"price"},{v:"21.5",nl:"proj. punten",en:"proj. pts"},{v:"Set-pieces",nl:"Frankrijk",en:"set pieces"}],
+      note:{nl:"Topvorm en een van de beste waardes in het middenveld: maakte deze week zijn eerste interland-hattrick en staat op de standaardsituaties voor Frankrijk. Vorig seizoen 22 goals en 31 assists voor Bayern. Frankrijks groep (Irak, Senegal, Noorwegen) is beheersbaar.",en:"In top form and one of the best midfield values: scored his first international hat-trick this week and is on set pieces for France. Last season 22 goals and 31 assists for Bayern. France's group (Iraq, Senegal, Norway) is manageable."} },
     { pos:"MID", row:2, name:"Hakan Çalhanoğlu", price:"$7.1m", proj:19.8, value:"$7.1m", team:"Turkey", age:32, flag:"🇹🇷", xG:0, xA:0,
       st:{}, stats:[{v:"$7.1m",nl:"prijs",en:"price"},{v:"19.8",nl:"proj. punten",en:"proj. pts"},{v:"Pen-nemer",nl:"Turkije",en:"penalties"}],
       note:{nl:"Penalty- en vrijetrapspecialist van Turkije, dat tegen Australië en Paraguay punten kan pakken. Goedkope middenvelder met een gegarandeerde rol bij standaardsituaties.",en:"Turkey's penalty and free-kick specialist, with points to grab against Australia and Paraguay. A cheap midfielder with a guaranteed set-piece role."} },
