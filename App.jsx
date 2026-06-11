@@ -1694,7 +1694,6 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
     if(s1>s2)pts[t1]+=3;else if(s2>s1)pts[t2]+=3;else{pts[t1]+=1;pts[t2]+=1;}
   });
   const sorted=[...g.teams].sort((a,b)=>pts[b]-pts[a]||(gf[b]-ga[b])-(gf[a]-ga[a]));
-  const bestForm=g.teams.filter(t=>formDev(t)!==undefined).sort((a,b)=>formDev(b)-formDev(a))[0];
   const OL=T.id==="orangeLion";
   return(
     <div style={{background:T.card,border:`1px solid ${expanded?T.orange:T.border}`,borderRadius:4,overflow:"hidden",marginBottom:8}}>
@@ -1764,15 +1763,19 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
             </div>
           );
         })}
-        {/* In-form country — at the foot of the standings */}
-        {bestForm&&(()=>{
-          const dev=formDev(bestForm);
+        {/* Best in-form player from this group's teams (top-30 WhoScored rating) — hidden if none */}
+        {(()=>{
+          const inGroup=PLAYERS_TOP30.filter(p=>g.teams.includes(p.country));
+          if(inGroup.length===0) return null;
+          const bp=[...inGroup].sort((a,b)=>b.ws-a.ws)[0];
+          const posEmoji=bp.pos==="FW"?"⚽":bp.pos==="MF"?"🎯":bp.pos==="DF"?"🛡️":"🔥";
           return(
             <div style={{display:"flex",alignItems:"center",gap:6,padding:"7px 12px",borderTop:`1px solid ${T.border}`,background:T.bg}}>
               <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,letterSpacing:0.5,textTransform:"uppercase",color:T.textFaint,whiteSpace:"nowrap"}}>{lang==="nl"?"In vorm":"In form"}</span>
-              <span style={{fontSize:14,lineHeight:1}}>{FLAGS[bestForm]}</span>
-              <span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(bestForm,lang)}</span>
-              <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:dev>0?(OL?"#BFF5CE":"#1E7A40"):dev<0?(OL?"#FFD0C7":"#C0392B"):T.textFaint,marginLeft:"auto"}}>{dev>0?"+":""}{dev}</span>
+              <span style={{fontSize:14,lineHeight:1}}>{bp.flag}</span>
+              <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{bp.name}</span>
+              <span style={{fontSize:13,lineHeight:1,flexShrink:0}}>{posEmoji}</span>
+              <span title={lang==="nl"?"WhoScored-seizoensrating":"WhoScored season rating"} style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,color:OL?"#FFC861":"#B8860B",marginLeft:"auto"}}>{bp.ws.toFixed(2)}</span>
             </div>
           );
         })()}
@@ -3029,8 +3032,8 @@ function ModelViz({scrollTo,onScrolled}={}){
         <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:T.text,letterSpacing:-0.5,marginBottom:16}}>
           {lang==="nl"?"Zo werkt het model":"How the model works"}
         </div>
-        {/* compact step flow — each chip jumps to its section below */}
-        <div style={{display:"flex",alignItems:"stretch",gap:0,border:`1px solid ${T.border}`,borderRadius:8,overflow:"hidden"}}>
+        {/* four demarcated step cards with an arrow between each — tap a card to jump to its section */}
+        <div style={{display:"flex",alignItems:"stretch",gap:0,justifyContent:"space-between"}}>
           {[
             {t:lang==="nl"?"Brondata":"Source data",sec:"data",
              icon:<><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6V6"/><path d="M5 12v6c0 1.5 3.1 2.6 7 2.6s7-1.1 7-2.6v-6"/></>},
@@ -3043,8 +3046,9 @@ function ModelViz({scrollTo,onScrolled}={}){
           ].map((s,i,arr)=>(
             <React.Fragment key={i}>
               <div role="button" tabIndex={0} onClick={()=>goStep(s.sec)}
-                style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:6,
-                padding:"11px 2px",background:T.card,cursor:"pointer"}}>
+                style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",alignItems:"center",gap:6,
+                padding:"11px 2px",background:T.card,cursor:"pointer",
+                border:`1px solid ${T.border}`,borderRadius:8}}>
                 <div style={{width:30,height:30,borderRadius:8,flexShrink:0,
                   display:"flex",alignItems:"center",justifyContent:"center",
                   background:T.id==="orangeLion"?"rgba(255,255,255,0.16)":(T.id==="dark"?"rgba(255,85,0,0.12)":T.orangeFaint)}}>
@@ -3056,8 +3060,8 @@ function ModelViz({scrollTo,onScrolled}={}){
                 <span style={{fontSize:FS.micro,fontWeight:WEIGHT.semibold,color:T.textSub,textAlign:"center",lineHeight:1.2,letterSpacing:0.2}}>{s.t}</span>
               </div>
               {i<arr.length-1&&(
-                <div style={{display:"flex",alignItems:"center",color:T.textFaint,flexShrink:0,padding:"0 1px"}}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <div style={{display:"flex",alignItems:"center",color:T.textFaint,flexShrink:0,padding:"0 3px"}}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </div>
               )}
             </React.Fragment>
