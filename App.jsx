@@ -4332,50 +4332,78 @@ function AppLoader({onDone}){
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
-    t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples, taking over the orange
-    t.push(setTimeout(()=>setPhase(4),5000));   // the tricolour fades out to the app
-    t.push(setTimeout(()=>onDone&&onDone(),5600));
+    t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples (3D), taking over the orange
+    t.push(setTimeout(()=>setPhase(4),4600));   // the lockup fades out, leaving just the flag
+    t.push(setTimeout(()=>setPhase(5),5050));   // REVEAL: the 3D flag is pulled away sideways, exposing the app
+    t.push(setTimeout(()=>onDone&&onDone(),6100));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const overlayOpacity=phase>=4?0:1;   // clean fade-out to the app at the very end
+  const lockGone=phase>=4;         // lockup fades out, leaving the flag alone
+  const reveal=phase>=5;           // the flag is pulled away sideways to expose the app
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
-      opacity:overlayOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      opacity:reveal?0:1,transition:"opacity 0.9s ease-out 0.25s",
+      pointerEvents:reveal?"none":"auto",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
 
       {/* Subtle radial vignette for depth */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:reveal?0:0.4,
+        transition:"opacity 0.6s ease-out",
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* RWB TAKEOVER — the background starts plain orange, then this softer red-white-blue
-          tricolour fades in and ripples like a flag in the wind (a continuous 3D wave),
-          merging over the orange to take over the screen. */}
+      {/* RWB FLAG — starts orange, then this red-white-blue tricolour fades in and ripples in 3D
+          like cloth in the wind. At the end it is pulled away sideways (in 3D) to reveal the app. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
-        perspective:"1100px",perspectiveOrigin:"50% 45%",
-        opacity:phase>=3?(phase>=4?0:0.78):0,
+        perspective:"1000px",perspectiveOrigin:"70% 45%",
+        opacity:phase>=3?1:0,
         transition:"opacity 1.6s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
-        <style>{`@keyframes flagWave{
-          0%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
-          25%{transform:rotateY(5deg) rotateX(-3deg) skewX(2.5deg) scale(1.26)}
-          50%{transform:rotateY(8deg) rotateX(3deg) skewX(-1.5deg) scale(1.22)}
-          75%{transform:rotateY(-4deg) rotateX(-4deg) skewX(2deg) scale(1.26)}
-          100%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
-        }`}</style>
-        <div style={{position:"absolute",inset:"-14%",
-          transformOrigin:"50% 50%",
-          animation:phase>=3?"flagWave 3.4s ease-in-out infinite":"none",
-          background:"linear-gradient(115deg,#E61D25 0%,#E61D25 34%,#FFFFFF 50%,#2A398D 66%,#2A398D 100%)",
-          willChange:"transform"}}/>
+        <style>{`
+          @keyframes flagWave{
+            0%{transform:rotateY(-10deg) rotateX(5deg) skewX(-2.5deg) scale(1.24)}
+            25%{transform:rotateY(7deg) rotateX(-4deg) skewX(3deg) scale(1.28)}
+            50%{transform:rotateY(11deg) rotateX(4deg) skewX(-2deg) scale(1.24)}
+            75%{transform:rotateY(-5deg) rotateX(-5deg) skewX(2.5deg) scale(1.28)}
+            100%{transform:rotateY(-10deg) rotateX(5deg) skewX(-2.5deg) scale(1.24)}
+          }
+          @keyframes flagPullAway{
+            0%{transform:translateX(0%) rotateY(-8deg) skewX(-2deg) scale(1.26)}
+            30%{transform:translateX(10%) rotateY(28deg) skewX(8deg) scale(1.30)}
+            100%{transform:translateX(155%) rotateY(78deg) skewX(22deg) scale(1.42)}
+          }
+          @keyframes foldShift{
+            0%{background-position:0% 0%}
+            50%{background-position:100% 0%}
+            100%{background-position:0% 0%}
+          }
+        `}</style>
+        <div style={{position:"absolute",inset:"-16%",transformOrigin:"50% 50%",
+          animation:phase>=3
+            ?(reveal?"flagPullAway 1.05s cubic-bezier(.55,0,.7,1) forwards":"flagWave 3.4s ease-in-out infinite")
+            :"none",
+          willChange:"transform"}}>
+          {/* base tricolour */}
+          <div style={{position:"absolute",inset:0,opacity:0.82,
+            background:"linear-gradient(115deg,#E61D25 0%,#E61D25 34%,#FFFFFF 50%,#2A398D 66%,#2A398D 100%)"}}/>
+          {/* 3D cloth folds — diagonal light/shadow bands drifting across for depth */}
+          <div style={{position:"absolute",inset:0,mixBlendMode:"overlay",opacity:0.55,
+            backgroundSize:"220% 100%",
+            animation:phase>=3&&!reveal?"foldShift 3.4s ease-in-out infinite":"none",
+            background:"repeating-linear-gradient(115deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 7%, rgba(255,255,255,0.55) 13%, rgba(0,0,0,0) 20%, rgba(0,0,0,0.4) 27%)"}}/>
+          {/* soft top-down sheen for rounded-cloth feel */}
+          <div style={{position:"absolute",inset:0,opacity:0.35,
+            background:"linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 35%, rgba(0,0,0,0.25) 100%)"}}/>
+        </div>
       </div>
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:shown?1:0,transform:`scale(${shown?1:0.86})`,
-        transition:"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
+        opacity:lockGone?0:(shown?1:0),
+        transform:`scale(${shown?(lockGone?1.04:1):0.86})`,
+        transition:"opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
 
         {/* WC roundel ring with the lion living in its centre */}
