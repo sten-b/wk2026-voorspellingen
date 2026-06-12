@@ -4332,19 +4332,22 @@ function AppLoader({onDone}){
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
     t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples, taking over the orange
-    t.push(setTimeout(()=>setPhase(4),5000));   // the tricolour fades out to the app
-    t.push(setTimeout(()=>onDone&&onDone(),5600));
+    t.push(setTimeout(()=>setPhase(4),4600));   // ZOOM-THROUGH: lockup + flag rush forward past the screen, revealing the app
+    t.push(setTimeout(()=>onDone&&onDone(),5500));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const overlayOpacity=phase>=4?0:1;   // clean fade-out to the app at the very end
+  const reveal=phase>=4;           // zoom-through reveal of the app underneath
+  const overlayOpacity=reveal?0:1; // fades out as it rushes forward
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
-      opacity:overlayOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
-      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+      opacity:overlayOpacity,
+      transform:reveal?"scale(1.35)":"scale(1)",transformOrigin:"50% 44%",
+      transition:"opacity 0.85s cubic-bezier(.5,0,.75,0), transform 0.9s cubic-bezier(.6,0,.4,1)",
+      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",willChange:"transform,opacity"}}>
 
       {/* Subtle radial vignette for depth */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
@@ -4355,8 +4358,9 @@ function AppLoader({onDone}){
           merging over the orange to take over the screen. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
         perspective:"1100px",perspectiveOrigin:"50% 45%",
-        opacity:phase>=3?(phase>=4?0:0.78):0,
-        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
+        opacity:phase>=3?1:0,
+        transform:reveal?"scale(1.6)":"scale(1)",transformOrigin:"50% 44%",
+        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.6,0,.4,1)",willChange:"opacity,transform"}}>
         <style>{`@keyframes flagWave{
           0%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
           25%{transform:rotateY(5deg) rotateX(-3deg) skewX(2.5deg) scale(1.26)}
@@ -4365,7 +4369,7 @@ function AppLoader({onDone}){
           100%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
         }`}</style>
         <div style={{position:"absolute",inset:"-14%",
-          transformOrigin:"50% 50%",
+          transformOrigin:"50% 50%",opacity:0.78,
           animation:phase>=3?"flagWave 3.4s ease-in-out infinite":"none",
           background:"linear-gradient(115deg,#E61D25 0%,#E61D25 34%,#FFFFFF 50%,#2A398D 66%,#2A398D 100%)",
           willChange:"transform"}}/>
@@ -4373,8 +4377,11 @@ function AppLoader({onDone}){
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:shown?1:0,transform:`scale(${shown?1:0.86})`,
-        transition:"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
+        opacity:reveal?0:(shown?1:0),
+        transform:reveal?"scale(2.4)":`scale(${shown?1:0.86})`,
+        transition:reveal
+          ?"opacity 0.7s cubic-bezier(.5,0,.85,0), transform 0.9s cubic-bezier(.6,0,.35,1)"
+          :"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
 
         {/* WC roundel ring with the lion living in its centre */}
