@@ -4333,30 +4333,39 @@ function AppLoader({onDone}){
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
     t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples (3D), taking over the orange
-    t.push(setTimeout(()=>setPhase(4),4900));   // REVEAL: an iris opens from the lion, the loader clips away to expose the app
-    t.push(setTimeout(()=>onDone&&onDone(),6000));
+    t.push(setTimeout(()=>setPhase(4),4900));   // SWIRL: everything except the lion swirls away (rotate + shrink + fade)
+    t.push(setTimeout(()=>setPhase(5),5750));   // the lone lion fades out last
+    t.push(setTimeout(()=>onDone&&onDone(),6450));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const reveal=phase>=4;           // the iris closes into the lion, revealing the app from the edges in
-
-  // Iris reveal: clip the whole loader to a circle centred on the lion (50% 44%). It starts large
-  // (covering the screen) and shrinks to nothing, so the app is revealed from the edges inward,
-  // collapsing into the lion. clip-path circle radius is smoothly animatable.
-  const irisClip=reveal?"circle(0% at 50% 44%)":"circle(150% at 50% 44%)";
+  const swirl=phase>=4;            // everything except the lion swirls away
+  const lionGone=phase>=5;         // the lone lion fades out last
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
-      background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
+      background:"transparent",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
-      pointerEvents:reveal?"none":"auto",
-      WebkitClipPath:irisClip,clipPath:irisClip,
-      transition:"clip-path 1.0s cubic-bezier(.6,0,.3,1), -webkit-clip-path 1.0s cubic-bezier(.6,0,.3,1)",
-      willChange:"clip-path"}}>
+      pointerEvents:swirl?"none":"auto"}}>
 
-      {/* Subtle radial vignette for depth */}
+      <style>{`
+        @keyframes swirlOut{
+          0%{transform:rotate(0deg) scale(1);opacity:1}
+          55%{opacity:0.85}
+          100%{transform:rotate(220deg) scale(0.04);opacity:0}
+        }
+      `}</style>
+
+      {/* ORANGE BASE — the loader background; swirls away with everything else so the app shows */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",transformOrigin:"50% 44%",
+        animation:swirl?"swirlOut 0.95s cubic-bezier(.5,0,.5,1) forwards":"none",
+        background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)"}}/>
+
+      {/* Subtle radial vignette for depth — swirls away with the rest */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
+        transformOrigin:"50% 44%",
+        animation:swirl?"swirlOut 0.95s cubic-bezier(.5,0,.5,1) forwards":"none",
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
       {/* RWB FLAG — starts orange, then this red-white-blue tricolour fades in and ripples in 3D
@@ -4364,7 +4373,9 @@ function AppLoader({onDone}){
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
         perspective:"1000px",perspectiveOrigin:"70% 45%",
         opacity:phase>=3?1:0,
-        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
+        transformOrigin:"50% 44%",
+        animation:swirl?"swirlOut 0.95s cubic-bezier(.5,0,.5,1) forwards":"none",
+        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1)",willChange:"opacity,transform"}}>
         <style>{`
           @keyframes flagWave{
             0%{transform:rotateY(-10deg) rotateX(5deg) skewX(-2.5deg) scale(1.24)}
@@ -4401,10 +4412,13 @@ function AppLoader({onDone}){
         </div>
       </div>
 
-      {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
+      {/* HERO LOCKUP — ring + bars + title swirl away; the lion is hidden here (a separate static
+          lion layer below keeps the lion still, then fades last). */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
         opacity:shown?1:0,
         transform:`scale(${shown?1:0.86})`,
+        transformOrigin:"50% 44%",
+        animation:swirl?"swirlOut 0.95s cubic-bezier(.5,0,.5,1) forwards":"none",
         transition:"opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
 
@@ -4424,8 +4438,10 @@ function AppLoader({onDone}){
           <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none"}}>
             <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
           </svg>
-          {/* the lion, centred in the ring's empty space */}
-          <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          {/* the lion, centred in the ring's empty space — hidden once the swirl starts
+              (the separate static lion layer keeps it in place) */}
+          <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center",
+            opacity:swirl?0:1}}>
             <LionEmoji color="#FFFFFF" size={54}/>
           </div>
         </div>
@@ -4444,6 +4460,33 @@ function AppLoader({onDone}){
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:14}}>
             <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Data-driven</span>
             <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Voorspellingen</span>
+          </div>
+        </div>
+      </div>
+
+      {/* STATIC LION — same column layout (so it lands exactly where the ring's lion was), but only
+          the lion is visible. It stays perfectly still while everything else swirls away, then
+          fades out last. */}
+      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
+        opacity:shown?(lionGone?0:1):0,
+        transition:"opacity 0.65s ease-out",
+        pointerEvents:"none",willChange:"opacity"}}>
+        <div style={{position:"relative",width:120,height:120,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <LionEmoji color="#FFFFFF" size={54}/>
+          </div>
+        </div>
+        <div style={{display:"flex",gap:4,visibility:"hidden"}}>
+          <span style={{width:22,height:4,borderRadius:2}}/>
+          <span style={{width:22,height:4,borderRadius:2}}/>
+          <span style={{width:22,height:4,borderRadius:2}}/>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:6,visibility:"hidden"}}>
+          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,marginBottom:-2}}>Sten's</span>
+          <span style={{fontSize:FS.display,fontWeight:WEIGHT.bold,letterSpacing:2}}>WK2026</span>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:14}}>
+            <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3}}>Data-driven</span>
+            <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2}}>Voorspellingen</span>
           </div>
         </div>
       </div>
