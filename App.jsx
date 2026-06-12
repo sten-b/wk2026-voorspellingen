@@ -4333,26 +4333,33 @@ function AppLoader({onDone}){
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
     t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples (3D), taking over the orange
-    t.push(setTimeout(()=>setPhase(4),4600));   // the lockup fades out, leaving just the flag
-    t.push(setTimeout(()=>setPhase(5),5050));   // REVEAL: the 3D flag is pulled away sideways, exposing the app
-    t.push(setTimeout(()=>onDone&&onDone(),6100));
+    t.push(setTimeout(()=>setPhase(4),4900));   // REVEAL: an iris opens from the lion, the loader clips away to expose the app
+    t.push(setTimeout(()=>onDone&&onDone(),6000));
     return()=>t.forEach(clearTimeout);
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const lockGone=phase>=4;         // lockup fades out, leaving the flag alone
-  const reveal=phase>=5;           // the flag is pulled away sideways to expose the app
+  const reveal=phase>=4;           // an iris opens from the lion to expose the app
+
+  // Iris reveal: a hard-edged transparent circle (mask) is anchored at the lion's centre and
+  // scaled up via mask-size, so the opening grows from the lion and reveals the app behind it.
+  const irisGrad="radial-gradient(circle at center, transparent 0%, transparent 49.5%, #000 50%)";
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
-      opacity:reveal?0:1,transition:"opacity 0.9s ease-out 0.25s",
+      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
       pointerEvents:reveal?"none":"auto",
-      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+      WebkitMaskImage:irisGrad,maskImage:irisGrad,
+      WebkitMaskRepeat:"no-repeat",maskRepeat:"no-repeat",
+      WebkitMaskPosition:"50% 44%",maskPosition:"50% 44%",
+      WebkitMaskSize:reveal?"360% 360%":"0% 0%",
+      maskSize:reveal?"360% 360%":"0% 0%",
+      transition:"-webkit-mask-size 1.05s cubic-bezier(.65,0,.35,1), mask-size 1.05s cubic-bezier(.65,0,.35,1)",
+      willChange:"mask-size"}}>
 
       {/* Subtle radial vignette for depth */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:reveal?0:0.4,
-        transition:"opacity 0.6s ease-out",
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
       {/* RWB FLAG — starts orange, then this red-white-blue tricolour fades in and ripples in 3D
@@ -4381,9 +4388,7 @@ function AppLoader({onDone}){
           }
         `}</style>
         <div style={{position:"absolute",inset:"-16%",transformOrigin:"50% 50%",
-          animation:phase>=3
-            ?(reveal?"flagPullAway 1.05s cubic-bezier(.55,0,.7,1) forwards":"flagWave 3.4s ease-in-out infinite")
-            :"none",
+          animation:phase>=3?"flagWave 3.4s ease-in-out infinite":"none",
           willChange:"transform"}}>
           {/* base tricolour */}
           <div style={{position:"absolute",inset:0,opacity:0.82,
@@ -4391,7 +4396,7 @@ function AppLoader({onDone}){
           {/* 3D cloth folds — diagonal light/shadow bands drifting across for depth */}
           <div style={{position:"absolute",inset:0,mixBlendMode:"overlay",opacity:0.55,
             backgroundSize:"220% 100%",
-            animation:phase>=3&&!reveal?"foldShift 3.4s ease-in-out infinite":"none",
+            animation:phase>=3?"foldShift 3.4s ease-in-out infinite":"none",
             background:"repeating-linear-gradient(115deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 7%, rgba(255,255,255,0.55) 13%, rgba(0,0,0,0) 20%, rgba(0,0,0,0.4) 27%)"}}/>
           {/* soft top-down sheen for rounded-cloth feel */}
           <div style={{position:"absolute",inset:0,opacity:0.35,
@@ -4401,8 +4406,8 @@ function AppLoader({onDone}){
 
       {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
       <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:lockGone?0:(shown?1:0),
-        transform:`scale(${shown?(lockGone?1.04:1):0.86})`,
+        opacity:shown?1:0,
+        transform:`scale(${shown?1:0.86})`,
         transition:"opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
         pointerEvents:"none",willChange:"transform,opacity"}}>
 
