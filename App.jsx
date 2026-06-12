@@ -4327,114 +4327,94 @@ const LION_PATH_D = "M5111 8804 c-110 -125 -189 -296 -192 -414 0 -37 -17 -90 -18
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // The flag (with the lion + WK2026 as transparent cut-outs) fades in and ripples in 3D,
-    // then a gust catches it and blows it sideways out of frame, revealing the app.
+    // Lion centred in the ring + title below; hold; then the red-white-blue gradient
+    // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
-    t.push(setTimeout(()=>setPhase(1),80));     // flag + cut-out lockup fade in, ripple begins
-    t.push(setTimeout(()=>setPhase(2),2400));   // strong wave hold
-    t.push(setTimeout(()=>setPhase(3),3400));   // REVEAL: gust blows the flag sideways out of frame
-    t.push(setTimeout(()=>onDone&&onDone(),5000));
+    t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
+    t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
+    t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples, taking over the orange
+    t.push(setTimeout(()=>setPhase(4),5000));   // the tricolour fades out to the app
+    t.push(setTimeout(()=>onDone&&onDone(),5600));
     return()=>t.forEach(clearTimeout);
   },[]);
 
-  const shown=phase>=1;
-  const reveal=phase>=3;
-  // The mask cuts the lion + wordmark out of the flag so the app behind shows through those shapes.
-  // White = flag visible; black = hole (transparent).
-  const MASK_W=1040, MASK_H=1040;
-  const maskId="flagCut", gradId="flagGrad", waveId="flagWaveTurb";
+  const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
+  const overlayOpacity=phase>=4?0:1;   // clean fade-out to the app at the very end
 
   return(
-    <div style={{position:"fixed",inset:0,zIndex:9999,overflow:"hidden",
-      background:"transparent",
-      pointerEvents:reveal?"none":"auto"}}>
+    <div style={{position:"fixed",inset:0,zIndex:9999,
+      background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
+      opacity:overlayOpacity,transition:"opacity 0.5s cubic-bezier(.4,0,.2,1)",
+      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
 
-      {/* subtle vignette for depth (sits behind the flag); clears on reveal so the app shows */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:reveal?0:0.4,
-        transition:"opacity 0.7s ease-out",
+      {/* Subtle radial vignette for depth */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* the orange base also clears on reveal so only the flag remains, then it blows away */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",
-        opacity:reveal?0:1,
-        transition:"opacity 0.6s ease-out",
-        background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)"}}/>
-
-      {/* THE FLAG — full-screen rippling red-white-blue tricolour with the lion + WK2026 as holes.
-          Waves continuously in 3D; on reveal it waves harder and dissolves to expose the app. */}
+      {/* RWB TAKEOVER — the background starts plain orange, then this softer red-white-blue
+          tricolour fades in and ripples like a flag in the wind (a continuous 3D wave),
+          merging over the orange to take over the screen. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
-        perspective:"1200px",perspectiveOrigin:"50% 44%",
-        opacity:shown?1:0,
-        transition:"opacity 0.8s cubic-bezier(.4,0,.2,1)",
-        willChange:"opacity"}}>
-        <style>{`
-          @keyframes flagWave3D{
-            0%{transform:rotateY(-9deg) rotateX(5deg) skewX(-2.5deg) scale(1.26)}
-            25%{transform:rotateY(7deg) rotateX(-4deg) skewX(3deg) scale(1.30)}
-            50%{transform:rotateY(10deg) rotateX(4deg) skewX(-2deg) scale(1.26)}
-            75%{transform:rotateY(-5deg) rotateX(-5deg) skewX(2.5deg) scale(1.30)}
-            100%{transform:rotateY(-9deg) rotateX(5deg) skewX(-2.5deg) scale(1.26)}
-          }
-          @keyframes flagWaveHard{
-            0%{transform:rotateY(-16deg) rotateX(9deg) skewX(-5deg) scale(1.34)}
-            20%{transform:rotateY(14deg) rotateX(-8deg) skewX(6deg) scale(1.42)}
-            40%{transform:rotateY(18deg) rotateX(7deg) skewX(-4deg) scale(1.34)}
-            60%{transform:rotateY(-12deg) rotateX(-9deg) skewX(5deg) scale(1.44)}
-            80%{transform:rotateY(16deg) rotateX(8deg) skewX(-5deg) scale(1.36)}
-            100%{transform:rotateY(-16deg) rotateX(9deg) skewX(-5deg) scale(1.34)}
-          }
-          @keyframes flagTurb{
-            0%{transform:translate(0,0)}
-            25%{transform:translate(-1.2%,0.8%)}
-            50%{transform:translate(0.8%,-1%)}
-            75%{transform:translate(-0.6%,1.2%)}
-            100%{transform:translate(0,0)}
-          }
-          @keyframes flagBlowAway{
-            0%{transform:translateX(0%) translateY(0%) rotateY(-12deg) rotateZ(0deg) skewX(-4deg) scale(1.30)}
-            22%{transform:translateX(8%) translateY(-2%) rotateY(20deg) rotateZ(-2deg) skewX(8deg) scale(1.36)}
-            45%{transform:translateX(34%) translateY(-5%) rotateY(34deg) rotateZ(-4deg) skewX(14deg) scale(1.40)}
-            70%{transform:translateX(82%) translateY(-9%) rotateY(48deg) rotateZ(-7deg) skewX(20deg) scale(1.46)}
-            100%{transform:translateX(165%) translateY(-15%) rotateY(62deg) rotateZ(-11deg) skewX(26deg) scale(1.55)}
-          }
-        `}</style>
-        <div style={{position:"absolute",inset:"-18%",transformOrigin:"30% 50%",
-          animation:phase>=1
-            ?(reveal
-              ?"flagBlowAway 1.6s cubic-bezier(.5,0,.7,1) forwards"
-              :"flagWave3D 3.2s ease-in-out infinite")
-            :"none",
-          willChange:"transform"}}>
-          <svg viewBox={`0 0 ${MASK_W} ${MASK_H}`} preserveAspectRatio="xMidYMid slice"
-            width="100%" height="100%" style={{display:"block",position:"absolute",inset:0,
-            animation:phase>=1?`flagTurb ${reveal?"0.7s":"2.6s"} ease-in-out infinite`:"none"}}>
-            <defs>
-              <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#E61D25"/>
-                <stop offset="0.34" stopColor="#E61D25"/>
-                <stop offset="0.5" stopColor="#FFFFFF"/>
-                <stop offset="0.66" stopColor="#2A398D"/>
-                <stop offset="1" stopColor="#2A398D"/>
-              </linearGradient>
-              <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={MASK_W} height={MASK_H}>
-                {/* white = flag shows */}
-                <rect x="0" y="0" width={MASK_W} height={MASK_H} fill="#FFFFFF"/>
-                {/* black = holes: the lion, centred & scaled to a compact logo size */}
-                <g transform={`translate(${MASK_W/2} ${MASK_H/2 - 40}) scale(0.17) translate(-515 -515)`}>
-                  <g transform="translate(0,1024) scale(0.1,-0.1)">
-                    <path d={LION_PATH_D} fill="#000000"/>
-                  </g>
-                </g>
-                {/* black = holes: the WK2026 wordmark beneath the lion */}
-                <text x={MASK_W/2} y={MASK_H/2 + 118} textAnchor="middle"
-                  fontFamily="Inter, system-ui, sans-serif" fontWeight="800"
-                  fontSize="42" letterSpacing="1" fill="#000000">WK2026</text>
-              </mask>
-            </defs>
-            <rect x="0" y="0" width={MASK_W} height={MASK_H} fill={`url(#${gradId})`}
-              mask={`url(#${maskId})`} opacity="0.82"/>
+        perspective:"1100px",perspectiveOrigin:"50% 45%",
+        opacity:phase>=3?(phase>=4?0:0.78):0,
+        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
+        <style>{`@keyframes flagWave{
+          0%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
+          25%{transform:rotateY(5deg) rotateX(-3deg) skewX(2.5deg) scale(1.26)}
+          50%{transform:rotateY(8deg) rotateX(3deg) skewX(-1.5deg) scale(1.22)}
+          75%{transform:rotateY(-4deg) rotateX(-4deg) skewX(2deg) scale(1.26)}
+          100%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
+        }`}</style>
+        <div style={{position:"absolute",inset:"-14%",
+          transformOrigin:"50% 50%",
+          animation:phase>=3?"flagWave 3.4s ease-in-out infinite":"none",
+          background:"linear-gradient(115deg,#E61D25 0%,#E61D25 34%,#FFFFFF 50%,#2A398D 66%,#2A398D 100%)",
+          willChange:"transform"}}/>
+      </div>
+
+      {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
+      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
+        opacity:shown?1:0,transform:`scale(${shown?1:0.86})`,
+        transition:"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
+        pointerEvents:"none",willChange:"transform,opacity"}}>
+
+        {/* WC roundel ring with the lion living in its centre */}
+        <div style={{position:"relative",width:120,height:120,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <style>{`@keyframes wcRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+          <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true"
+            style={{position:"absolute",inset:0,filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))",
+              animation:"wcRingSpin 1.6s linear infinite",transformOrigin:"50% 50%"}}>
+            <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
+            </linearGradient></defs>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
+            <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
           </svg>
+          {/* gold star stays fixed at the top while the ring spins */}
+          <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none"}}>
+            <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
+          </svg>
+          {/* the lion, centred in the ring's empty space */}
+          <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <LionEmoji color="#FFFFFF" size={54}/>
+          </div>
+        </div>
+
+        {/* RWB bars */}
+        <div style={{display:"flex",gap:4}}>
+          <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
+          <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
+          <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
+        </div>
+
+        {/* TITLE — Sten's · WK2026 · Data-driven Voorspellingen (now part of the first phase) */}
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:6}}>
+          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-2,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
+          <span style={{fontSize:FS.display,fontWeight:WEIGHT.bold,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:14}}>
+            <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Data-driven</span>
+            <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Voorspellingen</span>
+          </div>
         </div>
       </div>
     </div>
