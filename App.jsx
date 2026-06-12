@@ -4339,24 +4339,21 @@ function AppLoader({onDone}){
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const reveal=phase>=4;           // an iris opens from the lion to expose the app
+  const reveal=phase>=4;           // the iris closes into the lion, revealing the app from the edges in
 
-  // Iris reveal: a hard-edged transparent circle (mask) is anchored at the lion's centre and
-  // scaled up via mask-size, so the opening grows from the lion and reveals the app behind it.
-  const irisGrad="radial-gradient(circle at center, transparent 0%, transparent 49.5%, #000 50%)";
+  // Iris reveal: clip the whole loader to a circle centred on the lion (50% 44%). It starts large
+  // (covering the screen) and shrinks to nothing, so the app is revealed from the edges inward,
+  // collapsing into the lion. clip-path circle radius is smoothly animatable.
+  const irisClip=reveal?"circle(0% at 50% 44%)":"circle(150% at 50% 44%)";
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,
       background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
       display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",
       pointerEvents:reveal?"none":"auto",
-      WebkitMaskImage:irisGrad,maskImage:irisGrad,
-      WebkitMaskRepeat:"no-repeat",maskRepeat:"no-repeat",
-      WebkitMaskPosition:"50% 44%",maskPosition:"50% 44%",
-      WebkitMaskSize:reveal?"360% 360%":"0% 0%",
-      maskSize:reveal?"360% 360%":"0% 0%",
-      transition:"-webkit-mask-size 1.05s cubic-bezier(.65,0,.35,1), mask-size 1.05s cubic-bezier(.65,0,.35,1)",
-      willChange:"mask-size"}}>
+      WebkitClipPath:irisClip,clipPath:irisClip,
+      transition:"clip-path 1.0s cubic-bezier(.6,0,.3,1), -webkit-clip-path 1.0s cubic-bezier(.6,0,.3,1)",
+      willChange:"clip-path"}}>
 
       {/* Subtle radial vignette for depth */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
