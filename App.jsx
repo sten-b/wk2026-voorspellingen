@@ -4328,12 +4328,12 @@ function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
     // The flag (with the lion + WK2026 as transparent cut-outs) fades in and ripples in 3D,
-    // then waves harder while dissolving away to reveal the app underneath.
+    // then a gust catches it and blows it sideways out of frame, revealing the app.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),80));     // flag + cut-out lockup fade in, ripple begins
-    t.push(setTimeout(()=>setPhase(2),2600));   // strong wave hold
-    t.push(setTimeout(()=>setPhase(3),3600));   // REVEAL: flag waves hard + dissolves, app shows through
-    t.push(setTimeout(()=>onDone&&onDone(),5100));
+    t.push(setTimeout(()=>setPhase(2),2400));   // strong wave hold
+    t.push(setTimeout(()=>setPhase(3),3400));   // REVEAL: gust blows the flag sideways out of frame
+    t.push(setTimeout(()=>onDone&&onDone(),5000));
     return()=>t.forEach(clearTimeout);
   },[]);
 
@@ -4346,20 +4346,27 @@ function AppLoader({onDone}){
 
   return(
     <div style={{position:"fixed",inset:0,zIndex:9999,overflow:"hidden",
-      background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
-      opacity:reveal?0:1,
-      transition:"opacity 1.4s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
+      background:"transparent",
+      pointerEvents:reveal?"none":"auto"}}>
 
-      {/* subtle vignette for depth (sits behind the flag) */}
-      <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
+      {/* subtle vignette for depth (sits behind the flag); clears on reveal so the app shows */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:reveal?0:0.4,
+        transition:"opacity 0.7s ease-out",
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
+
+      {/* the orange base also clears on reveal so only the flag remains, then it blows away */}
+      <div style={{position:"absolute",inset:0,pointerEvents:"none",
+        opacity:reveal?0:1,
+        transition:"opacity 0.6s ease-out",
+        background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)"}}/>
 
       {/* THE FLAG — full-screen rippling red-white-blue tricolour with the lion + WK2026 as holes.
           Waves continuously in 3D; on reveal it waves harder and dissolves to expose the app. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
         perspective:"1200px",perspectiveOrigin:"50% 44%",
-        opacity:shown?(reveal?0:1):0,
-        transition:reveal?"opacity 1.5s cubic-bezier(.45,0,.7,.2)":"opacity 0.8s cubic-bezier(.4,0,.2,1)",
+        opacity:shown?1:0,
+        transition:"opacity 0.8s cubic-bezier(.4,0,.2,1)",
         willChange:"opacity"}}>
         <style>{`
           @keyframes flagWave3D{
@@ -4384,13 +4391,24 @@ function AppLoader({onDone}){
             75%{transform:translate(-0.6%,1.2%)}
             100%{transform:translate(0,0)}
           }
+          @keyframes flagBlowAway{
+            0%{transform:translateX(0%) translateY(0%) rotateY(-12deg) rotateZ(0deg) skewX(-4deg) scale(1.30)}
+            22%{transform:translateX(8%) translateY(-2%) rotateY(20deg) rotateZ(-2deg) skewX(8deg) scale(1.36)}
+            45%{transform:translateX(34%) translateY(-5%) rotateY(34deg) rotateZ(-4deg) skewX(14deg) scale(1.40)}
+            70%{transform:translateX(82%) translateY(-9%) rotateY(48deg) rotateZ(-7deg) skewX(20deg) scale(1.46)}
+            100%{transform:translateX(165%) translateY(-15%) rotateY(62deg) rotateZ(-11deg) skewX(26deg) scale(1.55)}
+          }
         `}</style>
-        <div style={{position:"absolute",inset:"-18%",transformOrigin:"50% 50%",
-          animation:phase>=1?`${reveal?"flagWaveHard 1.5s":"flagWave3D 3.2s"} ease-in-out infinite`:"none",
+        <div style={{position:"absolute",inset:"-18%",transformOrigin:"30% 50%",
+          animation:phase>=1
+            ?(reveal
+              ?"flagBlowAway 1.6s cubic-bezier(.5,0,.7,1) forwards"
+              :"flagWave3D 3.2s ease-in-out infinite")
+            :"none",
           willChange:"transform"}}>
           <svg viewBox={`0 0 ${MASK_W} ${MASK_H}`} preserveAspectRatio="xMidYMid slice"
             width="100%" height="100%" style={{display:"block",position:"absolute",inset:0,
-            animation:phase>=1?"flagTurb 2.6s ease-in-out infinite":"none"}}>
+            animation:phase>=1?`flagTurb ${reveal?"0.7s":"2.6s"} ease-in-out infinite`:"none"}}>
             <defs>
               <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stopColor="#E61D25"/>
