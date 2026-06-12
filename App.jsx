@@ -2702,7 +2702,7 @@ function ChampionCard({p,label,icon}){
       {label&&(
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:11}}>
           {icon}
-          <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:T.orange}}>{label}</span>
+          <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",color:T.orange}}>{label}</span>
         </div>
       )}
       <div style={{display:"flex",alignItems:"center",gap:13,marginBottom:10}}>
@@ -3325,7 +3325,7 @@ function NationChampionCard({n}){
         <svg width="14" height="14" viewBox="0 0 24 24" fill={T.orange} stroke="none" style={{flexShrink:0}}>
           <path d="M5 4h14v3a4 4 0 01-4 4h-1.2A3 3 0 0113 13.8V16h2a1 1 0 011 1v2H8v-2a1 1 0 011-1h2v-2.2A3 3 0 019.2 11H8a4 4 0 01-4-4V4z"/>
         </svg>
-        <span style={{flex:1,fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange)}}>
+        <span style={{flex:1,fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange)}}>
           {lang==="nl"?"Topfavoriet":"Top Favourite"}
         </span>
         {MODEL_RANK[n.team]&&(
@@ -3384,7 +3384,7 @@ function NationCard({n,open,onToggle,compact}){
           </div>
           {/* News */}
           <div style={{padding:"10px 13px",borderBottom:`1px solid ${T.border}`,background:T.orangeFaint,borderLeft:`3px solid ${T.orange}`}}>
-            <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange),marginBottom:6}}>{lang==="nl"?"Laatste Nieuws":"Latest News"}</div>
+            <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1,textTransform:"uppercase",color:(T.id==="orangeLion"?"#FFFFFF":T.orange),marginBottom:6}}>{lang==="nl"?"Laatste Nieuws":"Latest News"}</div>
             <div style={{fontSize:FS.small,color:T.text,lineHeight:1.6}}>{n.news[lang]}</div>
           </div>
           {/* Key players */}
@@ -3899,7 +3899,7 @@ function FBrefStatsSection(){
       <div>
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,paddingLeft:13}}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill={T.id==="orangeLion"?"#FFFFFF":T.orange} stroke="none" style={{flexShrink:0}}><path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.4 6.7L12 17.8 6 20.6l1.4-6.7L2.3 9l6.8-.7z"/></svg>
-          <span style={{fontSize:FS.caption,fontWeight:WEIGHT.bold,letterSpacing:1.4,textTransform:"uppercase",color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
+          <span style={{fontSize:FS.micro,fontWeight:WEIGHT.bold,letterSpacing:1.5,textTransform:"uppercase",color:T.id==="orangeLion"?"#FFFFFF":T.orange}}>
             {lang==="nl"?"Topspelers dit seizoen":"Top players this season"} <span style={{fontWeight:WEIGHT.medium,letterSpacing:0.8,color:T.textFaint}}>· 2025/26</span>
           </span>
         </div>
@@ -4333,7 +4333,7 @@ function AppLoader({onDone}){
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
     t.push(setTimeout(()=>setPhase(2),550));    // brief hold on the plain orange background
     t.push(setTimeout(()=>setPhase(3),1500));   // the red-white-blue flag fades in and ripples (3D), taking over the orange
-    t.push(setTimeout(()=>setPhase(4),2900));   // SWIRL-IN: the flag colours swirl inward in a circle, collapsing into the ring → orange returns
+    t.push(setTimeout(()=>setPhase(4),2900));   // the flag fades out → orange returns behind it
     t.push(setTimeout(()=>setPhase(5),3850));   // the lion fades out
     t.push(setTimeout(()=>setPhase(6),4350));   // the orange background fades out → app
     t.push(setTimeout(()=>onDone&&onDone(),4950));
@@ -4341,7 +4341,7 @@ function AppLoader({onDone}){
   },[]);
 
   const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const swirlIn=phase>=4;          // the flag swirls inward in a circle, collapsing into the ring
+  const flagGone=phase>=4;         // the flag fades out, orange returns behind it
   const lionGone=phase>=5;         // the lion fades out (orange now showing behind)
   const orangeGone=phase>=6;       // the orange background fades out → app
 
@@ -4352,7 +4352,7 @@ function AppLoader({onDone}){
       pointerEvents:orangeGone?"none":"auto"}}>
 
       <style>{`
-        @keyframes swirlSpin{from{transform:rotate(0deg)}to{transform:rotate(160deg)}}
+        @keyframes loaderNoop{from{opacity:1}to{opacity:1}}
       `}</style>
 
       {/* ORANGE BASE — stays solid through the flag swirl + lion fade, then fades out last to reveal the app */}
@@ -4371,14 +4371,10 @@ function AppLoader({onDone}){
           like cloth in the wind. At the end it is pulled away sideways (in 3D) to reveal the app. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
         perspective:"1000px",perspectiveOrigin:"70% 45%",
-        opacity:phase>=3?1:0,
-        WebkitClipPath:swirlIn?"circle(6% at 50% 44%)":"circle(150% at 50% 44%)",
-        clipPath:swirlIn?"circle(6% at 50% 44%)":"circle(150% at 50% 44%)",
-        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1), clip-path 1.15s cubic-bezier(.55,0,.3,1), -webkit-clip-path 1.15s cubic-bezier(.55,0,.3,1)",
-        willChange:"opacity,clip-path"}}>
-        <div style={{position:"absolute",inset:0,
-          transformOrigin:"50% 44%",
-          animation:swirlIn?"swirlSpin 1.15s cubic-bezier(.55,0,.3,1) forwards":"none"}}>
+        opacity:phase>=3?(flagGone?0:1):0,
+        transition:"opacity 0.9s cubic-bezier(.4,0,.2,1)",
+        willChange:"opacity"}}>
+        <div style={{position:"absolute",inset:0}}>
         <style>{`
           @keyframes flagWave{
             0%{transform:rotateY(-10deg) rotateX(5deg) skewX(-2.5deg) scale(1.24)}
