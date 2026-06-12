@@ -4331,12 +4331,12 @@ function AppLoader({onDone}){
     // engulfs the whole screen (behind the text + logos) before the loader finishes.
     const t=[];
     t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
-    t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
-    t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples (3D), taking over the orange
-    t.push(setTimeout(()=>setPhase(4),4900));   // SWIRL-IN: the flag colours swirl inward in a circle, collapsing into the ring → orange returns
-    t.push(setTimeout(()=>setPhase(5),6100));   // the lion fades out
-    t.push(setTimeout(()=>setPhase(6),6750));   // the orange background fades out → app
-    t.push(setTimeout(()=>onDone&&onDone(),7450));
+    t.push(setTimeout(()=>setPhase(2),550));    // brief hold on the plain orange background
+    t.push(setTimeout(()=>setPhase(3),1500));   // the red-white-blue flag fades in and ripples (3D), taking over the orange
+    t.push(setTimeout(()=>setPhase(4),2900));   // SWIRL-IN: the flag colours swirl inward in a circle, collapsing into the ring → orange returns
+    t.push(setTimeout(()=>setPhase(5),3850));   // the lion fades out
+    t.push(setTimeout(()=>setPhase(6),4350));   // the orange background fades out → app
+    t.push(setTimeout(()=>onDone&&onDone(),4950));
     return()=>t.forEach(clearTimeout);
   },[]);
 
@@ -4448,13 +4448,6 @@ function AppLoader({onDone}){
           </div>
         </div>
 
-        {/* RWB bars */}
-        <div style={{display:"flex",gap:4}}>
-          <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
-          <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
-          <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
-        </div>
-
         {/* TITLE — Sten's · WK2026 · Data-driven Voorspellingen (now part of the first phase) */}
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:6}}>
           <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-2,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
@@ -4477,11 +4470,6 @@ function AppLoader({onDone}){
           <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
             <LionEmoji color="#FFFFFF" size={54}/>
           </div>
-        </div>
-        <div style={{display:"flex",gap:4,visibility:"hidden"}}>
-          <span style={{width:22,height:4,borderRadius:2}}/>
-          <span style={{width:22,height:4,borderRadius:2}}/>
-          <span style={{width:22,height:4,borderRadius:2}}/>
         </div>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:6,visibility:"hidden"}}>
           <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,marginBottom:-2}}>Sten's</span>
