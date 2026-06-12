@@ -762,6 +762,36 @@ const FLAGS = {
   "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦",
 };
 
+// ISO 3166-1 alpha-2 (with gb-eng / gb-sct for the home nations) for image-based flags.
+// Regional-indicator flag emoji don't render on Windows/desktop Chrome, so we use flagcdn images.
+const FLAG_CC = {
+  "Mexico":"mx", "South Korea":"kr", "South Africa":"za", "Czechia":"cz",
+  "Canada":"ca", "Switzerland":"ch", "Bosnia-Herzegovina":"ba", "Qatar":"qa",
+  "Brazil":"br", "Morocco":"ma", "Scotland":"gb-sct", "Haiti":"ht",
+  "United States":"us", "Turkey":"tr", "Australia":"au", "Paraguay":"py",
+  "Germany":"de", "Ivory Coast":"ci", "Ecuador":"ec", "Curacao":"cw",
+  "Netherlands":"nl", "Japan":"jp", "Sweden":"se", "Tunisia":"tn",
+  "Belgium":"be", "Egypt":"eg", "Iran":"ir", "New Zealand":"nz",
+  "Spain":"es", "Uruguay":"uy", "Saudi Arabia":"sa", "Cape Verde":"cv",
+  "France":"fr", "Senegal":"sn", "Norway":"no", "Iraq":"iq",
+  "Argentina":"ar", "Austria":"at", "Algeria":"dz", "Jordan":"jo",
+  "Portugal":"pt", "Colombia":"co", "Congo DR":"cd", "Uzbekistan":"uz",
+  "England":"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa",
+};
+
+// Image-based flag that renders consistently across platforms (desktop included).
+// Sized in `em` so it inherits the surrounding text's fontSize, matching the old emoji spans.
+function Flag({team,style}){
+  const cc=FLAG_CC[team];
+  if(!cc) return <span style={{lineHeight:1,...style}}>🏳</span>;
+  return(
+    <img src={`https://flagcdn.com/${cc}.svg`} alt={team} loading="lazy"
+      style={{height:"1em",width:"1.34em",objectFit:"cover",borderRadius:1.5,
+        verticalAlign:"middle",display:"inline-block",flexShrink:0,
+        boxShadow:"0 0 0 0.5px rgba(0,0,0,0.12)",...style}}/>
+  );
+}
+
 
 const GROUP_NOTES = {
   A:{nl:"Mexico, Korea, ZA, Tsjechie",en:"Mexico, Korea, SA, Czechia"},
@@ -1635,7 +1665,7 @@ function MatchRow({t1,s1,t2,s2,matchKey,date,open,onToggle}){
   return(
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 10px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
-        <TeamLink team={t1}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t1]||"🏳"}</span></TeamLink>
+        <TeamLink team={t1}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}><Flag team={t1}/></span></TeamLink>
         <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t1?600:400,color:winner===t1||draw?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t1,lang)}</span>
         <div style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
           <span style={{fontSize:FS.body,fontWeight:WEIGHT.semibold,color:winner===t1?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?(T.id==="orangeLion"?"#FFFFFF":T.blue):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),minWidth:14,textAlign:"right"}}>{s1}</span>
@@ -1643,7 +1673,7 @@ function MatchRow({t1,s1,t2,s2,matchKey,date,open,onToggle}){
           <span style={{fontSize:FS.body,fontWeight:WEIGHT.semibold,color:winner===t2?(T.id==="orangeLion"?"#FFFFFF":T.orange):draw?(T.id==="orangeLion"?"#FFFFFF":T.blue):(T.id==="orangeLion"?"rgba(255,255,255,0.62)":T.textSub),minWidth:14,textAlign:"left"}}>{s2}</span>
         </div>
         <span style={{flex:1,fontSize:FS.small,fontWeight:winner===t2?600:400,color:winner===t2||draw?T.text:T.textSub,textAlign:"right",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(t2,lang)}</span>
-        <TeamLink team={t2}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[t2]||"🏳"}</span></TeamLink>
+        <TeamLink team={t2}><span style={{fontSize:14,lineHeight:1,flexShrink:0,cursor:"pointer"}}><Flag team={t2}/></span></TeamLink>
         <Chevron open={open} color={T.orange}/>
       </div>
       {open&&expl&&(
@@ -1720,7 +1750,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
             <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 9L0 5H2.5V0H4.5V5H7L3.5 9Z" fill={OL?"#FFD0C7":"#C0392B"}/></svg>
             {sorted.slice(2).map(t=>(
-              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0,opacity:0.85}}>{FLAGS[t]}</span>
+              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0,opacity:0.85}}><Flag team={t}/></span>
             ))}
           </div>
           {/* Divider word */}
@@ -1728,7 +1758,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           {/* Qualifiers (right): two flags + green up-arrow */}
           <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
             {sorted.slice(0,2).map(t=>(
-              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0}}>{FLAGS[t]}</span>
+              <span key={t} style={{fontSize:15,lineHeight:1,flexShrink:0}}><Flag team={t}/></span>
             ))}
             <svg width="9" height="11" viewBox="0 0 7 9" fill="none" style={{flexShrink:0}}><path d="M3.5 0L7 4H4.5V9H2.5V4H0L3.5 0Z" fill={OL?"#BFF5CE":"#1E7A40"}/></svg>
           </div>
@@ -1755,7 +1785,7 @@ function GroupAccordion({g,openGroup,setOpenGroup,openMatches,toggleMatch}){
           return(
             <div key={team} style={{display:"grid",gridTemplateColumns:"18px 22px 1fr 32px 30px 30px",alignItems:"center",gap:6,padding:"6px 12px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:pass?(OL?"rgba(255,255,255,0.10)":"rgba(224,112,0,0.05)"):"transparent"}}>
               <span style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,color:pass?(OL?"#FFFFFF":"#E07000"):T.textFaint,textAlign:"center"}}>{i+1}</span>
-              <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
+              <TeamLink team={team}><span style={{fontSize:14,lineHeight:1,cursor:"pointer"}}><Flag team={team}/></span></TeamLink>
               <span style={{fontSize:FS.small,fontWeight:pass?600:400,color:pass?T.text:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
               <span title={lang==="nl"?"Vormindicator":"Form indicator"} style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:fc,textAlign:"right"}}>{dev===undefined?"":(dev>0?"+":"")+dev}</span>
               <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:rc,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2,textAlign:"right"}}>#{mr}</span>
@@ -1823,7 +1853,7 @@ function GroupTableCard({g,open,onToggle,openMatches,toggleMatch}){
         return(
           <div key={team} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 10px",borderBottom:i<3?`1px solid ${T.border}`:"none",background:i===0?"rgba(224,112,0,0.08)":i===1?"rgba(26,82,150,0.05)":"transparent"}}>
             <span style={{width:14,fontSize:FS.small,fontWeight:WEIGHT.semibold,color:i===0?(T.id==="orangeLion"?"#FFFFFF":"#E07000"):i===1?(T.id==="orangeLion"?"#FFD9BF":"#1A5296"):T.textFaint,flexShrink:0,textAlign:"center"}}>{i+1}</span>
-            <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]||"🏳"}</span></TeamLink>
+            <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}><Flag team={team}/></span></TeamLink>
             <span style={{flex:1,fontSize:FS.body,color:pass?T.text:T.textSub,fontWeight:pass?500:400,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
             {(()=>{const mr=adjRank(team);const rc=mr<=8?(T.id==="orangeLion"?"#5BE08A":"#1E7A40"):mr<=24?(T.id==="orangeLion"?"#FFC861":"#E07000"):(T.id==="orangeLion"?"#FFB0A6":"#C0392B");return <span onClick={e=>{e.stopPropagation();setTab("model");}} title={lang==="nl"?"Bekijk ranglijst":"View ranking"} style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:rc,flexShrink:0,cursor:"pointer",textDecoration:"underline",textUnderlineOffset:2}}>#{mr}</span>;})()}
             <span style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,color:pass?T.text:T.textSub,flexShrink:0}}>{pts[team]}</span>
@@ -1892,7 +1922,7 @@ function KOCard({a,b,openMatches,toggleMatch,dateLabel,bare}){
         <div key={team}>
           {i===1&&<div style={{height:1,background:T.border}}/>}
           <div style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:win?T.orangeFaint:"transparent"}}>
-            <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[team]}</span></TeamLink>
+            <TeamLink team={team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}><Flag team={team}/></span></TeamLink>
             <span style={{flex:1,fontSize:FS.body,fontWeight:win?600:400,color:win?nameWin:nameLose,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
             <span style={{fontSize:FS.h2,fontWeight:WEIGHT.semibold,color:win?winCol:nameLose,flexShrink:0}}>{score}</span>
           </div>
@@ -1935,7 +1965,7 @@ function BracketMatch({teamA,scoreA,teamB,scoreB,onClick}){
         <div key={team}>
           {i===1&&<div style={{height:1,background:T.border,margin:"3px 0"}}/>}
           <div style={{display:"flex",alignItems:"center",gap:5,height:26}}>
-            <span style={{fontSize:12,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
+            <span style={{fontSize:12,lineHeight:1,flexShrink:0}}><Flag team={team}/></span>
             <span style={{flex:1,fontSize:FS.small,fontWeight:win?700:400,color:win?winCol:loseCol,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
             <span style={{fontSize:FS.small,fontWeight:WEIGHT.semibold,color:win?winCol:loseCol,flexShrink:0}}>{score}</span>
           </div>
@@ -1970,7 +2000,7 @@ function KnockoutBracket({scrollToMatch}){
           <div key={team} style={{display:"flex",alignItems:"center",gap:7,
             marginTop:i?7:0,paddingTop:i?7:0,
             borderTop:i?`1px solid ${T.border}`:"none"}}>
-            <span style={{fontSize:16,lineHeight:1,flexShrink:0}}>{FLAGS[team]||"🏳"}</span>
+            <span style={{fontSize:16,lineHeight:1,flexShrink:0}}><Flag team={team}/></span>
             <span style={{flex:1,fontSize:FS.small,fontWeight:w?700:500,
               color:w?winCol:loseCol,
               overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
@@ -2046,7 +2076,7 @@ function KnockoutBracket({scrollToMatch}){
             <div key={team} style={{display:"flex",alignItems:"center",gap:7,
               marginTop:i?6:0,paddingTop:i?6:0,
               borderTop:i?`1px solid ${OL?"rgba(13,13,13,0.15)":T.border}`:"none"}}>
-              <span style={{fontSize:16,lineHeight:1,flexShrink:0}}>{FLAGS[team]}</span>
+              <span style={{fontSize:16,lineHeight:1,flexShrink:0}}><Flag team={team}/></span>
               <span style={{flex:1,fontSize:FS.body,fontWeight:w?700:500,
                 color:w?winCol:loseCol,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
@@ -2085,7 +2115,7 @@ function OutlookRow({d,type,open,onToggle}){
     <div style={{borderBottom:`1px solid ${T.border}`}}>
       <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",cursor:"pointer",background:open?T.orangeFaint:T.card}}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={ac} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d={over?arrowUp:arrowDn}/></svg>
-        <TeamLink team={d.team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}>{FLAGS[d.team]}</span></TeamLink>
+        <TeamLink team={d.team}><span style={{fontSize:15,lineHeight:1,flexShrink:0,cursor:"pointer"}}><Flag team={d.team}/></span></TeamLink>
         <span style={{flex:1,fontSize:FS.body,fontWeight:WEIGHT.medium,color:T.text}}>{tName(d.team,lang)}</span>
         <Tag color={T.textSub}>FIFA #{d.rank}</Tag>
         <Tag color={ac}>{lang==="nl"?"Model":"Model"} #{MODEL_RANK[d.team]||d.rank}</Tag>
@@ -3222,7 +3252,7 @@ function ModelViz({scrollTo,onScrolled}={}){
           const Bar=({team,sc,win})=>(
             <div style={{marginBottom:8}}>
               <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
-                <span style={{fontSize:13,lineHeight:1}}>{FLAGS[team]}</span>
+                <span style={{fontSize:13,lineHeight:1}}><Flag team={team}/></span>
                 <span style={{flex:1,fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{tName(team,lang)}</span>
                 <span style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,color:win?orange:T.textSub}}>{nf(sc)}</span>
               </div>
@@ -3252,9 +3282,9 @@ function ModelViz({scrollTo,onScrolled}={}){
               {/* result */}
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,
                 marginTop:12,paddingTop:11,borderTop:`2px solid ${T.border}`}}>
-                <span style={{fontSize:15}}>{FLAGS[A]}</span>
+                <span style={{fontSize:15}}><Flag team={A}/></span>
                 <span style={{fontSize:FS.h1,fontWeight:WEIGHT.bold,color:orange,letterSpacing:1}}>{sA}–{sB}</span>
-                <span style={{fontSize:15}}>{FLAGS[B]}</span>
+                <span style={{fontSize:15}}><Flag team={B}/></span>
               </div>
               <div style={{fontSize:FS.caption,color:T.textFaint,lineHeight:1.5,marginTop:8,textAlign:"center"}}>
                 {margin===0
@@ -4001,9 +4031,8 @@ function TournamentBanner({setTab}){
           <span style={{fontSize:52,lineHeight:1}}>🏆</span>
           <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:T.orange,letterSpacing:1.5,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
           <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:10,lineHeight:1.1}}>
-            <span style={{fontSize:28}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
+            <span style={{fontSize:28}}><Flag team={fWin}/></span>{tName(fWin,lang)}
           </div>
-          <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,marginTop:2}}>{tr.knockoutLink} →</div>
         </div>
       </div>
     );
@@ -4015,9 +4044,8 @@ function TournamentBanner({setTab}){
         <span style={{fontSize:52,lineHeight:1}}>🏆</span>
         <div style={{fontSize:FS.small,fontWeight:WEIGHT.bold,color:"#FF5500",letterSpacing:1.5,textTransform:"uppercase",textAlign:"center"}}>{tr.predictedWinner}</div>
         <div style={{fontSize:FS.display,fontWeight:WEIGHT.bold,color:"#fff",display:"flex",alignItems:"center",gap:10,lineHeight:1.1}}>
-          <span style={{fontSize:28}}>{FLAGS[fWin]}</span>{tName(fWin,lang)}
+          <span style={{fontSize:28}}><Flag team={fWin}/></span>{tName(fWin,lang)}
         </div>
-        <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:"rgba(255,255,255,0.75)",letterSpacing:0.5,marginTop:2}}>{tr.knockoutLink} →</div>
       </div>
     </div>
   );
@@ -4570,7 +4598,15 @@ export default function App(){
             <React.Fragment>
                     {[{label:tr.qf,rounds:QF,dk:"QF"},{label:tr.sf,rounds:SF,dk:"SF"}].map(({label,rounds,dk})=>(
                       <div key={label} style={{marginBottom:14}}>
-                        <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{label} · {KO_DATE_LABEL[dk][lang]}</div>
+                        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                          <div style={{width:24,height:24,borderRadius:6,flexShrink:0,
+                            display:"flex",alignItems:"center",justifyContent:"center",
+                            background:OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={OL?"#E85100":"#FFFFFF"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="5" rx="1.2"/><rect x="2.5" y="17" width="6" height="5" rx="1.2"/><rect x="15.5" y="17" width="6" height="5" rx="1.2"/><path d="M12 7v4M5.5 17v-2.5h13V17M12 11v3.5"/></svg>
+                          </div>
+                          <span style={{flex:1,fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:1,textTransform:"uppercase",color:T.text}}>{label}</span>
+                          <span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textFaint,whiteSpace:"nowrap"}}>{KO_DATE_LABEL[dk][lang]}</span>
+                        </div>
                         <div style={{display:"flex",flexDirection:"column",gap:8}}>
                           {rounds.map(([a,b])=>(
                             <div key={`${a}-${b}`} ref={el=>koCardRefs.current[`${a}-${b}`]=el}>
@@ -4582,14 +4618,22 @@ export default function App(){
                     ))}
                     {/* FINAL — same detailed card, with the predicted-champion badge */}
                     <div style={{marginBottom:14}} ref={el=>koCardRefs.current[`${FINAL_TEAMS[0]}-${FINAL_TEAMS[1]}`]=el}>
-                      <div style={{fontSize:FS.caption,fontWeight:WEIGHT.semibold,letterSpacing:1.2,textTransform:"uppercase",color:T.id==="dark"?T.orange:T.blue,marginBottom:10,paddingBottom:5,borderBottom:`1px solid ${T.border}`}}>{tr.final}</div>
+                      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                        <div style={{width:24,height:24,borderRadius:6,flexShrink:0,
+                          display:"flex",alignItems:"center",justifyContent:"center",
+                          background:OL?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={OL?"#E85100":"#FFFFFF"} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M6 4h12v3a6 6 0 01-12 0zM6 5H4a2 2 0 002 4M18 5h2a2 2 0 01-2 4M9 16h6M10 16v-2M14 16v-2M8 20h8"/></svg>
+                        </div>
+                        <span style={{flex:1,fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:1,textTransform:"uppercase",color:T.text}}>{tr.final}</span>
+                        <span style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,color:T.textFaint,whiteSpace:"nowrap"}}>{KO_DATE_LABEL["FINAL"][lang]}</span>
+                      </div>
                       <div style={{borderRadius:4,overflow:"hidden",border:`1px solid ${T.orange}`,borderTop:`3px solid ${T.orange}`}}>
                         <KOCard a={FINAL_TEAMS[0]} b={FINAL_TEAMS[1]} openMatches={openMatches} toggleMatch={toggleMatch} dateLabel={KO_DATE_LABEL["FINAL"][lang]} bare/>
                         <div style={{display:"flex",alignItems:"center",gap:8,background:T.id==="orangeLion"?"rgba(0,0,0,0.15)":T.blueFaint,padding:"10px 14px",borderTop:`1px solid ${T.border}`}}>
                           <span style={{fontSize:16}}>🏆</span>
                           <div>
                             <div style={{fontSize:FS.caption,fontWeight:WEIGHT.medium,letterSpacing:0.8,textTransform:"uppercase",color:T.textSub}}>{tr.predictedChampionLabel}</div>
-                            <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue}}>{FLAGS[fWin]} {tName(fWin,lang)}</div>
+                            <div style={{fontSize:14,fontWeight:WEIGHT.semibold,color:T.id==="dark"?"#909090":T.blue}}><Flag team={fWin}/> {tName(fWin,lang)}</div>
                           </div>
                         </div>
                       </div>
