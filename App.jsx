@@ -4323,104 +4323,100 @@ function PlayersTab({setTab}){
 // Phase 0: orange background + white lion (animated in)
 // Phase 1: fade to black background + orange lion
 // Phase 2: fully black (lion fades out), then the loader unmounts to reveal the app
+const LION_PATH_D = "M5111 8804 c-110 -125 -189 -296 -192 -414 0 -37 -17 -90 -18 -59 -2 29 -87 135 -153 188 -178 146 -439 191 -702 120 l-40 -11 76 -39 c84 -44 194 -133 249 -200 38 -47 66 -94 52 -87 -103 48 -141 63 -209 83 -337 98 -788 26 -1139 -183 -157 -93 -353 -278 -445 -418 -119 -182 -170 -344 -170 -539 0 -161 42 -320 117 -440 18 -27 29 -53 27 -57 -9 -14 -146 -104 -201 -131 -117 -60 -257 -101 -411 -121 l-87 -12 77 -42 c110 -60 234 -99 360 -112 59 -7 112 -9 118 -5 5 3 10 2 10 -3 0 -4 -42 -39 -92 -78 -193 -145 -362 -343 -464 -547 -49 -96 -109 -283 -130 -402 -18 -104 -25 -402 -11 -459 8 -27 10 -24 50 56 81 161 172 284 311 423 158 157 237 214 597 430 152 91 327 203 388 250 61 46 111 82 111 79 0 -19 -133 -266 -186 -346 -78 -118 -171 -217 -410 -439 -100 -92 -208 -195 -239 -229 -186 -194 -324 -447 -391 -713 -49 -196 -44 -529 12 -743 24 -95 86 -259 129 -345 29 -57 115 -192 120 -187 2 2 -1 28 -7 58 -16 84 -3 376 21 491 43 203 142 439 256 615 144 222 424 505 671 679 38 27 88 65 112 83 23 19 44 33 47 31 2 -3 -57 -92 -131 -199 -330 -479 -377 -554 -476 -758 -71 -148 -128 -316 -160 -472 -19 -98 -23 -146 -23 -320 0 -133 5 -226 13 -265 84 -381 291 -710 616 -983 84 -70 224 -167 231 -160 2 2 -23 56 -55 120 -62 127 -138 324 -163 428 -68 275 -74 574 -16 833 68 305 216 623 404 865 94 121 129 158 97 101 -61 -106 -131 -349 -163 -569 -29 -198 -23 -465 15 -645 68 -323 229 -657 449 -930 85 -105 233 -255 325 -329 77 -62 274 -197 280 -191 2 1 -19 52 -46 111 -107 234 -163 473 -161 687 1 128 12 232 21 207 3 -8 22 -64 41 -125 145 -458 405 -919 688 -1218 l54 -57 96 112 c165 196 257 326 367 523 107 192 215 455 279 679 17 61 30 93 36 87 16 -16 21 -280 8 -387 -22 -182 -69 -335 -162 -532 -21 -46 -39 -86 -39 -88 0 -7 180 117 255 176 486 386 784 927 837 1518 26 294 -28 616 -152 905 -21 48 -37 87 -35 87 2 0 29 -32 60 -71 242 -299 416 -680 471 -1029 20 -128 23 -403 5 -510 -18 -107 -55 -254 -91 -356 -35 -102 -134 -326 -163 -367 -10 -16 -17 -30 -14 -33 6 -6 114 65 212 141 107 83 284 269 367 386 128 179 220 388 265 599 36 169 36 403 0 582 -64 316 -211 624 -478 1003 -228 323 -299 428 -295 432 2 2 55 -34 118 -80 561 -415 847 -799 965 -1297 28 -121 42 -400 25 -505 -5 -33 -9 -61 -7 -63 1 -1 25 32 53 75 100 153 180 351 224 558 28 132 31 414 6 551 -40 214 -138 443 -267 624 -107 149 -153 197 -506 525 -138 128 -224 226 -301 343 -65 98 -159 266 -169 301 -7 23 -5 22 36 -11 80 -64 311 -213 524 -337 116 -68 246 -148 289 -179 236 -169 444 -405 556 -631 19 -38 38 -70 41 -71 3 0 9 53 12 119 19 353 -77 694 -270 964 -81 111 -207 243 -316 328 -51 40 -98 78 -105 85 -11 9 1 12 56 12 126 1 262 35 396 97 123 57 123 60 18 74 -231 29 -443 114 -601 239 l-24 19 26 35 c59 76 120 257 132 388 19 207 -60 453 -207 652 -175 236 -423 411 -733 516 -327 111 -702 104 -960 -19 -32 -15 -61 -27 -62 -25 -9 8 97 133 148 176 61 51 176 122 218 135 35 11 13 20 -94 40 -132 25 -322 17 -431 -19 -138 -44 -262 -144 -337 -268 l-34 -57 -5 62 c-7 81 -49 206 -98 287 -42 71 -128 181 -146 187 -6 2 -30 -17 -53 -43z m-1364 -938 c229 -49 395 -146 524 -306 63 -80 74 -89 112 -95 76 -13 270 -85 367 -137 129 -68 239 -148 331 -240 l78 -78 58 61 c171 180 415 318 684 385 103 25 105 26 133 70 159 252 510 392 888 355 383 -37 646 -259 689 -582 30 -217 -79 -447 -268 -567 -24 -15 -43 -32 -43 -38 0 -25 141 -408 168 -459 17 -30 27 -55 24 -55 -3 0 -38 19 -76 42 -95 56 -178 142 -256 266 -146 232 -202 311 -272 386 -92 100 -204 184 -330 247 -175 88 -316 125 -513 136 -120 6 -132 -5 -30 -27 64 -13 171 -63 245 -113 306 -209 505 -680 503 -1192 -1 -325 -55 -540 -192 -765 -47 -77 -51 -81 -44 -45 15 73 6 209 -18 290 -12 42 -25 78 -29 80 -4 2 -10 -39 -13 -93 -9 -149 -74 -351 -164 -506 l-46 -78 -13 51 c-27 103 -73 201 -138 296 -38 53 -70 95 -72 92 -2 -2 8 -32 22 -67 64 -159 151 -529 161 -685 9 -159 -42 -303 -139 -390 -151 -135 -386 -121 -645 41 -144 90 -201 188 -190 324 9 113 52 202 119 247 18 12 78 34 133 49 123 33 181 61 227 112 38 42 55 84 60 146 l3 40 -85 18 c-47 10 -130 18 -185 19 -85 2 -113 -2 -190 -27 -118 -38 -204 -38 -330 1 -112 34 -209 36 -358 10 l-109 -19 7 -35 c10 -53 42 -122 73 -155 55 -58 105 -80 287 -127 64 -17 125 -73 156 -142 27 -63 37 -196 20 -260 -26 -90 -132 -191 -282 -267 -262 -134 -534 -62 -643 170 -27 58 -31 77 -34 180 -6 173 47 438 147 733 16 48 28 87 26 87 -8 0 -122 -176 -142 -220 -12 -25 -31 -77 -44 -115 -12 -39 -25 -78 -28 -88 -9 -27 -112 175 -155 303 -32 95 -61 239 -68 330 -3 34 -3 34 -21 -20 -26 -81 -40 -195 -33 -280 l7 -75 -46 70 c-221 343 -259 902 -94 1382 135 390 344 609 674 706 l50 15 -40 1 c-152 3 -403 -50 -541 -114 -113 -52 -258 -152 -344 -237 -71 -70 -135 -159 -300 -418 -76 -120 -185 -229 -278 -278 l-63 -34 30 54 c17 30 58 133 92 229 34 95 67 186 75 201 8 15 14 29 14 32 0 2 -29 25 -63 50 -127 90 -213 212 -246 350 -21 86 -15 222 13 312 82 260 314 434 628 474 96 12 296 4 385 -14z m1578 -3910 c28 -8 117 -54 200 -101 161 -91 238 -122 328 -132 65 -7 64 -3 41 -106 -26 -117 -93 -247 -166 -323 -54 -56 -185 -150 -195 -140 -2 2 6 20 17 39 25 42 62 157 51 157 -5 0 -16 -10 -27 -22 -44 -49 -196 -132 -358 -196 l-49 -19 -89 34 c-148 56 -237 106 -321 182 l-40 36 8 -35 c11 -54 35 -123 51 -147 22 -35 17 -36 -38 -6 -29 15 -87 62 -129 104 -90 89 -146 192 -179 329 -26 112 -27 110 18 110 91 0 212 47 392 154 139 83 221 107 340 102 52 -2 118 -11 145 -20z";
 function AppLoader({onDone}){
   const [phase,setPhase]=React.useState(0);
   React.useEffect(()=>{
-    // Lion centred in the ring + title below; hold; then the red-white-blue gradient
-    // engulfs the whole screen (behind the text + logos) before the loader finishes.
+    // The flag (with the lion + WK2026 as transparent cut-outs) fades in and ripples in 3D,
+    // then waves harder while dissolving away to reveal the app underneath.
     const t=[];
-    t.push(setTimeout(()=>setPhase(1),60));     // ring + lion + title appear (instant, no fade-in)
-    t.push(setTimeout(()=>setPhase(2),900));    // hold on the plain orange background
-    t.push(setTimeout(()=>setPhase(3),2700));   // the red-white-blue flag fades in and ripples, taking over the orange
-    t.push(setTimeout(()=>setPhase(4),4600));   // ZOOM-THROUGH: lockup + flag rush forward past the screen, revealing the app
-    t.push(setTimeout(()=>onDone&&onDone(),5500));
+    t.push(setTimeout(()=>setPhase(1),80));     // flag + cut-out lockup fade in, ripple begins
+    t.push(setTimeout(()=>setPhase(2),2600));   // strong wave hold
+    t.push(setTimeout(()=>setPhase(3),3600));   // REVEAL: flag waves hard + dissolves, app shows through
+    t.push(setTimeout(()=>onDone&&onDone(),5100));
     return()=>t.forEach(clearTimeout);
   },[]);
 
-  const shown=phase>=1;            // lockup visible (no fade-in; appears immediately)
-  const reveal=phase>=4;           // zoom-through reveal of the app underneath
-  const overlayOpacity=reveal?0:1; // fades out as it rushes forward
+  const shown=phase>=1;
+  const reveal=phase>=3;
+  // The mask cuts the lion + wordmark out of the flag so the app behind shows through those shapes.
+  // White = flag visible; black = hole (transparent).
+  const MASK_W=1040, MASK_H=1040;
+  const maskId="flagCut", gradId="flagGrad", waveId="flagWaveTurb";
 
   return(
-    <div style={{position:"fixed",inset:0,zIndex:9999,
+    <div style={{position:"fixed",inset:0,zIndex:9999,overflow:"hidden",
       background:"radial-gradient(120% 120% at 50% 42%, #FF7A1A 0%, #E85100 46%, #B83D00 100%)",
-      opacity:overlayOpacity,
-      transform:reveal?"scale(1.35)":"scale(1)",transformOrigin:"50% 44%",
-      transition:"opacity 0.85s cubic-bezier(.5,0,.75,0), transform 0.9s cubic-bezier(.6,0,.4,1)",
-      display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",willChange:"transform,opacity"}}>
+      opacity:reveal?0:1,
+      transition:"opacity 1.4s cubic-bezier(.4,0,.2,1)",willChange:"opacity"}}>
 
-      {/* Subtle radial vignette for depth */}
+      {/* subtle vignette for depth (sits behind the flag) */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",opacity:0.4,
         background:"radial-gradient(120% 120% at 50% 50%, transparent 42%, rgba(0,0,0,0.45) 100%)"}}/>
 
-      {/* RWB TAKEOVER — the background starts plain orange, then this softer red-white-blue
-          tricolour fades in and ripples like a flag in the wind (a continuous 3D wave),
-          merging over the orange to take over the screen. */}
+      {/* THE FLAG — full-screen rippling red-white-blue tricolour with the lion + WK2026 as holes.
+          Waves continuously in 3D; on reveal it waves harder and dissolves to expose the app. */}
       <div style={{position:"absolute",inset:0,pointerEvents:"none",overflow:"hidden",
-        perspective:"1100px",perspectiveOrigin:"50% 45%",
-        opacity:phase>=3?1:0,
-        transform:reveal?"scale(1.6)":"scale(1)",transformOrigin:"50% 44%",
-        transition:"opacity 1.6s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.6,0,.4,1)",willChange:"opacity,transform"}}>
-        <style>{`@keyframes flagWave{
-          0%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
-          25%{transform:rotateY(5deg) rotateX(-3deg) skewX(2.5deg) scale(1.26)}
-          50%{transform:rotateY(8deg) rotateX(3deg) skewX(-1.5deg) scale(1.22)}
-          75%{transform:rotateY(-4deg) rotateX(-4deg) skewX(2deg) scale(1.26)}
-          100%{transform:rotateY(-7deg) rotateX(4deg) skewX(-2deg) scale(1.22)}
-        }`}</style>
-        <div style={{position:"absolute",inset:"-14%",
-          transformOrigin:"50% 50%",opacity:0.78,
-          animation:phase>=3?"flagWave 3.4s ease-in-out infinite":"none",
-          background:"linear-gradient(115deg,#E61D25 0%,#E61D25 34%,#FFFFFF 50%,#2A398D 66%,#2A398D 100%)",
-          willChange:"transform"}}/>
-      </div>
-
-      {/* HERO LOCKUP — ring (with the lion centred in its hole) + bars + title, one centred column */}
-      <div style={{position:"absolute",display:"flex",flexDirection:"column",alignItems:"center",gap:13,
-        opacity:reveal?0:(shown?1:0),
-        transform:reveal?"scale(2.4)":`scale(${shown?1:0.86})`,
-        transition:reveal
-          ?"opacity 0.7s cubic-bezier(.5,0,.85,0), transform 0.9s cubic-bezier(.6,0,.35,1)"
-          :"opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.34,1.2,.5,1)",
-        pointerEvents:"none",willChange:"transform,opacity"}}>
-
-        {/* WC roundel ring with the lion living in its centre */}
-        <div style={{position:"relative",width:120,height:120,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <style>{`@keyframes wcRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
-          <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true"
-            style={{position:"absolute",inset:0,filter:"drop-shadow(0 0 16px rgba(255,255,255,0.28)) drop-shadow(0 4px 14px rgba(0,0,0,0.45))",
-              animation:"wcRingSpin 1.6s linear infinite",transformOrigin:"50% 50%"}}>
-            <defs><linearGradient id="wcRing" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#E61D25"/><stop offset="0.5" stopColor="#FFFFFF"/><stop offset="1" stopColor="#2A398D"/>
-            </linearGradient></defs>
-            <circle cx="50" cy="50" r="46" fill="none" stroke="url(#wcRing)" strokeWidth="4.5"/>
-            <circle cx="50" cy="50" r="34" fill="none" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.22"/>
+        perspective:"1200px",perspectiveOrigin:"50% 44%",
+        opacity:shown?(reveal?0:1):0,
+        transition:reveal?"opacity 1.5s cubic-bezier(.45,0,.7,.2)":"opacity 0.8s cubic-bezier(.4,0,.2,1)",
+        willChange:"opacity"}}>
+        <style>{`
+          @keyframes flagWave3D{
+            0%{transform:rotateY(-9deg) rotateX(5deg) skewX(-2.5deg) scale(1.26)}
+            25%{transform:rotateY(7deg) rotateX(-4deg) skewX(3deg) scale(1.30)}
+            50%{transform:rotateY(10deg) rotateX(4deg) skewX(-2deg) scale(1.26)}
+            75%{transform:rotateY(-5deg) rotateX(-5deg) skewX(2.5deg) scale(1.30)}
+            100%{transform:rotateY(-9deg) rotateX(5deg) skewX(-2.5deg) scale(1.26)}
+          }
+          @keyframes flagWaveHard{
+            0%{transform:rotateY(-16deg) rotateX(9deg) skewX(-5deg) scale(1.34)}
+            20%{transform:rotateY(14deg) rotateX(-8deg) skewX(6deg) scale(1.42)}
+            40%{transform:rotateY(18deg) rotateX(7deg) skewX(-4deg) scale(1.34)}
+            60%{transform:rotateY(-12deg) rotateX(-9deg) skewX(5deg) scale(1.44)}
+            80%{transform:rotateY(16deg) rotateX(8deg) skewX(-5deg) scale(1.36)}
+            100%{transform:rotateY(-16deg) rotateX(9deg) skewX(-5deg) scale(1.34)}
+          }
+          @keyframes flagTurb{
+            0%{transform:translate(0,0)}
+            25%{transform:translate(-1.2%,0.8%)}
+            50%{transform:translate(0.8%,-1%)}
+            75%{transform:translate(-0.6%,1.2%)}
+            100%{transform:translate(0,0)}
+          }
+        `}</style>
+        <div style={{position:"absolute",inset:"-18%",transformOrigin:"50% 50%",
+          animation:phase>=1?`${reveal?"flagWaveHard 1.5s":"flagWave3D 3.2s"} ease-in-out infinite`:"none",
+          willChange:"transform"}}>
+          <svg viewBox={`0 0 ${MASK_W} ${MASK_H}`} preserveAspectRatio="xMidYMid slice"
+            width="100%" height="100%" style={{display:"block",position:"absolute",inset:0,
+            animation:phase>=1?"flagTurb 2.6s ease-in-out infinite":"none"}}>
+            <defs>
+              <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#E61D25"/>
+                <stop offset="0.34" stopColor="#E61D25"/>
+                <stop offset="0.5" stopColor="#FFFFFF"/>
+                <stop offset="0.66" stopColor="#2A398D"/>
+                <stop offset="1" stopColor="#2A398D"/>
+              </linearGradient>
+              <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={MASK_W} height={MASK_H}>
+                {/* white = flag shows */}
+                <rect x="0" y="0" width={MASK_W} height={MASK_H} fill="#FFFFFF"/>
+                {/* black = holes: the lion, centred & scaled to a compact logo size */}
+                <g transform={`translate(${MASK_W/2} ${MASK_H/2 - 40}) scale(0.17) translate(-515 -515)`}>
+                  <g transform="translate(0,1024) scale(0.1,-0.1)">
+                    <path d={LION_PATH_D} fill="#000000"/>
+                  </g>
+                </g>
+                {/* black = holes: the WK2026 wordmark beneath the lion */}
+                <text x={MASK_W/2} y={MASK_H/2 + 118} textAnchor="middle"
+                  fontFamily="Inter, system-ui, sans-serif" fontWeight="800"
+                  fontSize="42" letterSpacing="1" fill="#000000">WK2026</text>
+              </mask>
+            </defs>
+            <rect x="0" y="0" width={MASK_W} height={MASK_H} fill={`url(#${gradId})`}
+              mask={`url(#${maskId})`} opacity="0.82"/>
           </svg>
-          {/* gold star stays fixed at the top while the ring spins */}
-          <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true" style={{position:"absolute",inset:0,pointerEvents:"none"}}>
-            <path d="M50 7 l2.6 5.3 5.8 0.9 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.9z" fill="#FFC861"/>
-          </svg>
-          {/* the lion, centred in the ring's empty space */}
-          <div style={{position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <LionEmoji color="#FFFFFF" size={54}/>
-          </div>
-        </div>
-
-        {/* RWB bars */}
-        <div style={{display:"flex",gap:4}}>
-          <span style={{width:22,height:4,background:"#E61D25",borderRadius:2}}/>
-          <span style={{width:22,height:4,background:"#FFFFFF",borderRadius:2}}/>
-          <span style={{width:22,height:4,background:"#2A398D",borderRadius:2}}/>
-        </div>
-
-        {/* TITLE — Sten's · WK2026 · Data-driven Voorspellingen (now part of the first phase) */}
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:6}}>
-          <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",marginBottom:-2,textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Sten's</span>
-          <span style={{fontSize:FS.display,fontWeight:WEIGHT.bold,letterSpacing:2,color:"#FFFFFF",textShadow:"0 0 16px rgba(255,255,255,0.25), 0 2px 10px rgba(0,0,0,0.4)"}}>WK2026</span>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,marginTop:14}}>
-            <span style={{fontSize:FS.small,fontWeight:WEIGHT.bold,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.7)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Data-driven</span>
-            <span style={{fontSize:FS.body,fontWeight:WEIGHT.bold,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,0.92)",textShadow:"0 1px 8px rgba(0,0,0,0.35)"}}>Voorspellingen</span>
-          </div>
         </div>
       </div>
     </div>
