@@ -1501,7 +1501,7 @@ function SoccerIcon({color}){
 
 // ── THEME TOGGLE ──────────────────────────────────────────────────────────────
 function ThemeToggle({theme,setTheme}){
-  const SEG=34, H=34;
+  const SEG=30, H=30;
   const T=useTheme();
   // Match the language toggle's orange exactly: #E07000 in default, the theme orange (#FF5500) in dark.
   const BLACK="#0D0D0D", ORANGE=(T.id==="default"?"#E07000":T.orange), WHITE="#FFFFFF";
@@ -4804,10 +4804,10 @@ export default function App(){
           <ThemeToggle theme={theme} setTheme={setTheme}/>
 
           {/* Language toggle */}
-          <div style={{display:"flex",border:`1px solid ${T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:34}}>
+          <div style={{display:"flex",border:`1px solid ${T.id==="orangeLion"?"#FFFFFF":(T.id==="dark"?"#FF5500":"#E07000")}`,borderRadius:4,overflow:"hidden",flexShrink:0,height:30}}>
             {["nl","en"].map((l,i)=>(
               <button key={l} onClick={()=>setLang(l)} style={{
-                width:34,height:34,fontSize:FS.small,fontWeight:lang===l?700:400,
+                width:30,height:30,fontSize:FS.small,fontWeight:lang===l?700:400,
                 background:lang===l?(T.id==="default"?"#E07000":T.orange):"transparent",
                 color:lang===l?"#fff":(T.id==="default"?"#E07000":T.textSub),
                 border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
